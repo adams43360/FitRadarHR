@@ -5,7 +5,7 @@
 
 ## Le projet
 
-**FitRadarHR** *(nom placeholder, à confirmer)* — un outil bilingue (FR/EN), gratuit et libre de droits, qui aide les RH et
+**FitRadarHR** — un outil bilingue (FR/EN), gratuit et open source (MIT), qui aide les RH et
 managers à évaluer la compatibilité d'une personne (candidat ou collaborateur en mobilité
 interne) avec un poste et/ou une équipe, en s'appuyant sur le modèle de personnalité
 **Big Five / OCEAN** (questionnaire IPIP, domaine public).
@@ -33,44 +33,74 @@ une demande future semble les justifier ponctuellement :
 ## Structure du dépôt
 
 ```
+/apps
+  /accounts        → utilisateurs, tenants B2B/B2C, rôles (E1)
+  /positions       → gestion des postes (E2)
+  /teams           → gestion des équipes (E3)
+  /survey          → questionnaire Big Five, liens tokenisés (E4)
+  /fit             → moteur de calcul Fit (E5)
+  /reports         → restitution, radar chart, export PDF (E6)
+/core              → settings Django, URLs racine
+/templates         → Django templates + HTMX
+/static            → assets frontend
+/locale            → fichiers de traduction FR / EN (.po / .mo)
+/docker            → Dockerfile, docker-compose.yml, nginx.conf
 /docs
   /product
     00-cadrage.md        # Cadrage produit complet (vision, périmètre, epics)
-    user-stories.md       # User stories, ajoutées au fil de l'eau, rattachées aux epics
+    user-stories.md      # User stories E1–E8
   /technical
-    (à venir : architecture, stack, schéma de données)
-CLAUDE.md                 # Ce fichier
-README.md                 # Présentation du projet (pour GitHub)
+    stack.md             # Décisions techniques (stack, déploiement)
+    schema.md            # Schéma de données (ER + entités)
+  /user                  # Documentation utilisateur (publiée sur GitHub Pages via MkDocs)
+CLAUDE.md                # Ce fichier
+README.md                # Présentation du projet (pour GitHub)
+mkdocs.yml               # Config MkDocs Material (doc utilisateur → GitHub Pages)
+requirements.txt         # Dépendances Python (app Django)
+requirements-docs.txt    # Dépendances docs (mkdocs + material)
+Makefile                 # Commandes courantes (make dev, make migrate, etc.)
 ```
 
 ## Epics de référence
 
 User stories à rattacher systématiquement à l'un de ces epics (voir `00-cadrage.md` section 8) :
 
-| # | Epic |
-|---|---|
-| E1 | Authentification & organisations |
-| E2 | Gestion des postes |
-| E3 | Gestion des équipes |
-| E4 | Questionnaire Big Five |
-| E5 | Moteur de calcul de Fit |
-| E6 | Rapports & restitution |
-| E7 | Internationalisation |
-| E8 | Conformité & gouvernance |
+| # | Epic | Statut |
+|---|---|---|
+| E1 | Authentification & organisations | ✅ Modèles + inscription B2B/B2C + dashboard |
+| E2 | Gestion des postes | 🔲 À développer |
+| E3 | Gestion des équipes | 🔲 À développer |
+| E4 | Questionnaire Big Five | 🔲 À développer |
+| E5 | Moteur de calcul de Fit | 🔲 À développer |
+| E6 | Rapports & restitution | 🔲 À développer |
+| E7 | Internationalisation | 🔄 En continu |
+| E8 | Conformité & gouvernance | 🔄 En continu |
 
 ## État d'avancement
 
 - [x] Cadrage produit validé
-- [ ] Stack technique définie
-- [ ] User stories Epic 1 (Authentification)
-- [ ] Premier scaffold technique
-
-*(Section à tenir à jour manuellement ou via Claude Code au fil des sessions.)*
+- [x] User stories E1–E8 rédigées
+- [x] Stack technique définie (`docs/technical/stack.md`)
+- [x] Schéma de données complet (`docs/technical/schema.md`)
+- [x] Scaffold Django (modèles, migrations, auth B2B/B2C, dashboard)
+- [x] Docker Compose dev opérationnel (`make dev-build`)
+- [x] Documentation utilisateur publiée (MkDocs → GitHub Pages)
+- [ ] Vues Postes (E2)
+- [ ] Vues Équipes (E3)
+- [ ] Questionnaire Big Five (E4)
+- [ ] Moteur de calcul Fit (E5)
+- [ ] Rapports & radar chart (E6)
 
 ## Conventions de travail
 
-- Stack technique : à définir, sera documentée dans `docs/technical/stack.md` une fois tranchée.
-- Commits : à définir (convention proposée : Conventional Commits — `feat:`, `fix:`, `docs:`...).
-- Les user stories suivent le format `En tant que [rôle], je veux [besoin], afin de [valeur]`
-  avec critères d'acceptation explicites, rédigées en français (le code et les noms de
-  variables restent en anglais).
+- **Stack** : Django 5 + HTMX + Alpine.js + Tailwind CSS + PostgreSQL 16 + Docker Compose
+- **Auth V1** : django-allauth (email/password) — Keycloak/OIDC reporté en V2
+- **Commits** : Conventional Commits — `feat:`, `fix:`, `docs:`, `refactor:`, `test:`
+- **User stories** : format `En tant que [rôle], je veux [besoin], afin de [valeur]`
+  avec critères d'acceptation explicites, rédigées en français
+- **Code et variables** : en anglais
+- **i18n** : toute string UI via `gettext_lazy(_(...))`, jamais de texte en dur
+- **Multi-tenant** : chaque modèle lié à une org filtre systématiquement par `org_id`
+  via un Django model manager (`OrgQuerySet`) — aucune vue ne peut afficher des données cross-tenant
+- **Doc utilisateur** : mise à jour dans `docs/user/` à chaque évolution de feature —
+  le workflow GitHub Actions publie automatiquement sur GitHub Pages à chaque push sur `main`
