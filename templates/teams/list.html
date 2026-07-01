@@ -21,7 +21,7 @@
 {% if teams %}
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
   {% for team in teams %}
-  {% with member_count=team.memberships.count %}
+  {% with member_count=team.active_member_count %}
   <a href="{% url 'teams:detail' team.pk %}"
      class="block bg-white rounded-2xl border border-gray-200 p-5 hover:shadow-md transition-shadow">
     <div class="flex items-start justify-between mb-3">

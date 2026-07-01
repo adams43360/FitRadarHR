@@ -11,10 +11,14 @@ from .forms import TeamForm, PersonForm, AddMemberForm
 
 @login_required
 def team_list(request):
+    from django.db.models import Count, Q
     teams = (
         request.user.org.teams
         .select_related("manager")
-        .prefetch_related("memberships")
+        .annotate(active_member_count=Count(
+            "memberships",
+            filter=Q(memberships__left_at__isnull=True)
+        ))
         .order_by("name")
     )
     return render(request, "teams/list.html", {"teams": teams})

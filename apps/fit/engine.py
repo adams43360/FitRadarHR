@@ -149,6 +149,9 @@ def compute_all_fits_for_person(person):
 
     - Fit Poste : tous les postes actifs de l'org ayant un profil cible
     - Fit Équipe : toutes les équipes de l'org ayant au moins 1 autre membre avec un profil
+
+    Après calcul, recalcule aussi les coéquipiers des mêmes équipes dont le fit
+    pouvait être incomplet (profils ajoutés après le leur).
     """
     try:
         profile = person.big_five_profile
@@ -159,6 +162,27 @@ def compute_all_fits_for_person(person):
 
     _compute_position_fits(person, profile, org)
     _compute_team_fits(person, profile, org)
+
+    # Recalculer les fits des coéquipiers qui partagent une équipe avec cette personne
+    # (leur fit équipe était peut-être incomplet si cette personne n'avait pas encore de profil)
+    from apps.teams.models import TeamMembership
+    teammate_ids = (
+        TeamMembership.objects
+        .filter(team__org=org, left_at__isnull=True)
+        .filter(team__in=TeamMembership.objects.filter(
+            person=person, left_at__isnull=True
+        ).values("team"))
+        .exclude(person=person)
+        .values_list("person_id", flat=True)
+        .distinct()
+    )
+    from apps.teams.models import Person as PersonModel
+    for teammate in PersonModel.objects.filter(pk__in=teammate_ids):
+        try:
+            tm_profile = teammate.big_five_profile
+        except Exception:
+            continue
+        _compute_team_fits(teammate, tm_profile, org)
 
 
 def _compute_position_fits(person, profile, org):
