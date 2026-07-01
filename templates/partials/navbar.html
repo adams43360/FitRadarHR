@@ -19,7 +19,13 @@
         <!-- Sélecteur de langue -->
         <form action="{% url 'set_language' %}" method="post" class="flex items-center gap-1">
           {% csrf_token %}
+          {# Retire le préfixe /en/ de l'URL avant redirection — sinon le préfixe écrase le cookie de langue #}
+          {% get_current_language as CURRENT_LANG %}
+          {% if request.path|slice:":3" == "/en" %}
+          <input name="next" type="hidden" value="{{ request.path|slice:'3:' }}">
+          {% else %}
           <input name="next" type="hidden" value="{{ request.get_full_path }}">
+          {% endif %}
           <select name="language" onchange="this.form.submit()"
             class="text-sm border-0 bg-transparent text-gray-500 cursor-pointer">
             <option value="fr" {% if LANGUAGE_CODE == 'fr' %}selected{% endif %}>🇫🇷 FR</option>
