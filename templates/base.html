@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}" x-data>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}FitRadarHR{% endblock %}</title>
+
+  <!-- Tailwind CSS (CDN pour le dev — remplacer par build en prod) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- HTMX -->
+  <script src="https://unpkg.com/htmx.org@2.0.3" defer></script>
+
+  <!-- Alpine.js -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen">
+
+  {% include "partials/navbar.html" %}
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="mb-4 p-4 rounded-lg
+          {% if message.tags == 'error' %}bg-red-100 text-red-800
+          {% elif message.tags == 'success' %}bg-green-100 text-green-800
+          {% else %}bg-blue-100 text-blue-800{% endif %}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Créer un compte" %} — FitRadarHR{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto mt-16 text-center">
+  <h1 class="text-3xl font-bold text-gray-900 mb-2">{% trans "Bienvenue sur FitRadarHR" %}</h1>
+  <p class="text-gray-500 mb-10">{% trans "Choisissez votre type de compte — gratuit dans les deux cas." %}</p>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+
+    <!-- B2B -->
+    <a href="{% url 'accounts:signup_b2b' %}"
+       class="group block p-8 bg-white rounded-2xl border-2 border-gray-200
+              hover:border-indigo-500 hover:shadow-lg transition-all text-left">
+      <div class="text-3xl mb-4">🏢</div>
+      <h2 class="text-xl font-semibold text-gray-900 mb-2 group-hover:text-indigo-600">
+        {% trans "Pour mon organisation" %}
+      </h2>
+      <p class="text-sm text-gray-500">
+        {% trans "RH, manager, PME ou grande entreprise. Invitez votre équipe et gérez plusieurs postes et collaborateurs." %}
+      </p>
+    </a>
+
+    <!-- B2C -->
+    <a href="{% url 'accounts:signup_b2c' %}"
+       class="group block p-8 bg-white rounded-2xl border-2 border-gray-200
+              hover:border-indigo-500 hover:shadow-lg transition-all text-left">
+      <div class="text-3xl mb-4">👤</div>
+      <h2 class="text-xl font-semibold text-gray-900 mb-2 group-hover:text-indigo-600">
+        {% trans "Usage personnel" %}
+      </h2>
+      <p class="text-sm text-gray-500">
+        {% trans "Consultant, manager indépendant ou petite équipe. Démarrez seul, sans avoir à configurer une organisation." %}
+      </p>
+    </a>
+
+  </div>
+
+  <p class="mt-8 text-sm text-gray-400">
+    {% trans "Déjà un compte ?" %}
+    <a href="{% url 'accounts:login' %}" class="text-indigo-600 hover:underline">{% trans "Se connecter" %}</a>
+  </p>
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+# Environnement de développement local
+# Usage : docker compose -f docker-compose.dev.yml up
+#
+# Différences vs prod :
+#   - Code monté en volume (hot reload sans rebuild)
+#   - Django runserver au lieu de gunicorn
+#   - Port 8000 exposé directement (pas de nginx)
+#   - Emails affichés dans la console
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: teamfit
+      POSTGRES_USER: teamfit
+      POSTGRES_PASSWORD: teamfit
+    ports:
+      - "5432:5432"   # accès direct depuis le Mac si besoin
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U teamfit"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DB_HOST: db
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app          # hot reload — le code local est monté dans le conteneur
+    ports:
+      - "8000:8000"
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+
+volumes:
+  postgres_dev_data:
