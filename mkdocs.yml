@@ -73,6 +73,8 @@ nav:
     - getting-started/index.md
     - Créer un compte: getting-started/signup.md
     - Tableau de bord: getting-started/dashboard.md
+  - Départements:
+    - departments/index.md
   - Postes:
     - positions/index.md
     - Créer un poste: positions/create.md

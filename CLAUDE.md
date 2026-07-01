@@ -35,6 +35,7 @@ une demande future semble les justifier ponctuellement :
 ```
 /apps
   /accounts        → utilisateurs, tenants B2B/B2C, rôles (E1)
+  /departments     → gestion des départements (E2.5)
   /positions       → gestion des postes (E2)
   /teams           → gestion des équipes (E3)
   /survey          → questionnaire Big Five, liens tokenisés (E4)
@@ -68,32 +69,34 @@ User stories à rattacher systématiquement à l'un de ces epics (voir `00-cadra
 | # | Epic | Statut |
 |---|---|---|
 | E1 | Authentification & organisations | ✅ Modèles + inscription B2B/B2C + dashboard |
-| E2 | Gestion des postes | ✅ Liste, création, modification, archivage, profil Big Five |
-| E3 | Gestion des équipes | ✅ Liste, création, modification, membres, liste Personnes |
-| E4 | Questionnaire Big Five | ✅ Envoi lien, passation, scoring, profil BigFive |
-| E5 | Moteur de calcul de Fit | ✅ Fit Poste + Fit Équipe + complémentarité |
-| E6 | Rapports & restitution | ✅ Profil OCEAN, Fit Poste, Fit Équipe, radar charts, export PDF |
+| E2 | Gestion des postes | ✅ Liste, création, modification, archivage, profil Big Five, classement Fit |
+| E2.5 | Départements | ✅ CRUD complet, FK Poste + Équipe, data migration |
+| E3 | Gestion des équipes | ✅ Liste, création, modification, membres, Personnes, rattachement département |
+| E4 | Questionnaire Big Five | ✅ Envoi lien, création personne à la volée, rattachement poste, passation, scoring |
+| E5 | Moteur de calcul de Fit | ✅ Fit Poste + Fit Équipe + complémentarité + recalcul coéquipiers |
+| E6 | Rapports & restitution | ✅ Profil OCEAN, Fit Poste, Fit Équipe, radar charts, export PDF, fit équipe cible |
 | E7 | Internationalisation | ✅ FR/EN — 300+ strings traduites |
 | E8 | Conformité & gouvernance | ✅ Droit à l'effacement, audit log viewer, politique de confidentialité |
 
 ## État d'avancement
 
 - [x] Cadrage produit validé
-- [x] User stories E1–E8 rédigées
+- [x] User stories E1–E8 + UX rédigées
 - [x] Stack technique définie (`docs/technical/stack.md`)
 - [x] Schéma de données complet (`docs/technical/schema.md`)
 - [x] Scaffold Django (modèles, migrations, auth B2B/B2C, dashboard)
 - [x] Docker Compose dev opérationnel (`make dev-build`)
 - [x] Documentation utilisateur publiée (MkDocs → GitHub Pages)
-- [x] Vues Postes — liste, création, détail, modification, archivage, profil Big Five (E2)
-- [x] Vues Équipes — liste, création, détail, modification, membres + liste Personnes (E3)
-- [x] Questionnaire Big Five — envoi lien, consentement RGPD, passation par blocs, scoring OCEAN, profil sauvegardé (E4)
-- [x] Moteur de calcul Fit — Fit Poste (plage OCEAN), Fit Équipe (agrégat + complémentarité), déclenchement auto (E5)
-- [x] Rapports & radar chart — profil OCEAN, fit poste, fit équipe, complémentarité (E6)
+- [x] Vues Postes — liste, création, détail, modification, archivage, profil Big Five, classement Fit (E2)
+- [x] Départements — CRUD complet, FK sur Poste et Équipe, data migration depuis champ texte (E2.5)
+- [x] Vues Équipes — liste, création, détail, modification, membres, liste Personnes, rattachement département (E3)
+- [x] Questionnaire Big Five — envoi lien, création personne à la volée, rattachement poste, consentement RGPD, passation par blocs, scoring OCEAN, profil sauvegardé (E4)
+- [x] Moteur de calcul Fit — Fit Poste (plage OCEAN), Fit Équipe (agrégat + complémentarité), recalcul coéquipiers, déclenchement auto (E5)
+- [x] Rapports & radar chart — profil OCEAN, fit poste, fit équipe, complémentarité, fit équipe cible depuis profil (E6)
 - [x] Export PDF — WeasyPrint, templates CSS-only, boutons sur les 3 rapports (E6)
-- [x] Dashboard enrichi — stats org, questionnaires en attente, profils récents, activité audit
+- [x] Dashboard enrichi — stats org, questionnaires en attente (dédupliqués), profils récents, activité audit
 - [x] Conformité RGPD — droit à l'effacement (anonymize), audit log viewer paginé, politique de confidentialité (E8)
-- [x] Améliorations UX — pré-remplissage email questionnaire, autocomplétion ajout membre, modification personne, fix switch langue, déduplication dashboard survey
+- [x] Améliorations UX — pré-remplissage email questionnaire, autocomplétion ajout membre, modification personne, fix switch langue, déduplication dashboard survey, compteur dashboard corrigé
 
 ## Conventions de travail
 

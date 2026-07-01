@@ -96,10 +96,37 @@
 **En tant que** RH, **je veux** créer un poste avec un titre et une description, **afin de** pouvoir lui associer un profil Big Five cible.
 
 **Critères d'acceptation :**
-- [x] Le formulaire demande : titre du poste, description (libre), département (optionnel)
+- [x] Le formulaire demande : titre du poste, description (libre), département (FK, optionnel), équipe cible (FK, optionnelle)
 - [x] Le poste est créé avec le statut "actif"
 - [x] Le titre et la description sont saisissables en FR et EN (champs bilingues)
 - [x] Le poste apparaît dans la liste des postes de l'organisation
+
+---
+
+### US-E2-04 — Rattachement d'un poste à un département et une équipe
+**En tant que** RH ou Manager, **je veux** rattacher un poste à un département et optionnellement à une équipe, **afin de** structurer l'organisation et de comparer le fit d'un candidat avec l'équipe cible.
+
+**Critères d'acceptation :**
+- [x] Un modèle `Department` existe (nom FR/EN, description, archivage) avec CRUD complet accessible aux RH
+- [x] Une équipe peut être rattachée à un département (champ optionnel)
+- [x] Un poste est rattaché à un département (optionnel, FK) et peut l'être à une équipe spécifique (FK optionnelle)
+- [x] La migration de données convertit les anciennes valeurs texte `department` en objets `Department`
+- [x] La fiche poste affiche le département et l'équipe cible dans l'en-tête
+- [x] Le rapport de profil affiche le fit équipe cible en retrait sous le fit poste correspondant
+- [x] Toutes les strings UI passent par i18n (FR/EN)
+- [x] Le filtre multi-tenant s'applique sur `Department` via `OrgQuerySet`
+
+---
+
+### US-E2-05 — Classement des personnes par Fit sur la fiche poste
+**En tant que** RH ou Manager, **je veux** voir sur la fiche d'un poste la liste des personnes ayant passé le questionnaire, classées par score de Fit décroissant, **afin d'** identifier immédiatement les meilleurs profils pour ce poste.
+
+**Critères d'acceptation :**
+- [x] La section "Classement" apparaît uniquement si le poste a un profil Big Five défini et qu'au moins un résultat de fit existe
+- [x] Les personnes sont triées par `overall_fit` décroissant (meilleur en premier)
+- [x] Chaque ligne affiche : rang, nom complet, type (Candidat/Collaborateur), barre de progression, score coloré (vert ≥ 80 %, amber 60–79 %, rouge < 60 %), lien vers le rapport détaillé
+- [x] Trois boutons de filtre : Tous / Candidats / Collaborateurs (paramètre GET `?type=`)
+- [x] Toutes les strings UI passent par i18n
 
 ---
 
@@ -131,7 +158,7 @@
 **En tant que** Manager, **je veux** créer une équipe avec un nom, **afin de** regrouper les collaborateurs qui y appartiennent.
 
 **Critères d'acceptation :**
-- [x] Le formulaire demande : nom de l'équipe, description (optionnel), Manager responsable (pré-rempli avec l'utilisateur connecté)
+- [x] Le formulaire demande : nom de l'équipe, département (FK optionnelle), description (optionnel), Manager responsable (pré-rempli avec l'utilisateur connecté)
 - [x] L'équipe est rattachée à l'organisation du tenant
 - [x] Le RH peut aussi créer des équipes et les assigner à un Manager
 
@@ -178,6 +205,9 @@
 - [x] Le lien est unique, sécurisé et horodaté (expiration : 7 jours)
 - [x] Le RH/Manager peut voir le statut du questionnaire : envoyé / en cours / complété
 - [x] Il est possible de renvoyer le lien si non utilisé
+- [x] Le formulaire d'envoi permet de saisir prénom + nom pour créer la personne à la volée si elle n'existe pas encore
+- [x] Le formulaire permet d'associer un poste (optionnel) au questionnaire pour contextualiser le fit
+- [x] Le poste associé est affiché dans le dashboard questionnaires
 
 ---
 
@@ -415,6 +445,19 @@
 **Critères d'acceptation :**
 - [x] Une seule ligne par personne dans le dashboard (le lien le plus récent)
 - [x] Les anciens liens sont conservés en base mais non affichés
+- [x] Le compteur "en attente" sur le dashboard principal applique la même déduplication
+
+---
+
+### US-UX-05 — Gestion des départements
+**En tant que** RH, **je veux** créer et gérer des départements, **afin de** structurer l'organisation et de rattacher postes et équipes à une entité organisationnelle.
+
+**Critères d'acceptation :**
+- [x] CRUD complet : liste, création, détail, modification, archivage
+- [x] Un département a un nom FR, un nom EN (optionnel) et une description
+- [x] Lien "Départements" dans la navbar pour les RH
+- [x] La fiche département liste les postes et équipes rattachés
+- [x] Lien rapide "Créer un nouveau département" depuis les formulaires poste et équipe
 
 ---
 
