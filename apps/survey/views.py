@@ -17,6 +17,7 @@ from .forms import SendLinkForm
 from .ipip_data import ITEMS, SCALE_EN, SCALE_FR
 from .models import ConsentRecord, QuestionnaireLink, QuestionnaireSession
 from .scoring import ALGORITHM_VERSION, compute_scores, validate_answers
+from apps.fit.engine import compute_all_fits_for_person
 
 BLOCK_SIZE = 10
 LINK_VALIDITY_DAYS = 7
@@ -240,6 +241,9 @@ def questionnaire_submit(request, token):
     link.save()
 
     session.delete()
+
+    # Calcul des scores de fit pour tous les postes et équipes de l'org (E5)
+    compute_all_fits_for_person(link.person)
 
     _send_completion_notification(link)
 

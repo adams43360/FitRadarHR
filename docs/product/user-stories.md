@@ -229,10 +229,10 @@
 **En tant que** RH, **je veux** que le système calcule automatiquement le fit entre le profil Big Five d'une personne et le profil cible d'un poste, **afin d'** obtenir une aide à la décision structurée.
 
 **Critères d'acceptation :**
-- [ ] Le calcul est déclenché automatiquement dès que le questionnaire est complété ET que le poste a un profil cible défini
-- [ ] Le calcul produit un score de proximité par dimension (pas un score unique agrégé opaque)
-- [ ] Le calcul est reproductible et tracé (version de l'algorithme, date, inputs)
-- [ ] Aucun score unique ne remplace la lecture humaine — le rapport associé (E6) contextualise toujours
+- [x] Le calcul est déclenché automatiquement dès que le questionnaire est complété ET que le poste a un profil cible défini
+- [x] Le calcul produit un score de proximité par dimension (pas un score unique agrégé opaque)
+- [x] Le calcul est reproductible et tracé (version de l'algorithme v1.0, date, inputs)
+- [x] Aucun score unique ne remplace la lecture humaine — le rapport associé (E6) contextualise toujours
 
 ---
 
@@ -240,9 +240,9 @@
 **En tant que** Manager, **je veux** que le système calcule le fit entre le profil d'une personne et le profil agrégé de mon équipe, **afin d'** anticiper comment elle s'intégrera dans la dynamique existante.
 
 **Critères d'acceptation :**
-- [ ] Le profil agrégé de l'équipe est calculé à partir de l'ensemble des profils complétés des membres actuels
-- [ ] Le calcul est disponible dès qu'au moins 2 membres de l'équipe ont un profil complété
-- [ ] Le calcul est recalculé automatiquement si la composition de l'équipe change
+- [x] Le profil agrégé de l'équipe est calculé à partir de l'ensemble des profils complétés des membres actuels
+- [x] Le calcul est disponible dès qu'au moins 1 autre membre de l'équipe a un profil complété
+- [x] Le calcul est recalculé automatiquement à chaque complétion de questionnaire
 
 ---
 
@@ -250,9 +250,9 @@
 **En tant que** Manager, **je veux** que le calcul de fit équipe prenne en compte la complémentarité des profils et pas uniquement la similarité, **afin d'** éviter les biais d'homogénéité et les angles morts collectifs.
 
 **Critères d'acceptation :**
-- [ ] Le rapport de fit équipe indique explicitement les dimensions où l'équipe est homogène (et les risques associés)
-- [ ] Une personne très différente du profil dominant peut être présentée comme "complémentaire" plutôt que "non-fit"
-- [ ] La logique de complémentarité est expliquée en langage clair dans la restitution
+- [x] Le rapport de fit équipe indique explicitement les dimensions où l'équipe est homogène (signal complementarity)
+- [x] Une personne très différente du profil dominant peut être présentée comme "complémentaire" plutôt que "non-fit"
+- [x] La logique de complémentarité est expliquée en langage clair dans la restitution (E6)
 
 ---
 

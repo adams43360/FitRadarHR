@@ -71,7 +71,7 @@ L'application est accessible sur **http://localhost:8000**.
 - [x] Vues Postes — liste, création, détail, modification, archivage, profil Big Five (E2)
 - [x] Vues Équipes — liste, création, détail, modification, membres + liste Personnes (E3)
 - [x] Questionnaire Big Five — envoi lien, consentement RGPD, passation par blocs, scoring OCEAN, profil sauvegardé (E4)
-- [ ] Moteur de calcul Fit (E5)
+- [x] Moteur de calcul Fit — Fit Poste (plage OCEAN), Fit Équipe (agrégat + complémentarité), déclenchement auto (E5)
 - [ ] Rapports & radar chart (E6)
 
 ## Epics
@@ -82,7 +82,7 @@ L'application est accessible sur **http://localhost:8000**.
 | E2 | Gestion des postes | ✅ Liste, création, modification, archivage, profil OCEAN |
 | E3 | Gestion des équipes | ✅ Liste, création, modification, membres, liste Personnes |
 | E4 | Questionnaire Big Five | ✅ Envoi lien, passation, scoring, profil BigFive |
-| E5 | Moteur de calcul de Fit | 🔲 À développer |
+| E5 | Moteur de calcul de Fit | ✅ Fit Poste + Fit Équipe + complémentarité |
 | E6 | Rapports & restitution | 🔲 À développer |
 | E7 | Internationalisation | 🔄 En continu |
 | E8 | Conformité & gouvernance | 🔄 En continu |
