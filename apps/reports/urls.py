@@ -12,4 +12,6 @@ urlpatterns = [
     path("person/<uuid:person_pk>/pdf/", views.person_profile_pdf, name="person_profile_pdf"),
     path("person/<uuid:person_pk>/position/<uuid:position_pk>/pdf/", views.position_fit_pdf, name="position_fit_pdf"),
     path("person/<uuid:person_pk>/team/<uuid:team_pk>/pdf/", views.team_fit_pdf, name="team_fit_pdf"),
+    # Audit log (E8)
+    path("audit/", views.audit_log, name="audit_log"),
 ]

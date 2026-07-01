@@ -322,3 +322,24 @@ def team_fit_pdf(request, person_pk, team_pk):
         "dim_details": dim_details, "lang": lang,
         "team_size": fit.team_size_at_computation,
     }, filename)
+
+
+# ── Audit log viewer (E8) ──────────────────────────────────────────────────────
+
+@login_required
+def audit_log(request):
+    """Journal d'audit — RH only."""
+    if not request.user.is_rh:
+        from django.http import HttpResponseForbidden
+        return HttpResponseForbidden()
+
+    from django.core.paginator import Paginator
+    logs_qs = (
+        AuditLog.objects.filter(org=request.user.org)
+        .select_related("user")
+        .order_by("-created_at")
+    )
+    paginator = Paginator(logs_qs, 25)
+    page = request.GET.get("page", 1)
+    logs = paginator.get_page(page)
+    return render(request, "reports/audit_log.html", {"logs": logs})
