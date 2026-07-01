@@ -90,11 +90,11 @@
 
 {% block extra_scripts %}
 <script>
-const labels = {{ chart_labels_json }};
-const personScores = {{ person_scores_json }};
-const posMin = {{ pos_min_json }};
-const posMax = {{ pos_max_json }};
-const posMid = {{ pos_mid_json }};
+const labels = {{ chart_labels_json|safe }};
+const personScores = {{ person_scores_json|safe }};
+const posMin = {{ pos_min_json|safe }};
+const posMax = {{ pos_max_json|safe }};
+const posMid = {{ pos_mid_json|safe }};
 
 new Chart(document.getElementById('radarChart').getContext('2d'), {
   type: 'radar',

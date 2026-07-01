@@ -54,7 +54,7 @@ class AuditLog(models.Model):
         ordering = ["-created_at"]
 
     def save(self, *args, **kwargs):
-        if self.pk:
+        if not self._state.adding:
             raise Exception("AuditLog est immuable.")
         super().save(*args, **kwargs)
 

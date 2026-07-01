@@ -92,9 +92,9 @@
 
 {% block extra_scripts %}
 <script>
-const labels = {{ chart_labels_json }};
-const personScores = {{ person_scores_json }};
-const teamAvgs = {{ team_avgs_json }};
+const labels = {{ chart_labels_json|safe }};
+const personScores = {{ person_scores_json|safe }};
+const teamAvgs = {{ team_avgs_json|safe }};
 
 new Chart(document.getElementById('radarChart').getContext('2d'), {
   type: 'radar',

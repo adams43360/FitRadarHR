@@ -78,8 +78,8 @@
 
 {% block extra_scripts %}
 <script>
-const labels = {{ chart_labels_json }};
-const scores = {{ chart_scores_json }};
+const labels = {{ chart_labels_json|safe }};
+const scores = {{ chart_scores_json|safe }};
 
 // Radar chart
 const ctx = document.getElementById('radarChart').getContext('2d');
