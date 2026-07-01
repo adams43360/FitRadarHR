@@ -15,7 +15,20 @@ class Position(models.Model):
     title_en = models.CharField(_("titre (EN)"), max_length=255, blank=True)
     description_fr = models.TextField(_("description (FR)"), blank=True)
     description_en = models.TextField(_("description (EN)"), blank=True)
-    department = models.CharField(_("département"), max_length=100, blank=True)
+    department = models.ForeignKey(
+        "departments.Department",
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        related_name="positions",
+        verbose_name=_("département"),
+    )
+    team = models.ForeignKey(
+        "teams.Team",
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        related_name="positions",
+        verbose_name=_("équipe cible"),
+    )
     status = models.CharField(_("statut"), max_length=10, choices=Status.choices, default=Status.ACTIVE)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="created_positions")
     created_at = models.DateTimeField(auto_now_add=True)

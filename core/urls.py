@@ -15,6 +15,7 @@ urlpatterns += i18n_patterns(
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
     path("", include("apps.accounts.urls")),
+    path("departments/", include("apps.departments.urls")),
     path("positions/", include("apps.positions.urls")),
     path("teams/", include("apps.teams.urls")),
     path("survey/", include("apps.survey.urls")),

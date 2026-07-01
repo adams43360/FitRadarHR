@@ -7,6 +7,7 @@
       {% if user.is_authenticated %}
       <div class="flex items-center gap-6">
         {% if user.is_rh %}
+        <a href="{% url 'departments:list' %}" class="text-sm text-gray-600 hover:text-indigo-600">{% trans "Départements" %}</a>
         <a href="{% url 'positions:list' %}" class="text-sm text-gray-600 hover:text-indigo-600">{% trans "Postes" %}</a>
         {% endif %}
         <a href="{% url 'teams:list' %}" class="text-sm text-gray-600 hover:text-indigo-600">{% trans "Équipes" %}</a>

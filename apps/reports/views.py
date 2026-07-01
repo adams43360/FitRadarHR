@@ -58,14 +58,25 @@ def person_profile(request, person_pk):
     chart_labels = _dim_labels(lang)
     chart_scores = [float(getattr(profile, d)) for d in DIMENSIONS]
 
-    position_fits = person.position_fits.select_related("position").order_by("-overall_fit")
+    position_fits = person.position_fits.select_related("position__team").order_by("-overall_fit")
     team_fits = person.team_fits.select_related("team").order_by("-overall_fit")
+
+    # Pour chaque fit poste dont le poste a une équipe cible, on joint le fit équipe correspondant
+    team_fits_by_team = {tf.team_id: tf for tf in team_fits}
+    position_fits_with_team = [
+        {
+            "position_fit": pf,
+            "team_fit": team_fits_by_team.get(pf.position.team_id) if pf.position.team_id else None,
+        }
+        for pf in position_fits
+    ]
 
     return render(request, "reports/person_profile.html", {
         "person": person,
         "profile": profile,
         "chart_labels_json": json.dumps(chart_labels),
         "chart_scores_json": json.dumps(chart_scores),
+        "position_fits_with_team": position_fits_with_team,
         "position_fits": position_fits,
         "team_fits": team_fits,
     })

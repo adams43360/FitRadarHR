@@ -1,36 +1,51 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from .models import Position, PositionProfile
+from apps.departments.models import Department
+from apps.teams.models import Team
+
+SELECT_CSS = "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
 
 
 class PositionForm(forms.ModelForm):
     class Meta:
         model = Position
-        fields = ["title_fr", "title_en", "description_fr", "description_en", "department"]
+        fields = ["title_fr", "title_en", "description_fr", "description_en", "department", "team"]
         widgets = {
             "title_fr": forms.TextInput(attrs={
-                "class": "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500",
+                "class": SELECT_CSS,
                 "placeholder": _("Ex. : Chargé(e) de recrutement"),
             }),
             "title_en": forms.TextInput(attrs={
-                "class": "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500",
+                "class": SELECT_CSS,
                 "placeholder": "e.g. Recruitment Officer",
             }),
             "description_fr": forms.Textarea(attrs={
-                "class": "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500",
+                "class": SELECT_CSS,
                 "rows": 3,
                 "placeholder": _("Contexte, missions principales..."),
             }),
             "description_en": forms.Textarea(attrs={
-                "class": "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500",
+                "class": SELECT_CSS,
                 "rows": 3,
                 "placeholder": "Context, main responsibilities...",
             }),
-            "department": forms.TextInput(attrs={
-                "class": "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500",
-                "placeholder": _("Ex. : Ressources humaines"),
-            }),
+            "department": forms.Select(attrs={"class": SELECT_CSS}),
+            "team": forms.Select(attrs={"class": SELECT_CSS}),
         }
+
+    def __init__(self, *args, org=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["department"].required = False
+        self.fields["department"].empty_label = _("— Aucun département —")
+        self.fields["team"].required = False
+        self.fields["team"].empty_label = _("— Aucune équipe —")
+        if org:
+            self.fields["department"].queryset = Department.objects.for_org(org).active()
+            self.fields["team"].queryset = Team.objects.filter(org=org).order_by("name")
+        else:
+            self.fields["department"].queryset = Department.objects.none()
+            self.fields["team"].queryset = Team.objects.none()
 
 
 DIMENSION_LABELS = {

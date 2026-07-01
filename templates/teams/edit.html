@@ -28,6 +28,13 @@
     </div>
 
     <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">
+        {% trans "Département" %} <span class="text-gray-400 font-normal text-xs ml-1">{% trans "optionnel" %}</span>
+      </label>
+      {{ form.department }}
+    </div>
+
+    <div>
       <label class="block text-sm font-medium text-gray-700 mb-1">{% trans "Description" %}</label>
       {{ form.description }}
     </div>

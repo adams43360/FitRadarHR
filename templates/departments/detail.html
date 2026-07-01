@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{{ dept.name_fr }} — FitRadarHR{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+
+  <div class="flex items-center gap-2 text-sm text-gray-400 mb-6">
+    <a href="{% url 'departments:list' %}" class="hover:text-indigo-600">{% trans "Départements" %}</a>
+    <span>/</span>
+    <span class="text-gray-700">{{ dept.name_fr }}</span>
+  </div>
+
+  <div class="flex items-start justify-between mb-8">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">{{ dept.name_fr }}</h1>
+      {% if dept.name_en %}
+        <p class="text-sm text-gray-400 mt-1">{{ dept.name_en }}</p>
+      {% endif %}
+      {% if dept.description %}
+        <p class="text-sm text-gray-600 mt-2">{{ dept.description }}</p>
+      {% endif %}
+    </div>
+    <a href="{% url 'departments:edit' dept.pk %}"
+       class="px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors shrink-0 ml-4">
+      {% trans "Modifier" %}
+    </a>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    <!-- Postes -->
+    <div class="bg-white rounded-2xl border border-gray-200 p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-sm font-semibold text-gray-900">{% trans "Postes" %}</h2>
+        <a href="{% url 'positions:create' %}?department={{ dept.pk }}"
+           class="text-xs text-indigo-600 hover:text-indigo-800">+ {% trans "Ajouter" %}</a>
+      </div>
+      {% if positions %}
+        <ul class="space-y-2">
+          {% for position in positions %}
+          <li>
+            <a href="{% url 'positions:detail' position.pk %}"
+               class="block text-sm text-gray-700 hover:text-indigo-600 py-1 border-b border-gray-50 last:border-0">
+              {{ position.title_fr }}
+              {% if position.team %}
+                <span class="text-xs text-gray-400 ml-1">— {{ position.team.name }}</span>
+              {% endif %}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="text-xs text-gray-400">{% trans "Aucun poste rattaché." %}</p>
+      {% endif %}
+    </div>
+
+    <!-- Équipes -->
+    <div class="bg-white rounded-2xl border border-gray-200 p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-sm font-semibold text-gray-900">{% trans "Équipes" %}</h2>
+      </div>
+      {% if teams %}
+        <ul class="space-y-2">
+          {% for team in teams %}
+          <li>
+            <a href="{% url 'teams:detail' team.pk %}"
+               class="block text-sm text-gray-700 hover:text-indigo-600 py-1 border-b border-gray-50 last:border-0">
+              {{ team.name }}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="text-xs text-gray-400">{% trans "Aucune équipe rattachée." %}</p>
+      {% endif %}
+    </div>
+
+  </div>
+</div>
+{% endblock %}

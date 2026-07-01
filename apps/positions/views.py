@@ -23,25 +23,19 @@ def position_list(request):
 
 @login_required
 def position_create(request):
+    org = request.user.org
     if request.method == "POST":
-        form = PositionForm(request.POST)
+        form = PositionForm(request.POST, org=org)
         if form.is_valid():
             position = form.save(commit=False)
-            position.org = request.user.org
+            position.org = org
             position.created_by = request.user
             position.save()
             messages.success(request, _("Poste créé avec succès."))
             return redirect("positions:profile_edit", pk=position.pk)
     else:
-        form = PositionForm()
-    departments = (
-        request.user.org.positions
-        .exclude(department="")
-        .values_list("department", flat=True)
-        .distinct()
-        .order_by("department")
-    )
-    return render(request, "positions/create.html", {"form": form, "departments": departments})
+        form = PositionForm(org=org)
+    return render(request, "positions/create.html", {"form": form})
 
 
 @login_required
@@ -68,23 +62,17 @@ def position_detail(request, pk):
 
 @login_required
 def position_edit(request, pk):
-    position = get_object_or_404(Position, pk=pk, org=request.user.org)
+    org = request.user.org
+    position = get_object_or_404(Position, pk=pk, org=org)
     if request.method == "POST":
-        form = PositionForm(request.POST, instance=position)
+        form = PositionForm(request.POST, instance=position, org=org)
         if form.is_valid():
             form.save()
             messages.success(request, _("Poste mis à jour."))
             return redirect("positions:detail", pk=position.pk)
     else:
-        form = PositionForm(instance=position)
-    departments = (
-        request.user.org.positions
-        .exclude(department="")
-        .values_list("department", flat=True)
-        .distinct()
-        .order_by("department")
-    )
-    return render(request, "positions/edit.html", {"form": form, "position": position, "departments": departments})
+        form = PositionForm(instance=position, org=org)
+    return render(request, "positions/edit.html", {"form": form, "position": position})
 
 
 @login_required
@@ -133,20 +121,3 @@ def position_profile_edit(request, pk):
     })
 
 
-@login_required
-def department_search(request):
-    """Retourne en JSON les départements distincts de l'org matchant la query."""
-    from django.http import JsonResponse
-    q = request.GET.get("q", "").strip()
-    departments = (
-        request.user.org.positions
-        .exclude(department="")
-        .values_list("department", flat=True)
-        .distinct()
-        .order_by("department")
-    )
-    if q:
-        departments = [d for d in departments if q.lower() in d.lower()]
-    else:
-        departments = list(departments)
-    return JsonResponse(departments[:10], safe=False)

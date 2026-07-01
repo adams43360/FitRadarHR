@@ -6,11 +6,14 @@ from .models import Team, Person, TeamMembership
 class TeamForm(forms.ModelForm):
     class Meta:
         model = Team
-        fields = ["name", "description", "manager"]
+        fields = ["name", "department", "description", "manager"]
         widgets = {
             "name": forms.TextInput(attrs={
                 "class": "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500",
                 "placeholder": _("Ex. : Équipe produit, Sales EMEA…"),
+            }),
+            "department": forms.Select(attrs={
+                "class": "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500",
             }),
             "description": forms.Textarea(attrs={
                 "class": "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500",
@@ -25,10 +28,17 @@ class TeamForm(forms.ModelForm):
     def __init__(self, *args, org=None, **kwargs):
         super().__init__(*args, **kwargs)
         if org:
+            from apps.departments.models import Department
             self.fields["manager"].queryset = org.users.filter(is_active=True)
             self.fields["manager"].label_from_instance = lambda u: u.full_name
+            self.fields["department"].queryset = Department.objects.for_org(org).active()
+        else:
+            from apps.departments.models import Department
+            self.fields["department"].queryset = Department.objects.none()
         self.fields["manager"].required = False
         self.fields["manager"].empty_label = _("— Aucun manager assigné —")
+        self.fields["department"].required = False
+        self.fields["department"].empty_label = _("— Aucun département —")
 
 
 class PersonForm(forms.ModelForm):
