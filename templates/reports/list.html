@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Rapports" %} — FitRadarHR{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-2xl font-bold text-gray-900">{% trans "Rapports" %}</h1>
+</div>
+
+{% if persons %}
+<div class="space-y-4">
+  {% for person in persons %}
+  {% with profile=person.big_five_profile %}
+  <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+    <div class="flex items-start justify-between gap-4">
+      <div>
+        <h2 class="font-semibold text-gray-900">{{ person.full_name }}</h2>
+        <p class="text-sm text-gray-500">{{ person.email }} — {{ person.get_person_type_display }}</p>
+        <p class="text-xs text-gray-400 mt-1">{% trans "Profil calculé le" %} {{ profile.computed_at|date:"d/m/Y" }} — v{{ profile.algorithm_version }}</p>
+      </div>
+      <a href="{% url 'reports:person_profile' person_pk=person.pk %}"
+         class="shrink-0 rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700">
+        {% trans "Voir le profil" %}
+      </a>
+    </div>
+
+    {% if person.position_fits.all or person.team_fits.all %}
+    <div class="mt-4 pt-4 border-t border-gray-100">
+      <p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">{% trans "Fits disponibles" %}</p>
+      <div class="flex flex-wrap gap-2">
+        {% for fit in person.position_fits.all %}
+        <a href="{% url 'reports:position_fit' person_pk=person.pk position_pk=fit.position.pk %}"
+           class="inline-flex items-center gap-1.5 rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-xs text-indigo-700 hover:bg-indigo-100">
+          <span>🏢</span> {{ fit.position.title_fr }}
+          <span class="font-semibold">{{ fit.overall_fit|floatformat:0 }}%</span>
+        </a>
+        {% endfor %}
+        {% for fit in person.team_fits.all %}
+        <a href="{% url 'reports:team_fit' person_pk=person.pk team_pk=fit.team.pk %}"
+           class="inline-flex items-center gap-1.5 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs text-amber-700 hover:bg-amber-100">
+          <span>👥</span> {{ fit.team.name }}
+          <span class="font-semibold">{{ fit.overall_fit|floatformat:0 }}%</span>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  {% endwith %}
+  {% endfor %}
+</div>
+{% else %}
+<div class="text-center py-16">
+  <p class="text-gray-500 mb-2">{% trans "Aucun profil Big Five disponible pour le moment." %}</p>
+  <p class="text-sm text-gray-400">{% trans "Envoyez un questionnaire depuis l'onglet Questionnaires." %}</p>
+  <a href="{% url 'survey:send' %}" class="mt-4 inline-flex rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">
+    {% trans "Envoyer un questionnaire" %}
+  </a>
+</div>
+{% endif %}
+{% endblock %}

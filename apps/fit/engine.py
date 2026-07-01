@@ -15,6 +15,15 @@ Scoring :
 ALGORITHM_VERSION = "v1.0"
 DIMENSIONS = ["openness", "conscientiousness", "extraversion", "agreeableness", "neuroticism"]
 
+
+DIMENSION_LABELS = {
+    "openness":          {"fr": "Ouverture",         "en": "Openness"},
+    "conscientiousness": {"fr": "Conscienciosité",   "en": "Conscientiousness"},
+    "extraversion":      {"fr": "Extraversion",      "en": "Extraversion"},
+    "agreeableness":     {"fr": "Agréabilité",       "en": "Agreeableness"},
+    "neuroticism":       {"fr": "Neuroticisme",      "en": "Neuroticism"},
+}
+
 # Seuils pour les signaux de complémentarité (fit équipe)
 COMPLEMENTARITY_DIFF_THRESHOLD = 20   # écart > 20 pts → "different" ou "complementary"
 HOMOGENEITY_STD_THRESHOLD = 15        # std_dev < 15 → équipe homogène sur cette dimension

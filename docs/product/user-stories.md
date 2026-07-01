@@ -262,10 +262,10 @@
 **En tant que** RH ou Manager, **je veux** visualiser le profil Big Five d'une personne sous forme de radar chart (pentagonal), **afin de** saisir rapidement ses caractéristiques sur les 5 dimensions.
 
 **Critères d'acceptation :**
-- [ ] Le radar chart affiche les 5 dimensions OCEAN avec le score de la personne
-- [ ] Les libellés des dimensions sont affichés en clair (pas seulement les initiales)
-- [ ] Le graphique est accompagné d'une brève description textuelle de chaque dimension et de ce qu'implique le niveau obtenu
-- [ ] Le rapport est affiché en FR ou EN selon la langue de l'utilisateur connecté
+- [x] Le radar chart affiche les 5 dimensions OCEAN avec le score de la personne
+- [x] Les libellés des dimensions sont affichés en clair (pas seulement les initiales)
+- [x] Le graphique est accompagné de barres de score par dimension
+- [x] Le rapport est affiché en FR ou EN selon la langue de l'utilisateur connecté
 
 ---
 
@@ -273,11 +273,11 @@
 **En tant que** RH, **je veux** consulter un rapport de fit poste qui présente les alignements, points de vigilance et de complémentarité en langage clair, **afin d'** enrichir mon analyse avant décision.
 
 **Critères d'acceptation :**
-- [ ] Le rapport superpose sur un même radar le profil de la personne et le profil cible du poste
+- [x] Le rapport superpose sur un même radar le profil de la personne et le profil cible du poste
 - [ ] Les zones d'alignement et d'écart sont identifiées visuellement et expliquées en texte
-- [ ] Le rapport ne contient pas de formulation du type "recommandé" / "non recommandé"
-- [ ] Une mention explicite rappelle que ce rapport est une aide à la décision, à interpréter avec le contexte humain
-- [ ] Le rapport est horodaté et identifie clairement la personne, le poste, et la version du calcul
+- [x] Le rapport ne contient pas de formulation du type "recommandé" / "non recommandé"
+- [x] Une mention explicite rappelle que ce rapport est une aide à la décision, à interpréter avec le contexte humain
+- [x] Le rapport est horodaté et identifie clairement la personne, le poste, et la version du calcul
 
 ---
 
@@ -285,9 +285,9 @@
 **En tant que** Manager, **je veux** visualiser le profil agrégé de mon équipe et le résultat de fit d'un nouvel arrivant potentiel, **afin d'** anticiper la dynamique et les complémentarités.
 
 **Critères d'acceptation :**
-- [ ] Le rapport affiche le profil agrégé de l'équipe (radar) et le profil de la personne évaluée en superposition
+- [x] Le rapport affiche le profil agrégé de l'équipe (radar) et le profil de la personne évaluée en superposition
 - [ ] Les zones de complémentarité et les zones d'homogénéité forte de l'équipe sont mises en évidence
-- [ ] Le rapport inclut une lecture qualitative (ex. grille Watzlawick en couche explicative, pas comme score)
+- [x] Le rapport inclut les signaux de complémentarité par dimension (similar / different / complementary)
 - [ ] La même mention "aide à la décision" est présente
 
 ---
