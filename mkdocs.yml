@@ -1,0 +1,96 @@
+site_name: FitRadarHR
+site_description: Évaluez la compatibilité Big Five entre une personne et un poste ou une équipe.
+site_url: https://adams43360.github.io/FitRadarHR
+repo_url: https://github.com/adams43360/FitRadarHR
+repo_name: FitRadarHR
+edit_uri: edit/main/docs/user/
+
+theme:
+  name: material
+  language: fr
+  logo: assets/logo.png
+  favicon: assets/logo.png
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Passer en mode sombre
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Passer en mode clair
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - search.highlight
+    - search.suggest
+    - content.action.edit
+    - content.code.copy
+
+plugins:
+  - search:
+      lang:
+        - fr
+        - en
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/adams43360/FitRadarHR
+  alternate:
+    - name: Français
+      link: /
+      lang: fr
+    - name: English
+      link: /en/
+      lang: en
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+docs_dir: docs/user
+
+nav:
+  - Accueil: index.md
+  - Prise en main:
+    - getting-started/index.md
+    - Créer un compte: getting-started/signup.md
+    - Tableau de bord: getting-started/dashboard.md
+  - Postes:
+    - positions/index.md
+    - Créer un poste: positions/create.md
+    - Définir le profil cible: positions/profile.md
+  - Équipes:
+    - teams/index.md
+    - Créer une équipe: teams/create.md
+    - Gérer les membres: teams/members.md
+  - Questionnaire Big Five:
+    - survey/index.md
+    - Envoyer un lien: survey/send.md
+    - Suivre la progression: survey/track.md
+  - Rapports de Fit:
+    - reports/index.md
+    - Fit Poste: reports/job-fit.md
+    - Fit Équipe: reports/team-fit.md
+    - Exporter en PDF: reports/export.md
+  - À propos:
+    - about/big-five.md
+    - about/privacy.md
+    - about/license.md
