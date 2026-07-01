@@ -29,12 +29,21 @@ LINK_VALIDITY_DAYS = 7
 
 @login_required
 def survey_dashboard(request):
-    links = (
+    # Tous les liens triés par date décroissante — on déduplique par personne en Python
+    # pour ne garder que le plus récent par personne
+    all_links = (
         QuestionnaireLink.objects
         .filter(org=request.user.org)
         .select_related("person", "sent_by")
         .order_by("-sent_at")
     )
+    seen = set()
+    links = []
+    for link in all_links:
+        if link.person_id not in seen:
+            seen.add(link.person_id)
+            links.append(link)
+
     return render(request, "survey/dashboard.html", {"links": links})
 
 
@@ -44,7 +53,10 @@ def survey_dashboard(request):
 
 @login_required
 def send_questionnaire(request):
-    form = SendLinkForm()
+    initial = {}
+    if email := request.GET.get("email"):
+        initial["person_email"] = email
+    form = SendLinkForm(initial=initial)
 
     if request.method == "POST":
         form = SendLinkForm(request.POST)

@@ -165,3 +165,67 @@ def person_anonymize(request, pk):
         return redirect("teams:persons")
 
     return render(request, "teams/person_anonymize_confirm.html", {"person": person})
+
+
+# ── Autocomplétion membres ────────────────────────────────────────────────────
+
+@login_required
+def member_search(request, pk):
+    """Retourne en JSON les personnes de l'org matching la query, hors membres actifs."""
+    import json
+    from django.http import JsonResponse
+    from django.db.models import Q
+
+    team = get_object_or_404(Team, pk=pk, org=request.user.org)
+    q = request.GET.get("q", "").strip()
+
+    if len(q) < 2:
+        return JsonResponse([], safe=False)
+
+    # Exclure les membres actifs
+    active_member_ids = team.memberships.filter(
+        left_at__isnull=True
+    ).values_list("person_id", flat=True)
+
+    persons = (
+        request.user.org.persons
+        .exclude(pk__in=active_member_ids)
+        .filter(
+            Q(first_name__icontains=q) |
+            Q(last_name__icontains=q) |
+            Q(email__icontains=q)
+        )
+        .order_by("last_name", "first_name")[:8]
+    )
+
+    results = [
+        {"name": p.full_name, "email": p.email}
+        for p in persons
+    ]
+    return JsonResponse(results, safe=False)
+
+
+# ── Modification d'une personne ───────────────────────────────────────────────
+
+@login_required
+def person_edit(request, pk):
+    person = get_object_or_404(Person, pk=pk, org=request.user.org)
+    if request.method == "POST":
+        form = PersonForm(request.POST, instance=person)
+        if form.is_valid():
+            # Vérifier unicité email en excluant la personne courante
+            email = form.cleaned_data["email"]
+            if (
+                request.user.org.persons
+                .filter(email=email)
+                .exclude(pk=person.pk)
+                .exists()
+            ):
+                form.add_error("email", _("Cette adresse email est déjà utilisée dans votre organisation."))
+            else:
+                form.save()
+                messages.success(request, _("Données mises à jour."))
+                return redirect("teams:persons")
+    else:
+        form = PersonForm(instance=person)
+    return render(request, "teams/person_edit.html", {"form": form, "person": person})

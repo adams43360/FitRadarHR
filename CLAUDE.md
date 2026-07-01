@@ -93,6 +93,7 @@ User stories à rattacher systématiquement à l'un de ces epics (voir `00-cadra
 - [x] Export PDF — WeasyPrint, templates CSS-only, boutons sur les 3 rapports (E6)
 - [x] Dashboard enrichi — stats org, questionnaires en attente, profils récents, activité audit
 - [x] Conformité RGPD — droit à l'effacement (anonymize), audit log viewer paginé, politique de confidentialité (E8)
+- [x] Améliorations UX — pré-remplissage email questionnaire, autocomplétion ajout membre, modification personne, fix switch langue, déduplication dashboard survey
 
 ## Conventions de travail
 

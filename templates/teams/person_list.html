@@ -28,11 +28,13 @@
     </div>
     <div class="flex items-center gap-4 text-xs">
       <span class="text-gray-400">{{ person.created_at|date:"d/m/Y" }}</span>
+      <a href="{% url 'teams:person_edit' pk=person.pk %}"
+         class="text-indigo-500 hover:underline">{% trans "Modifier" %}</a>
       {% if person.big_five_profile %}
       <a href="{% url 'reports:person_profile' person_pk=person.pk %}"
          class="text-indigo-600 hover:underline">{% trans "Rapport" %}</a>
       {% else %}
-      <a href="{% url 'survey:send' %}?person={{ person.pk }}"
+      <a href="{% url 'survey:send' %}?email={{ person.email|urlencode }}"
          class="text-gray-400 hover:text-indigo-600">{% trans "Envoyer questionnaire" %}</a>
       {% endif %}
       {% if user.is_rh %}

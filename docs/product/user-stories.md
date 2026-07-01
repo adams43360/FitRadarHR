@@ -374,4 +374,48 @@
 
 ---
 
+## Améliorations UX
+
+### US-UX-01 — Pré-remplissage email dans le formulaire d'envoi de questionnaire
+**En tant que** RH, **je veux** que le formulaire d'envoi soit pré-rempli avec l'email de la personne quand j'arrive depuis sa fiche, **afin de** gagner du temps et éviter les erreurs de saisie.
+
+**Critères d'acceptation :**
+- [x] Le lien "Envoyer questionnaire" dans la liste des personnes passe l'email en paramètre GET
+- [x] Le formulaire pré-remplit le champ email si ce paramètre est présent
+- [x] Les emails avec caractères spéciaux (ex. `+`) sont correctement encodés dans l'URL
+
+---
+
+### US-UX-02 — Autocomplétion dans le champ "Ajouter un membre"
+**En tant que** RH ou Manager, **je veux** une autocomplétion sur le champ d'ajout de membre dans une équipe, **afin de** trouver rapidement une personne par nom, prénom ou email.
+
+**Critères d'acceptation :**
+- [x] La recherche s'active après 2 caractères saisis
+- [x] Les suggestions filtrent par nom, prénom ou email (insensible à la casse)
+- [x] Seules les personnes non encore membres actifs de l'équipe apparaissent
+- [x] Cliquer sur une suggestion remplit le champ et soumet le formulaire
+- [x] L'endpoint est protégé (login requis, filtre org)
+
+---
+
+### US-UX-03 — Modification des données d'une personne
+**En tant que** RH ou Manager, **je veux** pouvoir modifier les données d'une personne, **afin de** corriger une erreur ou mettre à jour ses informations.
+
+**Critères d'acceptation :**
+- [x] Bouton "Modifier" sur chaque ligne de la liste des personnes
+- [x] Formulaire pré-rempli avec les données actuelles
+- [x] L'email doit être unique dans l'org, sauf pour la personne en cours de modification
+- [x] Redirection vers la liste après sauvegarde avec message de confirmation
+
+---
+
+### US-UX-04 — Déduplication du dashboard questionnaires
+**En tant que** RH, **je veux** voir uniquement le lien le plus récent par personne dans le dashboard questionnaires, **afin de** ne pas avoir de doublons après un renvoi ou une mise à jour de profil.
+
+**Critères d'acceptation :**
+- [x] Une seule ligne par personne dans le dashboard (le lien le plus récent)
+- [x] Les anciens liens sont conservés en base mais non affichés
+
+---
+
 *Dernière mise à jour : 2026-07-01*
