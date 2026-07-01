@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Personnes" %} — FitRadarHR{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-between mb-6">
+  <div class="flex items-center gap-3">
+    <a href="{% url 'teams:list' %}" class="text-sm text-gray-400 hover:text-indigo-600">← {% trans "Équipes" %}</a>
+    <h1 class="text-2xl font-bold text-gray-900">{% trans "Personnes" %}</h1>
+  </div>
+  <a href="{% url 'teams:person_create' %}"
+     class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors">
+    + {% trans "Nouvelle personne" %}
+  </a>
+</div>
+
+{% if persons %}
+<div class="bg-white rounded-2xl border border-gray-200 divide-y divide-gray-100">
+  {% for person in persons %}
+  <div class="flex items-center justify-between px-6 py-4">
+    <div>
+      <p class="text-sm font-semibold text-gray-800">{{ person.full_name }}</p>
+      <p class="text-xs text-gray-400">
+        {{ person.email }}
+        · {% if person.person_type == 'collaborator' %}{% trans "Collaborateur" %}{% else %}{% trans "Candidat" %}{% endif %}
+      </p>
+    </div>
+    <div class="flex items-center gap-3 text-xs text-gray-400">
+      <span>{{ person.created_at|date:"d/m/Y" }}</span>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="text-center py-16 bg-white rounded-2xl border border-gray-200">
+  <p class="text-gray-400 text-sm mb-4">{% trans "Aucune personne enregistrée. Ajoutez des candidats ou collaborateurs pour constituer vos équipes." %}</p>
+  <a href="{% url 'teams:person_create' %}"
+     class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors">
+    + {% trans "Nouvelle personne" %}
+  </a>
+</div>
+{% endif %}
+{% endblock %}

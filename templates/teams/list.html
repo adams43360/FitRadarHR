@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Équipes" %} — FitRadarHR{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-2xl font-bold text-gray-900">{% trans "Équipes" %}</h1>
+  <div class="flex gap-2">
+    <a href="{% url 'teams:persons' %}"
+       class="px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors">
+      👥 {% trans "Personnes" %}
+    </a>
+    <a href="{% url 'teams:create' %}"
+       class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors">
+      + {% trans "Nouvelle équipe" %}
+    </a>
+  </div>
+</div>
+
+{% if teams %}
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+  {% for team in teams %}
+  {% with member_count=team.memberships.count %}
+  <a href="{% url 'teams:detail' team.pk %}"
+     class="block bg-white rounded-2xl border border-gray-200 p-5 hover:shadow-md transition-shadow">
+    <div class="flex items-start justify-between mb-3">
+      <h2 class="text-sm font-semibold text-gray-900">{{ team.name }}</h2>
+      <span class="text-xs text-gray-400 shrink-0 ml-2">
+        {{ member_count }} {% trans "membre" %}{% if member_count > 1 %}s{% endif %}
+      </span>
+    </div>
+    {% if team.description %}
+      <p class="text-xs text-gray-500 line-clamp-2 mb-3">{{ team.description }}</p>
+    {% endif %}
+    {% if team.manager %}
+      <p class="text-xs text-gray-400">
+        {% trans "Manager" %} : <span class="text-gray-600">{{ team.manager.full_name }}</span>
+      </p>
+    {% endif %}
+  </a>
+  {% endwith %}
+  {% endfor %}
+</div>
+{% else %}
+<div class="text-center py-16 bg-white rounded-2xl border border-gray-200">
+  <p class="text-gray-400 text-sm mb-4">{% trans "Aucune équipe. Créez votre première équipe pour commencer." %}</p>
+  <a href="{% url 'teams:create' %}"
+     class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors">
+    + {% trans "Nouvelle équipe" %}
+  </a>
+</div>
+{% endif %}
+{% endblock %}

@@ -69,7 +69,7 @@ User stories à rattacher systématiquement à l'un de ces epics (voir `00-cadra
 |---|---|---|
 | E1 | Authentification & organisations | ✅ Modèles + inscription B2B/B2C + dashboard |
 | E2 | Gestion des postes | ✅ Liste, création, modification, archivage, profil Big Five |
-| E3 | Gestion des équipes | 🔲 À développer |
+| E3 | Gestion des équipes | ✅ Liste, création, modification, membres, liste Personnes |
 | E4 | Questionnaire Big Five | 🔲 À développer |
 | E5 | Moteur de calcul de Fit | 🔲 À développer |
 | E6 | Rapports & restitution | 🔲 À développer |
@@ -86,7 +86,7 @@ User stories à rattacher systématiquement à l'un de ces epics (voir `00-cadra
 - [x] Docker Compose dev opérationnel (`make dev-build`)
 - [x] Documentation utilisateur publiée (MkDocs → GitHub Pages)
 - [x] Vues Postes — liste, création, détail, modification, archivage, profil Big Five (E2)
-- [ ] Vues Équipes (E3)
+- [x] Vues Équipes — liste, création, détail, modification, membres + liste Personnes (E3)
 - [ ] Questionnaire Big Five (E4)
 - [ ] Moteur de calcul Fit (E5)
 - [ ] Rapports & radar chart (E6)

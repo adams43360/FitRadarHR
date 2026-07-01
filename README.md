@@ -69,7 +69,7 @@ L'application est accessible sur **http://localhost:8000**.
 - [x] Docker Compose dev opérationnel
 - [x] Documentation utilisateur publiée (GitHub Pages)
 - [x] Vues Postes — liste, création, détail, modification, archivage, profil Big Five (E2)
-- [ ] Vues Équipes (E3)
+- [x] Vues Équipes — liste, création, détail, modification, membres + liste Personnes (E3)
 - [ ] Questionnaire Big Five (E4)
 - [ ] Moteur de calcul Fit (E5)
 - [ ] Rapports & radar chart (E6)
@@ -80,7 +80,7 @@ L'application est accessible sur **http://localhost:8000**.
 |---|---|---|
 | E1 | Authentification & organisations | ✅ Modèles + inscription B2B/B2C |
 | E2 | Gestion des postes | ✅ Liste, création, modification, archivage, profil OCEAN |
-| E3 | Gestion des équipes | 🔲 À développer |
+| E3 | Gestion des équipes | ✅ Liste, création, modification, membres, liste Personnes |
 | E4 | Questionnaire Big Five | 🔲 À développer |
 | E5 | Moteur de calcul de Fit | 🔲 À développer |
 | E6 | Rapports & restitution | 🔲 À développer |

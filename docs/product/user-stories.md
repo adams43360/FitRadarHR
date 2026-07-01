@@ -131,9 +131,9 @@
 **En tant que** Manager, **je veux** créer une équipe avec un nom, **afin de** regrouper les collaborateurs qui y appartiennent.
 
 **Critères d'acceptation :**
-- [ ] Le formulaire demande : nom de l'équipe, description (optionnel), Manager responsable (pré-rempli avec l'utilisateur connecté)
-- [ ] L'équipe est rattachée à l'organisation du tenant
-- [ ] Le RH peut aussi créer des équipes et les assigner à un Manager
+- [x] Le formulaire demande : nom de l'équipe, description (optionnel), Manager responsable (pré-rempli avec l'utilisateur connecté)
+- [x] L'équipe est rattachée à l'organisation du tenant
+- [x] Le RH peut aussi créer des équipes et les assigner à un Manager
 
 ---
 
@@ -141,10 +141,10 @@
 **En tant que** Manager, **je veux** ajouter des collaborateurs existants dans le système à mon équipe, **afin de** constituer la composition de l'équipe.
 
 **Critères d'acceptation :**
-- [ ] Un collaborateur peut être ajouté à une équipe s'il a complété le questionnaire Big Five (son profil est disponible)
-- [ ] Il est possible d'ajouter un collaborateur sans profil (en attente de questionnaire)
-- [ ] Un collaborateur peut appartenir à plusieurs équipes
-- [ ] L'ajout est tracé (qui a ajouté, quand)
+- [x] Un collaborateur peut être ajouté à une équipe s'il a complété le questionnaire Big Five (son profil est disponible)
+- [x] Il est possible d'ajouter un collaborateur sans profil (en attente de questionnaire)
+- [x] Un collaborateur peut appartenir à plusieurs équipes
+- [x] L'ajout est tracé (qui a ajouté, quand)
 
 ---
 
@@ -152,9 +152,9 @@
 **En tant que** Manager, **je veux** retirer un collaborateur de mon équipe ou le déplacer vers une autre, **afin de** refléter les évolutions organisationnelles.
 
 **Critères d'acceptation :**
-- [ ] Le retrait n'efface pas le profil Big Five du collaborateur
-- [ ] L'historique de l'appartenance à l'équipe est conservé (à des fins de traçabilité)
-- [ ] Le RH peut effectuer ces actions sur toutes les équipes
+- [x] Le retrait n'efface pas le profil Big Five du collaborateur
+- [x] L'historique de l'appartenance à l'équipe est conservé (date left_at, traçabilité)
+- [x] Le RH peut effectuer ces actions sur toutes les équipes
 
 ---
 
