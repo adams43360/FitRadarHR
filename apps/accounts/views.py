@@ -126,16 +126,26 @@ def dashboard(request):
     persons_count = org.persons.count()
     profiles_count = BigFiveProfile.objects.filter(person__org=org).count()
 
-    # Questionnaires en attente (pending + sent non complétés)
-    pending_links = (
+    # Questionnaires en attente — on déduplique par personne (même logique que survey:dashboard)
+    # pour ne garder que le lien le plus récent par personne, puis on filtre les non-complétés
+    all_links = (
         QuestionnaireLink.objects.filter(org=org)
-        .exclude(status=QuestionnaireLink.Status.COMPLETED)
         .select_related("person")
-        .order_by("-sent_at")[:5]
+        .order_by("-sent_at")
     )
-    pending_count = QuestionnaireLink.objects.filter(org=org).exclude(
-        status=QuestionnaireLink.Status.COMPLETED
-    ).count()
+    seen = set()
+    deduped_links = []
+    for lnk in all_links:
+        if lnk.person_id not in seen:
+            seen.add(lnk.person_id)
+            deduped_links.append(lnk)
+
+    pending_links = [
+        lnk for lnk in deduped_links
+        if lnk.status != QuestionnaireLink.Status.COMPLETED
+    ]
+    pending_count = len(pending_links)
+    pending_links = pending_links[:5]
 
     # Derniers profils complétés
     recent_profiles = (

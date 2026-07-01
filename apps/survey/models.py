@@ -23,6 +23,13 @@ class QuestionnaireLink(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     org = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name="questionnaire_links")
     person = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="questionnaire_links")
+    position = models.ForeignKey(
+        "positions.Position",
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        related_name="questionnaire_links",
+        verbose_name=_("poste"),
+    )
     token = models.CharField(max_length=128, unique=True)
     questionnaire_version = models.CharField(max_length=3, choices=Version.choices, default=Version.V50)
     language = models.CharField(max_length=2, choices=Language.choices, default=Language.FR)

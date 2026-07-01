@@ -32,6 +32,9 @@
         <td class="px-6 py-4">
           <div class="font-medium text-gray-900">{{ link.person.full_name }}</div>
           <div class="text-sm text-gray-500">{{ link.person.email }}</div>
+          {% if link.position %}
+          <div class="text-xs text-indigo-500 mt-0.5">{{ link.position.title_fr }}</div>
+          {% endif %}
         </td>
         <td class="px-6 py-4 text-sm text-gray-700">{{ link.questionnaire_version }} items</td>
         <td class="px-6 py-4 text-sm text-gray-700">{{ link.language|upper }}</td>

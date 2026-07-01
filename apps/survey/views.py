@@ -34,7 +34,7 @@ def survey_dashboard(request):
     all_links = (
         QuestionnaireLink.objects
         .filter(org=request.user.org)
-        .select_related("person", "sent_by")
+        .select_related("person", "sent_by", "position")
         .order_by("-sent_at")
     )
     seen = set()
@@ -53,31 +53,37 @@ def survey_dashboard(request):
 
 @login_required
 def send_questionnaire(request):
+    org = request.user.org
     initial = {}
     if email := request.GET.get("email"):
         initial["person_email"] = email
-    form = SendLinkForm(initial=initial)
 
     if request.method == "POST":
-        form = SendLinkForm(request.POST)
+        form = SendLinkForm(request.POST, org=org)
+        form.set_org(org)
         if form.is_valid():
             email = form.cleaned_data["person_email"]
+            first_name = form.cleaned_data.get("first_name", "").strip()
+            last_name = form.cleaned_data.get("last_name", "").strip()
             version = form.cleaned_data["questionnaire_version"]
             language = form.cleaned_data["language"]
+            position = form.cleaned_data.get("position")
 
-            try:
-                person = Person.objects.get(org=request.user.org, email=email)
-            except Person.DoesNotExist:
-                form.add_error(
-                    "person_email",
-                    _("Aucune personne trouvée avec cet email dans votre organisation. "
-                      "Créez-la d'abord dans la liste des Personnes.")
-                )
-                return render(request, "survey/send.html", {"form": form})
+            # Créer la personne à la volée si elle n'existe pas
+            person, created = Person.objects.get_or_create(
+                org=org,
+                email=email,
+                defaults={
+                    "first_name": first_name or email.split("@")[0],
+                    "last_name": last_name or "",
+                    "created_by": request.user,
+                },
+            )
 
             link = QuestionnaireLink.objects.create(
-                org=request.user.org,
+                org=org,
                 person=person,
+                position=position,
                 token=secrets.token_urlsafe(48),
                 questionnaire_version=version,
                 language=language,
@@ -85,8 +91,17 @@ def send_questionnaire(request):
                 expires_at=timezone.now() + timedelta(days=LINK_VALIDITY_DAYS),
             )
             _send_invitation_email(link, request)
-            messages.success(request, _("Lien envoyé à %(email)s.") % {"email": email})
+
+            if created:
+                messages.success(
+                    request,
+                    _("Personne créée et lien envoyé à %(email)s.") % {"email": email}
+                )
+            else:
+                messages.success(request, _("Lien envoyé à %(email)s.") % {"email": email})
             return redirect("survey:dashboard")
+    else:
+        form = SendLinkForm(initial=initial, org=org)
 
     return render(request, "survey/send.html", {"form": form})
 

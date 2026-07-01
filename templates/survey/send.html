@@ -14,7 +14,48 @@
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
     <form method="post" class="space-y-5">
       {% csrf_token %}
+
+      <!-- Email -->
       {% include "partials/form_field.html" with field=form.person_email %}
+
+      <!-- Prénom + Nom (création à la volée si personne inconnue) -->
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            {{ form.first_name.label }}
+            <span class="text-gray-400 font-normal text-xs ml-1">{% trans "si nouvelle personne" %}</span>
+          </label>
+          {{ form.first_name }}
+          {% if form.first_name.errors %}
+            <p class="text-red-500 text-xs mt-1">{{ form.first_name.errors.0 }}</p>
+          {% endif %}
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            {{ form.last_name.label }}
+            <span class="text-gray-400 font-normal text-xs ml-1">{% trans "si nouvelle personne" %}</span>
+          </label>
+          {{ form.last_name }}
+          {% if form.last_name.errors %}
+            <p class="text-red-500 text-xs mt-1">{{ form.last_name.errors.0 }}</p>
+          {% endif %}
+        </div>
+      </div>
+      <p class="text-xs text-gray-400 -mt-3">
+        {% trans "Si la personne existe déjà, ces champs sont ignorés." %}
+      </p>
+
+      <!-- Poste (optionnel) -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          {{ form.position.label }}
+          <span class="text-gray-400 font-normal text-xs ml-1">{% trans "optionnel" %}</span>
+        </label>
+        {{ form.position }}
+        <p class="text-xs text-gray-400 mt-1">{% trans "Permet d'afficher le fit pertinent en priorité dans les rapports." %}</p>
+      </div>
+
+      <!-- Version + Langue -->
       {% include "partials/form_field.html" with field=form.questionnaire_version %}
       {% include "partials/form_field.html" with field=form.language %}
 
@@ -26,10 +67,5 @@
       </div>
     </form>
   </div>
-
-  <p class="text-xs text-gray-400 mt-4 text-center">
-    {% trans "La personne n'a pas encore de fiche ? " %}
-    <a href="{% url 'teams:person_create' %}" class="text-indigo-500 hover:underline">{% trans "Créer une personne" %}</a>
-  </p>
 </div>
 {% endblock %}
