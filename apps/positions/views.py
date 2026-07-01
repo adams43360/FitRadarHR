@@ -34,7 +34,14 @@ def position_create(request):
             return redirect("positions:profile_edit", pk=position.pk)
     else:
         form = PositionForm()
-    return render(request, "positions/create.html", {"form": form})
+    departments = (
+        request.user.org.positions
+        .exclude(department="")
+        .values_list("department", flat=True)
+        .distinct()
+        .order_by("department")
+    )
+    return render(request, "positions/create.html", {"form": form, "departments": departments})
 
 
 @login_required
@@ -70,7 +77,14 @@ def position_edit(request, pk):
             return redirect("positions:detail", pk=position.pk)
     else:
         form = PositionForm(instance=position)
-    return render(request, "positions/edit.html", {"form": form, "position": position})
+    departments = (
+        request.user.org.positions
+        .exclude(department="")
+        .values_list("department", flat=True)
+        .distinct()
+        .order_by("department")
+    )
+    return render(request, "positions/edit.html", {"form": form, "position": position, "departments": departments})
 
 
 @login_required
@@ -117,3 +131,22 @@ def position_profile_edit(request, pk):
         "position": position,
         "dimensions": dimensions,
     })
+
+
+@login_required
+def department_search(request):
+    """Retourne en JSON les départements distincts de l'org matchant la query."""
+    from django.http import JsonResponse
+    q = request.GET.get("q", "").strip()
+    departments = (
+        request.user.org.positions
+        .exclude(department="")
+        .values_list("department", flat=True)
+        .distinct()
+        .order_by("department")
+    )
+    if q:
+        departments = [d for d in departments if q.lower() in d.lower()]
+    else:
+        departments = list(departments)
+    return JsonResponse(departments[:10], safe=False)
