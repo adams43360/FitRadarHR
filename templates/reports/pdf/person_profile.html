@@ -1,0 +1,45 @@
+{% extends "reports/pdf/base.html" %}
+{% load i18n %}
+
+{% block header_meta %}
+  {% if lang == "fr" %}Profil Big Five individuel{% else %}Individual Big Five Profile{% endif %}<br>
+  {{ person.full_name }} — {{ profile.computed_at|date:"d/m/Y" }}<br>
+  algo v{{ profile.algorithm_version }}
+{% endblock %}
+
+{% block content %}
+<h1>{{ person.full_name }}</h1>
+<p class="subtitle">{{ person.email }}</p>
+
+<div class="warning">
+  {% if lang == "fr" %}
+    ⚠ Ce profil est une aide à la décision. Il ne constitue pas une recommandation et doit être interprété avec le contexte humain.
+  {% else %}
+    ⚠ This profile is a decision-support tool. It does not constitute a recommendation and must be interpreted with human context.
+  {% endif %}
+</div>
+
+<h2>{% if lang == "fr" %}Scores OCEAN{% else %}OCEAN Scores{% endif %}</h2>
+<table>
+  <thead>
+    <tr>
+      <th>{% if lang == "fr" %}Dimension{% else %}Dimension{% endif %}</th>
+      <th>{% if lang == "fr" %}Score (0–100){% else %}Score (0–100){% endif %}</th>
+      <th style="width:40%">{% if lang == "fr" %}Niveau{% else %}Level{% endif %}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for d in dim_details %}
+    <tr>
+      <td><strong>{{ d.label }}</strong></td>
+      <td>{{ d.score|floatformat:1 }}</td>
+      <td>
+        <div class="score-bar-wrap">
+          <div class="score-bar" style="width:{{ d.score|floatformat:0 }}%"></div>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

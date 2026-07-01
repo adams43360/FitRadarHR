@@ -193,3 +193,132 @@ def team_fit_report(request, person_pk, team_pk):
         "dim_details": dim_details,
         "team_size": fit.team_size_at_computation,
     })
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Export PDF (WeasyPrint)
+# ──────────────────────────────────────────────────────────────────────────────
+
+def _render_pdf(template_name, context, filename):
+    from django.http import HttpResponse
+    from django.template.loader import render_to_string
+    from weasyprint import HTML
+    html_string = render_to_string(template_name, context)
+    pdf = HTML(string=html_string).write_pdf()
+    response = HttpResponse(pdf, content_type="application/pdf")
+    response["Content-Disposition"] = f'attachment; filename="{filename}"'
+    return response
+
+
+@login_required
+def person_profile_pdf(request, person_pk):
+    person = get_object_or_404(Person, pk=person_pk, org=request.user.org)
+    profile = get_object_or_404(BigFiveProfile, person=person)
+    lang = _lang(request)
+
+    AuditLog.objects.create(
+        org=request.user.org, user=request.user,
+        action="profile.exported_pdf", entity_type="BigFiveProfile",
+        entity_id=profile.id, metadata={"person_id": str(person.id)},
+    )
+
+    chart_labels = _dim_labels(lang)
+    scores = [float(getattr(profile, d)) for d in DIMENSIONS]
+    dim_details = [
+        {"label": DIMENSION_LABELS[d][lang], "score": scores[i]}
+        for i, d in enumerate(DIMENSIONS)
+    ]
+
+    filename = f"profil-ocean_{person.last_name.lower()}_{person.first_name.lower()}.pdf"
+    return _render_pdf("reports/pdf/person_profile.html", {
+        "person": person, "profile": profile,
+        "dim_details": dim_details, "lang": lang,
+    }, filename)
+
+
+@login_required
+def position_fit_pdf(request, person_pk, position_pk):
+    person = get_object_or_404(Person, pk=person_pk, org=request.user.org)
+    position = get_object_or_404(Position, pk=position_pk, org=request.user.org)
+    fit = get_object_or_404(PositionFitResult, person=person, position=position)
+    profile = person.big_five_profile
+    lang = _lang(request)
+
+    AuditLog.objects.create(
+        org=request.user.org, user=request.user,
+        action="position_fit.exported_pdf", entity_type="PositionFitResult",
+        entity_id=fit.id,
+        metadata={"person_id": str(person.id), "position_id": str(position.id)},
+    )
+
+    person_scores = [float(getattr(profile, d)) for d in DIMENSIONS]
+    pos_min = [getattr(position.profile, f"{d}_min") for d in DIMENSIONS]
+    pos_max = [getattr(position.profile, f"{d}_max") for d in DIMENSIONS]
+    dim_details = [
+        {
+            "label": DIMENSION_LABELS[d][lang],
+            "score": person_scores[i],
+            "min": pos_min[i], "max": pos_max[i],
+            "fit": float(getattr(fit, f"{d}_fit")),
+            "in_range": pos_min[i] <= person_scores[i] <= pos_max[i],
+        }
+        for i, d in enumerate(DIMENSIONS)
+    ]
+
+    filename = f"fit-poste_{person.last_name.lower()}_{position.title_fr.lower().replace(' ', '-')}.pdf"
+    return _render_pdf("reports/pdf/position_fit.html", {
+        "person": person, "position": position, "fit": fit,
+        "dim_details": dim_details, "lang": lang,
+    }, filename)
+
+
+@login_required
+def team_fit_pdf(request, person_pk, team_pk):
+    person = get_object_or_404(Person, pk=person_pk, org=request.user.org)
+    team = get_object_or_404(Team, pk=team_pk, org=request.user.org)
+    fit = get_object_or_404(TeamFitResult, person=person, team=team)
+    profile = person.big_five_profile
+    lang = _lang(request)
+
+    AuditLog.objects.create(
+        org=request.user.org, user=request.user,
+        action="team_fit.exported_pdf", entity_type="TeamFitResult",
+        entity_id=fit.id,
+        metadata={"person_id": str(person.id), "team_id": str(team.id)},
+    )
+
+    member_profiles = [
+        m.person.big_five_profile
+        for m in TeamMembership.objects
+            .filter(team=team, left_at__isnull=True)
+            .exclude(person=person)
+            .select_related("person__big_five_profile")
+        if hasattr(m.person, "big_five_profile")
+    ]
+    team_data = compute_team_profile(member_profiles)
+    person_scores = [float(getattr(profile, d)) for d in DIMENSIONS]
+    team_avgs = [team_data["averages"][d] if team_data else 50.0 for d in DIMENSIONS]
+    complementarity = fit.complementarity
+
+    SIGNAL_LABELS = {
+        "fr": {"similar": "Similaire", "different": "Différent", "complementary": "Complémentaire"},
+        "en": {"similar": "Similar", "different": "Different", "complementary": "Complementary"},
+    }
+    dim_details = [
+        {
+            "label": DIMENSION_LABELS[d][lang],
+            "score": person_scores[i],
+            "team_avg": team_avgs[i],
+            "fit": float(getattr(fit, f"{d}_fit")),
+            "signal": complementarity.get(d, "similar"),
+            "signal_label": SIGNAL_LABELS[lang].get(complementarity.get(d, "similar"), ""),
+        }
+        for i, d in enumerate(DIMENSIONS)
+    ]
+
+    filename = f"fit-equipe_{person.last_name.lower()}_{team.name.lower().replace(' ', '-')}.pdf"
+    return _render_pdf("reports/pdf/team_fit.html", {
+        "person": person, "team": team, "fit": fit,
+        "dim_details": dim_details, "lang": lang,
+        "team_size": fit.team_size_at_computation,
+    }, filename)

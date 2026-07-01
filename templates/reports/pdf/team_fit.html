@@ -1,0 +1,62 @@
+{% extends "reports/pdf/base.html" %}
+{% load i18n %}
+
+{% block header_meta %}
+  {% if lang == "fr" %}Rapport Fit Équipe{% else %}Team Fit Report{% endif %}<br>
+  {{ person.full_name }} × {{ team.name }}<br>
+  {{ fit.computed_at|date:"d/m/Y" }} — algo v{{ fit.algorithm_version }}
+{% endblock %}
+
+{% block content %}
+<h1>{% if lang == "fr" %}Rapport Fit Équipe{% else %}Team Fit Report{% endif %}</h1>
+<p class="subtitle">{{ person.full_name }} &nbsp;×&nbsp; {{ team.name }}
+  &nbsp;({% if lang == "fr" %}{{ team_size }} membre(s){% else %}{{ team_size }} member(s){% endif %})</p>
+
+<div class="warning">
+  {% if lang == "fr" %}
+    ⚠ Ce rapport est une aide à la décision. La complémentarité peut être un atout — une différence n'est pas un problème.
+  {% else %}
+    ⚠ This report is a decision-support tool. Complementarity can be an asset — a difference is not a problem.
+  {% endif %}
+</div>
+
+<div class="overall-box">
+  <div class="overall-score">{{ fit.overall_fit|floatformat:0 }}%</div>
+  <div>
+    <div style="font-weight:600;margin-bottom:2px;">{% if lang == "fr" %}Similarité globale{% else %}Overall similarity{% endif %}</div>
+    <div class="overall-label">{% if lang == "fr" %}Un score bas peut indiquer une complémentarité{% else %}A low score may indicate complementarity{% endif %}</div>
+  </div>
+</div>
+
+<h2>{% if lang == "fr" %}Analyse par dimension{% else %}Per dimension analysis{% endif %}</h2>
+<table>
+  <thead>
+    <tr>
+      <th>{% if lang == "fr" %}Dimension{% else %}Dimension{% endif %}</th>
+      <th>{{ person.first_name }}</th>
+      <th>{% if lang == "fr" %}Moy. équipe{% else %}Team avg{% endif %}</th>
+      <th>{% if lang == "fr" %}Fit{% else %}Fit{% endif %}</th>
+      <th>{% if lang == "fr" %}Signal{% else %}Signal{% endif %}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for d in dim_details %}
+    <tr>
+      <td><strong>{{ d.label }}</strong></td>
+      <td>{{ d.score|floatformat:0 }}</td>
+      <td>{{ d.team_avg|floatformat:0 }}</td>
+      <td>{{ d.fit|floatformat:0 }}%</td>
+      <td>
+        {% if d.signal == "complementary" %}
+          <span class="badge badge-green">🌟 {{ d.signal_label }}</span>
+        {% elif d.signal == "different" %}
+          <span class="badge badge-amber">↔ {{ d.signal_label }}</span>
+        {% else %}
+          <span class="badge badge-blue">≈ {{ d.signal_label }}</span>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

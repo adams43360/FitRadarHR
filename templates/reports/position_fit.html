@@ -4,10 +4,13 @@
 {% block title %}{% trans "Fit Poste" %} — {{ person.full_name }} / {{ position.title_fr }}{% endblock %}
 
 {% block content %}
-<div class="mb-4">
+<div class="flex items-center justify-between mb-4">
   <a href="{% url 'reports:person_profile' person_pk=person.pk %}" class="text-sm text-indigo-600 hover:underline">← {{ person.full_name }}</a>
+  <a href="{% url 'reports:position_fit_pdf' person_pk=person.pk position_pk=position.pk %}"
+     class="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-50">
+    ↓ PDF
+  </a>
 </div>
-
 <div class="flex items-start justify-between mb-6">
   <div>
     <h1 class="text-xl font-bold text-gray-900">{% trans "Fit Poste" %}</h1>

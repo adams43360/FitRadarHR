@@ -5,7 +5,13 @@
 
 {% block content %}
 <div class="mb-4">
+  <div class="flex items-center justify-between">
   <a href="{% url 'reports:list' %}" class="text-sm text-indigo-600 hover:underline">← {% trans "Retour aux rapports" %}</a>
+  <a href="{% url 'reports:person_profile_pdf' person_pk=person.pk %}"
+     class="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-50">
+    ↓ PDF
+  </a>
+</div>
 </div>
 
 <div class="flex items-center justify-between mb-6">

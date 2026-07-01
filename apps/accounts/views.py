@@ -112,12 +112,63 @@ def signup_b2c(request):
 
 @login_required
 def dashboard(request):
+    from apps.survey.models import QuestionnaireLink
+    from apps.fit.models import BigFiveProfile, PositionFitResult
+    from apps.reports.models import AuditLog
+    from django.db.models import Avg
+
     user = request.user
     org = user.org
+
+    # Stats principales
+    positions_count = org.positions.filter(status="active").count()
+    teams_count = org.teams.count()
+    persons_count = org.persons.count()
+    profiles_count = BigFiveProfile.objects.filter(person__org=org).count()
+
+    # Questionnaires en attente (pending + sent non complétés)
+    pending_links = (
+        QuestionnaireLink.objects.filter(org=org)
+        .exclude(status=QuestionnaireLink.Status.COMPLETED)
+        .select_related("person")
+        .order_by("-sent_at")[:5]
+    )
+    pending_count = QuestionnaireLink.objects.filter(org=org).exclude(
+        status=QuestionnaireLink.Status.COMPLETED
+    ).count()
+
+    # Derniers profils complétés
+    recent_profiles = (
+        BigFiveProfile.objects.filter(person__org=org)
+        .select_related("person")
+        .order_by("-computed_at")[:5]
+    )
+
+    # Score de fit moyen (tous postes)
+    avg_position_fit = (
+        PositionFitResult.objects.filter(person__org=org)
+        .aggregate(avg=Avg("overall_fit"))["avg"]
+    )
+    if avg_position_fit is not None:
+        avg_position_fit = round(float(avg_position_fit), 1)
+
+    # Activité récente (audit log)
+    recent_activity = (
+        AuditLog.objects.filter(org=org)
+        .select_related("user")
+        .order_by("-created_at")[:8]
+    )
+
     context = {
         "org": org,
-        "positions_count": org.positions.filter(status="active").count(),
-        "teams_count": org.teams.count(),
-        "persons_count": org.persons.count(),
+        "positions_count": positions_count,
+        "teams_count": teams_count,
+        "persons_count": persons_count,
+        "profiles_count": profiles_count,
+        "pending_links": pending_links,
+        "pending_count": pending_count,
+        "recent_profiles": recent_profiles,
+        "avg_position_fit": avg_position_fit,
+        "recent_activity": recent_activity,
     }
     return render(request, "accounts/dashboard.html", context)
