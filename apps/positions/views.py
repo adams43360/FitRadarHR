@@ -40,6 +40,9 @@ def position_create(request):
 
 @login_required
 def position_detail(request, pk):
+    from apps.fit.models import PositionFitResult
+    from apps.teams.models import Person
+
     position = get_object_or_404(Position, pk=pk, org=request.user.org)
     profile_dimensions = []
     if position.has_profile:
@@ -54,9 +57,25 @@ def position_detail(request, pk):
                 "max": max_val,
                 "width": max_val - min_val,
             })
+
+    # Classement des personnes par Fit — filtre optionnel par type
+    person_type_filter = request.GET.get("type", "")
+    fit_qs = (
+        PositionFitResult.objects
+        .filter(position=position, person__org=request.user.org)
+        .select_related("person")
+        .order_by("-overall_fit")
+    )
+    if person_type_filter in (Person.PersonType.CANDIDATE, Person.PersonType.COLLABORATOR):
+        fit_qs = fit_qs.filter(person__person_type=person_type_filter)
+
     return render(request, "positions/detail.html", {
         "position": position,
         "profile_dimensions": profile_dimensions,
+        "fit_ranking": fit_qs,
+        "person_type_filter": person_type_filter,
+        "CANDIDATE": Person.PersonType.CANDIDATE,
+        "COLLABORATOR": Person.PersonType.COLLABORATOR,
     })
 
 

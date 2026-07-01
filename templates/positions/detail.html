@@ -20,11 +20,18 @@
       {% if position.title_en %}
         <p class="text-sm text-gray-400 mt-0.5">{{ position.title_en }}</p>
       {% endif %}
-      {% if position.department %}
-        <span class="inline-block mt-2 px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full">
-          {{ position.department }}
-        </span>
-      {% endif %}
+      <div class="flex flex-wrap gap-2 mt-2">
+        {% if position.department %}
+          <span class="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full">
+            {{ position.department.name_fr }}
+          </span>
+        {% endif %}
+        {% if position.team %}
+          <span class="px-2 py-0.5 bg-indigo-50 text-indigo-600 text-xs rounded-full">
+            {{ position.team.name }}
+          </span>
+        {% endif %}
+      </div>
     </div>
     <div class="flex items-center gap-2 shrink-0 ml-4">
       <a href="{% url 'positions:edit' position.pk %}"
@@ -94,6 +101,76 @@
         </div>
       {% endif %}
     </div>
+
+    <!-- Classement Fit -->
+    {% if position.has_profile %}
+    <div class="bg-white rounded-2xl border border-gray-200 p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-sm font-semibold text-gray-700">{% trans "Classement des personnes par Fit" %}</h2>
+        <!-- Filtres -->
+        <div class="flex items-center gap-1 text-xs">
+          <a href="?type="
+             class="px-2.5 py-1 rounded-full {% if not person_type_filter %}bg-indigo-600 text-white{% else %}bg-gray-100 text-gray-600 hover:bg-gray-200{% endif %}">
+            {% trans "Tous" %}
+          </a>
+          <a href="?type={{ CANDIDATE }}"
+             class="px-2.5 py-1 rounded-full {% if person_type_filter == CANDIDATE %}bg-indigo-600 text-white{% else %}bg-gray-100 text-gray-600 hover:bg-gray-200{% endif %}">
+            {% trans "Candidats" %}
+          </a>
+          <a href="?type={{ COLLABORATOR }}"
+             class="px-2.5 py-1 rounded-full {% if person_type_filter == COLLABORATOR %}bg-indigo-600 text-white{% else %}bg-gray-100 text-gray-600 hover:bg-gray-200{% endif %}">
+            {% trans "Collaborateurs" %}
+          </a>
+        </div>
+      </div>
+
+      {% if fit_ranking %}
+      <div class="space-y-2">
+        {% for fit in fit_ranking %}
+        <a href="{% url 'reports:position_fit' person_pk=fit.person.pk position_pk=position.pk %}"
+           class="flex items-center gap-3 rounded-xl border border-gray-100 px-4 py-3 hover:bg-gray-50 transition-colors">
+          <!-- Rang -->
+          <span class="text-xs text-gray-400 w-5 shrink-0 text-center">{{ forloop.counter }}</span>
+          <!-- Nom + type -->
+          <div class="flex-1 min-w-0">
+            <span class="text-sm font-medium text-gray-900">{{ fit.person.full_name }}</span>
+            <span class="ml-2 text-xs px-1.5 py-0.5 rounded
+              {% if fit.person.person_type == 'candidate' %}bg-blue-50 text-blue-600
+              {% else %}bg-green-50 text-green-600{% endif %}">
+              {{ fit.person.get_person_type_display }}
+            </span>
+          </div>
+          <!-- Barre + score -->
+          <div class="flex items-center gap-3 shrink-0">
+            <div class="w-24 h-2 bg-gray-100 rounded-full overflow-hidden">
+              <div class="h-full rounded-full
+                {% if fit.overall_fit >= 80 %}bg-green-500
+                {% elif fit.overall_fit >= 60 %}bg-amber-400
+                {% else %}bg-red-400{% endif %}"
+                style="width: {{ fit.overall_fit|floatformat:0 }}%">
+              </div>
+            </div>
+            <span class="text-sm font-semibold w-10 text-right
+              {% if fit.overall_fit >= 80 %}text-green-600
+              {% elif fit.overall_fit >= 60 %}text-amber-600
+              {% else %}text-red-500{% endif %}">
+              {{ fit.overall_fit|floatformat:0 }}%
+            </span>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="text-sm text-gray-400 py-4 text-center">
+        {% if person_type_filter %}
+          {% trans "Aucun résultat pour ce filtre." %}
+        {% else %}
+          {% trans "Aucune personne n'a encore passé le questionnaire pour ce poste." %}
+        {% endif %}
+      </p>
+      {% endif %}
+    </div>
+    {% endif %}
 
   </div>
 </div>
