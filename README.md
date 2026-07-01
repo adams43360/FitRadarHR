@@ -68,7 +68,7 @@ L'application est accessible sur **http://localhost:8000**.
 - [x] Scaffold Django (modèles, migrations, auth B2B/B2C, dashboard)
 - [x] Docker Compose dev opérationnel
 - [x] Documentation utilisateur publiée (GitHub Pages)
-- [ ] Vues Postes (E2)
+- [x] Vues Postes — liste, création, détail, modification, archivage, profil Big Five (E2)
 - [ ] Vues Équipes (E3)
 - [ ] Questionnaire Big Five (E4)
 - [ ] Moteur de calcul Fit (E5)
@@ -79,7 +79,7 @@ L'application est accessible sur **http://localhost:8000**.
 | # | Epic | Statut |
 |---|---|---|
 | E1 | Authentification & organisations | ✅ Modèles + inscription B2B/B2C |
-| E2 | Gestion des postes | 🔲 À développer |
+| E2 | Gestion des postes | ✅ Liste, création, modification, archivage, profil OCEAN |
 | E3 | Gestion des équipes | 🔲 À développer |
 | E4 | Questionnaire Big Five | 🔲 À développer |
 | E5 | Moteur de calcul de Fit | 🔲 À développer |

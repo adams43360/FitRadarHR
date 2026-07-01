@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{{ position.title_fr }} — FitRadarHR{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+
+  <!-- Breadcrumb -->
+  <div class="flex items-center gap-2 text-sm text-gray-400 mb-6">
+    <a href="{% url 'positions:list' %}" class="hover:text-indigo-600">{% trans "Postes" %}</a>
+    <span>/</span>
+    <span class="text-gray-700 truncate">{{ position.title_fr }}</span>
+  </div>
+
+  <!-- En-tête -->
+  <div class="flex items-start justify-between mb-8">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">{{ position.title_fr }}</h1>
+      {% if position.title_en %}
+        <p class="text-sm text-gray-400 mt-0.5">{{ position.title_en }}</p>
+      {% endif %}
+      {% if position.department %}
+        <span class="inline-block mt-2 px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full">
+          {{ position.department }}
+        </span>
+      {% endif %}
+    </div>
+    <div class="flex items-center gap-2 shrink-0 ml-4">
+      <a href="{% url 'positions:edit' position.pk %}"
+         class="px-3 py-1.5 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors">
+        {% trans "Modifier" %}
+      </a>
+      <form method="post" action="{% url 'positions:archive' position.pk %}"
+            x-data
+            @submit.prevent="if(confirm('{% trans "Archiver ce poste ?" %}')) $el.submit()">
+        {% csrf_token %}
+        <button type="submit"
+                class="px-3 py-1.5 bg-white border border-gray-300 text-gray-500 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors">
+          {% trans "Archiver" %}
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="space-y-6">
+
+    <!-- Description -->
+    {% if position.description_fr or position.description_en %}
+    <div class="bg-white rounded-2xl border border-gray-200 p-6">
+      <h2 class="text-sm font-semibold text-gray-700 mb-3">{% trans "Description" %}</h2>
+      {% if position.description_fr %}
+        <p class="text-sm text-gray-600 whitespace-pre-line">{{ position.description_fr }}</p>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Profil Big Five -->
+    <div class="bg-white rounded-2xl border border-gray-200 p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-sm font-semibold text-gray-700">{% trans "Profil Big Five cible" %}</h2>
+        <a href="{% url 'positions:profile_edit' position.pk %}"
+           class="text-sm text-indigo-600 hover:text-indigo-800 font-medium">
+          {% if position.has_profile %}{% trans "Modifier" %}{% else %}{% trans "Définir" %}{% endif %} →
+        </a>
+      </div>
+
+      {% if position.has_profile %}
+        <div class="space-y-4">
+          {% for dim in profile_dimensions %}
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-gray-600 font-medium">{{ dim.label }}</span>
+              <span class="text-indigo-600 font-semibold">{{ dim.min }}–{{ dim.max }}</span>
+            </div>
+            <div class="relative h-3 bg-gray-100 rounded-full overflow-hidden">
+              <div class="absolute h-full bg-indigo-200 rounded-full"
+                   style="left: {{ dim.min }}%; width: {{ dim.width }}%">
+              </div>
+            </div>
+            <p class="text-xs text-gray-400 mt-1">{{ dim.help }}</p>
+          </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="text-center py-6">
+          <p class="text-sm text-amber-600 mb-3">
+            ⚠ {% trans "Aucun profil Big Five défini pour ce poste." %}
+          </p>
+          <a href="{% url 'positions:profile_edit' position.pk %}"
+             class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors">
+            {% trans "Définir le profil cible" %}
+          </a>
+        </div>
+      {% endif %}
+    </div>
+
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Profil Big Five" %} — {{ position.title_fr }} — FitRadarHR{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+
+  <div class="flex items-center gap-2 text-sm text-gray-400 mb-6">
+    <a href="{% url 'positions:list' %}" class="hover:text-indigo-600">{% trans "Postes" %}</a>
+    <span>/</span>
+    <a href="{% url 'positions:detail' position.pk %}" class="hover:text-indigo-600 truncate">{{ position.title_fr }}</a>
+    <span>/</span>
+    <span class="text-gray-700">{% trans "Profil Big Five" %}</span>
+  </div>
+
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">{% trans "Profil Big Five cible" %}</h1>
+  <p class="text-sm text-gray-500 mb-8">
+    {% trans "Pour chaque dimension, définissez la fourchette souhaitée (0–100) avec les curseurs Min et Max." %}
+  </p>
+
+  <form method="post" class="space-y-4">
+    {% csrf_token %}
+
+    {% for dim in dimensions %}
+    <div class="bg-white rounded-2xl border border-gray-200 p-6"
+         x-data="{ min: {{ dim.val_min }}, max: {{ dim.val_max }} }">
+
+      <div class="flex items-start justify-between mb-3">
+        <div>
+          <h3 class="text-sm font-semibold text-gray-800">{{ dim.label }}</h3>
+          <p class="text-xs text-gray-400 mt-0.5">{{ dim.help }}</p>
+        </div>
+        <span class="text-sm font-bold text-indigo-600 ml-4 shrink-0 tabular-nums">
+          <span x-text="min"></span>–<span x-text="max"></span>
+        </span>
+      </div>
+
+      <!-- Slider Min -->
+      <div class="flex items-center gap-3 mb-2">
+        <span class="text-xs text-gray-400 w-8 shrink-0 text-right">{% trans "Min" %}</span>
+        <input type="range" min="0" max="100" step="5"
+               name="{{ dim.key }}_min"
+               x-model="min"
+               @input="if(parseInt(min) > parseInt(max)) max = min"
+               class="w-full accent-indigo-600 cursor-pointer h-2">
+      </div>
+
+      <!-- Slider Max -->
+      <div class="flex items-center gap-3 mb-3">
+        <span class="text-xs text-gray-400 w-8 shrink-0 text-right">{% trans "Max" %}</span>
+        <input type="range" min="0" max="100" step="5"
+               name="{{ dim.key }}_max"
+               x-model="max"
+               @input="if(parseInt(max) < parseInt(min)) min = max"
+               class="w-full accent-indigo-600 cursor-pointer h-2">
+      </div>
+
+      <!-- Barre visuelle -->
+      <div class="relative h-2 bg-gray-100 rounded-full mx-11">
+        <div class="absolute h-full bg-indigo-300 rounded-full transition-all"
+             :style="`left: ${min}%; width: ${max - min}%`">
+        </div>
+      </div>
+
+      {% if dim.field_min.errors or dim.field_max.errors %}
+        <p class="text-red-500 text-xs mt-2">
+          {{ dim.field_min.errors.0 }}{{ dim.field_max.errors.0 }}
+        </p>
+      {% endif %}
+    </div>
+    {% endfor %}
+
+    <div class="flex items-center justify-between pt-2">
+      <a href="{% url 'positions:detail' position.pk %}" class="text-sm text-gray-500 hover:text-gray-700">
+        {% trans "Annuler" %}
+      </a>
+      <button type="submit"
+              class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors">
+        {% trans "Enregistrer le profil" %}
+      </button>
+    </div>
+
+  </form>
+</div>
+{% endblock %}

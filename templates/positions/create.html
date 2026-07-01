@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Nouveau poste" %} — FitRadarHR{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+
+  <div class="flex items-center gap-2 text-sm text-gray-400 mb-6">
+    <a href="{% url 'positions:list' %}" class="hover:text-indigo-600">{% trans "Postes" %}</a>
+    <span>/</span>
+    <span class="text-gray-700">{% trans "Nouveau poste" %}</span>
+  </div>
+
+  <h1 class="text-2xl font-bold text-gray-900 mb-8">{% trans "Créer un poste" %}</h1>
+
+  <form method="post" class="bg-white rounded-2xl border border-gray-200 p-6 space-y-6">
+    {% csrf_token %}
+
+    <!-- Titre FR -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">
+        {% trans "Titre du poste (français)" %} <span class="text-red-500">*</span>
+      </label>
+      {{ form.title_fr }}
+      {% if form.title_fr.errors %}
+        <p class="text-red-500 text-xs mt-1">{{ form.title_fr.errors.0 }}</p>
+      {% endif %}
+    </div>
+
+    <!-- Titre EN -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">
+        {% trans "Titre du poste (anglais)" %}
+        <span class="text-gray-400 font-normal text-xs ml-1">{% trans "optionnel" %}</span>
+      </label>
+      {{ form.title_en }}
+    </div>
+
+    <!-- Département -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">
+        {% trans "Département" %}
+        <span class="text-gray-400 font-normal text-xs ml-1">{% trans "optionnel" %}</span>
+      </label>
+      {{ form.department }}
+    </div>
+
+    <!-- Description FR -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">
+        {% trans "Description (français)" %}
+        <span class="text-gray-400 font-normal text-xs ml-1">{% trans "optionnel" %}</span>
+      </label>
+      {{ form.description_fr }}
+    </div>
+
+    <!-- Description EN -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">
+        {% trans "Description (anglais)" %}
+        <span class="text-gray-400 font-normal text-xs ml-1">{% trans "optionnel" %}</span>
+      </label>
+      {{ form.description_en }}
+    </div>
+
+    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+      <a href="{% url 'positions:list' %}"
+         class="text-sm text-gray-500 hover:text-gray-700">
+        {% trans "Annuler" %}
+      </a>
+      <button type="submit"
+              class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors">
+        {% trans "Créer le poste" %} →
+      </button>
+    </div>
+  </form>
+
+  <p class="text-xs text-gray-400 mt-4 text-center">
+    {% trans "Après la création, vous pourrez définir le profil Big Five cible." %}
+  </p>
+
+</div>
+{% endblock %}

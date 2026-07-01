@@ -96,10 +96,10 @@
 **En tant que** RH, **je veux** créer un poste avec un titre et une description, **afin de** pouvoir lui associer un profil Big Five cible.
 
 **Critères d'acceptation :**
-- [ ] Le formulaire demande : titre du poste, description (libre), département (optionnel)
-- [ ] Le poste est créé avec le statut "actif"
-- [ ] Le titre et la description sont saisissables en FR et EN (champs bilingues)
-- [ ] Le poste apparaît dans la liste des postes de l'organisation
+- [x] Le formulaire demande : titre du poste, description (libre), département (optionnel)
+- [x] Le poste est créé avec le statut "actif"
+- [x] Le titre et la description sont saisissables en FR et EN (champs bilingues)
+- [x] Le poste apparaît dans la liste des postes de l'organisation
 
 ---
 
@@ -107,11 +107,11 @@
 **En tant que** RH, **je veux** définir manuellement le niveau attendu sur chacune des 5 dimensions OCEAN pour un poste donné, **afin de** paramétrer le calcul de fit poste.
 
 **Critères d'acceptation :**
-- [ ] Pour chaque dimension (O, C, E, A, N), le RH positionne un niveau cible sur une échelle (ex. 1–100 ou bas/moyen/haut)
-- [ ] Un texte explicatif de chaque dimension est affiché pour aider le RH à calibrer
-- [ ] Il est possible de définir une fourchette (min/max) plutôt qu'une valeur unique
-- [ ] Le profil cible peut être modifié après création
-- [ ] Un poste sans profil cible défini est clairement signalé comme "non configuré"
+- [x] Pour chaque dimension (O, C, E, A, N), le RH positionne un niveau cible sur une échelle (1–100)
+- [x] Un texte explicatif de chaque dimension est affiché pour aider le RH à calibrer
+- [x] Il est possible de définir une fourchette (min/max) plutôt qu'une valeur unique
+- [x] Le profil cible peut être modifié après création
+- [x] Un poste sans profil cible défini est clairement signalé comme "non configuré"
 
 ---
 
@@ -119,9 +119,9 @@
 **En tant que** RH, **je veux** consulter, modifier et archiver mes postes, **afin de** maintenir mon référentiel à jour.
 
 **Critères d'acceptation :**
-- [ ] La liste des postes affiche : titre, statut (actif/archivé), date de création, profil cible configuré (oui/non)
-- [ ] Un poste archivé n'apparaît plus dans les listes de sélection mais ses données sont conservées
-- [ ] La liste est filtrable par statut
+- [x] La liste des postes affiche : titre, statut (actif/archivé), date de création, profil cible configuré (oui/non)
+- [x] Un poste archivé n'apparaît plus dans les listes de sélection mais ses données sont conservées
+- [x] La liste est filtrable par statut
 
 ---
 

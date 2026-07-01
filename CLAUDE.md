@@ -68,7 +68,7 @@ User stories à rattacher systématiquement à l'un de ces epics (voir `00-cadra
 | # | Epic | Statut |
 |---|---|---|
 | E1 | Authentification & organisations | ✅ Modèles + inscription B2B/B2C + dashboard |
-| E2 | Gestion des postes | 🔲 À développer |
+| E2 | Gestion des postes | ✅ Liste, création, modification, archivage, profil Big Five |
 | E3 | Gestion des équipes | 🔲 À développer |
 | E4 | Questionnaire Big Five | 🔲 À développer |
 | E5 | Moteur de calcul de Fit | 🔲 À développer |
@@ -85,7 +85,7 @@ User stories à rattacher systématiquement à l'un de ces epics (voir `00-cadra
 - [x] Scaffold Django (modèles, migrations, auth B2B/B2C, dashboard)
 - [x] Docker Compose dev opérationnel (`make dev-build`)
 - [x] Documentation utilisateur publiée (MkDocs → GitHub Pages)
-- [ ] Vues Postes (E2)
+- [x] Vues Postes — liste, création, détail, modification, archivage, profil Big Five (E2)
 - [ ] Vues Équipes (E3)
 - [ ] Questionnaire Big Five (E4)
 - [ ] Moteur de calcul Fit (E5)
