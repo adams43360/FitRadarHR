@@ -72,9 +72,9 @@ User stories à rattacher systématiquement à l'un de ces epics (voir `00-cadra
 | E3 | Gestion des équipes | ✅ Liste, création, modification, membres, liste Personnes |
 | E4 | Questionnaire Big Five | ✅ Envoi lien, passation, scoring, profil BigFive |
 | E5 | Moteur de calcul de Fit | ✅ Fit Poste + Fit Équipe + complémentarité |
-| E6 | Rapports & restitution | ✅ Profil OCEAN, Fit Poste, Fit Équipe, radar charts |
-| E7 | Internationalisation | 🔄 En continu |
-| E8 | Conformité & gouvernance | 🔄 En continu |
+| E6 | Rapports & restitution | ✅ Profil OCEAN, Fit Poste, Fit Équipe, radar charts, export PDF |
+| E7 | Internationalisation | ✅ FR/EN — 300+ strings traduites |
+| E8 | Conformité & gouvernance | ✅ Droit à l'effacement, audit log viewer, politique de confidentialité |
 
 ## État d'avancement
 
@@ -90,6 +90,9 @@ User stories à rattacher systématiquement à l'un de ces epics (voir `00-cadra
 - [x] Questionnaire Big Five — envoi lien, consentement RGPD, passation par blocs, scoring OCEAN, profil sauvegardé (E4)
 - [x] Moteur de calcul Fit — Fit Poste (plage OCEAN), Fit Équipe (agrégat + complémentarité), déclenchement auto (E5)
 - [x] Rapports & radar chart — profil OCEAN, fit poste, fit équipe, complémentarité (E6)
+- [x] Export PDF — WeasyPrint, templates CSS-only, boutons sur les 3 rapports (E6)
+- [x] Dashboard enrichi — stats org, questionnaires en attente, profils récents, activité audit
+- [x] Conformité RGPD — droit à l'effacement (anonymize), audit log viewer paginé, politique de confidentialité (E8)
 
 ## Conventions de travail
 

@@ -39,5 +39,15 @@
   </main>
 
   {% block extra_scripts %}{% endblock %}
+
+  {% load i18n %}
+  <footer class="border-t border-gray-100 mt-16 py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between text-xs text-gray-400">
+      <span>FitRadarHR — {% trans "Outil open source (MIT)" %}</span>
+      <a href="{% url 'accounts:privacy_policy' %}" class="hover:text-indigo-600 hover:underline">
+        {% trans "Politique de confidentialité" %}
+      </a>
+    </div>
+  </footer>
 </body>
 </html>

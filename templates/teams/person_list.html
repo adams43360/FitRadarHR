@@ -26,8 +26,20 @@
         · {% if person.person_type == 'collaborator' %}{% trans "Collaborateur" %}{% else %}{% trans "Candidat" %}{% endif %}
       </p>
     </div>
-    <div class="flex items-center gap-3 text-xs text-gray-400">
-      <span>{{ person.created_at|date:"d/m/Y" }}</span>
+    <div class="flex items-center gap-4 text-xs">
+      <span class="text-gray-400">{{ person.created_at|date:"d/m/Y" }}</span>
+      {% if person.big_five_profile %}
+      <a href="{% url 'reports:person_profile' person_pk=person.pk %}"
+         class="text-indigo-600 hover:underline">{% trans "Rapport" %}</a>
+      {% else %}
+      <a href="{% url 'survey:send' %}?person={{ person.pk }}"
+         class="text-gray-400 hover:text-indigo-600">{% trans "Envoyer questionnaire" %}</a>
+      {% endif %}
+      {% if user.is_rh %}
+      <a href="{% url 'teams:person_anonymize' pk=person.pk %}"
+         class="text-red-400 hover:text-red-600"
+         title="{% trans 'Effacement RGPD' %}">🔒</a>
+      {% endif %}
     </div>
   </div>
   {% endfor %}

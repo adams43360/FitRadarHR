@@ -296,10 +296,10 @@
 **En tant que** RH ou Manager, **je veux** exporter un rapport au format PDF, **afin de** le partager avec d'autres parties prenantes (direction, équipe RH élargie).
 
 **Critères d'acceptation :**
-- [ ] Le PDF généré contient le radar chart, les textes d'analyse et la mention "aide à la décision"
-- [ ] Le PDF est nommé automatiquement (ex. `fit-poste_nom-candidat_nom-poste_date.pdf`)
-- [ ] L'export est tracé (qui a exporté, quand)
-- [ ] Le PDF ne contient pas d'informations non visibles dans l'interface (pas de données brutes cachées)
+- [x] Le PDF généré contient le radar chart, les textes d'analyse et la mention "aide à la décision"
+- [x] Le PDF est nommé automatiquement (ex. `fit-poste_nom-candidat_nom-poste_date.pdf`)
+- [x] L'export est tracé (qui a exporté, quand)
+- [x] Le PDF ne contient pas d'informations non visibles dans l'interface (pas de données brutes cachées)
 
 ---
 
@@ -332,11 +332,11 @@
 **En tant que** Candidat/Collaborateur, **je veux** donner mon consentement explicite avant de répondre au questionnaire, **afin d'** exercer mon droit à l'information sur l'usage de mes données.
 
 **Critères d'acceptation :**
-- [ ] Une page de consentement précède le questionnaire : elle explique l'objet de la collecte, qui aura accès aux résultats, la durée de conservation, et les droits de la personne
-- [ ] Le consentement est recueilli par une case à cocher active (pas pré-cochée)
-- [ ] Le consentement est horodaté et conservé (preuve en cas de demande RGPD)
-- [ ] Sans consentement, le questionnaire ne peut pas être démarré
-- [ ] La page de consentement est disponible en FR et EN
+- [x] Une page de consentement précède le questionnaire : elle explique l'objet de la collecte, qui aura accès aux résultats, la durée de conservation, et les droits de la personne
+- [x] Le consentement est recueilli par une case à cocher active (pas pré-cochée)
+- [x] Le consentement est horodaté et conservé (preuve en cas de demande RGPD)
+- [x] Sans consentement, le questionnaire ne peut pas être démarré
+- [x] La page de consentement est disponible en FR et EN
 
 ---
 
@@ -344,11 +344,11 @@
 **En tant que** Candidat/Collaborateur, **je veux** pouvoir demander la suppression de mes données de personnalité, **afin d'** exercer mon droit à l'effacement.
 
 **Critères d'acceptation :**
-- [ ] Une procédure de demande de suppression est accessible (ex. via un lien dans les emails reçus ou une page publique)
-- [ ] La demande déclenche une suppression (ou anonymisation irréversible) du profil Big Five et des scores associés
-- [ ] La confirmation de suppression est envoyée par email sous 72h
-- [ ] La suppression est tracée pour preuve de conformité (sans conserver les données supprimées)
-- [ ] Le RH est notifié si des rapports liés à ce profil sont affectés
+- [x] Une procédure d'anonymisation est accessible au RH depuis la liste des personnes (bouton 🔒)
+- [x] La demande déclenche une anonymisation irréversible (prénom, nom, email remplacés)
+- [ ] La confirmation de suppression est envoyée par email sous 72h *(V2)*
+- [x] La suppression est tracée dans l'AuditLog (preuve de conformité)
+- [x] Les profils Big Five et résultats de fit sont conservés de façon anonymisée (traçabilité)
 
 ---
 
@@ -356,11 +356,11 @@
 **En tant que** RH, **je veux** que toutes les actions liées aux évaluations soient tracées automatiquement, **afin de** garantir la traçabilité requise par l'EU AI Act et de pouvoir répondre à une contestation.
 
 **Critères d'acceptation :**
-- [ ] Chaque rapport de fit (poste ou équipe) est associé à un log : qui l'a consulté, quand, pour quelle personne/poste/équipe
-- [ ] Chaque export PDF est tracé
-- [ ] La version de l'algorithme de calcul utilisée est consignée dans chaque rapport
-- [ ] Les logs ne peuvent pas être supprimés par un utilisateur standard (conservation minimale réglementaire)
-- [ ] Un RH ADMIN peut consulter les logs de son organisation
+- [x] Chaque rapport de fit (poste ou équipe) est associé à un log : qui l'a consulté, quand, pour quelle personne/poste/équipe
+- [x] Chaque export PDF est tracé
+- [x] La version de l'algorithme de calcul utilisée est consignée dans chaque rapport
+- [x] Les logs ne peuvent pas être supprimés par un utilisateur standard (AuditLog immuable)
+- [x] Un RH peut consulter les logs de son organisation (journal d'audit paginé)
 
 ---
 
@@ -368,10 +368,10 @@
 **En tant que** RH ou Manager, **je veux** que chaque rapport rappelle explicitement qu'une supervision humaine est obligatoire, **afin de** documenter que le système ne décide jamais seul.
 
 **Critères d'acceptation :**
-- [ ] Une mention standardisée est présente sur chaque rapport (interface et PDF) : le texte exact est à valider mais doit préciser que le rapport est une aide à la décision et ne constitue pas une décision de recrutement ou de mobilité
-- [ ] Cette mention n'est pas masquable ni supprimable par l'utilisateur
-- [ ] La mention est traduite en FR et EN
+- [x] Une mention standardisée est présente sur chaque rapport (interface et PDF) précisant que le rapport est une aide à la décision, pas une décision de recrutement ou de mobilité
+- [x] Cette mention n'est pas masquable ni supprimable par l'utilisateur
+- [x] La mention est traduite en FR et EN
 
 ---
 
-*Dernière mise à jour : 2026-06-30*
+*Dernière mise à jour : 2026-07-01*

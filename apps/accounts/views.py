@@ -172,3 +172,8 @@ def dashboard(request):
         "recent_activity": recent_activity,
     }
     return render(request, "accounts/dashboard.html", context)
+
+
+@login_required
+def privacy_policy(request):
+    return render(request, "accounts/privacy_policy.html")

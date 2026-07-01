@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Journal d'audit" %} — FitRadarHR{% endblock %}
+
+{% block content %}
+<div class="mb-6 flex items-center justify-between">
+  <div>
+    <h1 class="text-2xl font-bold text-gray-900">{% trans "Journal d'audit" %}</h1>
+    <p class="text-sm text-gray-500 mt-1">{% trans "Traçabilité des actions — EU AI Act & RGPD" %}</p>
+  </div>
+  <a href="{% url 'reports:list' %}" class="text-sm text-indigo-600 hover:underline">← {% trans "Rapports" %}</a>
+</div>
+
+<div class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+
+  {% if logs %}
+  <table class="w-full text-sm">
+    <thead>
+      <tr class="bg-gray-50 border-b border-gray-100 text-xs uppercase tracking-wide text-gray-500">
+        <th class="px-4 py-3 text-left">{% trans "Date" %}</th>
+        <th class="px-4 py-3 text-left">{% trans "Action" %}</th>
+        <th class="px-4 py-3 text-left">{% trans "Entité" %}</th>
+        <th class="px-4 py-3 text-left">{% trans "Utilisateur" %}</th>
+        <th class="px-4 py-3 text-left">{% trans "Détails" %}</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-100">
+      {% for log in logs %}
+      <tr class="hover:bg-gray-50 transition-colors">
+        <td class="px-4 py-3 text-gray-500 whitespace-nowrap">
+          {{ log.created_at|date:"d/m/Y H:i" }}
+        </td>
+        <td class="px-4 py-3">
+          <span class="inline-flex items-center gap-1.5">
+            {% if "pdf" in log.action %}📄
+            {% elif "anonymized" in log.action %}🔒
+            {% elif "profile" in log.action %}📊
+            {% elif "position" in log.action %}🎯
+            {% elif "team" in log.action %}👥
+            {% else %}📋{% endif %}
+            <code class="text-xs text-gray-600 bg-gray-100 px-1.5 py-0.5 rounded">{{ log.action }}</code>
+          </span>
+        </td>
+        <td class="px-4 py-3 text-gray-600">
+          <span class="text-xs text-gray-400">{{ log.entity_type }}</span>
+          <br>
+          <code class="text-xs text-gray-300">{{ log.entity_id|truncatechars:12 }}</code>
+        </td>
+        <td class="px-4 py-3 text-gray-700">
+          {% if log.user %}{{ log.user.get_full_name }}{% else %}<span class="text-gray-400">—</span>{% endif %}
+        </td>
+        <td class="px-4 py-3 text-gray-400 text-xs">
+          {% if log.metadata %}{{ log.metadata }}{% else %}—{% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Pagination -->
+  {% if logs.has_other_pages %}
+  <div class="px-4 py-3 border-t border-gray-100 flex items-center justify-between text-sm text-gray-500">
+    <span>{% blocktrans with start=logs.start_index end=logs.end_index total=logs.paginator.count %}{{ start }}–{{ end }} sur {{ total }}{% endblocktrans %}</span>
+    <div class="flex gap-2">
+      {% if logs.has_previous %}
+      <a href="?page={{ logs.previous_page_number }}"
+         class="px-3 py-1 border border-gray-200 rounded hover:bg-gray-50">←</a>
+      {% endif %}
+      {% if logs.has_next %}
+      <a href="?page={{ logs.next_page_number }}"
+         class="px-3 py-1 border border-gray-200 rounded hover:bg-gray-50">→</a>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% else %}
+  <div class="px-6 py-12 text-center text-gray-400 text-sm">
+    {% trans "Aucune entrée dans le journal d'audit." %}
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Politique de confidentialité" %} — FitRadarHR{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+  <div class="mb-8">
+    <h1 class="text-2xl font-bold text-gray-900">{% trans "Politique de confidentialité" %}</h1>
+    <p class="text-sm text-gray-500 mt-1">{% trans "Dernière mise à jour : janvier 2025" %}</p>
+  </div>
+
+  <div class="bg-white rounded-2xl border border-gray-200 p-8 space-y-8 text-sm text-gray-700 leading-relaxed">
+
+    <section>
+      <h2 class="text-base font-semibold text-gray-900 mb-3">1. {% trans "Responsable du traitement" %}</h2>
+      <p>{% trans "FitRadarHR est un outil open source (licence MIT) utilisé au sein de votre organisation. Le responsable du traitement des données est l'organisation qui déploie et administre cet outil." %}</p>
+    </section>
+
+    <section>
+      <h2 class="text-base font-semibold text-gray-900 mb-3">2. {% trans "Données collectées" %}</h2>
+      <ul class="list-disc list-inside space-y-1 text-gray-600">
+        <li>{% trans "Identité : prénom, nom, adresse email" %}</li>
+        <li>{% trans "Profil psychologique Big Five / OCEAN — uniquement via le questionnaire IPIP validé scientifiquement" %}</li>
+        <li>{% trans "Résultats de compatibilité (fit) avec les postes et équipes" %}</li>
+        <li>{% trans "Journal d'audit des actions (traçabilité EU AI Act)" %}</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="text-base font-semibold text-gray-900 mb-3">3. {% trans "Base légale" %}</h2>
+      <p>{% trans "Le traitement des données de personnalité repose sur le consentement explicite de la personne évaluée (Art. 9 RGPD), recueilli avant toute passation du questionnaire." %}</p>
+    </section>
+
+    <section>
+      <h2 class="text-base font-semibold text-gray-900 mb-3">4. {% trans "Finalité du traitement" %}</h2>
+      <p>{% trans "Les données sont utilisées exclusivement à des fins d'aide à la décision RH (compatibilité poste/équipe). Aucune décision automatisée ne produit d'effet juridique — un humain reste responsable de toute décision de recrutement ou de mobilité." %}</p>
+    </section>
+
+    <section>
+      <h2 class="text-base font-semibold text-gray-900 mb-3">5. {% trans "Durée de conservation" %}</h2>
+      <p>{% trans "Les données sont conservées pendant la durée d'utilisation de l'outil. Elles peuvent être anonymisées à tout moment sur demande (droit à l'effacement, Art. 17 RGPD)." %}</p>
+    </section>
+
+    <section>
+      <h2 class="text-base font-semibold text-gray-900 mb-3">6. {% trans "Vos droits" %}</h2>
+      <ul class="list-disc list-inside space-y-1 text-gray-600">
+        <li>{% trans "Droit d'accès à vos données (Art. 15 RGPD)" %}</li>
+        <li>{% trans "Droit de rectification (Art. 16 RGPD)" %}</li>
+        <li>{% trans "Droit à l'effacement / anonymisation (Art. 17 RGPD)" %}</li>
+        <li>{% trans "Droit de retrait du consentement à tout moment" %}</li>
+        <li>{% trans "Droit d'introduire une réclamation auprès de la CNIL (France)" %}</li>
+      </ul>
+      <p class="mt-3">{% trans "Pour exercer ces droits, contactez l'administrateur de votre organisation." %}</p>
+    </section>
+
+    <section>
+      <h2 class="text-base font-semibold text-gray-900 mb-3">7. {% trans "EU AI Act" %}</h2>
+      <p>{% trans "FitRadarHR est susceptible d'être classifié comme système d'IA à haut risque (Annexe III, Art. 6 EU AI Act). À ce titre, chaque restitution est tracée dans un journal d'audit immuable, et aucune décision n'est prise sans supervision humaine documentée." %}</p>
+    </section>
+
+  </div>
+</div>
+{% endblock %}

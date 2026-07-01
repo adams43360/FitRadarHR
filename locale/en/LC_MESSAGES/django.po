@@ -1152,3 +1152,243 @@ msgid ""
 "constituer vos équipes."
 msgstr ""
 "No people registered. Add candidates or employees to build your teams."
+
+# ── E8 — Dashboard riche ──────────────────────────────────────────────────────
+
+msgid "avec profil"
+msgstr "with profile"
+
+msgid "tous postes"
+msgstr "all positions"
+
+msgid "questionnaires"
+msgstr "questionnaires"
+
+msgid "Fit moyen (postes)"
+msgstr "Avg. fit (positions)"
+
+msgid "Questionnaires en attente"
+msgstr "Pending questionnaires"
+
+msgid "Voir tout"
+msgstr "View all"
+
+msgid "Renvoyer"
+msgstr "Resend"
+
+msgid "Profils récents"
+msgstr "Recent profiles"
+
+msgid "Aucun questionnaire en attente"
+msgstr "No pending questionnaires"
+
+msgid "Aucun profil complété pour l'instant"
+msgstr "No completed profiles yet"
+
+msgid "Activité récente"
+msgstr "Recent activity"
+
+msgid "Profil consulté"
+msgstr "Profile viewed"
+
+msgid "Fit poste consulté"
+msgstr "Position fit viewed"
+
+msgid "Fit équipe consulté"
+msgstr "Team fit viewed"
+
+msgid "Profil exporté PDF"
+msgstr "Profile exported to PDF"
+
+msgid "Fit poste exporté PDF"
+msgstr "Position fit exported to PDF"
+
+msgid "Fit équipe exporté PDF"
+msgstr "Team fit exported to PDF"
+
+msgid "Aucune activité enregistrée"
+msgstr "No recorded activity"
+
+# ── E8 — RGPD Anonymisation ───────────────────────────────────────────────────
+
+msgid "Effacement des données"
+msgstr "Data erasure"
+
+msgid "Effacement des données personnelles"
+msgstr "Personal data erasure"
+
+msgid "Action irréversible — RGPD Art. 17"
+msgstr "Irreversible action — GDPR Art. 17"
+
+msgid ""
+"Vous êtes sur le point d'anonymiser les données personnelles de "
+"<strong>%(name)s</strong>."
+msgstr ""
+"You are about to anonymize the personal data of <strong>%(name)s</strong>."
+
+msgid ""
+"Les informations suivantes seront remplacées par des valeurs anonymes :"
+msgstr "The following information will be replaced with anonymous values:"
+
+msgid "Prénom et nom → [supprimé]"
+msgstr "First name and last name → [deleted]"
+
+msgid "Adresse email → adresse anonymisée"
+msgstr "Email address → anonymized address"
+
+msgid ""
+"Les profils Big Five, résultats de fit et journaux d'audit sont conservés "
+"(traçabilité EU AI Act)."
+msgstr ""
+"Big Five profiles, fit results and audit logs are retained "
+"(EU AI Act traceability)."
+
+msgid "Confirmer l'effacement"
+msgstr "Confirm erasure"
+
+msgid "Vous n'avez pas les droits pour effectuer cette action."
+msgstr "You do not have permission to perform this action."
+
+msgid "Les données personnelles ont été anonymisées."
+msgstr "Personal data has been anonymized."
+
+msgid "Effacement RGPD"
+msgstr "GDPR erasure"
+
+msgid "Envoyer questionnaire"
+msgstr "Send questionnaire"
+
+# ── E8 — Journal d'audit ──────────────────────────────────────────────────────
+
+msgid "Journal d'audit"
+msgstr "Audit log"
+
+msgid "Traçabilité des actions — EU AI Act & RGPD"
+msgstr "Action traceability — EU AI Act & GDPR"
+
+msgid "Entité"
+msgstr "Entity"
+
+msgid "Détails"
+msgstr "Details"
+
+msgid "%(start)s–%(end)s sur %(total)s"
+msgstr "%(start)s–%(end)s of %(total)s"
+
+msgid "Aucune entrée dans le journal d'audit."
+msgstr "No entries in the audit log."
+
+msgid "Audit"
+msgstr "Audit"
+
+# ── E8 — Politique de confidentialité ────────────────────────────────────────
+
+msgid "Politique de confidentialité"
+msgstr "Privacy policy"
+
+msgid "Dernière mise à jour : janvier 2025"
+msgstr "Last updated: January 2025"
+
+msgid "Responsable du traitement"
+msgstr "Data controller"
+
+msgid ""
+"FitRadarHR est un outil open source (licence MIT) utilisé au sein de votre "
+"organisation. Le responsable du traitement des données est l'organisation "
+"qui déploie et administre cet outil."
+msgstr ""
+"FitRadarHR is an open-source tool (MIT license) used within your "
+"organization. The data controller is the organization that deploys and "
+"administers this tool."
+
+msgid "Données collectées"
+msgstr "Data collected"
+
+msgid "Identité : prénom, nom, adresse email"
+msgstr "Identity: first name, last name, email address"
+
+msgid ""
+"Profil psychologique Big Five / OCEAN — uniquement via le questionnaire IPIP "
+"validé scientifiquement"
+msgstr ""
+"Big Five / OCEAN psychological profile — only via the scientifically "
+"validated IPIP questionnaire"
+
+msgid "Résultats de compatibilité (fit) avec les postes et équipes"
+msgstr "Compatibility (fit) results with positions and teams"
+
+msgid "Journal d'audit des actions (traçabilité EU AI Act)"
+msgstr "Action audit log (EU AI Act traceability)"
+
+msgid "Base légale"
+msgstr "Legal basis"
+
+msgid ""
+"Le traitement des données de personnalité repose sur le consentement "
+"explicite de la personne évaluée (Art. 9 RGPD), recueilli avant toute "
+"passation du questionnaire."
+msgstr ""
+"The processing of personality data is based on the explicit consent of the "
+"assessed person (Art. 9 GDPR), collected before any questionnaire is taken."
+
+msgid "Finalité du traitement"
+msgstr "Purpose of processing"
+
+msgid ""
+"Les données sont utilisées exclusivement à des fins d'aide à la décision RH "
+"(compatibilité poste/équipe). Aucune décision automatisée ne produit d'effet "
+"juridique — un humain reste responsable de toute décision de recrutement ou "
+"de mobilité."
+msgstr ""
+"Data is used exclusively for HR decision-support purposes (position/team "
+"compatibility). No automated decision produces legal effect — a human remains "
+"responsible for any hiring or mobility decision."
+
+msgid "Durée de conservation"
+msgstr "Retention period"
+
+msgid ""
+"Les données sont conservées pendant la durée d'utilisation de l'outil. "
+"Elles peuvent être anonymisées à tout moment sur demande (droit à "
+"l'effacement, Art. 17 RGPD)."
+msgstr ""
+"Data is retained for the duration of tool use. It can be anonymized at any "
+"time upon request (right to erasure, Art. 17 GDPR)."
+
+msgid "Vos droits"
+msgstr "Your rights"
+
+msgid "Droit d'accès à vos données (Art. 15 RGPD)"
+msgstr "Right of access to your data (Art. 15 GDPR)"
+
+msgid "Droit de rectification (Art. 16 RGPD)"
+msgstr "Right to rectification (Art. 16 GDPR)"
+
+msgid "Droit à l'effacement / anonymisation (Art. 17 RGPD)"
+msgstr "Right to erasure / anonymization (Art. 17 GDPR)"
+
+msgid "Droit de retrait du consentement à tout moment"
+msgstr "Right to withdraw consent at any time"
+
+msgid "Droit d'introduire une réclamation auprès de la CNIL (France)"
+msgstr "Right to lodge a complaint with the CNIL (France)"
+
+msgid "Pour exercer ces droits, contactez l'administrateur de votre organisation."
+msgstr "To exercise these rights, contact your organization's administrator."
+
+msgid "EU AI Act"
+msgstr "EU AI Act"
+
+msgid ""
+"FitRadarHR est susceptible d'être classifié comme système d'IA à haut risque "
+"(Annexe III, Art. 6 EU AI Act). À ce titre, chaque restitution est tracée "
+"dans un journal d'audit immuable, et aucune décision n'est prise sans "
+"supervision humaine documentée."
+msgstr ""
+"FitRadarHR may be classified as a high-risk AI system (Annex III, Art. 6 "
+"EU AI Act). As such, each output is tracked in an immutable audit log, and "
+"no decision is made without documented human oversight."
+
+msgid "Outil open source (MIT)"
+msgstr "Open source tool (MIT)"
+

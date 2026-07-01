@@ -136,3 +136,32 @@ def person_create(request):
     else:
         form = PersonForm()
     return render(request, "teams/person_create.html", {"form": form})
+
+
+# ── RGPD — Droit à l'effacement ───────────────────────────────────────────────
+
+@login_required
+def person_anonymize(request, pk):
+    """Anonymise les PII d'une personne (droit à l'effacement RGPD)."""
+    from apps.reports.models import AuditLog
+    person = get_object_or_404(Person, pk=pk, org=request.user.org)
+
+    if not request.user.is_rh:
+        messages.error(request, _("Vous n'avez pas les droits pour effectuer cette action."))
+        return redirect("teams:persons")
+
+    if request.method == "POST":
+        person_name = person.full_name
+        person.anonymize()
+        AuditLog.objects.create(
+            org=request.user.org,
+            user=request.user,
+            action="person.anonymized",
+            entity_type="Person",
+            entity_id=person.pk,
+            metadata={"name": person_name},
+        )
+        messages.success(request, _("Les données personnelles ont été anonymisées."))
+        return redirect("teams:persons")
+
+    return render(request, "teams/person_anonymize_confirm.html", {"person": person})
