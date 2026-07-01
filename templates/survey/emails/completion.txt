@@ -1,0 +1,8 @@
+Bonjour {{ sent_by.get_full_name|default:sent_by.email }},
+
+Le questionnaire de {{ person.full_name }} ({{ person.email }}) vient d'être complété.
+
+Son profil Big Five est maintenant disponible dans FitRadarHR.
+
+---
+FitRadarHR — notification automatique

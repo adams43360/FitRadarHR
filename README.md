@@ -70,7 +70,7 @@ L'application est accessible sur **http://localhost:8000**.
 - [x] Documentation utilisateur publiée (GitHub Pages)
 - [x] Vues Postes — liste, création, détail, modification, archivage, profil Big Five (E2)
 - [x] Vues Équipes — liste, création, détail, modification, membres + liste Personnes (E3)
-- [ ] Questionnaire Big Five (E4)
+- [x] Questionnaire Big Five — envoi lien, consentement RGPD, passation par blocs, scoring OCEAN, profil sauvegardé (E4)
 - [ ] Moteur de calcul Fit (E5)
 - [ ] Rapports & radar chart (E6)
 
@@ -81,7 +81,7 @@ L'application est accessible sur **http://localhost:8000**.
 | E1 | Authentification & organisations | ✅ Modèles + inscription B2B/B2C |
 | E2 | Gestion des postes | ✅ Liste, création, modification, archivage, profil OCEAN |
 | E3 | Gestion des équipes | ✅ Liste, création, modification, membres, liste Personnes |
-| E4 | Questionnaire Big Five | 🔲 À développer |
+| E4 | Questionnaire Big Five | ✅ Envoi lien, passation, scoring, profil BigFive |
 | E5 | Moteur de calcul de Fit | 🔲 À développer |
 | E6 | Rapports & restitution | 🔲 À développer |
 | E7 | Internationalisation | 🔄 En continu |

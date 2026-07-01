@@ -28,7 +28,7 @@
     <p class="text-3xl font-bold text-indigo-600">{{ teams_count }}</p>
   </a>
 
-  <a href="{% url 'survey:persons' %}"
+  <a href="{% url 'teams:persons' %}"
      class="block bg-white rounded-2xl border border-gray-200 p-6 hover:shadow-md transition-shadow">
     <p class="text-sm text-gray-500 mb-1">{% trans "Personnes évaluées" %}</p>
     <p class="text-3xl font-bold text-indigo-600">{{ persons_count }}</p>

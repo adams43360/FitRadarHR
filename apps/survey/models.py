@@ -54,7 +54,7 @@ class ConsentRecord(models.Model):
         verbose_name = _("consentement")
 
     def save(self, *args, **kwargs):
-        if self.pk:
+        if not self._state.adding:
             raise Exception("ConsentRecord est immuable.")
         super().save(*args, **kwargs)
 

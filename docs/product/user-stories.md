@@ -173,11 +173,11 @@
 **En tant que** RH ou Manager, **je veux** envoyer un lien de questionnaire à un candidat ou collaborateur par email, **afin qu'**il puisse le compléter sans avoir de compte FitRadarHR.
 
 **Critères d'acceptation :**
-- [ ] Le lien est généré depuis une fiche candidat/collaborateur ou depuis la fiche d'un poste
-- [ ] L'email est envoyé par FitRadarHR et mentionne : qui envoie (organisation), l'objet du questionnaire, la durée estimée
-- [ ] Le lien est unique, sécurisé et horodaté (expiration configurable, défaut : 30 jours)
-- [ ] Le RH/Manager peut voir le statut du questionnaire : envoyé / en cours / complété
-- [ ] Il est possible de renvoyer le lien si non utilisé
+- [x] Le lien est généré depuis une fiche candidat/collaborateur ou depuis la fiche d'un poste
+- [x] L'email est envoyé par FitRadarHR et mentionne : qui envoie (organisation), l'objet du questionnaire, la durée estimée
+- [x] Le lien est unique, sécurisé et horodaté (expiration : 7 jours)
+- [x] Le RH/Manager peut voir le statut du questionnaire : envoyé / en cours / complété
+- [x] Il est possible de renvoyer le lien si non utilisé
 
 ---
 
@@ -185,11 +185,11 @@
 **En tant que** Candidat/Collaborateur, **je veux** accéder au questionnaire via mon lien et le compléter, **afin que** mon profil Big Five soit calculé.
 
 **Critères d'acceptation :**
-- [ ] La page du questionnaire est accessible sans création de compte
-- [ ] Le questionnaire utilise les items IPIP (domaine public) — version 50 ou 100 items (à arbitrer, cf. question ouverte dans le cadrage)
-- [ ] Les questions sont présentées par blocs (pas toutes d'un coup) avec une barre de progression
-- [ ] Le résultat est calculé côté serveur dès la soumission finale
-- [ ] L'accès expire après complétion ou après la date limite du lien
+- [x] La page du questionnaire est accessible sans création de compte
+- [x] Le questionnaire utilise les items IPIP (domaine public) — version 50 items (v1.0)
+- [x] Les questions sont présentées par blocs de 10 avec une barre de progression
+- [x] Le résultat est calculé côté serveur dès la soumission finale
+- [x] L'accès expire après complétion ou après la date limite du lien
 
 ---
 
@@ -197,9 +197,9 @@
 **En tant que** Candidat/Collaborateur, **je veux** choisir la langue du questionnaire (FR ou EN), **afin de** répondre dans ma langue préférée.
 
 **Critères d'acceptation :**
-- [ ] Le choix de langue est proposé dès l'arrivée sur la page du questionnaire (avant le début)
-- [ ] L'ensemble des questions, consignes et libellés d'échelle sont traduits
-- [ ] Le choix de langue n'affecte pas le calcul du score (même items traduits)
+- [x] Le choix de langue est proposé dès l'arrivée sur la page du questionnaire (avant le début)
+- [x] L'ensemble des questions, consignes et libellés d'échelle sont traduits (FR/EN)
+- [x] Le choix de langue n'affecte pas le calcul du score (même items traduits)
 
 ---
 
@@ -207,9 +207,9 @@
 **En tant que** Candidat/Collaborateur, **je veux** pouvoir interrompre et reprendre le questionnaire là où je m'étais arrêté, **afin de** ne pas avoir à tout recommencer si je suis interrompu.
 
 **Critères d'acceptation :**
-- [ ] La progression est sauvegardée automatiquement (toutes les X questions ou à chaque page)
-- [ ] En revenant sur le lien, le candidat reprend depuis sa dernière réponse enregistrée
-- [ ] La session de reprise est liée au même lien sécurisé (pas de compte nécessaire)
+- [x] La progression est sauvegardée automatiquement à chaque page
+- [x] En revenant sur le lien, le candidat reprend depuis sa dernière réponse enregistrée
+- [x] La session de reprise est liée au même lien sécurisé (pas de compte nécessaire)
 
 ---
 
@@ -217,9 +217,9 @@
 **En tant que** RH ou Manager, **je veux** être notifié quand un questionnaire est complété, **afin de** consulter les résultats rapidement.
 
 **Critères d'acceptation :**
-- [ ] Une notification email est envoyée à l'émetteur du lien dès la soumission du questionnaire
-- [ ] La notification contient un lien direct vers le rapport ou le profil du candidat/collaborateur
-- [ ] La notification est également visible dans l'interface (centre de notifications)
+- [x] Une notification email est envoyée à l'émetteur du lien dès la soumission du questionnaire
+- [x] La notification contient un lien direct vers le rapport ou le profil du candidat/collaborateur
+- [ ] La notification est également visible dans l'interface (centre de notifications) — reporté V2
 
 ---
 

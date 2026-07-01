@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Questionnaires" %} — FitRadarHR{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-2xl font-bold text-gray-900">{% trans "Questionnaires" %}</h1>
+  <a href="{% url 'survey:send' %}"
+     class="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">
+    + {% trans "Envoyer un lien" %}
+  </a>
+</div>
+
+{% if links %}
+<div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+  <table class="min-w-full divide-y divide-gray-200">
+    <thead class="bg-gray-50">
+      <tr>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{% trans "Personne" %}</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{% trans "Version" %}</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{% trans "Langue" %}</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{% trans "Statut" %}</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{% trans "Envoyé le" %}</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{% trans "Par" %}</th>
+        <th class="px-6 py-3"></th>
+      </tr>
+    </thead>
+    <tbody class="bg-white divide-y divide-gray-200">
+      {% for link in links %}
+      <tr class="hover:bg-gray-50">
+        <td class="px-6 py-4">
+          <div class="font-medium text-gray-900">{{ link.person.full_name }}</div>
+          <div class="text-sm text-gray-500">{{ link.person.email }}</div>
+        </td>
+        <td class="px-6 py-4 text-sm text-gray-700">{{ link.questionnaire_version }} items</td>
+        <td class="px-6 py-4 text-sm text-gray-700">{{ link.language|upper }}</td>
+        <td class="px-6 py-4">
+          {% if link.status == "completed" %}
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">✓ {% trans "Complété" %}</span>
+          {% elif link.status == "in_progress" %}
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">⏳ {% trans "En cours" %}</span>
+          {% elif link.status == "expired" %}
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">{% trans "Expiré" %}</span>
+          {% else %}
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">{% trans "En attente" %}</span>
+          {% endif %}
+        </td>
+        <td class="px-6 py-4 text-sm text-gray-500">{{ link.sent_at|date:"d/m/Y" }}</td>
+        <td class="px-6 py-4 text-sm text-gray-500">{{ link.sent_by.get_full_name|default:link.sent_by.email }}</td>
+        <td class="px-6 py-4 text-right">
+          {% if link.status != "completed" %}
+          <form method="post" action="{% url 'survey:resend' pk=link.pk %}" class="inline">
+            {% csrf_token %}
+            <button type="submit"
+              class="text-sm text-indigo-600 hover:text-indigo-800 font-medium">
+              {% trans "Renvoyer" %}
+            </button>
+          </form>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="text-center py-16">
+  <p class="text-gray-500 mb-4">{% trans "Aucun questionnaire envoyé pour le moment." %}</p>
+  <a href="{% url 'survey:send' %}"
+     class="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">
+    + {% trans "Envoyer un premier lien" %}
+  </a>
+</div>
+{% endif %}
+{% endblock %}

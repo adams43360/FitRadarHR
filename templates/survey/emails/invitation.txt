@@ -1,0 +1,29 @@
+{% if link.language == "fr" %}Bonjour {{ person.first_name }},
+
+Vous avez été invité(e) à compléter un questionnaire de personnalité Big Five (IPIP-50).
+
+Ce questionnaire comporte {{ link.questionnaire_version }} questions et prend environ 10 minutes.
+Vos réponses sont confidentielles. Seul un profil agrégé (5 scores) sera conservé.
+
+→ Accéder au questionnaire :
+{{ survey_url }}
+
+Ce lien est valable {{ validity_days }} jours.
+
+---
+Propulsé par FitRadarHR — outil open source basé sur le modèle Big Five / OCEAN (IPIP, domaine public)
+{% else %}Hello {{ person.first_name }},
+
+You have been invited to complete a Big Five personality questionnaire (IPIP-50).
+
+This questionnaire has {{ link.questionnaire_version }} questions and takes about 10 minutes.
+Your answers are confidential. Only an aggregated profile (5 scores) will be kept.
+
+→ Access the questionnaire:
+{{ survey_url }}
+
+This link is valid for {{ validity_days }} days.
+
+---
+Powered by FitRadarHR — open source tool based on Big Five / OCEAN (IPIP, public domain)
+{% endif %}

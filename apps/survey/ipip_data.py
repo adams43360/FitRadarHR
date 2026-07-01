@@ -1,0 +1,99 @@
+"""
+IPIP Big Five Markers — 50 items (version courte de Goldberg, 1992)
+Source : International Personality Item Pool (ipip.ori.org) — domaine public
+Traductions FR : adaptées pour le contexte professionnel
+
+Scoring :
+  - key= 1 : score direct (1→1, 2→2, 3→3, 4→4, 5→5)
+  - key=-1 : score inversé (1→5, 2→4, 3→3, 4→2, 5→1) = 6 - score
+  - Chaque dimension : 10 items, somme ajustée ∈ [10, 50]
+  - Normalisation 0-100 : (somme - 10) / 40 × 100
+"""
+
+# Libellés de l'échelle de réponse
+SCALE_FR = {
+    1: "Pas du tout d'accord",
+    2: "Plutôt pas d'accord",
+    3: "Ni l'un ni l'autre",
+    4: "Plutôt d'accord",
+    5: "Tout à fait d'accord",
+}
+
+SCALE_EN = {
+    1: "Strongly disagree",
+    2: "Disagree",
+    3: "Neither agree nor disagree",
+    4: "Agree",
+    5: "Strongly agree",
+}
+
+# Dimensions OCEAN
+DIMENSIONS = ["extraversion", "agreeableness", "conscientiousness", "neuroticism", "openness"]
+
+ITEMS = [
+    # ── Extraversion ──────────────────────────────────────────────────────────
+    {"id": "E1",  "dim": "extraversion", "key":  1, "fr": "Je suis le centre de l'attention.",                    "en": "I am the life of the party."},
+    {"id": "E2",  "dim": "extraversion", "key": -1, "fr": "Je ne parle pas beaucoup.",                           "en": "I don't talk a lot."},
+    {"id": "E3",  "dim": "extraversion", "key":  1, "fr": "Je me sens à l'aise avec les gens.",                  "en": "I feel comfortable around people."},
+    {"id": "E4",  "dim": "extraversion", "key":  1, "fr": "Je prends facilement l'initiative dans les échanges.", "en": "I start conversations."},
+    {"id": "E5",  "dim": "extraversion", "key": -1, "fr": "J'ai peu de choses à dire.",                          "en": "I have little to say."},
+    {"id": "E6",  "dim": "extraversion", "key":  1, "fr": "Je parle facilement à de nombreuses personnes.",      "en": "I talk to a lot of different people at parties."},
+    {"id": "E7",  "dim": "extraversion", "key": -1, "fr": "Je n'aime pas me mettre en avant.",                   "en": "I don't like to draw attention to myself."},
+    {"id": "E8",  "dim": "extraversion", "key":  1, "fr": "Être au centre de l'attention ne me dérange pas.",    "en": "I don't mind being the center of attention."},
+    {"id": "E9",  "dim": "extraversion", "key": -1, "fr": "Je suis réservé(e) face aux inconnus.",               "en": "I am quiet around strangers."},
+    {"id": "E10", "dim": "extraversion", "key": -1, "fr": "Je préfère rester en retrait.",                       "en": "I keep in the background."},
+
+    # ── Agréabilité ───────────────────────────────────────────────────────────
+    {"id": "A1",  "dim": "agreeableness", "key": -1, "fr": "Je me soucie peu des autres.",                       "en": "I feel little concern for others."},
+    {"id": "A2",  "dim": "agreeableness", "key":  1, "fr": "Je m'intéresse sincèrement aux gens.",               "en": "I am interested in people."},
+    {"id": "A3",  "dim": "agreeableness", "key": -1, "fr": "Il m'arrive d'être blessant(e) envers les autres.",  "en": "I insult people."},
+    {"id": "A4",  "dim": "agreeableness", "key":  1, "fr": "Je compatis facilement aux émotions des autres.",    "en": "I sympathize with others' feelings."},
+    {"id": "A5",  "dim": "agreeableness", "key": -1, "fr": "Les problèmes des autres me laissent indifférent(e).","en": "I am not interested in other people's problems."},
+    {"id": "A6",  "dim": "agreeableness", "key":  1, "fr": "J'ai bon cœur.",                                     "en": "I have a soft heart."},
+    {"id": "A7",  "dim": "agreeableness", "key": -1, "fr": "Je ne m'intéresse pas vraiment aux autres.",         "en": "I am not really interested in others."},
+    {"id": "A8",  "dim": "agreeableness", "key":  1, "fr": "Je prends du temps pour les autres.",                "en": "I take time out for others."},
+    {"id": "A9",  "dim": "agreeableness", "key":  1, "fr": "Je ressens les émotions des autres.",                "en": "I feel others' emotions."},
+    {"id": "A10", "dim": "agreeableness", "key":  1, "fr": "Je mets les gens à l'aise.",                         "en": "I make people feel at ease."},
+
+    # ── Conscience / Rigueur ──────────────────────────────────────────────────
+    {"id": "C1",  "dim": "conscientiousness", "key":  1, "fr": "Je suis toujours bien préparé(e).",              "en": "I am always prepared."},
+    {"id": "C2",  "dim": "conscientiousness", "key": -1, "fr": "Je laisse traîner mes affaires.",                "en": "I leave my belongings around."},
+    {"id": "C3",  "dim": "conscientiousness", "key":  1, "fr": "Je fais attention aux détails.",                 "en": "I pay attention to details."},
+    {"id": "C4",  "dim": "conscientiousness", "key":  1, "fr": "Je respecte un planning.",                       "en": "I follow a schedule."},
+    {"id": "C5",  "dim": "conscientiousness", "key": -1, "fr": "Je néglige souvent les détails.",                "en": "I don't pay attention to details."},
+    {"id": "C6",  "dim": "conscientiousness", "key":  1, "fr": "J'effectue les tâches sans tarder.",             "en": "I get chores done right away."},
+    {"id": "C7",  "dim": "conscientiousness", "key": -1, "fr": "J'oublie souvent de ranger les choses.",         "en": "I often forget to put things back in their proper place."},
+    {"id": "C8",  "dim": "conscientiousness", "key":  1, "fr": "J'aime l'ordre et la méthode.",                  "en": "I like order."},
+    {"id": "C9",  "dim": "conscientiousness", "key": -1, "fr": "Je génère parfois du désordre autour de moi.",   "en": "I make a mess of things."},
+    {"id": "C10", "dim": "conscientiousness", "key":  1, "fr": "Je mène mes projets à leur terme.",              "en": "I follow through with my plans."},
+
+    # ── Névrotisme (stabilité émotionnelle inversée) ──────────────────────────
+    {"id": "N1",  "dim": "neuroticism", "key":  1, "fr": "Je stresse facilement.",                               "en": "I get stressed out easily."},
+    {"id": "N2",  "dim": "neuroticism", "key": -1, "fr": "Je suis détendu(e) la plupart du temps.",              "en": "I am relaxed most of the time."},
+    {"id": "N3",  "dim": "neuroticism", "key":  1, "fr": "Je m'inquiète souvent.",                               "en": "I worry about things."},
+    {"id": "N4",  "dim": "neuroticism", "key": -1, "fr": "Je me sens rarement déprimé(e).",                      "en": "I seldom feel blue."},
+    {"id": "N5",  "dim": "neuroticism", "key":  1, "fr": "Je me laisse facilement perturber.",                   "en": "I am easily disturbed."},
+    {"id": "N6",  "dim": "neuroticism", "key":  1, "fr": "Je suis facilement contrarié(e).",                    "en": "I get upset easily."},
+    {"id": "N7",  "dim": "neuroticism", "key":  1, "fr": "Mon humeur change fréquemment.",                       "en": "I change my mood a lot."},
+    {"id": "N8",  "dim": "neuroticism", "key":  1, "fr": "J'ai souvent des sautes d'humeur.",                   "en": "I have frequent mood swings."},
+    {"id": "N9",  "dim": "neuroticism", "key":  1, "fr": "Je m'énerve facilement.",                             "en": "I get irritated easily."},
+    {"id": "N10", "dim": "neuroticism", "key":  1, "fr": "Je me sens souvent déprimé(e).",                      "en": "I often feel blue."},
+
+    # ── Ouverture à l'expérience ──────────────────────────────────────────────
+    {"id": "O1",  "dim": "openness", "key":  1, "fr": "J'ai un vocabulaire riche et varié.",                     "en": "I have a rich vocabulary."},
+    {"id": "O2",  "dim": "openness", "key": -1, "fr": "J'ai du mal à comprendre les idées abstraites.",          "en": "I have difficulty understanding abstract ideas."},
+    {"id": "O3",  "dim": "openness", "key":  1, "fr": "J'ai une imagination fertile.",                           "en": "I have a vivid imagination."},
+    {"id": "O4",  "dim": "openness", "key":  1, "fr": "Les idées abstraites m'intéressent.",                     "en": "I am interested in abstract ideas."},
+    {"id": "O5",  "dim": "openness", "key": -1, "fr": "Je n'aime pas les sujets qui demandent trop de réflexion.","en": "I do not like to think a lot."},
+    {"id": "O6",  "dim": "openness", "key":  1, "fr": "J'ai souvent de bonnes idées originales.",               "en": "I have excellent ideas."},
+    {"id": "O7",  "dim": "openness", "key": -1, "fr": "Je n'ai pas beaucoup d'imagination.",                    "en": "I do not have a good imagination."},
+    {"id": "O8",  "dim": "openness", "key":  1, "fr": "Je comprends les choses rapidement.",                    "en": "I am quick to understand things."},
+    {"id": "O9",  "dim": "openness", "key":  1, "fr": "J'utilise des mots recherchés ou peu courants.",         "en": "I use difficult words."},
+    {"id": "O10", "dim": "openness", "key":  1, "fr": "Je prends le temps de réfléchir en profondeur aux choses.","en": "I spend time reflecting on things."},
+]
+
+# Index rapide par id
+ITEMS_BY_ID = {item["id"]: item for item in ITEMS}
+
+# Items par dimension (ordre fixe)
+ITEMS_BY_DIM = {dim: [i for i in ITEMS if i["dim"] == dim] for dim in DIMENSIONS}
