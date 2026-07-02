@@ -1,5 +1,6 @@
-"""Tests du scoring IPIP Big Five (fonctions pures, sans base de données)."""
-from django.test import SimpleTestCase
+"""Tests du scoring IPIP Big Five et du formulaire d'envoi."""
+from django.test import SimpleTestCase, TestCase
+from django.urls import reverse
 
 from .ipip_data import DIMENSIONS, ITEMS
 from .scoring import compute_scores, validate_answers
@@ -128,3 +129,38 @@ class Version100Tests(SimpleTestCase):
         scores = compute_scores(_answers(direct_value=3, reversed_value=3))
         for dim in DIMENSIONS:
             self.assertEqual(scores[dim], 50.0, dim)
+
+
+class SendFormRenderingTests(TestCase):
+    """La version et la langue doivent être des listes de choix, pas du texte libre."""
+
+    def setUp(self):
+        from core.testing import create_org_and_user
+
+        self.org, self.user = create_org_and_user(email="rh@org.test")
+
+    def test_version_and_language_rendered_as_selects(self):
+        self.client.force_login(self.user)
+        resp = self.client.get(reverse("survey:send"))
+        self.assertEqual(resp.status_code, 200)
+        content = resp.content.decode()
+        self.assertIn('<select name="questionnaire_version"', content)
+        self.assertIn('<select name="language"', content)
+        # Les deux versions et les deux langues sont proposées
+        self.assertIn('value="50"', content)
+        self.assertIn('value="100"', content)
+        self.assertIn('value="fr"', content)
+        self.assertIn('value="en"', content)
+
+    def test_invalid_version_rejected(self):
+        """Une valeur hors liste (ex. 75) doit être refusée par le formulaire."""
+        self.client.force_login(self.user)
+        resp = self.client.post(reverse("survey:send"), {
+            "person_email": "alice@org.test",
+            "first_name": "Alice",
+            "last_name": "A",
+            "questionnaire_version": "75",
+            "language": "fr",
+        })
+        self.assertEqual(resp.status_code, 200)  # re-render avec erreur
+        self.assertTrue(resp.context["form"].errors.get("questionnaire_version"))
