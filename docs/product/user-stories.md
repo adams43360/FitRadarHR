@@ -333,6 +333,31 @@
 
 ---
 
+### US-E6-05 — Infobulles d'aide sur les dimensions OCEAN
+**En tant que** RH ou Manager, **je veux** comprendre la signification de chaque dimension OCEAN en passant la souris sur son libellé, **afin de** lire les rapports sans expertise psychométrique préalable.
+
+**Critères d'acceptation :**
+- [x] Chaque libellé de dimension (Ouverture, Conscienciosité, Extraversion, Agréabilité, Neuroticisme) affiche une infobulle au survol
+- [x] L'infobulle décrit en une ou deux phrases ce qu'implique un score élevé et un score faible
+- [x] Les infobulles sont disponibles sur toutes les pages de rapport (profil individuel, Fit Poste, Fit Équipe)
+- [x] Les infobulles sont disponibles en FR et EN selon la langue de l'interface
+- [x] Les infobulles n'apparaissent pas dans les exports PDF (pas de JS dans WeasyPrint)
+
+---
+
+### US-E6-06 — Points à approfondir en entretien
+**En tant que** RH ou Manager, **je veux** voir sur les rapports de Fit une section identifiant les dimensions hors fourchette ou à fort écart, avec des suggestions de questions à explorer, **afin d'** enrichir ma préparation d'entretien sans que l'outil ne produise de verdict.**
+
+**Critères d'acceptation :**
+- [x] La section n'apparaît que s'il y a au moins une dimension hors plage (Fit Poste) ou à signal notable (Fit Équipe)
+- [x] Le contenu est formulé en termes de questions à explorer, jamais de jugements ou de recommandations
+- [x] Un disclaimer explicite rappelle que ces observations ne sont pas des verdicts
+- [x] Les messages sont spécifiques à chaque dimension et au sens de l'écart (score trop haut / trop bas / complémentaire / différent)
+- [x] La section apparaît également dans les exports PDF (Fit Poste et Fit Équipe)
+- [x] Le contenu est disponible en FR et EN
+
+---
+
 ## E7 — Internationalisation
 
 ### US-E7-01 — Choix de la langue de l'interface

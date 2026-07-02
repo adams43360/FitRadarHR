@@ -8,6 +8,11 @@ from apps.fit.models import BigFiveProfile, PositionFitResult, TeamFitResult
 from apps.positions.models import Position
 from apps.teams.models import Person, Team, TeamMembership
 
+from .insights import (
+    DIMENSION_TOOLTIPS,
+    get_position_exploration_points,
+    get_team_exploration_points,
+)
 from .models import AuditLog
 
 
@@ -58,6 +63,16 @@ def person_profile(request, person_pk):
     chart_labels = _dim_labels(lang)
     chart_scores = [float(getattr(profile, d)) for d in DIMENSIONS]
 
+    dim_details = [
+        {
+            "dim_key": d,
+            "label": DIMENSION_LABELS[d][lang],
+            "score": chart_scores[i],
+            "tooltip": DIMENSION_TOOLTIPS[d][lang],
+        }
+        for i, d in enumerate(DIMENSIONS)
+    ]
+
     position_fits = person.position_fits.select_related("position__team").order_by("-overall_fit")
     team_fits = person.team_fits.select_related("team").order_by("-overall_fit")
 
@@ -76,6 +91,7 @@ def person_profile(request, person_pk):
         "profile": profile,
         "chart_labels_json": json.dumps(chart_labels),
         "chart_scores_json": json.dumps(chart_scores),
+        "dim_details": dim_details,
         "position_fits_with_team": position_fits_with_team,
         "position_fits": position_fits,
         "team_fits": team_fits,
@@ -111,7 +127,9 @@ def position_fit_report(request, person_pk, position_pk):
 
     dim_details = [
         {
+            "dim_key": d,
             "label": DIMENSION_LABELS[d][lang],
+            "tooltip": DIMENSION_TOOLTIPS[d][lang],
             "score": person_scores[i],
             "min": pos_min[i],
             "max": pos_max[i],
@@ -120,6 +138,7 @@ def position_fit_report(request, person_pk, position_pk):
         }
         for i, d in enumerate(DIMENSIONS)
     ]
+    exploration_points = get_position_exploration_points(dim_details, lang)
 
     return render(request, "reports/position_fit.html", {
         "person": person,
@@ -131,6 +150,7 @@ def position_fit_report(request, person_pk, position_pk):
         "pos_max_json": json.dumps(pos_max),
         "pos_mid_json": json.dumps(pos_mid),
         "dim_details": dim_details,
+        "exploration_points": exploration_points,
     })
 
 
@@ -183,7 +203,9 @@ def team_fit_report(request, person_pk, team_pk):
 
     dim_details = [
         {
+            "dim_key": d,
             "label": DIMENSION_LABELS[d][lang],
+            "tooltip": DIMENSION_TOOLTIPS[d][lang],
             "score": person_scores[i],
             "team_avg": team_avgs[i],
             "fit": float(getattr(fit, f"{d}_fit")),
@@ -193,6 +215,7 @@ def team_fit_report(request, person_pk, team_pk):
         }
         for i, d in enumerate(DIMENSIONS)
     ]
+    exploration_points = get_team_exploration_points(dim_details, lang)
 
     return render(request, "reports/team_fit.html", {
         "person": person,
@@ -202,6 +225,7 @@ def team_fit_report(request, person_pk, team_pk):
         "person_scores_json": json.dumps(person_scores),
         "team_avgs_json": json.dumps(team_avgs),
         "dim_details": dim_details,
+        "exploration_points": exploration_points,
         "team_size": fit.team_size_at_computation,
     })
 
@@ -267,6 +291,7 @@ def position_fit_pdf(request, person_pk, position_pk):
     pos_max = [getattr(position.profile, f"{d}_max") for d in DIMENSIONS]
     dim_details = [
         {
+            "dim_key": d,
             "label": DIMENSION_LABELS[d][lang],
             "score": person_scores[i],
             "min": pos_min[i], "max": pos_max[i],
@@ -275,11 +300,12 @@ def position_fit_pdf(request, person_pk, position_pk):
         }
         for i, d in enumerate(DIMENSIONS)
     ]
+    exploration_points = get_position_exploration_points(dim_details, lang)
 
     filename = f"fit-poste_{person.last_name.lower()}_{position.title_fr.lower().replace(' ', '-')}.pdf"
     return _render_pdf("reports/pdf/position_fit.html", {
         "person": person, "position": position, "fit": fit,
-        "dim_details": dim_details, "lang": lang,
+        "dim_details": dim_details, "exploration_points": exploration_points, "lang": lang,
     }, filename)
 
 
@@ -317,6 +343,7 @@ def team_fit_pdf(request, person_pk, team_pk):
     }
     dim_details = [
         {
+            "dim_key": d,
             "label": DIMENSION_LABELS[d][lang],
             "score": person_scores[i],
             "team_avg": team_avgs[i],
@@ -326,11 +353,12 @@ def team_fit_pdf(request, person_pk, team_pk):
         }
         for i, d in enumerate(DIMENSIONS)
     ]
+    exploration_points = get_team_exploration_points(dim_details, lang)
 
     filename = f"fit-equipe_{person.last_name.lower()}_{team.name.lower().replace(' ', '-')}.pdf"
     return _render_pdf("reports/pdf/team_fit.html", {
         "person": person, "team": team, "fit": fit,
-        "dim_details": dim_details, "lang": lang,
+        "dim_details": dim_details, "exploration_points": exploration_points, "lang": lang,
         "team_size": fit.team_size_at_computation,
     }, filename)
 

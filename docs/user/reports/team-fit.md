@@ -27,6 +27,27 @@ FitRadarHR calcule le **profil moyen de l'équipe** (moyenne des scores par dime
 
 Le radar chart superpose :
 - **Bleu** — profil de la personne
-- **Gris** — profil moyen de l'équipe
+- **Ambre** — profil moyen de l'équipe
 
 Les scores de proximité indiquent la distance par dimension entre la personne et la moyenne de l'équipe.
+
+### Les signaux de complémentarité
+
+Pour chaque dimension, le rapport affiche un signal :
+- 🌟 **Complémentaire** — la personne apporte de la diversité là où l'équipe est homogène
+- ↔ **Différent** — écart notable mais équipe déjà hétérogène
+- ≈ **Similaire** — aligné avec le profil de l'équipe
+
+### Les infobulles OCEAN
+
+Passez la souris sur le libellé d'une dimension pour afficher une courte explication de ce que signifie un score élevé ou faible. Utile pour interpréter les résultats sans expertise psychométrique.
+
+### Points à approfondir
+
+Si certaines dimensions affichent un signal **Différent** ou **Complémentaire**, une section dédiée apparaît en bas du rapport. Pour chaque dimension concernée, FitRadarHR propose une piste à aborder lors de l'intégration ou en entretien.
+
+- Les points **Complémentaires** (🌟 fond vert) décrivent comment l'écart peut être un atout
+- Les points **Différents** (↔ fond ambre) suggèrent des questions à anticiper sur la dynamique d'équipe
+
+!!! warning "Ce ne sont pas des verdicts"
+    Ces observations sont des pistes d'exploration, pas des prédictions. Une différence sur une dimension n'est pas un problème — c'est parfois exactement ce dont l'équipe a besoin.

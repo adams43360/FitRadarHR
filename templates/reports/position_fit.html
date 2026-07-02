@@ -71,7 +71,9 @@
       <tbody class="divide-y divide-gray-100">
         {% for d in dim_details %}
         <tr class="hover:bg-gray-50">
-          <td class="px-4 py-3 text-sm font-medium text-gray-800">{{ d.label }}</td>
+          <td class="px-4 py-3 text-sm font-medium text-gray-800">
+            {% include "partials/ocean_dim_label.html" with label=d.label tooltip=d.tooltip %}
+          </td>
           <td class="px-4 py-3 text-center text-sm text-gray-700">{{ d.score|floatformat:0 }}</td>
           <td class="px-4 py-3 text-center text-xs text-gray-500">[{{ d.min }}–{{ d.max }}]</td>
           <td class="px-4 py-3 text-center">
@@ -89,6 +91,21 @@
     </table>
   </div>
 </div>
+
+{% if exploration_points %}
+<div class="bg-white rounded-xl border border-amber-200 shadow-sm p-5 mb-6">
+  <h2 class="text-sm font-semibold text-amber-800 mb-1">🔍 {% trans "Points à approfondir en entretien" %}</h2>
+  <p class="text-xs text-gray-500 mb-3">{% trans "Ces observations portent sur les dimensions hors fourchette cible. Elles suggèrent des questions à explorer — pas des verdicts." %}</p>
+  <div class="space-y-3">
+    {% for point in exploration_points %}
+    <div class="rounded-lg border border-amber-100 bg-amber-50 px-4 py-3">
+      <p class="text-xs font-semibold text-amber-800 mb-1">{{ point.dimension }}</p>
+      <p class="text-sm text-gray-700 leading-relaxed">{{ point.message }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
 {% endblock %}
 
 {% block extra_scripts %}

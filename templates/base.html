@@ -41,6 +41,19 @@
 
   {% block extra_scripts %}{% endblock %}
 
+  <!-- Tooltip global OCEAN (fixed, non clippé par overflow:hidden) -->
+  <div
+    x-data="{ visible: false, text: '', top: 0, left: 0 }"
+    x-show="visible"
+    x-cloak
+    :style="`top:${top}px;left:${left}px`"
+    class="fixed z-[9999] max-w-xs rounded-lg bg-gray-900 text-white text-xs p-3 shadow-xl pointer-events-none leading-relaxed"
+    @show-ocean-tip.window="visible=true; text=$event.detail.text; top=$event.detail.top; left=$event.detail.left"
+    @hide-ocean-tip.window="visible=false"
+    style="white-space:pre-line"
+    x-text="text">
+  </div>
+
   {% load i18n %}
   <footer class="border-t border-gray-100 mt-16 py-6">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between text-xs text-gray-400">

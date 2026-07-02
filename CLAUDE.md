@@ -74,7 +74,7 @@ User stories à rattacher systématiquement à l'un de ces epics (voir `00-cadra
 | E3 | Gestion des équipes | ✅ Liste, création, modification, membres, Personnes, rattachement département |
 | E4 | Questionnaire Big Five | ✅ Envoi lien, création personne à la volée, rattachement poste, passation, scoring |
 | E5 | Moteur de calcul de Fit | ✅ Fit Poste + Fit Équipe + complémentarité + recalcul coéquipiers |
-| E6 | Rapports & restitution | ✅ Profil OCEAN, Fit Poste, Fit Équipe, radar charts, export PDF, fit équipe cible |
+| E6 | Rapports & restitution | ✅ Profil OCEAN, Fit Poste, Fit Équipe, radar charts, export PDF, fit équipe cible, infobulles OCEAN, points à approfondir |
 | E7 | Internationalisation | ✅ FR/EN — 300+ strings traduites |
 | E8 | Conformité & gouvernance | ✅ Droit à l'effacement, audit log viewer, politique de confidentialité |
 
@@ -97,6 +97,8 @@ User stories à rattacher systématiquement à l'un de ces epics (voir `00-cadra
 - [x] Dashboard enrichi — stats org, questionnaires en attente (dédupliqués), profils récents, activité audit
 - [x] Conformité RGPD — droit à l'effacement (anonymize), audit log viewer paginé, politique de confidentialité (E8)
 - [x] Améliorations UX — pré-remplissage email questionnaire, autocomplétion ajout membre, modification personne, fix switch langue, déduplication dashboard survey, compteur dashboard corrigé
+- [x] Infobulles OCEAN — tooltip au survol des libellés de dimension sur tous les rapports (profil, Fit Poste, Fit Équipe) (E6)
+- [x] Points à approfondir — section contextuelle sur les rapports Fit Poste et Fit Équipe, framing "questions à explorer", disponible aussi en PDF (E6)
 
 ## Conventions de travail
 

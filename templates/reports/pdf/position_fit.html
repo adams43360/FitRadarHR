@@ -58,4 +58,21 @@
     {% endfor %}
   </tbody>
 </table>
+
+{% if exploration_points %}
+<h2>{% if lang == "fr" %}Points à approfondir en entretien{% else %}Points to explore in interview{% endif %}</h2>
+<p style="font-size:0.8em;color:#6b7280;margin-bottom:12px;">
+  {% if lang == "fr" %}
+    Ces observations portent sur les dimensions hors fourchette cible. Elles suggèrent des questions à explorer — pas des verdicts.
+  {% else %}
+    These observations concern dimensions outside the target range. They suggest questions to explore — not verdicts.
+  {% endif %}
+</p>
+{% for point in exploration_points %}
+<div style="background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:10px 14px;margin-bottom:10px;">
+  <div style="font-size:0.75em;font-weight:700;color:#92400e;margin-bottom:4px;">{{ point.dimension }}</div>
+  <div style="font-size:0.85em;color:#374151;line-height:1.5;">{{ point.message }}</div>
+</div>
+{% endfor %}
+{% endif %}
 {% endblock %}

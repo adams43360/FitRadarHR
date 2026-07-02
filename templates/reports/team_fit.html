@@ -71,7 +71,9 @@
       <tbody class="divide-y divide-gray-100">
         {% for d in dim_details %}
         <tr class="hover:bg-gray-50">
-          <td class="px-4 py-3 text-sm font-medium text-gray-800">{{ d.label }}</td>
+          <td class="px-4 py-3 text-sm font-medium text-gray-800">
+            {% include "partials/ocean_dim_label.html" with label=d.label tooltip=d.tooltip %}
+          </td>
           <td class="px-4 py-3 text-center text-sm text-gray-700">{{ d.score|floatformat:0 }}</td>
           <td class="px-4 py-3 text-center text-sm text-gray-500">{{ d.team_avg|floatformat:0 }}</td>
           <td class="px-4 py-3 text-center">
@@ -91,6 +93,23 @@
     </div>
   </div>
 </div>
+
+{% if exploration_points %}
+<div class="bg-white rounded-xl border border-gray-200 shadow-sm p-5 mb-6">
+  <h2 class="text-sm font-semibold text-gray-700 mb-1">🔍 {% trans "Points à approfondir" %}</h2>
+  <p class="text-xs text-gray-500 mb-3">{% trans "Ces observations portent sur les dimensions à fort écart ou complémentaires. Elles suggèrent des questions à explorer — pas des verdicts." %}</p>
+  <div class="space-y-3">
+    {% for point in exploration_points %}
+    <div class="rounded-lg border px-4 py-3 {% if point.signal == 'complementary' %}border-green-100 bg-green-50{% else %}border-amber-100 bg-amber-50{% endif %}">
+      <p class="text-xs font-semibold mb-1 {% if point.signal == 'complementary' %}text-green-800{% else %}text-amber-800{% endif %}">
+        {% if point.signal == 'complementary' %}🌟{% else %}↔{% endif %} {{ point.dimension }}
+      </p>
+      <p class="text-sm text-gray-700 leading-relaxed">{{ point.message }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
 {% endblock %}
 
 {% block extra_scripts %}
