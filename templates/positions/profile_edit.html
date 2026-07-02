@@ -15,9 +15,12 @@
   </div>
 
   <h1 class="text-2xl font-bold text-gray-900 mb-2">{% trans "Profil Big Five cible" %}</h1>
-  <p class="text-sm text-gray-500 mb-8">
+  <p class="text-sm text-gray-500 mb-4">
     {% trans "Pour chaque dimension, définissez la fourchette souhaitée (0–100) avec les curseurs Min et Max." %}
   </p>
+  <div class="mb-8 rounded-xl bg-indigo-50 border border-indigo-100 px-4 py-3 text-sm text-indigo-800">
+    💡 {% trans "Passez la souris sur le nom d'une dimension pour comprendre ce que signifie un score élevé ou faible — utile pour calibrer la cible." %}
+  </div>
 
   <form method="post" class="space-y-4">
     {% csrf_token %}
@@ -28,7 +31,9 @@
 
       <div class="flex items-start justify-between mb-3">
         <div>
-          <h3 class="text-sm font-semibold text-gray-800">{{ dim.label }}</h3>
+          <h3 class="text-sm font-semibold text-gray-800">
+            {% include "partials/ocean_dim_label.html" with label=dim.label tooltip=dim.tooltip %}
+          </h3>
           <p class="text-xs text-gray-400 mt-0.5">{{ dim.help }}</p>
         </div>
         <span class="text-sm font-bold text-indigo-600 ml-4 shrink-0 tabular-nums">

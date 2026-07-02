@@ -120,6 +120,9 @@ def position_profile_edit(request, pk):
     else:
         form = PositionProfileForm(instance=profile)
 
+    from apps.reports.insights import DIMENSION_TOOLTIPS
+    lang = getattr(request, "LANGUAGE_CODE", "fr")[:2]
+
     # Prépare les dimensions avec leurs champs de formulaire associés
     dimensions = []
     for key, meta in DIMENSION_LABELS.items():
@@ -127,6 +130,7 @@ def position_profile_edit(request, pk):
             "key": key,
             "label": meta["label"],
             "help": meta["help"],
+            "tooltip": DIMENSION_TOOLTIPS.get(key, {}).get(lang, ""),
             "field_min": form[f"{key}_min"],
             "field_max": form[f"{key}_max"],
             "val_min": form[f"{key}_min"].value() or 0,

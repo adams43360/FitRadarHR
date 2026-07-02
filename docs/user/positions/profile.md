@@ -9,6 +9,10 @@ Depuis la fiche d'un poste, cliquez sur **Définir le profil cible**.
 <!-- screenshot: docs/user/assets/position-profile.png -->
 !!! note "Capture d'écran à venir"
 
+## Comprendre les dimensions
+
+Passez la souris sur le **nom de chaque dimension** dans le formulaire pour afficher une infobulle expliquant ce que signifie un score élevé ou faible — directement dans l'interface.
+
 ## Les 5 dimensions OCEAN
 
 Pour chaque dimension, définissez une **fourchette min/max** (valeurs de 0 à 100) :
