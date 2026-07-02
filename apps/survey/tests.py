@@ -83,10 +83,22 @@ class ValidateAnswersTests(SimpleTestCase):
 
 
 class IpipDataIntegrityTests(SimpleTestCase):
-    def test_each_dimension_has_10_items(self):
+    def test_100_items_total_20_per_dimension(self):
+        self.assertEqual(len(ITEMS), 100)
         for dim in DIMENSIONS:
             items = [i for i in ITEMS if i["dim"] == dim]
+            self.assertEqual(len(items), 20, dim)
+
+    def test_short_version_is_first_50_with_10_per_dimension(self):
+        """ITEMS[:50] = version courte historique — ordre à ne jamais changer."""
+        short = ITEMS[:50]
+        self.assertEqual(len(short), 50)
+        for dim in DIMENSIONS:
+            items = [i for i in short if i["dim"] == dim]
             self.assertEqual(len(items), 10, dim)
+        # Aucun item de l'extension (suffixes 11-20) dans la version courte
+        for item in short:
+            self.assertLessEqual(int(item["id"][1:]), 10, item["id"])
 
     def test_item_ids_unique(self):
         ids = [i["id"] for i in ITEMS]
@@ -95,3 +107,24 @@ class IpipDataIntegrityTests(SimpleTestCase):
     def test_keys_valid(self):
         for item in ITEMS:
             self.assertIn(item["key"], (1, -1), item["id"])
+
+
+class Version100Tests(SimpleTestCase):
+    def test_validate_requires_all_100_items(self):
+        answers = _answers(3, 3)  # complet (100 items)
+        self.assertEqual(validate_answers(answers, version="100"), [])
+        del answers["E20"]
+        self.assertEqual(validate_answers(answers, version="100"), ["E20"])
+
+    def test_validate_version_50_ignores_extension_items(self):
+        """Un questionnaire 50 items ne doit exiger que les 50 premiers."""
+        answers = {item["id"]: 3 for item in ITEMS[:50]}
+        self.assertEqual(validate_answers(answers, version="50"), [])
+
+    def test_scores_extreme_profiles_on_100_items(self):
+        scores = compute_scores(_answers(direct_value=5, reversed_value=1))
+        for dim in DIMENSIONS:
+            self.assertEqual(scores[dim], 100.0, dim)
+        scores = compute_scores(_answers(direct_value=3, reversed_value=3))
+        for dim in DIMENSIONS:
+            self.assertEqual(scores[dim], 50.0, dim)

@@ -21,11 +21,11 @@
     </h1>
     <p class="text-gray-500 mt-2 text-sm">
       {% if link.language == "fr" %}
-        Vous avez été invité(e) à compléter un questionnaire de personnalité Big Five (IPIP-50).
-        Ce questionnaire comporte <strong>{{ link.questionnaire_version }} questions</strong> et prend environ <strong>10 minutes</strong>.
+        Vous avez été invité(e) à compléter un questionnaire de personnalité Big Five (IPIP).
+        Ce questionnaire comporte <strong>{{ link.questionnaire_version }} questions</strong> et prend environ <strong>{% if link.questionnaire_version == "100" %}20{% else %}10{% endif %} minutes</strong>.
       {% else %}
-        You have been invited to complete a Big Five personality questionnaire (IPIP-50).
-        It contains <strong>{{ link.questionnaire_version }} questions</strong> and takes about <strong>10 minutes</strong>.
+        You have been invited to complete a Big Five personality questionnaire (IPIP).
+        It contains <strong>{{ link.questionnaire_version }} questions</strong> and takes about <strong>{% if link.questionnaire_version == "100" %}20{% else %}10{% endif %} minutes</strong>.
       {% endif %}
     </p>
   </div>

@@ -1,13 +1,18 @@
 """
-IPIP Big Five Markers — 50 items (version courte de Goldberg, 1992)
+IPIP Big Five Markers — 100 items (Goldberg, 1992)
 Source : International Personality Item Pool (ipip.ori.org) — domaine public
 Traductions FR : adaptées pour le contexte professionnel
+
+Deux versions de passation :
+  - 50 items  : ITEMS[:50] — les échelles courtes (10 items/dimension)
+  - 100 items : ITEMS complet — les échelles longues (20 items/dimension)
+  L'ordre des 50 premiers items ne doit JAMAIS changer (compatibilité
+  des questionnaires déjà envoyés et des profils déjà calculés).
 
 Scoring :
   - key= 1 : score direct (1→1, 2→2, 3→3, 4→4, 5→5)
   - key=-1 : score inversé (1→5, 2→4, 3→3, 4→2, 5→1) = 6 - score
-  - Chaque dimension : 10 items, somme ajustée ∈ [10, 50]
-  - Normalisation 0-100 : (somme - 10) / 40 × 100
+  - Normalisation 0-100 sur les items répondus : (somme - n) / (n × 4) × 100
 """
 
 # Libellés de l'échelle de réponse
@@ -90,6 +95,71 @@ ITEMS = [
     {"id": "O8",  "dim": "openness", "key":  1, "fr": "Je comprends les choses rapidement.",                    "en": "I am quick to understand things."},
     {"id": "O9",  "dim": "openness", "key":  1, "fr": "J'utilise des mots recherchés ou peu courants.",         "en": "I use difficult words."},
     {"id": "O10", "dim": "openness", "key":  1, "fr": "Je prends le temps de réfléchir en profondeur aux choses.","en": "I spend time reflecting on things."},
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # Items 51–100 — extension IPIP-100 (échelles 20 items/dimension)
+    # Ne jamais insérer d'item avant cette ligne : ITEMS[:50] = version courte.
+    # ══════════════════════════════════════════════════════════════════════════
+
+    # ── Extraversion (suite) ──────────────────────────────────────────────────
+    {"id": "E11", "dim": "extraversion", "key":  1, "fr": "Je me fais facilement des amis.",                     "en": "I make friends easily."},
+    {"id": "E12", "dim": "extraversion", "key":  1, "fr": "Je prends naturellement les choses en main.",         "en": "I take charge."},
+    {"id": "E13", "dim": "extraversion", "key":  1, "fr": "Je sais capter l'attention des gens.",                "en": "I know how to captivate people."},
+    {"id": "E14", "dim": "extraversion", "key":  1, "fr": "Je suis détendu(e) dans les interactions sociales.",  "en": "I feel at ease with people."},
+    {"id": "E15", "dim": "extraversion", "key":  1, "fr": "Je suis habile dans les situations sociales.",        "en": "I am skilled in handling social situations."},
+    {"id": "E16", "dim": "extraversion", "key": -1, "fr": "J'ai du mal à aborder les autres.",                   "en": "I find it difficult to approach others."},
+    {"id": "E17", "dim": "extraversion", "key": -1, "fr": "Je me sens souvent mal à l'aise en groupe.",          "en": "I often feel uncomfortable around others."},
+    {"id": "E18", "dim": "extraversion", "key": -1, "fr": "Je garde mes émotions pour moi.",                     "en": "I bottle up my feelings."},
+    {"id": "E19", "dim": "extraversion", "key": -1, "fr": "Je suis quelqu'un de très réservé.",                  "en": "I am a very private person."},
+    {"id": "E20", "dim": "extraversion", "key": -1, "fr": "J'attends que les autres prennent l'initiative.",     "en": "I wait for others to lead the way."},
+
+    # ── Agréabilité (suite) ───────────────────────────────────────────────────
+    {"id": "A11", "dim": "agreeableness", "key":  1, "fr": "Je prends des nouvelles des autres.",                "en": "I inquire about others' well-being."},
+    {"id": "A12", "dim": "agreeableness", "key":  1, "fr": "Je sais réconforter les autres.",                    "en": "I know how to comfort others."},
+    {"id": "A13", "dim": "agreeableness", "key":  1, "fr": "J'aime les enfants.",                                "en": "I love children."},
+    {"id": "A14", "dim": "agreeableness", "key":  1, "fr": "Je m'entends bien avec presque tout le monde.",      "en": "I am on good terms with nearly everyone."},
+    {"id": "A15", "dim": "agreeableness", "key":  1, "fr": "J'ai un mot aimable pour chacun.",                   "en": "I have a good word for everyone."},
+    {"id": "A16", "dim": "agreeableness", "key":  1, "fr": "J'exprime ma gratitude.",                            "en": "I show my gratitude."},
+    {"id": "A17", "dim": "agreeableness", "key":  1, "fr": "Je pense d'abord aux autres.",                       "en": "I think of others first."},
+    {"id": "A18", "dim": "agreeableness", "key":  1, "fr": "J'aime aider les autres.",                           "en": "I love to help others."},
+    {"id": "A19", "dim": "agreeableness", "key": -1, "fr": "Je suis difficile à cerner.",                        "en": "I am hard to get to know."},
+    {"id": "A20", "dim": "agreeableness", "key": -1, "fr": "Les sentiments des autres me laissent indifférent(e).","en": "I am indifferent to the feelings of others."},
+
+    # ── Conscience / Rigueur (suite) ──────────────────────────────────────────
+    {"id": "C11", "dim": "conscientiousness", "key":  1, "fr": "Je suis exigeant(e) dans mon travail.",          "en": "I am exacting in my work."},
+    {"id": "C12", "dim": "conscientiousness", "key":  1, "fr": "Je fais les choses selon un plan établi.",       "en": "I do things according to a plan."},
+    {"id": "C13", "dim": "conscientiousness", "key":  1, "fr": "Je persévère jusqu'à ce que tout soit parfait.", "en": "I continue until everything is perfect."},
+    {"id": "C14", "dim": "conscientiousness", "key":  1, "fr": "Je fais des plans et je m'y tiens.",             "en": "I make plans and stick to them."},
+    {"id": "C15", "dim": "conscientiousness", "key":  1, "fr": "J'apprécie la régularité et la constance.",      "en": "I love order and regularity."},
+    {"id": "C16", "dim": "conscientiousness", "key":  1, "fr": "J'aime ranger et organiser mon espace de travail.","en": "I like to tidy up."},
+    {"id": "C17", "dim": "conscientiousness", "key": -1, "fr": "Je néglige mes obligations.",                    "en": "I neglect my duties."},
+    {"id": "C18", "dim": "conscientiousness", "key": -1, "fr": "Je perds mon temps.",                            "en": "I waste my time."},
+    {"id": "C19", "dim": "conscientiousness", "key": -1, "fr": "Je fais les choses à moitié.",                   "en": "I do things in a half-way manner."},
+    {"id": "C20", "dim": "conscientiousness", "key": -1, "fr": "J'ai du mal à me mettre au travail.",            "en": "I find it difficult to get down to work."},
+
+    # ── Névrotisme (suite) ────────────────────────────────────────────────────
+    {"id": "N11", "dim": "neuroticism", "key": -1, "fr": "Peu de choses me perturbent.",                         "en": "I am not easily bothered by things."},
+    {"id": "N12", "dim": "neuroticism", "key": -1, "fr": "Je m'irrite rarement.",                                "en": "I rarely get irritated."},
+    {"id": "N13", "dim": "neuroticism", "key": -1, "fr": "Je me mets rarement en colère.",                       "en": "I seldom get mad."},
+    {"id": "N14", "dim": "neuroticism", "key":  1, "fr": "Je me fâche facilement.",                              "en": "I get angry easily."},
+    {"id": "N15", "dim": "neuroticism", "key":  1, "fr": "Je panique facilement.",                               "en": "I panic easily."},
+    {"id": "N16", "dim": "neuroticism", "key":  1, "fr": "Je me sens facilement menacé(e).",                     "en": "I feel threatened easily."},
+    {"id": "N17", "dim": "neuroticism", "key":  1, "fr": "Je me laisse déborder par mes émotions.",              "en": "I get overwhelmed by emotions."},
+    {"id": "N18", "dim": "neuroticism", "key":  1, "fr": "Je me vexe facilement.",                               "en": "I take offense easily."},
+    {"id": "N19", "dim": "neuroticism", "key":  1, "fr": "Je rumine mes problèmes.",                             "en": "I get caught up in my problems."},
+    {"id": "N20", "dim": "neuroticism", "key":  1, "fr": "J'ai tendance à me plaindre.",                         "en": "I grumble about things."},
+
+    # ── Ouverture à l'expérience (suite) ──────────────────────────────────────
+    {"id": "O11", "dim": "openness", "key":  1, "fr": "Je déborde d'idées.",                                     "en": "I am full of ideas."},
+    {"id": "O12", "dim": "openness", "key":  1, "fr": "J'élève le niveau de la conversation.",                   "en": "I carry the conversation to a higher level."},
+    {"id": "O13", "dim": "openness", "key":  1, "fr": "Je saisis rapidement les situations nouvelles.",          "en": "I catch on to things quickly."},
+    {"id": "O14", "dim": "openness", "key":  1, "fr": "Je peux traiter beaucoup d'informations à la fois.",      "en": "I can handle a lot of information."},
+    {"id": "O15", "dim": "openness", "key":  1, "fr": "J'aime inventer de nouvelles façons de faire.",           "en": "I love to think up new ways of doing things."},
+    {"id": "O16", "dim": "openness", "key":  1, "fr": "J'aime lire des contenus exigeants.",                     "en": "I love to read challenging material."},
+    {"id": "O17", "dim": "openness", "key":  1, "fr": "Je suis doué(e) dans plusieurs domaines.",                "en": "I am good at many things."},
+    {"id": "O18", "dim": "openness", "key": -1, "fr": "J'évite les personnes trop compliquées.",                 "en": "I try to avoid complex people."},
+    {"id": "O19", "dim": "openness", "key": -1, "fr": "J'ai du mal à me projeter dans l'imaginaire.",            "en": "I have difficulty imagining things."},
+    {"id": "O20", "dim": "openness", "key": -1, "fr": "Je n'approfondis pas volontiers un sujet.",               "en": "I will not probe deeply into a subject."},
 ]
 
 # Index rapide par id

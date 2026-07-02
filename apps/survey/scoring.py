@@ -1,6 +1,6 @@
 """
 Algorithme de scoring Big Five — version v1.0
-Source items : IPIP-50 (Goldberg, 1992) — domaine public
+Source items : IPIP Big Five Markers, 50 ou 100 items (Goldberg, 1992) — domaine public
 
 Entrée : dict {item_id: raw_score}  (raw_score ∈ {1, 2, 3, 4, 5})
 Sortie : dict {dimension: score_0_100}
