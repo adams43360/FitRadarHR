@@ -99,6 +99,8 @@ User stories à rattacher systématiquement à l'un de ces epics (voir `00-cadra
 - [x] Améliorations UX — pré-remplissage email questionnaire, autocomplétion ajout membre, modification personne, fix switch langue, déduplication dashboard survey, compteur dashboard corrigé
 - [x] Infobulles OCEAN — tooltip au survol des libellés de dimension sur tous les rapports (profil, Fit Poste, Fit Équipe) (E6)
 - [x] Points à approfondir — section contextuelle sur les rapports Fit Poste et Fit Équipe, framing "questions à explorer", disponible aussi en PDF (E6)
+- [x] Suite de tests — 58 tests : scoring IPIP, moteur de fit, isolation multi-tenant, droits, RGPD (`make test-fast`, SQLite via `core/settings_test.py`)
+- [x] Refacto — managers `OrgQuerySet` généralisés (`core/managers.py`), context builders rapports partagés HTML/PDF (`apps/reports/services.py`), nettoyages (app api supprimée, forms signup, STORAGES Django 5)
 
 ## Conventions de travail
 
@@ -110,6 +112,9 @@ User stories à rattacher systématiquement à l'un de ces epics (voir `00-cadra
 - **Code et variables** : en anglais
 - **i18n** : toute string UI via `gettext_lazy(_(...))`, jamais de texte en dur
 - **Multi-tenant** : chaque modèle lié à une org filtre systématiquement par `org_id`
-  via un Django model manager (`OrgQuerySet`) — aucune vue ne peut afficher des données cross-tenant
+  via un Django model manager (`OrgQuerySet` dans `core/managers.py` — `for_org()` /
+  `get_org_object_or_404()`) — aucune vue ne peut afficher des données cross-tenant
+- **Tests** : `make test-fast` (SQLite, sans Docker) ou `make test` (Docker/PostgreSQL) —
+  toute nouvelle vue liée à une org doit avoir un test d'isolation cross-tenant
 - **Doc utilisateur** : mise à jour dans `docs/user/` à chaque évolution de feature —
   le workflow GitHub Actions publie automatiquement sur GitHub Pages à chaque push sur `main`
