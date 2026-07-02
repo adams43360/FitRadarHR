@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from apps.accounts.models import Organization, User
 from apps.fit.models import BigFiveProfile
+from core.managers import OrgManager
 
 
 class FitReport(models.Model):
@@ -27,6 +28,8 @@ class FitReport(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="created_reports")
     created_at = models.DateTimeField(auto_now_add=True)
 
+    objects = OrgManager()
+
     class Meta:
         verbose_name = _("rapport de fit")
         verbose_name_plural = _("rapports de fit")
@@ -47,6 +50,8 @@ class AuditLog(models.Model):
     entity_id = models.UUIDField()
     metadata = models.JSONField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    objects = OrgManager()
 
     class Meta:
         verbose_name = _("journal d'audit")

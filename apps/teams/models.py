@@ -2,6 +2,7 @@ import uuid
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from apps.accounts.models import Organization, User
+from core.managers import OrgManager
 
 
 class Team(models.Model):
@@ -18,6 +19,8 @@ class Team(models.Model):
     description = models.TextField(_("description"), blank=True)
     manager = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="managed_teams")
     created_at = models.DateTimeField(auto_now_add=True)
+
+    objects = OrgManager()
 
     class Meta:
         verbose_name = _("équipe")
@@ -42,6 +45,8 @@ class Person(models.Model):
     person_type = models.CharField(max_length=15, choices=PersonType.choices, default=PersonType.CANDIDATE)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="created_persons")
     created_at = models.DateTimeField(auto_now_add=True)
+
+    objects = OrgManager()
 
     class Meta:
         verbose_name = _("personne")

@@ -2,6 +2,7 @@ import uuid
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from apps.accounts.models import Organization, User
+from core.managers import OrgManager
 
 
 class Position(models.Model):
@@ -33,6 +34,8 @@ class Position(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="created_positions")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    objects = OrgManager()
 
     class Meta:
         verbose_name = _("poste")

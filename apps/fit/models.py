@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from apps.accounts.models import Organization, User
 from apps.teams.models import Person, Team
 from apps.survey.models import QuestionnaireLink
+from core.managers import PersonOrgManager
 
 
 class BigFiveProfile(models.Model):
@@ -22,6 +23,8 @@ class BigFiveProfile(models.Model):
     questionnaire_version = models.CharField(max_length=3, choices=Version.choices)
     algorithm_version = models.CharField(max_length=20, default="v1.0")
     computed_at = models.DateTimeField(auto_now_add=True)
+
+    objects = PersonOrgManager()
 
     class Meta:
         verbose_name = _("profil Big Five")
@@ -61,6 +64,8 @@ class PositionFitResult(models.Model):
 
     algorithm_version = models.CharField(max_length=20, default="v1.0")
     computed_at = models.DateTimeField(auto_now=True)
+
+    objects = PersonOrgManager()
 
     class Meta:
         verbose_name = _("résultat fit poste")
@@ -106,6 +111,8 @@ class TeamFitResult(models.Model):
     team_size_at_computation = models.PositiveSmallIntegerField(default=0)
     algorithm_version = models.CharField(max_length=20, default="v1.0")
     computed_at = models.DateTimeField(auto_now=True)
+
+    objects = PersonOrgManager()
 
     class Meta:
         verbose_name = _("résultat fit équipe")

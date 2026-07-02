@@ -7,6 +7,7 @@ from apps.fit.engine import DIMENSION_LABELS, DIMENSIONS, compute_team_profile
 from apps.fit.models import BigFiveProfile, PositionFitResult, TeamFitResult
 from apps.positions.models import Position
 from apps.teams.models import Person, Team, TeamMembership
+from core.managers import get_org_object_or_404
 
 from .insights import (
     DIMENSION_TOOLTIPS,
@@ -32,7 +33,7 @@ def _dim_labels(lang):
 def report_list(request):
     persons = (
         Person.objects
-        .filter(org=request.user.org)
+        .for_org(request.user.org)
         .select_related("big_five_profile")
         .prefetch_related("position_fits__position", "team_fits__team")
         .order_by("last_name", "first_name")
@@ -47,7 +48,7 @@ def report_list(request):
 
 @login_required
 def person_profile(request, person_pk):
-    person = get_object_or_404(Person, pk=person_pk, org=request.user.org)
+    person = get_org_object_or_404(Person, request.user.org, pk=person_pk)
     profile = get_object_or_404(BigFiveProfile, person=person)
     lang = _lang(request)
 
@@ -104,8 +105,8 @@ def person_profile(request, person_pk):
 
 @login_required
 def position_fit_report(request, person_pk, position_pk):
-    person = get_object_or_404(Person, pk=person_pk, org=request.user.org)
-    position = get_object_or_404(Position, pk=position_pk, org=request.user.org)
+    person = get_org_object_or_404(Person, request.user.org, pk=person_pk)
+    position = get_org_object_or_404(Position, request.user.org, pk=position_pk)
     fit = get_object_or_404(PositionFitResult, person=person, position=position)
     profile = person.big_five_profile
     lang = _lang(request)
@@ -160,8 +161,8 @@ def position_fit_report(request, person_pk, position_pk):
 
 @login_required
 def team_fit_report(request, person_pk, team_pk):
-    person = get_object_or_404(Person, pk=person_pk, org=request.user.org)
-    team = get_object_or_404(Team, pk=team_pk, org=request.user.org)
+    person = get_org_object_or_404(Person, request.user.org, pk=person_pk)
+    team = get_org_object_or_404(Team, request.user.org, pk=team_pk)
     fit = get_object_or_404(TeamFitResult, person=person, team=team)
     profile = person.big_five_profile
     lang = _lang(request)
@@ -247,7 +248,7 @@ def _render_pdf(template_name, context, filename):
 
 @login_required
 def person_profile_pdf(request, person_pk):
-    person = get_object_or_404(Person, pk=person_pk, org=request.user.org)
+    person = get_org_object_or_404(Person, request.user.org, pk=person_pk)
     profile = get_object_or_404(BigFiveProfile, person=person)
     lang = _lang(request)
 
@@ -273,8 +274,8 @@ def person_profile_pdf(request, person_pk):
 
 @login_required
 def position_fit_pdf(request, person_pk, position_pk):
-    person = get_object_or_404(Person, pk=person_pk, org=request.user.org)
-    position = get_object_or_404(Position, pk=position_pk, org=request.user.org)
+    person = get_org_object_or_404(Person, request.user.org, pk=person_pk)
+    position = get_org_object_or_404(Position, request.user.org, pk=position_pk)
     fit = get_object_or_404(PositionFitResult, person=person, position=position)
     profile = person.big_five_profile
     lang = _lang(request)
@@ -311,8 +312,8 @@ def position_fit_pdf(request, person_pk, position_pk):
 
 @login_required
 def team_fit_pdf(request, person_pk, team_pk):
-    person = get_object_or_404(Person, pk=person_pk, org=request.user.org)
-    team = get_object_or_404(Team, pk=team_pk, org=request.user.org)
+    person = get_org_object_or_404(Person, request.user.org, pk=person_pk)
+    team = get_org_object_or_404(Team, request.user.org, pk=team_pk)
     fit = get_object_or_404(TeamFitResult, person=person, team=team)
     profile = person.big_five_profile
     lang = _lang(request)
@@ -374,7 +375,7 @@ def audit_log(request):
 
     from django.core.paginator import Paginator
     logs_qs = (
-        AuditLog.objects.filter(org=request.user.org)
+        AuditLog.objects.for_org(request.user.org)
         .select_related("user")
         .order_by("-created_at")
     )

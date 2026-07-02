@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from core.managers import get_org_object_or_404
 from .models import Team, Person, TeamMembership
 from .forms import TeamForm, PersonForm, AddMemberForm
 
@@ -44,7 +45,7 @@ def team_create(request):
 
 @login_required
 def team_detail(request, pk):
-    team = get_object_or_404(Team, pk=pk, org=request.user.org)
+    team = get_org_object_or_404(Team, request.user.org, pk=pk)
     active_memberships = (
         team.memberships
         .filter(left_at__isnull=True)
@@ -61,7 +62,7 @@ def team_detail(request, pk):
 
 @login_required
 def team_edit(request, pk):
-    team = get_object_or_404(Team, pk=pk, org=request.user.org)
+    team = get_org_object_or_404(Team, request.user.org, pk=pk)
     if request.method == "POST":
         form = TeamForm(request.POST, instance=team, org=request.user.org)
         if form.is_valid():
@@ -77,7 +78,7 @@ def team_edit(request, pk):
 
 @login_required
 def team_add_member(request, pk):
-    team = get_object_or_404(Team, pk=pk, org=request.user.org)
+    team = get_org_object_or_404(Team, request.user.org, pk=pk)
     if request.method == "POST":
         form = AddMemberForm(request.POST)
         if form.is_valid():
@@ -106,7 +107,7 @@ def team_add_member(request, pk):
 
 @login_required
 def team_remove_member(request, pk, membership_pk):
-    team = get_object_or_404(Team, pk=pk, org=request.user.org)
+    team = get_org_object_or_404(Team, request.user.org, pk=pk)
     membership = get_object_or_404(TeamMembership, pk=membership_pk, team=team, left_at__isnull=True)
     if request.method == "POST":
         membership.left_at = timezone.now()
@@ -148,7 +149,7 @@ def person_create(request):
 def person_anonymize(request, pk):
     """Anonymise les PII d'une personne (droit à l'effacement RGPD)."""
     from apps.reports.models import AuditLog
-    person = get_object_or_404(Person, pk=pk, org=request.user.org)
+    person = get_org_object_or_404(Person, request.user.org, pk=pk)
 
     if not request.user.is_rh:
         messages.error(request, _("Vous n'avez pas les droits pour effectuer cette action."))
@@ -180,7 +181,7 @@ def member_search(request, pk):
     from django.http import JsonResponse
     from django.db.models import Q
 
-    team = get_object_or_404(Team, pk=pk, org=request.user.org)
+    team = get_org_object_or_404(Team, request.user.org, pk=pk)
     q = request.GET.get("q", "").strip()
 
     if len(q) < 2:
@@ -213,7 +214,7 @@ def member_search(request, pk):
 
 @login_required
 def person_edit(request, pk):
-    person = get_object_or_404(Person, pk=pk, org=request.user.org)
+    person = get_org_object_or_404(Person, request.user.org, pk=pk)
     if request.method == "POST":
         form = PersonForm(request.POST, instance=person)
         if form.is_valid():

@@ -124,12 +124,12 @@ def dashboard(request):
     positions_count = org.positions.filter(status="active").count()
     teams_count = org.teams.count()
     persons_count = org.persons.count()
-    profiles_count = BigFiveProfile.objects.filter(person__org=org).count()
+    profiles_count = BigFiveProfile.objects.for_org(org).count()
 
     # Questionnaires en attente — on déduplique par personne (même logique que survey:dashboard)
     # pour ne garder que le lien le plus récent par personne, puis on filtre les non-complétés
     all_links = (
-        QuestionnaireLink.objects.filter(org=org)
+        QuestionnaireLink.objects.for_org(org)
         .select_related("person")
         .order_by("-sent_at")
     )
@@ -149,14 +149,14 @@ def dashboard(request):
 
     # Derniers profils complétés
     recent_profiles = (
-        BigFiveProfile.objects.filter(person__org=org)
+        BigFiveProfile.objects.for_org(org)
         .select_related("person")
         .order_by("-computed_at")[:5]
     )
 
     # Score de fit moyen (tous postes)
     avg_position_fit = (
-        PositionFitResult.objects.filter(person__org=org)
+        PositionFitResult.objects.for_org(org)
         .aggregate(avg=Avg("overall_fit"))["avg"]
     )
     if avg_position_fit is not None:
@@ -164,7 +164,7 @@ def dashboard(request):
 
     # Activité récente (audit log)
     recent_activity = (
-        AuditLog.objects.filter(org=org)
+        AuditLog.objects.for_org(org)
         .select_related("user")
         .order_by("-created_at")[:8]
     )

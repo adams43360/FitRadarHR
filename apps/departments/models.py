@@ -2,25 +2,15 @@ import uuid
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from apps.accounts.models import Organization
+from core.managers import OrgQuerySet
 
 
-class DepartmentQuerySet(models.QuerySet):
-    def for_org(self, org):
-        return self.filter(org=org)
-
+class DepartmentQuerySet(OrgQuerySet):
     def active(self):
         return self.filter(is_archived=False)
 
 
-class DepartmentManager(models.Manager):
-    def get_queryset(self):
-        return DepartmentQuerySet(self.model, using=self._db)
-
-    def for_org(self, org):
-        return self.get_queryset().for_org(org)
-
-    def active(self):
-        return self.get_queryset().active()
+DepartmentManager = models.Manager.from_queryset(DepartmentQuerySet)
 
 
 class Department(models.Model):

@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.translation import gettext_lazy as _
+from core.managers import get_org_object_or_404
 from .models import Department
 from .forms import DepartmentForm
 
@@ -31,7 +32,7 @@ def department_create(request):
 
 @login_required
 def department_detail(request, pk):
-    dept = get_object_or_404(Department, pk=pk, org=request.user.org)
+    dept = get_org_object_or_404(Department, request.user.org, pk=pk)
     positions = dept.positions.filter(status="active").order_by("title_fr")
     teams = dept.teams.all().order_by("name")
     return render(request, "departments/detail.html", {
@@ -43,7 +44,7 @@ def department_detail(request, pk):
 
 @login_required
 def department_edit(request, pk):
-    dept = get_object_or_404(Department, pk=pk, org=request.user.org)
+    dept = get_org_object_or_404(Department, request.user.org, pk=pk)
     if request.method == "POST":
         form = DepartmentForm(request.POST, instance=dept)
         if form.is_valid():
@@ -56,7 +57,7 @@ def department_edit(request, pk):
 
 @login_required
 def department_archive(request, pk):
-    dept = get_object_or_404(Department, pk=pk, org=request.user.org)
+    dept = get_org_object_or_404(Department, request.user.org, pk=pk)
     if request.method == "POST":
         dept.is_archived = not dept.is_archived
         dept.save()

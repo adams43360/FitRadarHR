@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from apps.accounts.models import Organization, User
 from apps.teams.models import Person
+from core.managers import OrgManager
 
 
 class QuestionnaireLink(models.Model):
@@ -38,6 +39,8 @@ class QuestionnaireLink(models.Model):
     expires_at = models.DateTimeField()
     status = models.CharField(max_length=15, choices=Status.choices, default=Status.PENDING)
     completed_at = models.DateTimeField(null=True, blank=True)
+
+    objects = OrgManager()
 
     class Meta:
         verbose_name = _("lien questionnaire")

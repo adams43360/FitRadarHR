@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
+from core.managers import get_org_object_or_404
 from .models import Position, PositionProfile
 from .forms import PositionForm, PositionProfileForm, DIMENSION_LABELS
 
@@ -43,7 +44,7 @@ def position_detail(request, pk):
     from apps.fit.models import PositionFitResult
     from apps.teams.models import Person
 
-    position = get_object_or_404(Position, pk=pk, org=request.user.org)
+    position = get_org_object_or_404(Position, request.user.org, pk=pk)
     profile_dimensions = []
     if position.has_profile:
         p = position.profile
@@ -62,7 +63,8 @@ def position_detail(request, pk):
     person_type_filter = request.GET.get("type", "")
     fit_qs = (
         PositionFitResult.objects
-        .filter(position=position, person__org=request.user.org)
+        .for_org(request.user.org)
+        .filter(position=position)
         .select_related("person")
         .order_by("-overall_fit")
     )
@@ -82,7 +84,7 @@ def position_detail(request, pk):
 @login_required
 def position_edit(request, pk):
     org = request.user.org
-    position = get_object_or_404(Position, pk=pk, org=org)
+    position = get_org_object_or_404(Position, org, pk=pk)
     if request.method == "POST":
         form = PositionForm(request.POST, instance=position, org=org)
         if form.is_valid():
@@ -96,7 +98,7 @@ def position_edit(request, pk):
 
 @login_required
 def position_archive(request, pk):
-    position = get_object_or_404(Position, pk=pk, org=request.user.org)
+    position = get_org_object_or_404(Position, request.user.org, pk=pk)
     if request.method == "POST":
         position.status = Position.Status.ARCHIVED
         position.save()
@@ -107,7 +109,7 @@ def position_archive(request, pk):
 
 @login_required
 def position_profile_edit(request, pk):
-    position = get_object_or_404(Position, pk=pk, org=request.user.org)
+    position = get_org_object_or_404(Position, request.user.org, pk=pk)
     profile = getattr(position, "profile", None)
     if request.method == "POST":
         form = PositionProfileForm(request.POST, instance=profile)

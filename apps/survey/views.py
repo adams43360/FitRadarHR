@@ -18,6 +18,7 @@ from .ipip_data import ITEMS, SCALE_EN, SCALE_FR
 from .models import ConsentRecord, QuestionnaireLink, QuestionnaireSession
 from .scoring import ALGORITHM_VERSION, compute_scores, validate_answers
 from apps.fit.engine import compute_all_fits_for_person
+from core.managers import get_org_object_or_404
 
 BLOCK_SIZE = 10
 LINK_VALIDITY_DAYS = 7
@@ -33,7 +34,7 @@ def survey_dashboard(request):
     # pour ne garder que le plus récent par personne
     all_links = (
         QuestionnaireLink.objects
-        .filter(org=request.user.org)
+        .for_org(request.user.org)
         .select_related("person", "sent_by", "position")
         .order_by("-sent_at")
     )
@@ -108,7 +109,7 @@ def send_questionnaire(request):
 
 @login_required
 def resend_link(request, pk):
-    link = get_object_or_404(QuestionnaireLink, pk=pk, org=request.user.org)
+    link = get_org_object_or_404(QuestionnaireLink, request.user.org, pk=pk)
     if link.status == QuestionnaireLink.Status.COMPLETED:
         messages.error(request, _("Ce questionnaire est déjà complété."))
     else:
