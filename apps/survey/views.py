@@ -8,6 +8,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.template.loader import render_to_string
 from django.utils import timezone
+from django.utils import translation
+from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 
 from apps.fit.models import BigFiveProfile
@@ -293,18 +295,16 @@ def questionnaire_done(request, token):
 # ──────────────────────────────────────────────────────────────────────────────
 
 def _send_invitation_email(link, request):
+    """Email envoyé dans la langue choisie pour le questionnaire."""
     survey_url = request.build_absolute_uri(reverse("survey:start", kwargs={"token": link.token}))
-    subject = (
-        "Votre questionnaire de personnalité Big Five"
-        if link.language == "fr"
-        else "Your Big Five personality questionnaire"
-    )
-    body = render_to_string("survey/emails/invitation.txt", {
-        "link": link,
-        "person": link.person,
-        "survey_url": survey_url,
-        "validity_days": LINK_VALIDITY_DAYS,
-    })
+    with translation.override(link.language):
+        subject = gettext("Votre questionnaire de personnalité Big Five")
+        body = render_to_string("survey/emails/invitation.txt", {
+            "link": link,
+            "person": link.person,
+            "survey_url": survey_url,
+            "validity_days": LINK_VALIDITY_DAYS,
+        })
     send_mail(
         subject=subject,
         message=body,
@@ -315,15 +315,19 @@ def _send_invitation_email(link, request):
 
 
 def _send_completion_notification(link):
+    """Notification envoyée dans la langue préférée du destinataire (RH/manager)."""
     if not link.sent_by or not link.sent_by.email:
         return
-    body = render_to_string("survey/emails/completion.txt", {
-        "link": link,
-        "person": link.person,
-        "sent_by": link.sent_by,
-    })
+    with translation.override(link.sent_by.language):
+        subject = gettext("Questionnaire complété — %(name)s") % {"name": link.person.full_name}
+        body = render_to_string("survey/emails/completion.txt", {
+            "link": link,
+            "person": link.person,
+            "sent_by": link.sent_by,
+            "lang": link.sent_by.language,
+        })
     send_mail(
-        subject=f"Questionnaire complété — {link.person.full_name}",
+        subject=subject,
         message=body,
         from_email=None,
         recipient_list=[link.sent_by.email],

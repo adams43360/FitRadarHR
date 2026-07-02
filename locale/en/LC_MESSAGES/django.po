@@ -245,9 +245,11 @@ msgstr "Openness to experience (O)"
 
 #: apps/positions/forms.py:39
 msgid ""
-"Curiosité intellectuelle, créativité, goût pour la nouveauté et l'innovation."
+"Curiosité intellectuelle, créativité, goût pour la nouveauté et "
+"l'innovation."
 msgstr ""
-"Intellectual curiosity, creativity, and appreciation for novelty and innovation."
+"Intellectual curiosity, creativity, and appreciation for novelty and "
+"innovation."
 
 #: apps/positions/forms.py:42
 msgid "Conscience / Rigueur (C)"
@@ -255,7 +257,8 @@ msgstr "Conscientiousness (C)"
 
 #: apps/positions/forms.py:43
 msgid "Organisation, fiabilité, sens des responsabilités et autodiscipline."
-msgstr "Organisation, reliability, sense of responsibility and self-discipline."
+msgstr ""
+"Organisation, reliability, sense of responsibility and self-discipline."
 
 #: apps/positions/forms.py:46
 msgid "Extraversion (E)"
@@ -282,8 +285,8 @@ msgid ""
 "Calme, gestion du stress et résistance aux émotions négatives. Un score "
 "faible indique une grande stabilité."
 msgstr ""
-"Calmness, stress management and resistance to negative emotions. A low score "
-"indicates high emotional stability."
+"Calmness, stress management and resistance to negative emotions. A low score"
+" indicates high emotional stability."
 
 #: apps/positions/forms.py:93
 msgid "Le maximum doit être supérieur ou égal au minimum."
@@ -516,8 +519,8 @@ msgid ""
 "Aucune personne avec cet email dans votre organisation. Ajoutez-la d'abord "
 "depuis la liste des personnes."
 msgstr ""
-"No person with this email in your organisation. Please add them first "
-"from the people list."
+"No person with this email in your organisation. Please add them first from "
+"the people list."
 
 #: apps/teams/views.py:91
 msgid "Cette personne est déjà membre de l'équipe."
@@ -654,8 +657,8 @@ msgid ""
 "RH, manager, PME ou grande entreprise. Invitez votre équipe et gérez "
 "plusieurs postes et collaborateurs."
 msgstr ""
-"HR, manager, SME or large company. Invite your team and manage "
-"multiple positions and employees."
+"HR, manager, SME or large company. Invite your team and manage multiple "
+"positions and employees."
 
 #: templates/accounts/signup_choice.html:35
 msgid ""
@@ -873,8 +876,8 @@ msgstr "Computed on"
 
 #: templates/reports/person_profile.html:21
 msgid ""
-"Ce profil est une aide à la décision. Il ne constitue pas une recommandation "
-"et doit être interprété avec le contexte humain."
+"Ce profil est une aide à la décision. Il ne constitue pas une recommandation"
+" et doit être interprété avec le contexte humain."
 msgstr ""
 "This profile is a decision-support tool. It does not constitute a "
 "recommendation and must be interpreted with human context."
@@ -946,11 +949,11 @@ msgstr "member(s)"
 
 #: templates/reports/team_fit.html:25
 msgid ""
-"Ce rapport est une aide à la décision. La complémentarité peut être un atout "
-"— une différence n'est pas un problème."
+"Ce rapport est une aide à la décision. La complémentarité peut être un atout"
+" — une différence n'est pas un problème."
 msgstr ""
-"This report is a decision-support tool. Complementarity can be an asset "
-"— a difference is not a problem."
+"This report is a decision-support tool. Complementarity can be an asset — a "
+"difference is not a problem."
 
 #: templates/reports/team_fit.html:31
 msgid "Similarité globale"
@@ -959,8 +962,7 @@ msgstr "Overall similarity"
 #: templates/reports/team_fit.html:40
 msgid ""
 "Un score bas peut indiquer une complémentarité — voir le tableau ci-dessous"
-msgstr ""
-"A low score may indicate complementarity — see the table below"
+msgstr "A low score may indicate complementarity — see the table below"
 
 #: templates/reports/team_fit.html:53 templates/reports/team_fit.html:114
 msgid "Moyenne équipe"
@@ -1137,10 +1139,9 @@ msgstr "Add a person"
 
 #: templates/teams/person_create.html:19
 msgid ""
-"Un candidat ou collaborateur à qui vous pourrez envoyer un questionnaire Big "
-"Five."
-msgstr ""
-"A candidate or employee you can send a Big Five questionnaire to."
+"Un candidat ou collaborateur à qui vous pourrez envoyer un questionnaire Big"
+" Five."
+msgstr "A candidate or employee you can send a Big Five questionnaire to."
 
 #: templates/teams/person_create.html:51
 msgid "Type"
@@ -1153,8 +1154,8 @@ msgid ""
 msgstr ""
 "No people registered. Add candidates or employees to build your teams."
 
-# ── E8 — Dashboard riche ──────────────────────────────────────────────────────
-
+# ── E8 — Dashboard riche
+# ──────────────────────────────────────────────────────
 msgid "avec profil"
 msgstr "with profile"
 
@@ -1209,8 +1210,8 @@ msgstr "Team fit exported to PDF"
 msgid "Aucune activité enregistrée"
 msgstr "No recorded activity"
 
-# ── E8 — RGPD Anonymisation ───────────────────────────────────────────────────
-
+# ── E8 — RGPD Anonymisation
+# ───────────────────────────────────────────────────
 msgid "Effacement des données"
 msgstr "Data erasure"
 
@@ -1240,8 +1241,8 @@ msgid ""
 "Les profils Big Five, résultats de fit et journaux d'audit sont conservés "
 "(traçabilité EU AI Act)."
 msgstr ""
-"Big Five profiles, fit results and audit logs are retained "
-"(EU AI Act traceability)."
+"Big Five profiles, fit results and audit logs are retained (EU AI Act "
+"traceability)."
 
 msgid "Confirmer l'effacement"
 msgstr "Confirm erasure"
@@ -1258,8 +1259,8 @@ msgstr "GDPR erasure"
 msgid "Envoyer questionnaire"
 msgstr "Send questionnaire"
 
-# ── E8 — Journal d'audit ──────────────────────────────────────────────────────
-
+# ── E8 — Journal d'audit
+# ──────────────────────────────────────────────────────
 msgid "Journal d'audit"
 msgstr "Audit log"
 
@@ -1281,8 +1282,8 @@ msgstr "No entries in the audit log."
 msgid "Audit"
 msgstr "Audit"
 
-# ── E8 — Politique de confidentialité ────────────────────────────────────────
-
+# ── E8 — Politique de confidentialité
+# ────────────────────────────────────────
 msgid "Politique de confidentialité"
 msgstr "Privacy policy"
 
@@ -1308,8 +1309,8 @@ msgid "Identité : prénom, nom, adresse email"
 msgstr "Identity: first name, last name, email address"
 
 msgid ""
-"Profil psychologique Big Five / OCEAN — uniquement via le questionnaire IPIP "
-"validé scientifiquement"
+"Profil psychologique Big Five / OCEAN — uniquement via le questionnaire IPIP"
+" validé scientifiquement"
 msgstr ""
 "Big Five / OCEAN psychological profile — only via the scientifically "
 "validated IPIP questionnaire"
@@ -1336,21 +1337,21 @@ msgstr "Purpose of processing"
 
 msgid ""
 "Les données sont utilisées exclusivement à des fins d'aide à la décision RH "
-"(compatibilité poste/équipe). Aucune décision automatisée ne produit d'effet "
-"juridique — un humain reste responsable de toute décision de recrutement ou "
-"de mobilité."
+"(compatibilité poste/équipe). Aucune décision automatisée ne produit d'effet"
+" juridique — un humain reste responsable de toute décision de recrutement ou"
+" de mobilité."
 msgstr ""
 "Data is used exclusively for HR decision-support purposes (position/team "
-"compatibility). No automated decision produces legal effect — a human remains "
-"responsible for any hiring or mobility decision."
+"compatibility). No automated decision produces legal effect — a human "
+"remains responsible for any hiring or mobility decision."
 
 msgid "Durée de conservation"
 msgstr "Retention period"
 
 msgid ""
-"Les données sont conservées pendant la durée d'utilisation de l'outil. "
-"Elles peuvent être anonymisées à tout moment sur demande (droit à "
-"l'effacement, Art. 17 RGPD)."
+"Les données sont conservées pendant la durée d'utilisation de l'outil. Elles"
+" peuvent être anonymisées à tout moment sur demande (droit à l'effacement, "
+"Art. 17 RGPD)."
 msgstr ""
 "Data is retained for the duration of tool use. It can be anonymized at any "
 "time upon request (right to erasure, Art. 17 GDPR)."
@@ -1373,22 +1374,30 @@ msgstr "Right to withdraw consent at any time"
 msgid "Droit d'introduire une réclamation auprès de la CNIL (France)"
 msgstr "Right to lodge a complaint with the CNIL (France)"
 
-msgid "Pour exercer ces droits, contactez l'administrateur de votre organisation."
+msgid ""
+"Pour exercer ces droits, contactez l'administrateur de votre organisation."
 msgstr "To exercise these rights, contact your organization's administrator."
 
 msgid "EU AI Act"
 msgstr "EU AI Act"
 
 msgid ""
-"FitRadarHR est susceptible d'être classifié comme système d'IA à haut risque "
-"(Annexe III, Art. 6 EU AI Act). À ce titre, chaque restitution est tracée "
+"FitRadarHR est susceptible d'être classifié comme système d'IA à haut risque"
+" (Annexe III, Art. 6 EU AI Act). À ce titre, chaque restitution est tracée "
 "dans un journal d'audit immuable, et aucune décision n'est prise sans "
 "supervision humaine documentée."
 msgstr ""
-"FitRadarHR may be classified as a high-risk AI system (Annex III, Art. 6 "
-"EU AI Act). As such, each output is tracked in an immutable audit log, and "
-"no decision is made without documented human oversight."
+"FitRadarHR may be classified as a high-risk AI system (Annex III, Art. 6 EU "
+"AI Act). As such, each output is tracked in an immutable audit log, and no "
+"decision is made without documented human oversight."
 
 msgid "Outil open source (MIT)"
 msgstr "Open source tool (MIT)"
 
+#. python: services.py / survey views
+msgid "Votre questionnaire de personnalité Big Five"
+msgstr "Your Big Five personality questionnaire"
+
+#. python: services.py / survey views
+msgid "Questionnaire complété — %(name)s"
+msgstr "Questionnaire completed — %(name)s"

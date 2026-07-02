@@ -5,6 +5,8 @@ partagent les mêmes données : ces builders sont l'unique source de vérité.
 """
 import json
 
+from django.utils.translation import gettext_lazy as _
+
 from apps.fit.engine import DIMENSION_LABELS, DIMENSIONS, compute_team_profile
 from apps.teams.models import TeamMembership
 
@@ -16,8 +18,9 @@ from .insights import (
 from .models import AuditLog
 
 SIGNAL_LABELS = {
-    "fr": {"similar": "Similaire", "different": "Différent", "complementary": "Complémentaire"},
-    "en": {"similar": "Similar", "different": "Different", "complementary": "Complementary"},
+    "similar": _("Similaire"),
+    "different": _("Différent"),
+    "complementary": _("Complémentaire"),
 }
 SIGNAL_COLORS = {
     "similar": "bg-blue-100 text-blue-800",
@@ -140,7 +143,7 @@ def build_team_fit_context(person, team, fit, lang):
             "team_avg": team_avgs[i],
             "fit": float(getattr(fit, f"{d}_fit")),
             "signal": complementarity.get(d, "similar"),
-            "signal_label": SIGNAL_LABELS[lang].get(complementarity.get(d, "similar"), ""),
+            "signal_label": SIGNAL_LABELS.get(complementarity.get(d, "similar"), ""),
             "signal_color": SIGNAL_COLORS.get(complementarity.get(d, "similar"), ""),
         }
         for i, d in enumerate(DIMENSIONS)
