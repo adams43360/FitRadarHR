@@ -1,28 +1,22 @@
-import json
-
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, render
+from django.template.loader import render_to_string
 
-from apps.fit.engine import DIMENSION_LABELS, DIMENSIONS, compute_team_profile
 from apps.fit.models import BigFiveProfile, PositionFitResult, TeamFitResult
 from apps.positions.models import Position
-from apps.teams.models import Person, Team, TeamMembership
+from apps.teams.models import Person, Team
 from core.managers import get_org_object_or_404
 
-from .insights import (
-    DIMENSION_TOOLTIPS,
-    get_position_exploration_points,
-    get_team_exploration_points,
-)
 from .models import AuditLog
-
-
-def _lang(request):
-    return getattr(request, "LANGUAGE_CODE", "fr")[:2]
-
-
-def _dim_labels(lang):
-    return [DIMENSION_LABELS[d][lang] for d in DIMENSIONS]
+from .services import (
+    audit,
+    build_person_profile_context,
+    build_position_fit_context,
+    build_team_fit_context,
+    get_lang,
+)
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -43,60 +37,57 @@ def report_list(request):
 
 
 # ──────────────────────────────────────────────────────────────────────────────
+# Récupération des objets (bornée au tenant)
+# ──────────────────────────────────────────────────────────────────────────────
+
+def _get_person_profile(request, person_pk):
+    person = get_org_object_or_404(Person, request.user.org, pk=person_pk)
+    profile = get_object_or_404(BigFiveProfile, person=person)
+    return person, profile
+
+
+def _get_position_fit(request, person_pk, position_pk):
+    person = get_org_object_or_404(Person, request.user.org, pk=person_pk)
+    position = get_org_object_or_404(Position, request.user.org, pk=position_pk)
+    fit = get_object_or_404(PositionFitResult, person=person, position=position)
+    return person, position, fit
+
+
+def _get_team_fit(request, person_pk, team_pk):
+    person = get_org_object_or_404(Person, request.user.org, pk=person_pk)
+    team = get_org_object_or_404(Team, request.user.org, pk=team_pk)
+    fit = get_object_or_404(TeamFitResult, person=person, team=team)
+    return person, team, fit
+
+
+# ──────────────────────────────────────────────────────────────────────────────
 # Profil Big Five individuel
 # ──────────────────────────────────────────────────────────────────────────────
 
 @login_required
 def person_profile(request, person_pk):
-    person = get_org_object_or_404(Person, request.user.org, pk=person_pk)
-    profile = get_object_or_404(BigFiveProfile, person=person)
-    lang = _lang(request)
+    person, profile = _get_person_profile(request, person_pk)
+    audit(request, "profile.viewed", "BigFiveProfile", profile.id, person_id=str(person.id))
 
-    AuditLog.objects.create(
-        org=request.user.org,
-        user=request.user,
-        action="profile.viewed",
-        entity_type="BigFiveProfile",
-        entity_id=profile.id,
-        metadata={"person_id": str(person.id)},
-    )
-
-    chart_labels = _dim_labels(lang)
-    chart_scores = [float(getattr(profile, d)) for d in DIMENSIONS]
-
-    dim_details = [
-        {
-            "dim_key": d,
-            "label": DIMENSION_LABELS[d][lang],
-            "score": chart_scores[i],
-            "tooltip": DIMENSION_TOOLTIPS[d][lang],
-        }
-        for i, d in enumerate(DIMENSIONS)
-    ]
+    context = build_person_profile_context(person, profile, get_lang(request))
 
     position_fits = person.position_fits.select_related("position__team").order_by("-overall_fit")
     team_fits = person.team_fits.select_related("team").order_by("-overall_fit")
 
     # Pour chaque fit poste dont le poste a une équipe cible, on joint le fit équipe correspondant
     team_fits_by_team = {tf.team_id: tf for tf in team_fits}
-    position_fits_with_team = [
-        {
-            "position_fit": pf,
-            "team_fit": team_fits_by_team.get(pf.position.team_id) if pf.position.team_id else None,
-        }
-        for pf in position_fits
-    ]
-
-    return render(request, "reports/person_profile.html", {
-        "person": person,
-        "profile": profile,
-        "chart_labels_json": json.dumps(chart_labels),
-        "chart_scores_json": json.dumps(chart_scores),
-        "dim_details": dim_details,
-        "position_fits_with_team": position_fits_with_team,
+    context.update({
         "position_fits": position_fits,
         "team_fits": team_fits,
+        "position_fits_with_team": [
+            {
+                "position_fit": pf,
+                "team_fit": team_fits_by_team.get(pf.position.team_id) if pf.position.team_id else None,
+            }
+            for pf in position_fits
+        ],
     })
+    return render(request, "reports/person_profile.html", context)
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -105,54 +96,13 @@ def person_profile(request, person_pk):
 
 @login_required
 def position_fit_report(request, person_pk, position_pk):
-    person = get_org_object_or_404(Person, request.user.org, pk=person_pk)
-    position = get_org_object_or_404(Position, request.user.org, pk=position_pk)
-    fit = get_object_or_404(PositionFitResult, person=person, position=position)
-    profile = person.big_five_profile
-    lang = _lang(request)
-
-    AuditLog.objects.create(
-        org=request.user.org,
-        user=request.user,
-        action="position_fit.viewed",
-        entity_type="PositionFitResult",
-        entity_id=fit.id,
-        metadata={"person_id": str(person.id), "position_id": str(position.id)},
+    person, position, fit = _get_position_fit(request, person_pk, position_pk)
+    audit(
+        request, "position_fit.viewed", "PositionFitResult", fit.id,
+        person_id=str(person.id), position_id=str(position.id),
     )
-
-    chart_labels = _dim_labels(lang)
-    person_scores = [float(getattr(profile, d)) for d in DIMENSIONS]
-    pos_min = [getattr(position.profile, f"{d}_min") for d in DIMENSIONS]
-    pos_max = [getattr(position.profile, f"{d}_max") for d in DIMENSIONS]
-    pos_mid = [round((mn + mx) / 2, 1) for mn, mx in zip(pos_min, pos_max)]
-
-    dim_details = [
-        {
-            "dim_key": d,
-            "label": DIMENSION_LABELS[d][lang],
-            "tooltip": DIMENSION_TOOLTIPS[d][lang],
-            "score": person_scores[i],
-            "min": pos_min[i],
-            "max": pos_max[i],
-            "fit": float(getattr(fit, f"{d}_fit")),
-            "in_range": pos_min[i] <= person_scores[i] <= pos_max[i],
-        }
-        for i, d in enumerate(DIMENSIONS)
-    ]
-    exploration_points = get_position_exploration_points(dim_details, lang)
-
-    return render(request, "reports/position_fit.html", {
-        "person": person,
-        "position": position,
-        "fit": fit,
-        "chart_labels_json": json.dumps(chart_labels),
-        "person_scores_json": json.dumps(person_scores),
-        "pos_min_json": json.dumps(pos_min),
-        "pos_max_json": json.dumps(pos_max),
-        "pos_mid_json": json.dumps(pos_mid),
-        "dim_details": dim_details,
-        "exploration_points": exploration_points,
-    })
+    context = build_position_fit_context(person, position, fit, get_lang(request))
+    return render(request, "reports/position_fit.html", context)
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -161,74 +111,13 @@ def position_fit_report(request, person_pk, position_pk):
 
 @login_required
 def team_fit_report(request, person_pk, team_pk):
-    person = get_org_object_or_404(Person, request.user.org, pk=person_pk)
-    team = get_org_object_or_404(Team, request.user.org, pk=team_pk)
-    fit = get_object_or_404(TeamFitResult, person=person, team=team)
-    profile = person.big_five_profile
-    lang = _lang(request)
-
-    AuditLog.objects.create(
-        org=request.user.org,
-        user=request.user,
-        action="team_fit.viewed",
-        entity_type="TeamFitResult",
-        entity_id=fit.id,
-        metadata={"person_id": str(person.id), "team_id": str(team.id)},
+    person, team, fit = _get_team_fit(request, person_pk, team_pk)
+    audit(
+        request, "team_fit.viewed", "TeamFitResult", fit.id,
+        person_id=str(person.id), team_id=str(team.id),
     )
-
-    # Recalcule le profil agrégé de l'équipe pour l'affichage
-    member_profiles = [
-        m.person.big_five_profile
-        for m in TeamMembership.objects
-            .filter(team=team, left_at__isnull=True)
-            .exclude(person=person)
-            .select_related("person__big_five_profile")
-        if hasattr(m.person, "big_five_profile")
-    ]
-    team_data = compute_team_profile(member_profiles)
-
-    chart_labels = _dim_labels(lang)
-    person_scores = [float(getattr(profile, d)) for d in DIMENSIONS]
-    team_avgs = [team_data["averages"][d] if team_data else 50.0 for d in DIMENSIONS]
-    complementarity = fit.complementarity
-
-    SIGNAL_LABELS = {
-        "fr": {"similar": "Similaire", "different": "Différent", "complementary": "Complémentaire"},
-        "en": {"similar": "Similar", "different": "Different", "complementary": "Complementary"},
-    }
-    SIGNAL_COLORS = {
-        "similar": "bg-blue-100 text-blue-800",
-        "different": "bg-yellow-100 text-yellow-800",
-        "complementary": "bg-green-100 text-green-800",
-    }
-
-    dim_details = [
-        {
-            "dim_key": d,
-            "label": DIMENSION_LABELS[d][lang],
-            "tooltip": DIMENSION_TOOLTIPS[d][lang],
-            "score": person_scores[i],
-            "team_avg": team_avgs[i],
-            "fit": float(getattr(fit, f"{d}_fit")),
-            "signal": complementarity.get(d, "similar"),
-            "signal_label": SIGNAL_LABELS[lang].get(complementarity.get(d, "similar"), ""),
-            "signal_color": SIGNAL_COLORS.get(complementarity.get(d, "similar"), ""),
-        }
-        for i, d in enumerate(DIMENSIONS)
-    ]
-    exploration_points = get_team_exploration_points(dim_details, lang)
-
-    return render(request, "reports/team_fit.html", {
-        "person": person,
-        "team": team,
-        "fit": fit,
-        "chart_labels_json": json.dumps(chart_labels),
-        "person_scores_json": json.dumps(person_scores),
-        "team_avgs_json": json.dumps(team_avgs),
-        "dim_details": dim_details,
-        "exploration_points": exploration_points,
-        "team_size": fit.team_size_at_computation,
-    })
+    context = build_team_fit_context(person, team, fit, get_lang(request))
+    return render(request, "reports/team_fit.html", context)
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -236,9 +125,8 @@ def team_fit_report(request, person_pk, team_pk):
 # ──────────────────────────────────────────────────────────────────────────────
 
 def _render_pdf(template_name, context, filename):
-    from django.http import HttpResponse
-    from django.template.loader import render_to_string
     from weasyprint import HTML
+
     html_string = render_to_string(template_name, context)
     pdf = HTML(string=html_string).write_pdf()
     response = HttpResponse(pdf, content_type="application/pdf")
@@ -246,122 +134,42 @@ def _render_pdf(template_name, context, filename):
     return response
 
 
+def _slug(value):
+    return value.lower().replace(" ", "-")
+
+
 @login_required
 def person_profile_pdf(request, person_pk):
-    person = get_org_object_or_404(Person, request.user.org, pk=person_pk)
-    profile = get_object_or_404(BigFiveProfile, person=person)
-    lang = _lang(request)
+    person, profile = _get_person_profile(request, person_pk)
+    audit(request, "profile.exported_pdf", "BigFiveProfile", profile.id, person_id=str(person.id))
 
-    AuditLog.objects.create(
-        org=request.user.org, user=request.user,
-        action="profile.exported_pdf", entity_type="BigFiveProfile",
-        entity_id=profile.id, metadata={"person_id": str(person.id)},
-    )
-
-    chart_labels = _dim_labels(lang)
-    scores = [float(getattr(profile, d)) for d in DIMENSIONS]
-    dim_details = [
-        {"label": DIMENSION_LABELS[d][lang], "score": scores[i]}
-        for i, d in enumerate(DIMENSIONS)
-    ]
-
-    filename = f"profil-ocean_{person.last_name.lower()}_{person.first_name.lower()}.pdf"
-    return _render_pdf("reports/pdf/person_profile.html", {
-        "person": person, "profile": profile,
-        "dim_details": dim_details, "lang": lang,
-    }, filename)
+    context = build_person_profile_context(person, profile, get_lang(request))
+    filename = f"profil-ocean_{_slug(person.last_name)}_{_slug(person.first_name)}.pdf"
+    return _render_pdf("reports/pdf/person_profile.html", context, filename)
 
 
 @login_required
 def position_fit_pdf(request, person_pk, position_pk):
-    person = get_org_object_or_404(Person, request.user.org, pk=person_pk)
-    position = get_org_object_or_404(Position, request.user.org, pk=position_pk)
-    fit = get_object_or_404(PositionFitResult, person=person, position=position)
-    profile = person.big_five_profile
-    lang = _lang(request)
-
-    AuditLog.objects.create(
-        org=request.user.org, user=request.user,
-        action="position_fit.exported_pdf", entity_type="PositionFitResult",
-        entity_id=fit.id,
-        metadata={"person_id": str(person.id), "position_id": str(position.id)},
+    person, position, fit = _get_position_fit(request, person_pk, position_pk)
+    audit(
+        request, "position_fit.exported_pdf", "PositionFitResult", fit.id,
+        person_id=str(person.id), position_id=str(position.id),
     )
-
-    person_scores = [float(getattr(profile, d)) for d in DIMENSIONS]
-    pos_min = [getattr(position.profile, f"{d}_min") for d in DIMENSIONS]
-    pos_max = [getattr(position.profile, f"{d}_max") for d in DIMENSIONS]
-    dim_details = [
-        {
-            "dim_key": d,
-            "label": DIMENSION_LABELS[d][lang],
-            "score": person_scores[i],
-            "min": pos_min[i], "max": pos_max[i],
-            "fit": float(getattr(fit, f"{d}_fit")),
-            "in_range": pos_min[i] <= person_scores[i] <= pos_max[i],
-        }
-        for i, d in enumerate(DIMENSIONS)
-    ]
-    exploration_points = get_position_exploration_points(dim_details, lang)
-
-    filename = f"fit-poste_{person.last_name.lower()}_{position.title_fr.lower().replace(' ', '-')}.pdf"
-    return _render_pdf("reports/pdf/position_fit.html", {
-        "person": person, "position": position, "fit": fit,
-        "dim_details": dim_details, "exploration_points": exploration_points, "lang": lang,
-    }, filename)
+    context = build_position_fit_context(person, position, fit, get_lang(request))
+    filename = f"fit-poste_{_slug(person.last_name)}_{_slug(position.title_fr)}.pdf"
+    return _render_pdf("reports/pdf/position_fit.html", context, filename)
 
 
 @login_required
 def team_fit_pdf(request, person_pk, team_pk):
-    person = get_org_object_or_404(Person, request.user.org, pk=person_pk)
-    team = get_org_object_or_404(Team, request.user.org, pk=team_pk)
-    fit = get_object_or_404(TeamFitResult, person=person, team=team)
-    profile = person.big_five_profile
-    lang = _lang(request)
-
-    AuditLog.objects.create(
-        org=request.user.org, user=request.user,
-        action="team_fit.exported_pdf", entity_type="TeamFitResult",
-        entity_id=fit.id,
-        metadata={"person_id": str(person.id), "team_id": str(team.id)},
+    person, team, fit = _get_team_fit(request, person_pk, team_pk)
+    audit(
+        request, "team_fit.exported_pdf", "TeamFitResult", fit.id,
+        person_id=str(person.id), team_id=str(team.id),
     )
-
-    member_profiles = [
-        m.person.big_five_profile
-        for m in TeamMembership.objects
-            .filter(team=team, left_at__isnull=True)
-            .exclude(person=person)
-            .select_related("person__big_five_profile")
-        if hasattr(m.person, "big_five_profile")
-    ]
-    team_data = compute_team_profile(member_profiles)
-    person_scores = [float(getattr(profile, d)) for d in DIMENSIONS]
-    team_avgs = [team_data["averages"][d] if team_data else 50.0 for d in DIMENSIONS]
-    complementarity = fit.complementarity
-
-    SIGNAL_LABELS = {
-        "fr": {"similar": "Similaire", "different": "Différent", "complementary": "Complémentaire"},
-        "en": {"similar": "Similar", "different": "Different", "complementary": "Complementary"},
-    }
-    dim_details = [
-        {
-            "dim_key": d,
-            "label": DIMENSION_LABELS[d][lang],
-            "score": person_scores[i],
-            "team_avg": team_avgs[i],
-            "fit": float(getattr(fit, f"{d}_fit")),
-            "signal": complementarity.get(d, "similar"),
-            "signal_label": SIGNAL_LABELS[lang].get(complementarity.get(d, "similar"), ""),
-        }
-        for i, d in enumerate(DIMENSIONS)
-    ]
-    exploration_points = get_team_exploration_points(dim_details, lang)
-
-    filename = f"fit-equipe_{person.last_name.lower()}_{team.name.lower().replace(' ', '-')}.pdf"
-    return _render_pdf("reports/pdf/team_fit.html", {
-        "person": person, "team": team, "fit": fit,
-        "dim_details": dim_details, "exploration_points": exploration_points, "lang": lang,
-        "team_size": fit.team_size_at_computation,
-    }, filename)
+    context = build_team_fit_context(person, team, fit, get_lang(request))
+    filename = f"fit-equipe_{_slug(person.last_name)}_{_slug(team.name)}.pdf"
+    return _render_pdf("reports/pdf/team_fit.html", context, filename)
 
 
 # ── Audit log viewer (E8) ──────────────────────────────────────────────────────
@@ -370,16 +178,13 @@ def team_fit_pdf(request, person_pk, team_pk):
 def audit_log(request):
     """Journal d'audit — RH only."""
     if not request.user.is_rh:
-        from django.http import HttpResponseForbidden
         return HttpResponseForbidden()
 
-    from django.core.paginator import Paginator
     logs_qs = (
         AuditLog.objects.for_org(request.user.org)
         .select_related("user")
         .order_by("-created_at")
     )
     paginator = Paginator(logs_qs, 25)
-    page = request.GET.get("page", 1)
-    logs = paginator.get_page(page)
+    logs = paginator.get_page(request.GET.get("page", 1))
     return render(request, "reports/audit_log.html", {"logs": logs})
