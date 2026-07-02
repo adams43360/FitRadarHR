@@ -34,6 +34,9 @@ createsuperuser:
 test:
 	docker compose -f docker-compose.dev.yml exec app python manage.py test
 
+test-fast:
+	python manage.py test --settings=core.settings_test
+
 # ── Production ───────────────────────────────────────────────────────────────
 
 prod:

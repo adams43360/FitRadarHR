@@ -9,6 +9,23 @@ import django.db.models.deletion
 from django.db import migrations, models
 
 
+def populate_department_fk(apps, schema_editor):
+    """Relie chaque poste au Department créé depuis l'ancien champ texte.
+
+    Version ORM (portable PostgreSQL/SQLite) de l'ancien UPDATE ... FROM.
+    """
+    Position = apps.get_model("positions", "Position")
+    Department = apps.get_model("departments", "Department")
+
+    for pos in Position.objects.exclude(department=""):
+        dept = Department.objects.filter(
+            org_id=pos.org_id, name_fr=pos.department
+        ).first()
+        if dept:
+            pos.department_fk_id = dept.id
+            pos.save(update_fields=["department_fk"])
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -32,17 +49,7 @@ class Migration(migrations.Migration):
             ),
         ),
         # Step 2: populate it from existing text field
-        migrations.RunSQL(
-            sql="""
-                UPDATE positions_position p
-                SET department_fk_id = d.id
-                FROM departments_department d
-                WHERE d.org_id = p.org_id
-                  AND d.name_fr = p.department
-                  AND p.department != '';
-            """,
-            reverse_sql=migrations.RunSQL.noop,
-        ),
+        migrations.RunPython(populate_department_fk, migrations.RunPython.noop),
         # Step 3: drop old text column
         migrations.RemoveField(model_name="position", name="department"),
         # Step 4: rename new column to 'department'
