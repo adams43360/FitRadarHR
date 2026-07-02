@@ -7,8 +7,6 @@ from django.conf.urls.i18n import i18n_patterns
 urlpatterns = [
     # Changement de langue
     path("i18n/", include("django.conf.urls.i18n")),
-    # API REST (préparé pour V2 mobile)
-    path("api/v1/", include("apps.api.urls")),
 ]
 
 urlpatterns += i18n_patterns(

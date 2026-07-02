@@ -153,9 +153,11 @@ def compute_all_fits_for_person(person):
     Après calcul, recalcule aussi les coéquipiers des mêmes équipes dont le fit
     pouvait être incomplet (profils ajoutés après le leur).
     """
+    from .models import BigFiveProfile
+
     try:
         profile = person.big_five_profile
-    except Exception:
+    except BigFiveProfile.DoesNotExist:
         return  # pas encore de profil
 
     org = person.org
@@ -180,7 +182,7 @@ def compute_all_fits_for_person(person):
     for teammate in PersonModel.objects.filter(pk__in=teammate_ids):
         try:
             tm_profile = teammate.big_five_profile
-        except Exception:
+        except BigFiveProfile.DoesNotExist:
             continue
         _compute_team_fits(teammate, tm_profile, org)
 

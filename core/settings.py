@@ -16,6 +16,12 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "changeme-in-production")
 DEBUG = os.environ.get("DEBUG", "True") == "True"
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost 127.0.0.1").split()
 
+if not DEBUG and SECRET_KEY == "changeme-in-production":
+    from django.core.exceptions import ImproperlyConfigured
+    raise ImproperlyConfigured(
+        "DJANGO_SECRET_KEY doit être défini en production (DEBUG=False)."
+    )
+
 # ─── Applications ─────────────────────────────────────────────────────────────
 
 DJANGO_APPS = [
@@ -31,7 +37,6 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     "allauth",
     "allauth.account",
-    "rest_framework",       # API — préparé pour V2 mobile
     "whitenoise.runserver_nostatic",
 ]
 
@@ -43,7 +48,6 @@ LOCAL_APPS = [
     "apps.survey",
     "apps.fit",
     "apps.reports",
-    "apps.api",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -148,7 +152,12 @@ LOCALE_PATHS = [BASE_DIR / "locale"]
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"]
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+# Django 5.1+ : STATICFILES_STORAGE est ignoré, il faut passer par STORAGES
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
+}
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
@@ -164,19 +173,6 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "FitRadarHR <noreply@teamfit.app>")
-
-# ─── Django REST Framework (préparé pour V2 mobile) ──────────────────────────
-
-REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.SessionAuthentication",
-    ],
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
-    ],
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 20,
-}
 
 # ─── Sécurité production ──────────────────────────────────────────────────────
 

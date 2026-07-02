@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db import IntegrityError
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from core.managers import get_org_object_or_404
@@ -136,7 +137,7 @@ def person_create(request):
                 person.save()
                 messages.success(request, _("Personne ajoutée avec succès."))
                 return redirect("teams:persons")
-            except Exception:
+            except IntegrityError:
                 messages.error(request, _("Cette adresse email est déjà enregistrée dans votre organisation."))
     else:
         form = PersonForm()
