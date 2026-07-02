@@ -18,10 +18,9 @@ erDiagram
 
     User ||--o{ Team : "manage"
     User ||--o{ QuestionnaireLink : "envoie"
-    User ||--o{ FitReport : "consulte"
 
     Position ||--|| PositionProfile : "a un profil cible"
-    Position ||--o{ FitReport : "évaluée dans"
+    Position ||--o{ PositionFitResult : "évaluée dans"
 
     Team ||--o{ TeamMembership : "composée de"
     Person ||--o{ TeamMembership : "appartient à"
@@ -33,9 +32,10 @@ erDiagram
     QuestionnaireLink ||--o| QuestionnaireSession : "a une session"
     QuestionnaireLink ||--|| BigFiveProfile : "produit"
 
-    BigFiveProfile ||--o{ FitReport : "utilisé dans"
+    Person ||--o{ PositionFitResult : "a des fits poste"
+    Person ||--o{ TeamFitResult : "a des fits équipe"
 
-    Team ||--o{ FitReport : "évaluée dans"
+    Team ||--o{ TeamFitResult : "évaluée dans"
 ```
 
 ---
@@ -238,27 +238,26 @@ Résultat calculé du questionnaire Big Five d'une `Person`.
 
 ---
 
-### `FitReport`
-Résultat d'un calcul de fit (Poste ou Équipe), généré et consulté par un RH ou Manager.
+### `PositionFitResult` / `TeamFitResult`
+Résultats des calculs de fit (E5), recalculés automatiquement à chaque nouveau profil.
+Un enregistrement par couple (personne, poste) ou (personne, équipe) — `unique_together`.
 
 | Champ | Type | Notes |
 |---|---|---|
 | `id` | UUID | — |
-| `org_id` | UUID FK → Organization | Isolation tenant |
-| `profile_id` | UUID FK → BigFiveProfile | Profil évalué |
-| `report_type` | ENUM(`JOB`, `TEAM`) | — |
-| `position_id` | UUID FK → Position (nullable) | Renseigné si `JOB` |
-| `team_id` | UUID FK → Team (nullable) | Renseigné si `TEAM` |
-| `fit_openness` | DECIMAL(5,2) | Score de proximité par dimension |
-| `fit_conscientiousness` | DECIMAL(5,2) | — |
-| `fit_extraversion` | DECIMAL(5,2) | — |
-| `fit_agreeableness` | DECIMAL(5,2) | — |
-| `fit_neuroticism` | DECIMAL(5,2) | — |
+| `person_id` | UUID FK → Person | Isolation tenant via `person__org` |
+| `position_id` / `team_id` | UUID FK | Poste ou équipe évalué(e) |
+| `person_profile_id` | UUID FK → BigFiveProfile (nullable) | Profil utilisé pour le calcul |
+| `openness_fit` … `neuroticism_fit` | DECIMAL(5,2) | Score de proximité par dimension (0–100) |
+| `overall_fit` | DECIMAL(5,2) | Moyenne des 5 dimensions — informatif, jamais décisionnel |
+| `complementarity` | JSONB | `TeamFitResult` uniquement — signal par dimension (`similar` / `different` / `complementary`) |
+| `team_size_at_computation` | SMALLINT | `TeamFitResult` uniquement |
 | `algorithm_version` | VARCHAR(20) | Traçabilité EU AI Act |
-| `created_by` | UUID FK → User | — |
-| `created_at` | TIMESTAMP | — |
+| `computed_at` | TIMESTAMP | — |
 
-> **Principe :** pas de score global unique — les scores par dimension alimentent la restitution visuelle et textuelle, jamais une décision binaire.
+> **Principe :** les scores alimentent la restitution visuelle et textuelle ("points à approfondir"), jamais une décision binaire — human in the loop.
+
+> **Historique :** un modèle `FitReport` prévu au cadrage initial a été remplacé par ces deux tables (supprimé en juillet 2026, migration `reports/0002`).
 
 ---
 
@@ -271,7 +270,7 @@ Journal immuable de toutes les actions sensibles (EU AI Act + RGPD).
 | `org_id` | UUID FK → Organization | — |
 | `user_id` | UUID FK → User (nullable) | NULL si action système |
 | `action` | VARCHAR(100) | Ex. `report.viewed`, `link.sent`, `pdf.exported`, `person.deleted` |
-| `entity_type` | VARCHAR(50) | Ex. `FitReport`, `Person`, `QuestionnaireLink` |
+| `entity_type` | VARCHAR(50) | Ex. `PositionFitResult`, `Person`, `QuestionnaireLink` |
 | `entity_id` | UUID | — |
 | `metadata` | JSONB (nullable) | Contexte additionnel (ex. version algo) |
 | `created_at` | TIMESTAMP | — |
@@ -283,11 +282,11 @@ Journal immuable de toutes les actions sensibles (EU AI Act + RGPD).
 ## Règles transverses
 
 1. **Isolation tenant** : chaque requête filtre systématiquement par `org_id` via un Django model manager (`OrgQuerySet`). Aucune vue ne peut afficher des données cross-tenant.
-2. **Pas de score de décision unique** : `FitReport` stocke 5 scores dimensionnels, jamais un agrégat binaire.
+2. **Pas de score de décision unique** : les résultats de fit stockent 5 scores dimensionnels ; le score global est informatif, jamais un agrégat décisionnel binaire.
 3. **Traçabilité** : toute consultation de rapport, export PDF et envoi de lien est inscrit dans `AuditLog`.
-4. **RGPD / droit à l'effacement** : anonymisation des champs PII de `Person` (nom, email) sur demande — les `FitReport` et `AuditLog` associés sont conservés sans lien nominatif.
+4. **RGPD / droit à l'effacement** : anonymisation des champs PII de `Person` (nom, email) sur demande — les résultats de fit et `AuditLog` associés sont conservés sans lien nominatif.
 5. **UUID partout** : pas d'auto-increment entier exposé en URL (évite l'énumération).
 
 ---
 
-*Dernière mise à jour : 2026-06-30*
+*Dernière mise à jour : 2026-07-02*
