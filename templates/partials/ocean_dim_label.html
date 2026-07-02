@@ -1,5 +1,4 @@
-{# Partial : libellé d'une dimension OCEAN avec infobulle au survol.
-   Variables attendues : label (str), tooltip (str) #}
+{# Variables attendues : label (str), tooltip (str) #}
 <span
   data-tooltip="{{ tooltip }}"
   @mouseenter="$dispatch('show-ocean-tip', { text: $el.dataset.tooltip, top: $el.getBoundingClientRect().bottom + 8, left: $el.getBoundingClientRect().left })"
