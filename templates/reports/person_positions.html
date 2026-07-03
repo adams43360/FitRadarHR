@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{{ person.full_name }} — {% trans "Postes recommandés" %}{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+
+  <div class="mb-4">
+    <div class="flex items-center justify-between">
+      <a href="{% url 'reports:person_profile' person_pk=person.pk %}" class="text-sm text-indigo-600 hover:underline">
+        ← {% trans "Retour au profil" %}
+      </a>
+      <a href="{% url 'reports:person_positions_pdf' person_pk=person.pk %}"
+         class="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-50">
+        ↓ PDF
+      </a>
+    </div>
+  </div>
+
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">{% trans "Postes recommandés" %}</h1>
+      <p class="text-sm text-gray-500">{{ person.full_name }} — {{ person.get_person_type_display }}</p>
+    </div>
+  </div>
+
+  <!-- Avertissement human-in-the-loop -->
+  <div class="mb-6 rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-amber-800">
+    ⚠️ {% trans "Ce classement est une aide à la décision. Il ne constitue pas une recommandation et doit être interprété avec le contexte humain." %}
+  </div>
+
+  <div class="bg-white rounded-2xl border border-gray-200 p-6">
+    <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+      <h2 class="text-sm font-semibold text-gray-700">{% trans "Classement des postes par Fit" %}</h2>
+      {% if departments %}
+      <div class="flex items-center gap-1 text-xs flex-wrap">
+        <a href="?"
+           class="px-2.5 py-1 rounded-full {% if not department_filter %}bg-indigo-600 text-white{% else %}bg-gray-100 text-gray-600 hover:bg-gray-200{% endif %}">
+          {% trans "Tous" %}
+        </a>
+        {% for dept in departments %}
+        <a href="?department={{ dept.pk }}"
+           class="px-2.5 py-1 rounded-full {% if department_filter == dept.pk|stringformat:'s' %}bg-indigo-600 text-white{% else %}bg-gray-100 text-gray-600 hover:bg-gray-200{% endif %}">
+          {{ dept.name_fr }}
+        </a>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+
+    {% if position_fits %}
+    <div class="space-y-2">
+      {% for fit in position_fits %}
+      <a href="{% url 'reports:position_fit' person_pk=person.pk position_pk=fit.position.pk %}"
+         class="flex items-center gap-3 rounded-xl border border-gray-100 px-4 py-3 hover:bg-gray-50 transition-colors">
+        <span class="text-xs text-gray-400 w-5 shrink-0 text-center">{{ forloop.counter }}</span>
+        <div class="flex-1 min-w-0">
+          <span class="text-sm font-medium text-gray-900">{{ fit.position.title_fr }}</span>
+          {% if fit.position.department %}
+          <span class="ml-2 text-xs px-1.5 py-0.5 rounded bg-gray-100 text-gray-500">{{ fit.position.department.name_fr }}</span>
+          {% endif %}
+          {% if fit.position.team %}
+          <span class="ml-1 text-xs px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">{{ fit.position.team.name }}</span>
+          {% endif %}
+        </div>
+        <div class="flex items-center gap-3 shrink-0">
+          <div class="w-24 h-2 bg-gray-100 rounded-full overflow-hidden">
+            <div class="h-full rounded-full
+              {% if fit.overall_fit >= 80 %}bg-green-500
+              {% elif fit.overall_fit >= 60 %}bg-amber-400
+              {% else %}bg-red-400{% endif %}"
+              style="width: {{ fit.overall_fit|floatformat:0 }}%">
+            </div>
+          </div>
+          <span class="text-sm font-semibold w-10 text-right
+            {% if fit.overall_fit >= 80 %}text-green-600
+            {% elif fit.overall_fit >= 60 %}text-amber-600
+            {% else %}text-red-500{% endif %}">
+            {{ fit.overall_fit|floatformat:0 }}%
+          </span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-sm text-gray-400 py-4 text-center">
+      {% if department_filter %}
+        {% trans "Aucun résultat pour ce filtre." %}
+      {% else %}
+        {% trans "Aucun poste actif avec profil cible ne correspond pour le moment." %}
+      {% endif %}
+    </p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -393,6 +393,20 @@
 
 ---
 
+### US-E6-07 — Fit inversé : postes recommandés pour une personne
+**En tant que** RH ou Manager, **je veux**, à partir du profil d'une personne, voir un classement des postes actifs qui lui correspondent le mieux, **afin de** repérer des opportunités de mobilité interne sans avoir à parcourir poste par poste.
+
+**Critères d'acceptation :**
+- [x] Un lien "Voir le classement complet" est disponible depuis la section Fit Postes du profil individuel, ainsi qu'un accès direct depuis la liste des rapports
+- [x] Le classement liste tous les postes actifs ayant un profil cible, triés par fit décroissant, avec un filtre optionnel par département
+- [x] Aucun nouveau calcul de fit n'est introduit : la vue s'appuie sur les `PositionFitResult` déjà calculés par le moteur de fit (E5)
+- [x] Un export PDF est disponible, cohérent avec les autres rapports
+- [x] La consultation et l'export sont tracés dans le journal d'audit (EU AI Act)
+- [x] Le disclaimer "aide à la décision, pas une recommandation" est rappelé sur la page comme sur l'export
+- [x] Le contenu est disponible en FR/EN/ES/DE
+
+---
+
 ## E7 — Internationalisation
 
 ### US-E7-01 — Choix de la langue de l'interface

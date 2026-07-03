@@ -4,6 +4,25 @@ Toutes les évolutions notables de FitRadarHR sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) —
 le projet n'étant pas encore versionné, les entrées sont datées.
 
+## 2026-07-03 (10)
+
+### Ajouté
+- **Fit inversé — postes recommandés pour une personne** (item #1 roadmap V3,
+  RICE 6.0, US-E6-07) : première brique de la V3, à partir d'un profil, un
+  classement des postes actifs qui lui correspondent le mieux — l'inverse du
+  classement des personnes sur un poste (E5).
+  - Aucun nouveau calcul de fit : réutilise les `PositionFitResult` déjà
+    produits par `compute_all_fits_for_person` (E5) — nouvelle vue seulement
+    (`apps/reports/services.py::build_person_position_ranking_context`).
+  - Nouvelle page `/reports/person/<id>/positions/` (filtre optionnel par
+    département), export PDF cohérent avec les autres rapports, traçabilité
+    (journal d'audit `position_ranking.viewed`/`exported_pdf`).
+  - Points d'entrée depuis la section "Fit Postes" du profil individuel et
+    depuis la liste des rapports.
+  - 6 nouveaux tests (tri par fit décroissant, filtre département, export
+    PDF, isolation multi-tenant, audit, état vide). 231 tests au total.
+  - `docs/user/about/roadmap.md` : item #1 V3 marqué livré.
+
 ## 2026-07-03 (9)
 
 ### Ajouté

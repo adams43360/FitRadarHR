@@ -19,10 +19,18 @@
         <p class="text-sm text-gray-500">{{ person.email }} — {{ person.get_person_type_display }}</p>
         <p class="text-xs text-gray-400 mt-1">{% trans "Profil calculé le" %} {{ profile.computed_at|date:"d/m/Y" }} — v{{ profile.algorithm_version }}</p>
       </div>
-      <a href="{% url 'reports:person_profile' person_pk=person.pk %}"
-         class="shrink-0 rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700">
-        {% trans "Voir le profil" %}
-      </a>
+      <div class="flex items-center gap-2 shrink-0">
+        {% if person.position_fits.all %}
+        <a href="{% url 'reports:person_positions' person_pk=person.pk %}"
+           class="rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50">
+          {% trans "Postes recommandés" %}
+        </a>
+        {% endif %}
+        <a href="{% url 'reports:person_profile' person_pk=person.pk %}"
+           class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700">
+          {% trans "Voir le profil" %}
+        </a>
+      </div>
     </div>
 
     {% if person.position_fits.all or person.team_fits.all %}

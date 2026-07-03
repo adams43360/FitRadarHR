@@ -69,11 +69,13 @@ aujourd'hui. Livrée avec un périmètre volontairement restreint : postes/équi
 personnes + statut questionnaire, résultats de fit — jamais les profils Big Five
 bruts (minimisation RGPD). Authentification par clé API par organisation.
 
-## Priorisation V3 (candidats, non tranchés)
+## Priorisation V3
+
+L'item #1 est livré ; les items 2 à 8 restent des candidats non tranchés.
 
 | # | Fonctionnalité | Reach | Impact | Conf. | Effort | Score RICE | Statut |
 |---|---|---|---|---|---|---|---|
-| 1 | Fit inversé — meilleurs postes pour une personne | 5 | 2 | 90 % | 1.5 | **6.0** | Candidat |
+| 1 | Fit inversé — meilleurs postes pour une personne | 5 | 2 | 90 % | 1.5 | **6.0** | ✅ Livré |
 | 2 | Monétisation (essai gratuit → abonnement) | 8 | 3 | 80 % | 5 | **3.84** | Candidat |
 | 3 | Cartographie des manques d'une équipe | 5 | 2 | 60 % | 2 | **3.0** | Candidat |
 | 4 | Portail candidat / collaborateur (accès à son profil) | 6 | 2 | 70 % | 3 | **2.8** | Candidat |
@@ -88,7 +90,8 @@ bruts (minimisation RGPD). Authentification par clé API par organisation.
 l'inverse (partir d'une personne et voir les postes ouverts qui lui correspondent
 le mieux) sert la mobilité interne, sans collecter la moindre donnée
 supplémentaire : c'est une nouvelle vue sur le moteur de fit existant. Meilleur
-ratio valeur/effort de la liste.
+ratio valeur/effort de la liste. Livré : aucun nouveau calcul, réutilise les
+résultats de fit déjà produits par le moteur (E5).
 
 **2. Monétisation** — c'est la raison même du passage à la licence Fair Source
 (FSL-1.1-MIT) : Damien envisageait explicitement un essai gratuit puis un

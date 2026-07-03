@@ -157,6 +157,33 @@ def build_position_fit_context(person, position, fit, lang):
     }
 
 
+def build_person_position_ranking_context(person, lang, department_id=None):
+    """Item #1 roadmap V3 — fit inversé : classement des postes actifs les
+    mieux adaptés à une personne (au lieu de choisir un poste puis classer les
+    personnes, on part de la personne). S'appuie entièrement sur les
+    `PositionFitResult` déjà calculés par `compute_all_fits_for_person` —
+    aucune nouvelle donnée, aucun nouveau calcul, juste une vue différente.
+    """
+    qs = (
+        person.position_fits
+        .select_related("position__department", "position__team")
+        .order_by("-overall_fit")
+    )
+    if department_id:
+        qs = qs.filter(position__department_id=department_id)
+
+    from apps.departments.models import Department
+    departments = Department.objects.for_org(person.org).active()
+
+    return {
+        "person": person,
+        "lang": lang,
+        "position_fits": qs,
+        "departments": departments,
+        "department_filter": str(department_id) if department_id else "",
+    }
+
+
 def build_team_fit_context(person, team, fit, lang):
     profile = person.big_five_profile
     scores = person_scores(profile)

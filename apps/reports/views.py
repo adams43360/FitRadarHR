@@ -13,6 +13,7 @@ from .analytics import build_analytics_context
 from .models import AuditLog
 from .services import (
     audit,
+    build_person_position_ranking_context,
     build_person_profile_context,
     build_position_fit_context,
     build_team_fit_context,
@@ -89,6 +90,33 @@ def person_profile(request, person_pk):
         ],
     })
     return render(request, "reports/person_profile.html", context)
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Fit inversé — postes recommandés pour une personne (item #1 roadmap V3, US-E6-07)
+# ──────────────────────────────────────────────────────────────────────────────
+
+@login_required
+def person_position_ranking(request, person_pk):
+    """Classement des postes actifs les mieux adaptés à une personne — l'inverse
+    du classement des personnes sur un poste (`positions:detail`). Réutilise les
+    `PositionFitResult` déjà calculés, aucun nouveau calcul de fit."""
+    person, profile = _get_person_profile(request, person_pk)
+    audit(request, "position_ranking.viewed", "Person", person.id)
+
+    department_id = request.GET.get("department") or None
+    context = build_person_position_ranking_context(person, get_lang(request), department_id)
+    return render(request, "reports/person_positions.html", context)
+
+
+@login_required
+def person_position_ranking_pdf(request, person_pk):
+    person, profile = _get_person_profile(request, person_pk)
+    audit(request, "position_ranking.exported_pdf", "Person", person.id)
+
+    context = build_person_position_ranking_context(person, get_lang(request))
+    filename = f"postes-recommandes_{_slug(person.last_name)}_{_slug(person.first_name)}.pdf"
+    return _render_pdf("reports/pdf/person_positions.html", context, filename)
 
 
 # ──────────────────────────────────────────────────────────────────────────────

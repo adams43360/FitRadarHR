@@ -58,6 +58,94 @@ class ReportTenantIsolationTests(TestCase):
         self.assertNotIn(self.profile1, BigFiveProfile.objects.for_org(self.org2))
 
 
+class PersonPositionRankingTests(TestCase):
+    """Fit inversé — item #1 roadmap V3 (US-E6-07) : classement des postes
+    les mieux adaptés à une personne."""
+
+    def setUp(self):
+        from apps.departments.models import Department
+        from apps.fit.engine import compute_all_fits_for_person
+        from apps.positions.models import Position, PositionProfile
+
+        self.org, self.user = create_org_and_user(email="rh@org.test")
+        self.dept_eng = Department.objects.create(org=self.org, name_fr="Ingénierie")
+        self.dept_sales = Department.objects.create(org=self.org, name_fr="Ventes")
+
+        self.person = Person.objects.create(
+            org=self.org, email="alice@org.test", first_name="Alice", last_name="A",
+        )
+        self.profile = create_profile(self.person, o=90, c=90, e=90, a=90, n=90)
+
+        # Poste très bien adapté (plage large incluant 90)
+        self.good_position = Position.objects.create(
+            org=self.org, title_fr="Poste adapté", created_by=self.user, department=self.dept_eng,
+        )
+        PositionProfile.objects.create(position=self.good_position)  # 0-100 partout → fit 100
+
+        # Poste mal adapté (plage étroite loin de 90)
+        self.bad_position = Position.objects.create(
+            org=self.org, title_fr="Poste peu adapté", created_by=self.user, department=self.dept_sales,
+        )
+        PositionProfile.objects.create(
+            position=self.bad_position,
+            openness_min=0, openness_max=10,
+            conscientiousness_min=0, conscientiousness_max=10,
+            extraversion_min=0, extraversion_max=10,
+            agreeableness_min=0, agreeableness_max=10,
+            neuroticism_min=0, neuroticism_max=10,
+        )
+
+        compute_all_fits_for_person(self.person)
+
+    def test_ranking_ordered_by_overall_fit_desc(self):
+        self.client.force_login(self.user)
+        resp = self.client.get(reverse("reports:person_positions", kwargs={"person_pk": self.person.pk}))
+        self.assertEqual(resp.status_code, 200)
+        positions_in_order = [f.position for f in resp.context["position_fits"]]
+        self.assertEqual(positions_in_order, [self.good_position, self.bad_position])
+
+    def test_department_filter(self):
+        self.client.force_login(self.user)
+        resp = self.client.get(
+            reverse("reports:person_positions", kwargs={"person_pk": self.person.pk}),
+            {"department": str(self.dept_sales.pk)},
+        )
+        positions = [f.position for f in resp.context["position_fits"]]
+        self.assertEqual(positions, [self.bad_position])
+
+    def test_audit_log_on_view(self):
+        self.client.force_login(self.user)
+        self.client.get(reverse("reports:person_positions", kwargs={"person_pk": self.person.pk}))
+        self.assertTrue(
+            AuditLog.objects.filter(org=self.org, action="position_ranking.viewed").exists()
+        )
+
+    def test_pdf_export(self):
+        self.client.force_login(self.user)
+        resp = self.client.get(reverse("reports:person_positions_pdf", kwargs={"person_pk": self.person.pk}))
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp["Content-Type"], "application/pdf")
+        self.assertTrue(
+            AuditLog.objects.filter(org=self.org, action="position_ranking.exported_pdf").exists()
+        )
+
+    def test_cross_org_isolation(self):
+        org2, user2 = create_org_and_user(name="Org 2", email="rh@org2.test")
+        self.client.force_login(user2)
+        resp = self.client.get(reverse("reports:person_positions", kwargs={"person_pk": self.person.pk}))
+        self.assertEqual(resp.status_code, 404)
+
+    def test_no_fits_shows_empty_state(self):
+        person2 = Person.objects.create(
+            org=self.org, email="bob@org.test", first_name="Bob", last_name="B",
+        )
+        create_profile(person2)
+        self.client.force_login(self.user)
+        resp = self.client.get(reverse("reports:person_positions", kwargs={"person_pk": person2.pk}))
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(len(resp.context["position_fits"]), 0)
+
+
 class ProfileEvolutionTests(TestCase):
     """Suivi longitudinal — item #5 de la roadmap V2."""
 

@@ -2309,3 +2309,59 @@ msgstr "widerrufen am"
 msgid "Pour vous y retrouver, ex. « Intégration ATS Greenhouse »."
 msgstr ""
 "Damit Sie ihn später wiedererkennen, z. B. „Greenhouse-ATS-Integration“."
+
+#: templates/reports/person_positions.html:0
+#: templates/reports/pdf/person_positions.html:0
+#: templates/reports/person_profile.html:0
+msgid "Postes recommandés"
+msgstr "Empfohlene Stellen"
+
+#: templates/reports/person_positions.html:0
+#: templates/reports/pdf/person_positions.html:0
+#: templates/reports/person_profile.html:0
+msgid "Retour au profil"
+msgstr "Zurück zum Profil"
+
+#: templates/reports/person_positions.html:0
+#: templates/reports/pdf/person_positions.html:0
+#: templates/reports/person_profile.html:0
+msgid ""
+"Ce classement est une aide à la décision. Il ne constitue pas une "
+"recommandation et doit être interprété avec le contexte humain."
+msgstr ""
+"Dieses Ranking ist eine Entscheidungshilfe. Es stellt keine Empfehlung dar "
+"und muss im menschlichen Kontext interpretiert werden."
+
+#: templates/reports/person_positions.html:0
+#: templates/reports/pdf/person_positions.html:0
+#: templates/reports/person_profile.html:0
+msgid "Classement des postes par Fit"
+msgstr "Stellen-Ranking nach Fit"
+
+#: templates/reports/person_positions.html:0
+#: templates/reports/pdf/person_positions.html:0
+#: templates/reports/person_profile.html:0
+msgid "Aucun poste actif avec profil cible ne correspond pour le moment."
+msgstr "Derzeit passt keine aktive Stelle mit Zielprofil."
+
+#: templates/reports/person_positions.html:0
+#: templates/reports/pdf/person_positions.html:0
+#: templates/reports/person_profile.html:0
+msgid "Voir le classement complet"
+msgstr "Vollständiges Ranking ansehen"
+
+#: templates/reports/person_positions.html:0
+#: templates/reports/pdf/person_positions.html:0
+#: templates/reports/person_profile.html:0
+msgid ""
+"Ce classement est une aide à la décision. Aucun score ne constitue une "
+"recommandation automatique."
+msgstr ""
+"Dieses Ranking ist eine Entscheidungshilfe. Kein Wert stellt eine "
+"automatische Empfehlung dar."
+
+#: templates/reports/person_positions.html:0
+#: templates/reports/pdf/person_positions.html:0
+#: templates/reports/person_profile.html:0
+msgid "Poste"
+msgstr "Stelle"

@@ -1,0 +1,51 @@
+{% extends "reports/pdf/base.html" %}
+{% load i18n %}
+
+{% block header_meta %}
+  {% trans "Postes recommandés" %}<br>
+  {{ person.full_name }}<br>
+  {% now "d/m/Y" %}
+{% endblock %}
+
+{% block content %}
+<h1>{% trans "Postes recommandés" %}</h1>
+<p class="subtitle">{{ person.full_name }} — {{ person.get_person_type_display }}</p>
+
+<div class="warning">
+  ⚠ {% trans "Ce classement est une aide à la décision. Aucun score ne constitue une recommandation automatique." %}
+</div>
+
+<h2>{% trans "Classement des postes par Fit" %}</h2>
+{% if position_fits %}
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>{% trans "Poste" %}</th>
+      <th>{% trans "Département" %}</th>
+      <th>{% trans "Fit global" %}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for fit in position_fits %}
+    <tr>
+      <td>{{ forloop.counter }}</td>
+      <td><strong>{{ fit.position.title_fr }}</strong></td>
+      <td>{% if fit.position.department %}{{ fit.position.department.name_fr }}{% else %}—{% endif %}</td>
+      <td>
+        {% if fit.overall_fit >= 80 %}
+          <span class="badge badge-green">{{ fit.overall_fit|floatformat:0 }}%</span>
+        {% elif fit.overall_fit >= 60 %}
+          <span class="badge badge-amber">{{ fit.overall_fit|floatformat:0 }}%</span>
+        {% else %}
+          <span class="badge badge-red">{{ fit.overall_fit|floatformat:0 }}%</span>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p style="font-size:0.9em;color:#6b7280;">{% trans "Aucun poste actif avec profil cible ne correspond pour le moment." %}</p>
+{% endif %}
+{% endblock %}

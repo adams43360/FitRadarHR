@@ -2141,3 +2141,207 @@ msgstr ""
 "FitRadarHR is open source code software (Fair Source FSL-1.1-MIT license) "
 "used within your organization. The data controller is the organization that "
 "deploys and administers this tool."
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Clés API"
+msgstr "API keys"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid ""
+"Connectez un outil tiers (ATS, SIRH…) à FitRadarHR en lecture seule. Chaque "
+"clé donne accès aux postes, équipes, personnes et résultats de fit de votre "
+"organisation — jamais aux profils Big Five bruts."
+msgstr ""
+"Connect a third-party tool (ATS, HRIS…) to FitRadarHR in read-only mode. "
+"Each key grants access to your organization's positions, teams, people and "
+"fit results — never to raw Big Five profiles."
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Copiez cette clé maintenant : elle ne sera plus jamais affichée."
+msgstr "Copy this key now: it will never be shown again."
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Générer une nouvelle clé"
+msgstr "Generate a new key"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Générer"
+msgstr "Generate"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Nom de la clé"
+msgstr "Key name"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Préfixe"
+msgstr "Prefix"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Créée le"
+msgstr "Created on"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Dernière utilisation"
+msgstr "Last used"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Jamais"
+msgstr "Never"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Active"
+msgstr "Active"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Révoquée"
+msgstr "Revoked"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid ""
+"Révoquer cette clé ? Toute intégration l'utilisant cessera de fonctionner "
+"immédiatement."
+msgstr ""
+"Revoke this key? Any integration using it will stop working immediately."
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Révoquer"
+msgstr "Revoke"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Aucune clé API pour le moment."
+msgstr "No API keys yet."
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid ""
+"Authentification : en-tête <code>Authorization: Api-Key &lt;clé&gt;</code> "
+"sur les requêtes vers <code>/api/v1/</code>."
+msgstr ""
+"Authentication: header <code>Authorization: Api-Key &lt;key&gt;</code> on "
+"requests to <code>/api/v1/</code>."
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "API"
+msgstr "API"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Clé API générée."
+msgstr "API key generated."
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Clé API révoquée."
+msgstr "API key revoked."
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "clé API"
+msgstr "API key"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "clés API"
+msgstr "API keys"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "préfixe"
+msgstr "prefix"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "empreinte de la clé"
+msgstr "key fingerprint"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "créée le"
+msgstr "created on"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "dernière utilisation"
+msgstr "last used"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "révoquée le"
+msgstr "revoked on"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Pour vous y retrouver, ex. « Intégration ATS Greenhouse »."
+msgstr "So you can recognize it later, e.g. “Greenhouse ATS integration”."
+
+#: templates/reports/person_positions.html:0
+#: templates/reports/pdf/person_positions.html:0
+#: templates/reports/person_profile.html:0
+msgid "Postes recommandés"
+msgstr "Recommended positions"
+
+#: templates/reports/person_positions.html:0
+#: templates/reports/pdf/person_positions.html:0
+#: templates/reports/person_profile.html:0
+msgid "Retour au profil"
+msgstr "Back to profile"
+
+#: templates/reports/person_positions.html:0
+#: templates/reports/pdf/person_positions.html:0
+#: templates/reports/person_profile.html:0
+msgid ""
+"Ce classement est une aide à la décision. Il ne constitue pas une "
+"recommandation et doit être interprété avec le contexte humain."
+msgstr ""
+"This ranking is a decision-support tool. It is not a recommendation and must"
+" be interpreted with human context."
+
+#: templates/reports/person_positions.html:0
+#: templates/reports/pdf/person_positions.html:0
+#: templates/reports/person_profile.html:0
+msgid "Classement des postes par Fit"
+msgstr "Position ranking by Fit"
+
+#: templates/reports/person_positions.html:0
+#: templates/reports/pdf/person_positions.html:0
+#: templates/reports/person_profile.html:0
+msgid "Aucun poste actif avec profil cible ne correspond pour le moment."
+msgstr "No active position with a target profile matches at the moment."
+
+#: templates/reports/person_positions.html:0
+#: templates/reports/pdf/person_positions.html:0
+#: templates/reports/person_profile.html:0
+msgid "Voir le classement complet"
+msgstr "View full ranking"
+
+#: templates/reports/person_positions.html:0
+#: templates/reports/pdf/person_positions.html:0
+#: templates/reports/person_profile.html:0
+msgid ""
+"Ce classement est une aide à la décision. Aucun score ne constitue une "
+"recommandation automatique."
+msgstr ""
+"This ranking is a decision-support tool. No score constitutes an automatic "
+"recommendation."
+
+#: templates/reports/person_positions.html:0
+#: templates/reports/pdf/person_positions.html:0
+#: templates/reports/person_profile.html:0
+msgid "Poste"
+msgstr "Position"

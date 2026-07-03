@@ -2306,3 +2306,59 @@ msgstr "revocada el"
 msgid "Pour vous y retrouver, ex. « Intégration ATS Greenhouse »."
 msgstr ""
 "Para que la reconozca después, p. ej. «Integración con ATS Greenhouse»."
+
+#: templates/reports/person_positions.html:0
+#: templates/reports/pdf/person_positions.html:0
+#: templates/reports/person_profile.html:0
+msgid "Postes recommandés"
+msgstr "Puestos recomendados"
+
+#: templates/reports/person_positions.html:0
+#: templates/reports/pdf/person_positions.html:0
+#: templates/reports/person_profile.html:0
+msgid "Retour au profil"
+msgstr "Volver al perfil"
+
+#: templates/reports/person_positions.html:0
+#: templates/reports/pdf/person_positions.html:0
+#: templates/reports/person_profile.html:0
+msgid ""
+"Ce classement est une aide à la décision. Il ne constitue pas une "
+"recommandation et doit être interprété avec le contexte humain."
+msgstr ""
+"Esta clasificación es una ayuda a la decisión. No constituye una "
+"recomendación y debe interpretarse con el contexto humano."
+
+#: templates/reports/person_positions.html:0
+#: templates/reports/pdf/person_positions.html:0
+#: templates/reports/person_profile.html:0
+msgid "Classement des postes par Fit"
+msgstr "Clasificación de puestos por Fit"
+
+#: templates/reports/person_positions.html:0
+#: templates/reports/pdf/person_positions.html:0
+#: templates/reports/person_profile.html:0
+msgid "Aucun poste actif avec profil cible ne correspond pour le moment."
+msgstr "Ningún puesto activo con perfil objetivo coincide por el momento."
+
+#: templates/reports/person_positions.html:0
+#: templates/reports/pdf/person_positions.html:0
+#: templates/reports/person_profile.html:0
+msgid "Voir le classement complet"
+msgstr "Ver la clasificación completa"
+
+#: templates/reports/person_positions.html:0
+#: templates/reports/pdf/person_positions.html:0
+#: templates/reports/person_profile.html:0
+msgid ""
+"Ce classement est une aide à la décision. Aucun score ne constitue une "
+"recommandation automatique."
+msgstr ""
+"Esta clasificación es una ayuda a la decisión. Ningún puntaje constituye una"
+" recomendación automática."
+
+#: templates/reports/person_positions.html:0
+#: templates/reports/pdf/person_positions.html:0
+#: templates/reports/person_profile.html:0
+msgid "Poste"
+msgstr "Puesto"
