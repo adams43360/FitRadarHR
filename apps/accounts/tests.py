@@ -306,3 +306,11 @@ class InviteManagerTests(TestCase):
         self.client.logout()
         logged_in = self.client.login(username="sacha@invite.test", password="un-mot-de-passe-solide-123")
         self.assertTrue(logged_in)
+
+    def test_invite_strings_translated_to_english(self):
+        """Le catalogue EN doit couvrir les nouvelles chaînes de l'invitation manager
+        (voir locale/en/LC_MESSAGES/django.po) — pas de régression bilingue."""
+        from django.utils import translation
+        with translation.override("en"):
+            self.assertEqual(translation.gettext("Inviter un manager"), "Invite a manager")
+            self.assertEqual(translation.gettext("Membres de l'organisation"), "Organization members")

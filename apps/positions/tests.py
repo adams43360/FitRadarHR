@@ -111,3 +111,13 @@ class PositionCompareTests(TestCase):
         self.assertEqual(len(resp.context["dim_rows"]), 5)
         for row in resp.context["dim_rows"]:
             self.assertEqual(len(row["cells"]), 3)
+
+    def test_compare_strings_translated_to_english(self):
+        """Le catalogue EN doit couvrir les nouvelles chaînes de la comparaison
+        (voir locale/en/LC_MESSAGES/django.po) — pas de régression bilingue."""
+        from django.utils import translation
+        with translation.override("en"):
+            self.assertEqual(translation.gettext("Comparaison de candidats"), "Candidate comparison")
+            self.assertEqual(
+                translation.gettext("Comparer la sélection (2 à 5)"), "Compare selection (2 to 5)"
+            )

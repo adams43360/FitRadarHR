@@ -17,7 +17,13 @@ le projet n'étant pas encore versionné, les entrées sont datées.
 - **Comparaison de candidats sur un poste** (item #3 roadmap V2, RICE 4.8) : depuis le
   classement de fit d'un poste, sélection de 2 à 5 personnes → radar superposé + tableau
   comparatif par dimension (`positions/<id>/compare/`).
-- 125 tests au total (+20 depuis la version précédente).
+- 128 tests au total (+23 depuis la version précédente).
+
+### Corrigé
+- **Traductions anglaises manquantes** : les 3 fonctionnalités ci-dessus ajoutaient 33
+  nouvelles chaînes sans équivalent dans `locale/en/LC_MESSAGES/django.po` — un
+  utilisateur en anglais voyait du français sur ces écrans. Comblé, avec un test par
+  fonctionnalité vérifiant la couverture du catalogue EN.
 
 ## 2026-07-03 (2)
 

@@ -217,3 +217,12 @@ class PersonImportTests(TestCase):
         resp = self.client.get(reverse("teams:person_import_template"))
         self.assertEqual(resp.status_code, 200)
         self.assertIn("first_name,last_name,email,person_type", resp.content.decode())
+
+    def test_import_strings_translated_to_english(self):
+        """Le catalogue EN doit couvrir les nouvelles chaînes de l'import CSV
+        (voir locale/en/LC_MESSAGES/django.po) — pas de régression bilingue."""
+        from django.utils import translation
+        with translation.override("en"):
+            self.assertEqual(translation.gettext("Importer des personnes"), "Import people")
+            self.assertEqual(translation.gettext("Télécharger un modèle"), "Download a template")
+            self.assertEqual(translation.gettext("Fichier CSV"), "CSV file")

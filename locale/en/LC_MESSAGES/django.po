@@ -1767,3 +1767,147 @@ msgstr "Two minutes is all it takes to see a full fit report."
 #: templates/accounts/landing.html
 msgid "Voir le code sur GitHub"
 msgstr "View the code on GitHub"
+
+#: added-2026-07-03
+msgid "Cet email est déjà utilisé par un compte existant."
+msgstr "This email is already used by an existing account."
+
+#: added-2026-07-03
+msgid "Invitation envoyée à %(email)s."
+msgstr "Invitation sent to %(email)s."
+
+#: added-2026-07-03
+msgid "Comparaison limitée aux %(n)d premières personnes sélectionnées."
+msgstr "Comparison limited to the first %(n)d selected people."
+
+#: added-2026-07-03
+msgid "Définissez d'abord le profil Big Five cible du poste."
+msgstr "Define the target Big Five profile for this position first."
+
+#: added-2026-07-03
+msgid "Sélectionnez au moins 2 personnes à comparer."
+msgstr "Select at least 2 people to compare."
+
+#: added-2026-07-03
+msgid "Adresse email invalide : %(email)s"
+msgstr "Invalid email address: %(email)s"
+
+#: added-2026-07-03
+msgid "Colonnes manquantes dans le CSV : %(cols)s"
+msgstr "Missing columns in the CSV: %(cols)s"
+
+#: added-2026-07-03
+msgid "Email en doublon dans le fichier : %(email)s"
+msgstr "Duplicate email within the file: %(email)s"
+
+#: added-2026-07-03
+msgid "Le fichier est vide."
+msgstr "The file is empty."
+
+#: added-2026-07-03
+msgid "Le fichier n'est pas un CSV valide (encodage non reconnu)."
+msgstr "The file is not a valid CSV (unrecognized encoding)."
+
+#: added-2026-07-03
+msgid "Prénom, nom et email sont obligatoires."
+msgstr "First name, last name and email are required."
+
+#: added-2026-07-03
+msgid "Fichier CSV"
+msgstr "CSV file"
+
+#: added-2026-07-03
+msgid "Le fichier doit être au format .csv"
+msgstr "The file must be in .csv format"
+
+#: added-2026-07-03
+msgid "Le fichier est trop volumineux (2 Mo max)."
+msgstr "The file is too large (2 MB max)."
+
+#: added-2026-07-03
+msgid ""
+"%(n)d ligne(s) ignorée(s) — email déjà présent dans votre organisation."
+msgstr "%(n)d row(s) skipped — email already exists in your organization."
+
+#: added-2026-07-03
+msgid "%(n)d personne(s) importée(s) avec succès."
+msgstr "%(n)d people successfully imported."
+
+#: added-2026-07-03
+msgid "Le fichier ne contenait aucune ligne exploitable."
+msgstr "The file did not contain any usable rows."
+
+#: added-2026-07-03
+msgid "Importer un CSV"
+msgstr "Import a CSV"
+
+#: added-2026-07-03
+msgid "Importer des personnes"
+msgstr "Import people"
+
+#: added-2026-07-03
+msgid ""
+"Ajoutez plusieurs candidats ou collaborateurs d'un coup à partir d'un "
+"fichier CSV."
+msgstr "Add several candidates or collaborators at once from a CSV file."
+
+#: added-2026-07-03
+msgid "Colonnes attendues :"
+msgstr "Expected columns:"
+
+#: added-2026-07-03
+msgid ""
+"person_type est optionnel (candidate/collaborator, candidate par défaut)."
+msgstr ""
+"person_type is optional (candidate/collaborator, candidate by default)."
+
+#: added-2026-07-03
+msgid "Télécharger un modèle"
+msgstr "Download a template"
+
+#: added-2026-07-03
+msgid "Importer"
+msgstr "Import"
+
+#: added-2026-07-03
+msgid "Lignes ignorées"
+msgstr "Skipped rows"
+
+#: added-2026-07-03
+msgid "Ligne"
+msgstr "Line"
+
+#: added-2026-07-03
+msgid "Membres de l'organisation"
+msgstr "Organization members"
+
+#: added-2026-07-03
+msgid "Inviter un manager"
+msgstr "Invite a manager"
+
+#: added-2026-07-03
+msgid ""
+"La personne invitée reçoit un email pour définir son mot de passe et se "
+"connecter."
+msgstr ""
+"The invited person receives an email to set their password and sign in."
+
+#: added-2026-07-03
+msgid "Envoyer l'invitation"
+msgstr "Send invitation"
+
+#: added-2026-07-03
+msgid "Comparaison de candidats"
+msgstr "Candidate comparison"
+
+#: added-2026-07-03
+msgid ""
+"Cette vue est une aide à la lecture comparée. Aucun classement ne constitue "
+"une recommandation automatique."
+msgstr ""
+"This view is a reading aid for comparison. No ranking constitutes an "
+"automatic recommendation."
+
+#: added-2026-07-03
+msgid "Comparer la sélection (2 à 5)"
+msgstr "Compare selection (2 to 5)"
