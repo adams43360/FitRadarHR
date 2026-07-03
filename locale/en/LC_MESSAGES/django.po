@@ -1556,3 +1556,214 @@ msgid "%(n)s questionnaire commencé n'a pas été terminé."
 msgid_plural "%(n)s questionnaires commencés n'ont pas été terminés."
 msgstr[0] "%(n)s questionnaire was started but never finished."
 msgstr[1] "%(n)s questionnaires were started but never finished."
+
+#: templates/accounts/landing.html
+msgid "Votre message est vide."
+msgstr "Your message is empty."
+
+#: templates/accounts/landing.html
+msgid "Merci pour votre retour ! Il alimente directement la roadmap."
+msgstr "Thank you for your feedback! It feeds directly into the roadmap."
+
+#: templates/accounts/landing.html
+msgid "Donner mon avis"
+msgstr "Give feedback"
+
+#: templates/accounts/landing.html
+msgid "Votre avis compte"
+msgstr "Your feedback matters"
+
+#: templates/accounts/landing.html
+msgid ""
+"Une idée, un irritant, une fonctionnalité qui manque ? Vos retours "
+"alimentent directement la roadmap."
+msgstr ""
+"An idea, a pain point, a missing feature? Your feedback feeds directly into "
+"the roadmap."
+
+#: templates/accounts/landing.html
+msgid "Votre message…"
+msgstr "Your message…"
+
+#: templates/accounts/landing.html
+msgid "Envoyer"
+msgstr "Send"
+
+#: templates/accounts/landing.html
+msgid "Le fit candidat-poste-équipe, éclairé par la science"
+msgstr "Candidate-position-team fit, informed by science"
+
+#: templates/accounts/landing.html
+msgid "Gratuit · Open source (MIT) · Auto-hébergeable"
+msgstr "Free · Open source (MIT) · Self-hostable"
+
+#: templates/accounts/landing.html
+msgid "Évaluez le fit entre une personne, un poste et une équipe"
+msgstr "Assess the fit between a person, a position and a team"
+
+#: templates/accounts/landing.html
+msgid ""
+"FitRadarHR s'appuie sur le Big Five — le modèle de personnalité le plus "
+"validé scientifiquement — pour éclairer vos recrutements et mobilités "
+"internes. L'outil informe, vous décidez."
+msgstr ""
+"FitRadarHR relies on the Big Five — the most scientifically validated "
+"personality model — to inform your hiring and internal mobility. The tool "
+"informs, you decide."
+
+#: templates/accounts/landing.html
+msgid "Créer un compte gratuit"
+msgstr "Create a free account"
+
+#: templates/accounts/landing.html
+msgid ""
+"Démo sans inscription — données fictives, réinitialisées toutes les 24 h."
+msgstr "Demo without sign-up — fictional data, reset every 24 hours."
+
+#: templates/accounts/landing.html
+msgid "Comment ça marche"
+msgstr "How it works"
+
+#: templates/accounts/landing.html
+msgid "Envoyez le questionnaire"
+msgstr "Send the questionnaire"
+
+#: templates/accounts/landing.html
+msgid ""
+"Un lien sécurisé, un consentement RGPD explicite, 10 à 20 minutes de "
+"passation. Le profil OCEAN est calculé automatiquement."
+msgstr ""
+"A secure link, explicit GDPR consent, 10 to 20 minutes to complete. The "
+"OCEAN profile is computed automatically."
+
+#: templates/accounts/landing.html
+msgid "Définissez vos cibles"
+msgstr "Define your targets"
+
+#: templates/accounts/landing.html
+msgid ""
+"Profil cible par poste (plages OCEAN), équipes avec leurs membres. Le fit se"
+" calcule et se recalcule tout seul."
+msgstr ""
+"Target profile per position (OCEAN ranges), teams with their members. Fit is"
+" computed and recomputed automatically."
+
+#: templates/accounts/landing.html
+msgid "Explorez les rapports"
+msgstr "Explore the reports"
+
+#: templates/accounts/landing.html
+msgid ""
+"Radar charts, complémentarités d'équipe, points à approfondir en entretien, "
+"export PDF. Des éclairages, jamais un verdict."
+msgstr ""
+"Radar charts, team complementarities, interview talking points, PDF export. "
+"Insights, never a verdict."
+
+#: templates/accounts/landing.html
+msgid "Tout ce qu'il faut, rien de superflu"
+msgstr "Everything you need, nothing you don't"
+
+#: templates/accounts/landing.html
+msgid ""
+"Score de proximité entre un profil OCEAN et la plage cible du poste, "
+"dimension par dimension, avec classement du vivier."
+msgstr ""
+"Proximity score between an OCEAN profile and the position's target range, "
+"dimension by dimension, with talent-pool ranking."
+
+#: templates/accounts/landing.html
+msgid "Fit Équipe & complémentarité"
+msgstr "Team Fit & complementarity"
+
+#: templates/accounts/landing.html
+msgid ""
+"Profil agrégé de l'équipe et signaux de complémentarité : la diversité de "
+"personnalités est une force, pas un défaut."
+msgstr ""
+"Aggregated team profile and complementarity signals: personality diversity "
+"is a strength, not a flaw."
+
+#: templates/accounts/landing.html
+msgid "Rapports & radar charts"
+msgstr "Reports & radar charts"
+
+#: templates/accounts/landing.html
+msgid ""
+"Restitutions visuelles avec infobulles pédagogiques, questions à explorer en"
+" entretien et export PDF."
+msgstr ""
+"Visual reports with educational tooltips, questions to explore in interviews"
+" and PDF export."
+
+#: templates/accounts/landing.html
+msgid ""
+"Funnel du questionnaire, taux de complétion, couverture des profils : "
+"pilotez l'adoption dans votre organisation."
+msgstr ""
+"Questionnaire funnel, completion rate, profile coverage: track adoption "
+"across your organization."
+
+#: templates/accounts/landing.html
+msgid "RGPD & EU AI Act by design"
+msgstr "GDPR & EU AI Act by design"
+
+#: templates/accounts/landing.html
+msgid ""
+"Consentement explicite, journal d'audit immuable, droit à l'effacement, "
+"supervision humaine à chaque étape."
+msgstr ""
+"Explicit consent, immutable audit log, right to erasure, human oversight at "
+"every step."
+
+#: templates/accounts/landing.html
+msgid "Bilingue & open source"
+msgstr "Bilingual & open source"
+
+#: templates/accounts/landing.html
+msgid ""
+"FR/EN natif, licence MIT, auto-hébergeable sur votre infrastructure — vos "
+"données RH restent chez vous."
+msgstr ""
+"Native FR/EN, MIT license, self-hostable on your infrastructure — your HR "
+"data stays with you."
+
+#: templates/accounts/landing.html
+msgid "Pourquoi le Big Five, et pas le MBTI ?"
+msgstr "Why the Big Five, and not the MBTI?"
+
+#: templates/accounts/landing.html
+msgid ""
+"Le Big Five (OCEAN) est le modèle de personnalité qui fait consensus dans la"
+" recherche en psychologie : cinq dimensions continues, mesurables, stables "
+"et prédictives — là où les typologies binaires populaires n'ont jamais "
+"démontré leur validité scientifique."
+msgstr ""
+"The Big Five (OCEAN) is the personality model with the strongest consensus "
+"in psychology research: five continuous, measurable, stable and predictive "
+"dimensions — where popular binary typologies have never demonstrated "
+"scientific validity."
+
+#: templates/accounts/landing.html
+msgid ""
+"FitRadarHR utilise le questionnaire IPIP, instrument du domaine public issu "
+"de la recherche académique. Et parce qu'aucun questionnaire ne résume une "
+"personne : l'outil ne produit jamais de recommandation automatique — il "
+"éclaire l'échange humain, il ne le remplace pas."
+msgstr ""
+"FitRadarHR uses the IPIP questionnaire, a public-domain instrument from "
+"academic research. And because no questionnaire sums up a person: the tool "
+"never produces an automatic recommendation — it informs the human "
+"conversation, it does not replace it."
+
+#: templates/accounts/landing.html
+msgid "Prêt à explorer ?"
+msgstr "Ready to explore?"
+
+#: templates/accounts/landing.html
+msgid "Deux minutes suffisent pour voir un rapport de fit complet."
+msgstr "Two minutes is all it takes to see a full fit report."
+
+#: templates/accounts/landing.html
+msgid "Voir le code sur GitHub"
+msgstr "View the code on GitHub"

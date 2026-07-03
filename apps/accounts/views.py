@@ -6,14 +6,23 @@ from django.http import Http404
 from django.shortcuts import render, redirect
 from django.utils.translation import gettext_lazy as _
 
+from django.utils.http import url_has_allowed_host_and_scheme
+
 from .forms import SignupB2BForm, SignupB2CForm
-from .models import Organization, User
+from .models import Feedback, Organization, User
 
 
 # ─── Vues ─────────────────────────────────────────────────────────────────────
 
+def landing(request):
+    """Page d'accueil publique — présentation du produit."""
+    if request.user.is_authenticated:
+        return redirect("accounts:dashboard")
+    return render(request, "accounts/landing.html")
+
+
 def signup_choice(request):
-    """Page d'accueil — choix B2B ou B2C."""
+    """Choix du type de compte — B2B ou B2C."""
     if request.user.is_authenticated:
         return redirect("accounts:dashboard")
     return render(request, "accounts/signup_choice.html")
@@ -173,3 +182,28 @@ def dashboard(request):
 @login_required
 def privacy_policy(request):
     return render(request, "accounts/privacy_policy.html")
+
+
+@login_required
+def submit_feedback(request):
+    """Widget de feedback in-app — un message libre, rattaché à l'org et à la page."""
+    next_url = request.POST.get("next", "")
+    if not url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()}):
+        next_url = "/dashboard/"
+
+    if request.method != "POST":
+        return redirect(next_url)
+
+    message = request.POST.get("message", "").strip()
+    if not message:
+        messages.error(request, _("Votre message est vide."))
+        return redirect(next_url)
+
+    Feedback.objects.create(
+        org=request.user.org,
+        user=request.user,
+        message=message[:2000],
+        page=next_url[:255],
+    )
+    messages.success(request, _("Merci pour votre retour ! Il alimente directement la roadmap."))
+    return redirect(next_url)

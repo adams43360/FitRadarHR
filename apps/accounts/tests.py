@@ -171,3 +171,70 @@ class DemoOrgGuardrailTests(TestCase):
         self.assertEqual(Person.objects.for_org(self.other_org).count(), 0)
         self.assertEqual(Team.objects.for_org(self.other_org).count(), 0)
         self.assertEqual(BigFiveProfile.objects.for_org(self.other_org).count(), 0)
+
+
+class FeedbackTests(TestCase):
+    """Widget de feedback in-app."""
+
+    @classmethod
+    def setUpTestData(cls):
+        from core.testing import create_org_and_user
+        cls.org, cls.user = create_org_and_user(name="Org FB", email="rh@fb.test")
+
+    def test_post_creates_feedback(self):
+        from apps.accounts.models import Feedback
+        self.client.force_login(self.user)
+        response = self.client.post(reverse("accounts:feedback"), {
+            "message": "Il manque un import CSV !",
+            "next": "/dashboard/",
+        })
+        self.assertRedirects(response, "/dashboard/")
+        fb = Feedback.objects.for_org(self.org).get()
+        self.assertEqual(fb.user, self.user)
+        self.assertEqual(fb.page, "/dashboard/")
+
+    def test_empty_message_rejected(self):
+        from apps.accounts.models import Feedback
+        self.client.force_login(self.user)
+        self.client.post(reverse("accounts:feedback"), {"message": "   ", "next": "/dashboard/"})
+        self.assertEqual(Feedback.objects.for_org(self.org).count(), 0)
+
+    def test_anonymous_redirected_to_login(self):
+        response = self.client.post(reverse("accounts:feedback"), {"message": "x"})
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("login", response["Location"])
+
+    def test_external_next_url_rejected(self):
+        """Protection open redirect : un next externe retombe sur le dashboard."""
+        self.client.force_login(self.user)
+        response = self.client.post(reverse("accounts:feedback"), {
+            "message": "test",
+            "next": "https://evil.example/phishing",
+        })
+        self.assertEqual(response["Location"], "/dashboard/")
+
+
+class LandingPageTests(TestCase):
+    """Page d'accueil publique."""
+
+    def test_anonymous_sees_landing(self):
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Big Five")
+
+    @override_settings(DEMO_MODE=True)
+    def test_demo_cta_visible_when_enabled(self):
+        response = self.client.get("/")
+        self.assertContains(response, reverse("accounts:demo_login"))
+
+    @override_settings(DEMO_MODE=False)
+    def test_demo_cta_hidden_when_disabled(self):
+        response = self.client.get("/")
+        self.assertNotContains(response, reverse("accounts:demo_login"))
+
+    def test_authenticated_redirected_to_dashboard(self):
+        from core.testing import create_org_and_user
+        org, user = create_org_and_user(name="Org L", email="rh@landing.test")
+        self.client.force_login(user)
+        response = self.client.get("/")
+        self.assertRedirects(response, reverse("accounts:dashboard"))

@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.utils.translation import gettext_lazy as _
 
+from core.managers import OrgManager
+
 
 class Organization(models.Model):
     """Tenant — organisation B2B ou espace personnel B2C."""
@@ -118,3 +120,34 @@ class User(AbstractBaseUser, PermissionsMixin):
     @property
     def is_manager(self):
         return self.role in (self.Role.MANAGER, self.Role.SOLO)
+
+
+class Feedback(models.Model):
+    """Retour utilisateur in-app — alimente la priorisation de la roadmap.
+
+    Consultable uniquement via l'admin Django (mainteneur du produit) ;
+    aucune donnée de personnalité, uniquement le message et la page d'origine.
+    """
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    org = models.ForeignKey(
+        Organization, on_delete=models.CASCADE,
+        related_name="feedbacks", verbose_name=_("organisation"),
+    )
+    user = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True,
+        related_name="feedbacks", verbose_name=_("utilisateur"),
+    )
+    message = models.TextField(_("message"), max_length=2000)
+    page = models.CharField(_("page d'origine"), max_length=255, blank=True)
+    created_at = models.DateTimeField(_("créé le"), auto_now_add=True)
+
+    objects = OrgManager()
+
+    class Meta:
+        verbose_name = _("retour utilisateur")
+        verbose_name_plural = _("retours utilisateurs")
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"Feedback {self.user} — {self.created_at:%d/%m/%Y}"
