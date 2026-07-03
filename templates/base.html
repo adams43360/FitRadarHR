@@ -24,6 +24,15 @@
 
   {% include "partials/navbar.html" %}
 
+  {% load i18n %}
+  {% if is_demo_org %}
+  <div class="bg-amber-50 border-b border-amber-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 text-center text-sm text-amber-800">
+      🧪 {% trans "Environnement de démonstration — données fictives, réinitialisées toutes les 24 h. Les emails ne sont pas envoyés." %}
+    </div>
+  </div>
+  {% endif %}
+
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     {% if messages %}
       {% for message in messages %}

@@ -150,6 +150,13 @@ def person_create(request):
 def person_anonymize(request, pk):
     """Anonymise les PII d'une personne (droit à l'effacement RGPD)."""
     from apps.reports.models import AuditLog
+
+    # Garde-fou démo : les données sont fictives et réinitialisées — on évite
+    # que des visiteurs anonymes vident l'environnement de démonstration.
+    if request.user.org.is_demo:
+        messages.error(request, _("Cette action est désactivée en mode démonstration."))
+        return redirect("teams:persons")
+
     person = get_org_object_or_404(Person, request.user.org, pk=pk)
 
     if not request.user.is_rh:

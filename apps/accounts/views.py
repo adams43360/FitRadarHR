@@ -1,6 +1,10 @@
-from django.shortcuts import render, redirect
+from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.http import Http404
+from django.shortcuts import render, redirect
+from django.utils.translation import gettext_lazy as _
 
 from .forms import SignupB2BForm, SignupB2CForm
 from .models import Organization, User
@@ -65,6 +69,31 @@ def signup_b2c(request):
         return redirect("accounts:dashboard")
 
     return render(request, "accounts/signup_b2c.html", {"form": form})
+
+
+def demo_login(request):
+    """Connexion un clic sur le compte de démonstration (bouton "Essayer la démo").
+
+    Uniquement disponible si DEMO_MODE est activé et que l'org démo existe
+    (créée par `manage.py seed_demo`). Le compte démo n'a pas de mot de passe
+    utilisable : ce bouton est le seul moyen de s'y connecter.
+    """
+    if not settings.DEMO_MODE:
+        raise Http404
+    if request.method != "POST":
+        return redirect("accounts:login")
+
+    user = User.objects.filter(
+        org__is_demo=True,
+        email=settings.DEMO_USER_EMAIL,
+        is_active=True,
+    ).first()
+    if user is None:
+        messages.error(request, _("La démonstration n'est pas disponible pour le moment."))
+        return redirect("accounts:login")
+
+    login(request, user, backend="django.contrib.auth.backends.ModelBackend")
+    return redirect("accounts:dashboard")
 
 
 @login_required

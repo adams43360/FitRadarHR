@@ -1401,3 +1401,44 @@ msgstr "Your Big Five personality questionnaire"
 #. python: services.py / survey views
 msgid "Questionnaire complété — %(name)s"
 msgstr "Questionnaire completed — %(name)s"
+
+#: templates/accounts/login.html
+msgid "Essayer la démo"
+msgstr "Try the demo"
+
+#: templates/accounts/login.html
+msgid "Sans inscription — données fictives, réinitialisées toutes les 24 h."
+msgstr "No sign-up required — fictional data, reset every 24 hours."
+
+#: templates/base.html
+msgid ""
+"Environnement de démonstration — données fictives, réinitialisées toutes les"
+" 24 h. Les emails ne sont pas envoyés."
+msgstr ""
+"Demo environment — fictional data, reset every 24 hours. Emails are not "
+"sent."
+
+#: apps/accounts/views.py
+msgid "La démonstration n'est pas disponible pour le moment."
+msgstr "The demo is not available at the moment."
+
+#: apps/survey/views.py
+msgid "Mode démo — aucun email envoyé."
+msgstr "Demo mode — no email sent."
+
+#: apps/survey/views.py
+msgid "Ouvrir le questionnaire"
+msgstr "Open the questionnaire"
+
+#: apps/teams/views.py
+msgid "Cette action est désactivée en mode démonstration."
+msgstr "This action is disabled in demo mode."
+
+#: apps/accounts/models.py
+msgid "organisation de démonstration"
+msgstr "demo organization"
+
+#: apps/accounts/models.py
+msgid ""
+"Org de démo publique — données fictives, emails bloqués, reset périodique."
+msgstr "Public demo org — fictional data, emails blocked, periodic reset."

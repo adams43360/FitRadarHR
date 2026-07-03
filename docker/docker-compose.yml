@@ -31,6 +31,24 @@ services:
       sh -c "python manage.py migrate &&
              gunicorn core.wsgi:application --bind 0.0.0.0:8000 --workers 3"
 
+  # Reset quotidien de l'org de démonstration — actif uniquement avec :
+  #   docker compose -f docker/docker-compose.yml --profile demo up -d
+  # Requiert DEMO_MODE=True dans .env (sinon seed_demo refuse de s'exécuter).
+  demo-reset:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    restart: unless-stopped
+    env_file: ../.env
+    profiles: ["demo"]
+    depends_on:
+      db:
+        condition: service_healthy
+      app:
+        condition: service_started
+    command: >
+      sh -c "while true; do python manage.py seed_demo; sleep 86400; done"
+
   nginx:
     image: nginx:alpine
     restart: unless-stopped

@@ -71,6 +71,7 @@ nav:
   - Accueil: index.md
   - Prise en main:
     - getting-started/index.md
+    - Essayer la démo: getting-started/demo.md
     - Créer un compte: getting-started/signup.md
     - Tableau de bord: getting-started/dashboard.md
   - Départements:

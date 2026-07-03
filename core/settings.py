@@ -16,6 +16,13 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "changeme-in-production")
 DEBUG = os.environ.get("DEBUG", "True") == "True"
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost 127.0.0.1").split()
 
+# ─── Mode démo ────────────────────────────────────────────────────────────────
+# Active le bouton "Essayer la démo" (connexion sans identifiants sur l'org démo).
+# L'org démo est créée/réinitialisée par `python manage.py seed_demo`.
+DEMO_MODE = os.environ.get("DEMO_MODE", "False") == "True"
+DEMO_ORG_NAME = "Nexatech (démo)"
+DEMO_USER_EMAIL = "demo@fitradarhr.demo"
+
 if not DEBUG and SECRET_KEY == "changeme-in-production":
     from django.core.exceptions import ImproperlyConfigured
     raise ImproperlyConfigured(
@@ -85,6 +92,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.i18n",
+                "core.context_processors.demo_mode",
             ],
         },
     },

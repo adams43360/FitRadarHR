@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils import translation
+from django.utils.html import format_html
 from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 
@@ -95,7 +96,18 @@ def send_questionnaire(request):
             )
             _send_invitation_email(link, request)
 
-            if created:
+            if org.is_demo:
+                # Garde-fou démo : le lien est affiché au lieu d'être emailé
+                survey_url = request.build_absolute_uri(
+                    reverse("survey:start", kwargs={"token": link.token})
+                )
+                messages.info(request, format_html(
+                    '{} <a href="{}" target="_blank" class="underline font-semibold">{}</a>',
+                    _("Mode démo — aucun email envoyé."),
+                    survey_url,
+                    _("Ouvrir le questionnaire"),
+                ))
+            elif created:
                 messages.success(
                     request,
                     _("Personne créée et lien envoyé à %(email)s.") % {"email": email}
@@ -119,7 +131,18 @@ def resend_link(request, pk):
         link.status = QuestionnaireLink.Status.PENDING
         link.save()
         _send_invitation_email(link, request)
-        messages.success(request, _("Lien renvoyé à %(email)s.") % {"email": link.person.email})
+        if link.org.is_demo:
+            survey_url = request.build_absolute_uri(
+                reverse("survey:start", kwargs={"token": link.token})
+            )
+            messages.info(request, format_html(
+                '{} <a href="{}" target="_blank" class="underline font-semibold">{}</a>',
+                _("Mode démo — aucun email envoyé."),
+                survey_url,
+                _("Ouvrir le questionnaire"),
+            ))
+        else:
+            messages.success(request, _("Lien renvoyé à %(email)s.") % {"email": link.person.email})
     return redirect("survey:dashboard")
 
 
@@ -295,8 +318,14 @@ def questionnaire_done(request, token):
 # ──────────────────────────────────────────────────────────────────────────────
 
 def _send_invitation_email(link, request):
-    """Email envoyé dans la langue choisie pour le questionnaire."""
+    """Email envoyé dans la langue choisie pour le questionnaire.
+
+    Garde-fou démo : aucun email réel ne part de l'org de démonstration —
+    le lien est affiché à l'écran à la place (voir vues appelantes).
+    """
     survey_url = request.build_absolute_uri(reverse("survey:start", kwargs={"token": link.token}))
+    if link.org.is_demo:
+        return
     with translation.override(link.language):
         subject = gettext("Votre questionnaire de personnalité Big Five")
         body = render_to_string("survey/emails/invitation.txt", {
@@ -317,6 +346,8 @@ def _send_invitation_email(link, request):
 def _send_completion_notification(link):
     """Notification envoyée dans la langue préférée du destinataire (RH/manager)."""
     if not link.sent_by or not link.sent_by.email:
+        return
+    if link.org.is_demo:  # garde-fou démo — pas d'email réel
         return
     with translation.override(link.sent_by.language):
         subject = gettext("Questionnaire complété — %(name)s") % {"name": link.person.full_name}

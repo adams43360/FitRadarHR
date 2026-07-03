@@ -53,6 +53,12 @@
         <td class="px-6 py-4 text-sm text-gray-500">{{ link.sent_by.get_full_name|default:link.sent_by.email }}</td>
         <td class="px-6 py-4 text-right">
           {% if link.status != "completed" %}
+          {% if is_demo_org %}
+          <a href="{% url 'survey:start' token=link.token %}" target="_blank"
+             class="text-sm text-indigo-600 hover:text-indigo-800 font-medium mr-3">
+            {% trans "Ouvrir le questionnaire" %}
+          </a>
+          {% endif %}
           <form method="post" action="{% url 'survey:resend' pk=link.pk %}" class="inline">
             {% csrf_token %}
             <button type="submit"

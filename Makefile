@@ -31,6 +31,9 @@ makemigrations:
 createsuperuser:
 	docker compose -f docker-compose.dev.yml exec app python manage.py createsuperuser
 
+seed-demo:
+	docker compose -f docker-compose.dev.yml exec app python manage.py seed_demo --force
+
 test:
 	docker compose -f docker-compose.dev.yml exec app python manage.py test
 

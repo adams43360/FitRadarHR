@@ -32,6 +32,10 @@ class Organization(models.Model):
         _("langue par défaut"), max_length=2, choices=Language.choices, default=Language.FR
     )
     is_active = models.BooleanField(_("actif"), default=True)
+    is_demo = models.BooleanField(
+        _("organisation de démonstration"), default=False,
+        help_text=_("Org de démo publique — données fictives, emails bloqués, reset périodique."),
+    )
     created_at = models.DateTimeField(_("créé le"), auto_now_add=True)
 
     class Meta:
