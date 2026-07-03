@@ -1,9 +1,9 @@
 # Roadmap publique
 
-La V1 de FitRadarHR est complète (epics E1–E8 livrés). Cette page présente les
-candidats à la **V2**, priorisés avec la méthode **RICE** — en toute transparence,
-comme le reste du projet. Les items 1 à 8 sont déjà livrés ; seul l'item 9 reste
-un candidat.
+La V1 de FitRadarHR est complète (epics E1–E8 livrés) et la **V2 est entièrement
+livrée** (9/9 items). Cette page présente aussi les pistes candidates pour une
+**V3**, priorisées avec la méthode **RICE** — en toute transparence, comme le
+reste du projet.
 
 ## Comment lire le score RICE
 
@@ -68,6 +68,69 @@ faute de source officielle publiée — voir `docs/user/about/big-five.md`.
 aujourd'hui. Livrée avec un périmètre volontairement restreint : postes/équipes,
 personnes + statut questionnaire, résultats de fit — jamais les profils Big Five
 bruts (minimisation RGPD). Authentification par clé API par organisation.
+
+## Priorisation V3 (candidats, non tranchés)
+
+| # | Fonctionnalité | Reach | Impact | Conf. | Effort | Score RICE | Statut |
+|---|---|---|---|---|---|---|---|
+| 1 | Fit inversé — meilleurs postes pour une personne | 5 | 2 | 90 % | 1.5 | **6.0** | Candidat |
+| 2 | Monétisation (essai gratuit → abonnement) | 8 | 3 | 80 % | 5 | **3.84** | Candidat |
+| 3 | Cartographie des manques d'une équipe | 5 | 2 | 60 % | 2 | **3.0** | Candidat |
+| 4 | Portail candidat / collaborateur (accès à son profil) | 6 | 2 | 70 % | 3 | **2.8** | Candidat |
+| 5 | Dossier de conformité AI Act exportable | 3 | 2 | 70 % | 2 | **2.1** | Candidat |
+| 6 | Webhooks (complément de l'API publique) | 3 | 1 | 70 % | 2 | **1.05** | Candidat |
+| 7 | Benchmarks anonymisés inter-organisations | 4 | 1 | 40 % | 4 | **0.4** | Candidat |
+| 8 | Connecteurs natifs (Workday, BambooHR, Personio…) | 3 | 2 | 30 % | 5 | **0.36** | Candidat |
+
+### Les arguments, item par item
+
+**1. Fit inversé** — aujourd'hui on part d'un poste pour classer des personnes ;
+l'inverse (partir d'une personne et voir les postes ouverts qui lui correspondent
+le mieux) sert la mobilité interne, sans collecter la moindre donnée
+supplémentaire : c'est une nouvelle vue sur le moteur de fit existant. Meilleur
+ratio valeur/effort de la liste.
+
+**2. Monétisation** — c'est la raison même du passage à la licence Fair Source
+(FSL-1.1-MIT) : Damien envisageait explicitement un essai gratuit puis un
+abonnement. Reach élevé (touche potentiellement toutes les orgs à terme) et
+impact fort (c'est le modèle économique), mais effort important : intégration
+Stripe, quotas par plan, écrans de facturation, gestion des dépassements.
+
+**3. Cartographie des manques d'équipe** — étend la complémentarité déjà
+calculée : à partir du profil agrégé d'une équipe, faire ressortir les
+dimensions OCEAN sous-représentées. Reste dans le cadre du produit — présenté
+comme des pistes à explorer pour un plan de recrutement, jamais comme une
+recommandation tranchée (cohérent avec la règle "jamais de score de décision
+automatique").
+
+**4. Portail candidat/collaborateur** — aujourd'hui seuls RH/managers consultent
+les rapports. Donner à la personne elle-même l'accès à son profil et son
+rapport renforce le principe "human in the loop" et le droit d'accès RGPD déjà
+implémenté (E8). Confiance moyenne : nécessite un nouveau modèle d'accès pour
+des `Person` qui n'ont pas forcément de compte `User`.
+
+**5. Dossier de conformité AI Act exportable** — un export (PDF/JSON) du
+"dossier de traçabilité" — qui a consulté quoi, supervision humaine documentée —
+pour les organisations qui doivent justifier leur conformité au titre du
+classement "haut risque". Prolonge directement E8, cible surtout les organisations
+plus réglementées (reach plus faible).
+
+**6. Webhooks** — complément naturel de l'API publique (item #9 V2) : notifier
+un système tiers quand un questionnaire est complété ou qu'un fit est recalculé,
+plutôt que de faire du polling. Utile seulement pour les orgs qui utilisent déjà
+l'API, donc reach restreint.
+
+**7. Benchmarks anonymisés** — comparer la distribution OCEAN d'une organisation
+à une moyenne agrégée inter-organisations, en opt-in et anonymisée. Valeur
+analytique réelle mais confiance faible : soulève des questions de gouvernance
+des données (agrégation cross-tenant, consentement) qui restent à cadrer avant
+tout développement.
+
+**8. Connecteurs natifs** — au-delà de l'API générique, des intégrations
+préconstruites avec des SIRH/ATS spécifiques réduiraient la friction d'adoption.
+Confiance la plus faible du lot : demande non encore validée par un cas d'usage
+client réel, effort élevé (un connecteur = un projet à part entière). À réserver
+si une organisation exprime un besoin concret.
 
 ## Ce qui ne sera jamais fait
 
