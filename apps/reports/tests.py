@@ -82,3 +82,106 @@ class AuditLogTests(TestCase):
             log.save()
         with self.assertRaises(Exception):
             log.delete()
+
+
+class AnalyticsTests(TestCase):
+    """Page analytics : droits, calculs, isolation multi-tenant."""
+
+    def setUp(self):
+        from datetime import timedelta
+        from django.utils import timezone
+        from apps.survey.models import ConsentRecord, QuestionnaireLink
+
+        self.org, self.rh = create_org_and_user(name="Org A", email="rh@orga.test")
+        self.manager = User.objects.create_user(
+            email="manager@orga.test", password="x",
+            first_name="Man", last_name="Ager", org=self.org, role=User.Role.MANAGER,
+        )
+        self.org2, self.rh2 = create_org_and_user(name="Org B", email="rh@orgb.test")
+
+        now = timezone.now()
+
+        # Org A : 1 lien complété (avec consentement + profil), 1 lien en attente
+        self.p1 = Person.objects.create(
+            org=self.org, email="p1@orga.test", first_name="P", last_name="Un"
+        )
+        self.p2 = Person.objects.create(
+            org=self.org, email="p2@orga.test", first_name="P", last_name="Deux"
+        )
+        completed = QuestionnaireLink.objects.create(
+            org=self.org, person=self.p1, token="tok-completed",
+            sent_by=self.rh, expires_at=now + timedelta(days=7),
+            status=QuestionnaireLink.Status.COMPLETED,
+            completed_at=now,
+        )
+        QuestionnaireLink.objects.filter(pk=completed.pk).update(
+            sent_at=now - timedelta(days=2)
+        )
+        ConsentRecord.objects.create(link=completed, language="fr")
+        create_profile(self.p1)
+        QuestionnaireLink.objects.create(
+            org=self.org, person=self.p2, token="tok-pending",
+            sent_by=self.rh, expires_at=now + timedelta(days=7),
+        )
+
+        # Org B : du bruit qui ne doit pas fuiter dans les métriques d'Org A
+        pb = Person.objects.create(
+            org=self.org2, email="pb@orgb.test", first_name="P", last_name="B"
+        )
+        QuestionnaireLink.objects.create(
+            org=self.org2, person=pb, token="tok-org2",
+            sent_by=self.rh2, expires_at=now + timedelta(days=7),
+        )
+        create_profile(pb)
+
+    def test_rh_can_access(self):
+        self.client.force_login(self.rh)
+        resp = self.client.get(reverse("reports:analytics"))
+        self.assertEqual(resp.status_code, 200)
+
+    def test_manager_forbidden(self):
+        self.client.force_login(self.manager)
+        resp = self.client.get(reverse("reports:analytics"))
+        self.assertEqual(resp.status_code, 403)
+
+    def test_anonymous_redirected(self):
+        resp = self.client.get(reverse("reports:analytics"))
+        self.assertEqual(resp.status_code, 302)
+
+    def test_funnel_metrics(self):
+        from apps.reports.analytics import build_analytics_context
+
+        ctx = build_analytics_context(self.org)
+        self.assertEqual(ctx["funnel"]["sent"], 2)
+        self.assertEqual(ctx["funnel"]["started"], 1)
+        self.assertEqual(ctx["funnel"]["completed"], 1)
+        self.assertEqual(ctx["funnel"]["completion_rate"], 50.0)
+        self.assertEqual(ctx["funnel"]["abandon_count"], 0)
+        self.assertEqual(ctx["avg_delay_days"], 2.0)
+        self.assertEqual(ctx["status_breakdown"]["pending"], 1)
+        self.assertEqual(ctx["status_breakdown"]["completed"], 1)
+
+    def test_coverage_and_split(self):
+        from apps.reports.analytics import build_analytics_context
+
+        ctx = build_analytics_context(self.org)
+        self.assertEqual(ctx["profiles_count"], 1)
+        self.assertEqual(ctx["coverage_rate"], 50.0)
+        self.assertEqual(ctx["person_split"]["candidates"], 2)
+
+    def test_tenant_isolation(self):
+        """Les métriques d'Org A ne comptent jamais les données d'Org B."""
+        from apps.reports.analytics import build_analytics_context
+
+        ctx_a = build_analytics_context(self.org)
+        ctx_b = build_analytics_context(self.org2)
+        self.assertEqual(ctx_a["funnel"]["sent"], 2)
+        self.assertEqual(ctx_b["funnel"]["sent"], 1)
+        self.assertEqual(ctx_b["profiles_count"], 1)
+
+    def test_empty_org_renders(self):
+        """Une org sans aucune donnée doit afficher la page sans erreur."""
+        org_empty, rh_empty = create_org_and_user(name="Vide", email="rh@vide.test")
+        self.client.force_login(rh_empty)
+        resp = self.client.get(reverse("reports:analytics"))
+        self.assertEqual(resp.status_code, 200)

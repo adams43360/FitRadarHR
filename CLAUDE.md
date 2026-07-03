@@ -99,8 +99,9 @@ User stories à rattacher systématiquement à l'un de ces epics (voir `00-cadra
 - [x] Améliorations UX — pré-remplissage email questionnaire, autocomplétion ajout membre, modification personne, fix switch langue, déduplication dashboard survey, compteur dashboard corrigé
 - [x] Infobulles OCEAN — tooltip au survol des libellés de dimension sur tous les rapports (profil, Fit Poste, Fit Équipe) (E6)
 - [x] Points à approfondir — section contextuelle sur les rapports Fit Poste et Fit Équipe, framing "questions à explorer", disponible aussi en PDF (E6)
-- [x] Suite de tests — 82 tests : scoring IPIP, moteur de fit, isolation multi-tenant, droits, RGPD, mode démo (`make test-fast`, SQLite via `core/settings_test.py`)
+- [x] Suite de tests — 89 tests : scoring IPIP, moteur de fit, isolation multi-tenant, droits, RGPD, mode démo (`make test-fast`, SQLite via `core/settings_test.py`)
 - [x] Refacto — managers `OrgQuerySet` généralisés (`core/managers.py`), context builders rapports partagés HTML/PDF (`apps/reports/services.py`), nettoyages (app api supprimée, forms signup, STORAGES Django 5)
+- [x] Analytics produit — page `/reports/analytics/` (RH) : funnel questionnaire (envoyé→commencé→complété), taux de complétion, délai moyen, couverture des profils, profils/mois (Chart.js), engagement 30 j via audit log, fit moyen par poste ; définitions dans `docs/product/metrics.md` (North Star, AARRR, anti-métriques)
 - [x] Mode démo public — org fictive « Nexatech » (~100 pers., 10 équipes aux archétypes OCEAN contrastés) seedée par `manage.py seed_demo` (idempotente, déterministe), bouton "Essayer la démo" (connexion sans mot de passe, `DEMO_MODE=True`), bannière, garde-fous (aucun email réel — lien affiché à l'écran, effacement RGPD désactivé, domaines `.example`), reset 24 h via service `demo-reset` (`--profile demo`), doc utilisateur `getting-started/demo.md`
 
 ## Conventions de travail

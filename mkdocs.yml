@@ -93,6 +93,7 @@ nav:
     - Fit Poste: reports/job-fit.md
     - Fit Équipe: reports/team-fit.md
     - Exporter en PDF: reports/export.md
+    - Analytics: reports/analytics.md
   - À propos:
     - about/big-five.md
     - about/privacy.md

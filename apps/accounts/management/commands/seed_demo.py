@@ -160,63 +160,63 @@ POSITIONS = [
         "dept": "Ingénierie", "team": "Squad Plateforme",
         "desc_fr": "Conception et développement des services cœur de la plateforme (Python, PostgreSQL).",
         "desc_en": "Design and development of core platform services (Python, PostgreSQL).",
-        "profile": {"O": (50, 90), "C": (60, 95), "E": (20, 70), "A": (40, 85), "N": (0, 55)},
+        "profile": {"O": (55, 80), "C": (70, 92), "E": (25, 55), "A": (48, 75), "N": (10, 45)},
     },
     {
         "fr": "Ingénieur·e DevOps", "en": "DevOps Engineer",
         "dept": "Ingénierie", "team": "Infrastructure & SRE",
         "desc_fr": "Automatisation de l'infrastructure cloud et fiabilisation des déploiements.",
         "desc_en": "Cloud infrastructure automation and deployment reliability.",
-        "profile": {"O": (45, 85), "C": (65, 95), "E": (15, 65), "A": (40, 80), "N": (0, 50)},
+        "profile": {"O": (45, 70), "C": (75, 95), "E": (18, 48), "A": (42, 70), "N": (8, 40)},
     },
     {
         "fr": "Data Engineer", "en": "Data Engineer",
         "dept": "Ingénierie", "team": "Data",
         "desc_fr": "Construction des pipelines de données et industrialisation des modèles.",
         "desc_en": "Building data pipelines and industrializing models.",
-        "profile": {"O": (55, 95), "C": (60, 95), "E": (20, 65), "A": (40, 80), "N": (0, 55)},
+        "profile": {"O": (62, 88), "C": (68, 90), "E": (25, 55), "A": (45, 72), "N": (10, 45)},
     },
     {
         "fr": "Product Manager", "en": "Product Manager",
         "dept": "Produit & Design", "team": "Produit",
         "desc_fr": "Discovery, priorisation et delivery sur le périmètre acquisition.",
         "desc_en": "Discovery, prioritization and delivery on the acquisition scope.",
-        "profile": {"O": (60, 95), "C": (55, 90), "E": (50, 90), "A": (50, 90), "N": (0, 50)},
+        "profile": {"O": (68, 92), "C": (60, 82), "E": (58, 85), "A": (55, 80), "N": (8, 38)},
     },
     {
         "fr": "Product Designer", "en": "Product Designer",
         "dept": "Produit & Design", "team": "Design",
         "desc_fr": "Design des parcours clés et contribution au design system.",
         "desc_en": "Design of key user journeys and design system contribution.",
-        "profile": {"O": (65, 100), "C": (45, 85), "E": (40, 85), "A": (50, 90), "N": (0, 60)},
+        "profile": {"O": (75, 98), "C": (48, 72), "E": (45, 75), "A": (58, 85), "N": (15, 50)},
     },
     {
         "fr": "Account Executive", "en": "Account Executive",
         "dept": "Commercial", "team": "Ventes France",
         "desc_fr": "Cycle de vente complet sur le segment mid-market.",
         "desc_en": "Full sales cycle on the mid-market segment.",
-        "profile": {"O": (45, 85), "C": (50, 85), "E": (65, 100), "A": (45, 85), "N": (0, 45)},
+        "profile": {"O": (48, 72), "C": (52, 76), "E": (72, 96), "A": (45, 70), "N": (5, 32)},
     },
     {
         "fr": "Customer Success Manager", "en": "Customer Success Manager",
         "dept": "Customer Success", "team": "Customer Success",
         "desc_fr": "Portefeuille de comptes stratégiques, adoption et renouvellement.",
         "desc_en": "Strategic account portfolio, adoption and renewals.",
-        "profile": {"O": (45, 85), "C": (55, 90), "E": (55, 95), "A": (60, 95), "N": (0, 50)},
+        "profile": {"O": (48, 74), "C": (60, 84), "E": (62, 90), "A": (68, 92), "N": (10, 42)},
     },
     {
         "fr": "Comptable Général·e", "en": "General Accountant",
         "dept": "Finance", "team": "Finance & Admin",
         "desc_fr": "Comptabilité générale, clôtures mensuelles et déclarations.",
         "desc_en": "General accounting, monthly closings and filings.",
-        "profile": {"O": (30, 70), "C": (70, 100), "E": (20, 65), "A": (45, 85), "N": (0, 55)},
+        "profile": {"O": (32, 58), "C": (78, 98), "E": (25, 55), "A": (48, 75), "N": (12, 48)},
     },
     {
         "fr": "Chargé·e de Recrutement", "en": "Talent Acquisition Specialist",
         "dept": "Ressources Humaines", "team": "Équipe RH",
         "desc_fr": "Recrutement tech et produit, expérience candidat.",
         "desc_en": "Tech and product recruiting, candidate experience.",
-        "profile": {"O": (50, 90), "C": (55, 90), "E": (55, 95), "A": (55, 95), "N": (0, 55)},
+        "profile": {"O": (55, 80), "C": (58, 82), "E": (60, 88), "A": (65, 92), "N": (10, 45)},
     },
 ]
 
@@ -427,8 +427,12 @@ class Command(BaseCommand):
         ))
 
     def _create_completed_survey(self, org, person, position, scores, sent_by, rng, now):
-        """Crée un lien complété + consentement + profil Big Five daté dans le passé."""
-        days_ago = rng.randint(2, 45)
+        """Crée un lien complété + consentement + profil Big Five daté dans le passé.
+
+        Les dates sont étalées sur ~5 mois pour que le graphique "profils par mois"
+        de la page Analytics raconte une adoption progressive.
+        """
+        days_ago = rng.randint(2, 150)
         link = QuestionnaireLink.objects.create(
             org=org,
             person=person,
@@ -445,7 +449,7 @@ class Command(BaseCommand):
             sent_at=now - timedelta(days=days_ago + rng.randint(1, 4))
         )
         ConsentRecord.objects.create(link=link, language=link.language)
-        BigFiveProfile.objects.create(
+        profile = BigFiveProfile.objects.create(
             person=person,
             link=link,
             openness=round(scores["O"], 2),
@@ -455,4 +459,8 @@ class Command(BaseCommand):
             neuroticism=round(scores["N"], 2),
             questionnaire_version=BigFiveProfile.Version.V50,
             algorithm_version=ALGORITHM_VERSION,
+        )
+        # computed_at est auto_now_add — on l'aligne sur la date de complétion
+        BigFiveProfile.objects.filter(pk=profile.pk).update(
+            computed_at=now - timedelta(days=days_ago)
         )

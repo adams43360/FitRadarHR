@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Analytics" %} — FitRadarHR{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-between mb-2">
+  <h1 class="text-2xl font-bold text-gray-900">{% trans "Analytics" %}</h1>
+</div>
+<p class="text-sm text-gray-500 mb-8">
+  {% trans "Adoption du questionnaire, engagement sur les restitutions et couverture des profils — sur l'ensemble de votre organisation." %}
+</p>
+
+<!-- ── Cartes KPI ─────────────────────────────────────────────────────────── -->
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+  <div class="bg-white rounded-xl border border-gray-200 p-5">
+    <div class="text-3xl font-bold text-indigo-600">
+      {% if funnel.completion_rate is not None %}{{ funnel.completion_rate }}%{% else %}—{% endif %}
+    </div>
+    <div class="text-sm font-medium text-gray-700 mt-1">{% trans "Taux de complétion" %}</div>
+    <div class="text-xs text-gray-400 mt-0.5">
+      {% blocktrans with completed=funnel.completed sent=funnel.sent %}{{ completed }} complétés sur {{ sent }} envoyés{% endblocktrans %}
+    </div>
+  </div>
+
+  <div class="bg-white rounded-xl border border-gray-200 p-5">
+    <div class="text-3xl font-bold text-indigo-600">
+      {% if avg_delay_days is not None %}{{ avg_delay_days }}&nbsp;{% trans "j" %}{% else %}—{% endif %}
+    </div>
+    <div class="text-sm font-medium text-gray-700 mt-1">{% trans "Délai moyen de passation" %}</div>
+    <div class="text-xs text-gray-400 mt-0.5">{% trans "entre l'envoi du lien et la complétion" %}</div>
+  </div>
+
+  <div class="bg-white rounded-xl border border-gray-200 p-5">
+    <div class="text-3xl font-bold text-indigo-600">
+      {% if coverage_rate is not None %}{{ coverage_rate }}%{% else %}—{% endif %}
+    </div>
+    <div class="text-sm font-medium text-gray-700 mt-1">{% trans "Couverture des profils" %}</div>
+    <div class="text-xs text-gray-400 mt-0.5">
+      {% blocktrans with profiles=profiles_count candidates=person_split.candidates collaborators=person_split.collaborators %}{{ profiles }} profils — {{ collaborators }} collaborateurs, {{ candidates }} candidats{% endblocktrans %}
+    </div>
+  </div>
+
+  <div class="bg-white rounded-xl border border-gray-200 p-5">
+    <div class="text-3xl font-bold text-indigo-600">{{ engagement.reports_viewed }}</div>
+    <div class="text-sm font-medium text-gray-700 mt-1">{% trans "Rapports consultés" %}</div>
+    <div class="text-xs text-gray-400 mt-0.5">
+      {% blocktrans with days=engagement.window_days pdf=engagement.pdf_exported %}{{ days }} derniers jours — dont {{ pdf }} exports PDF{% endblocktrans %}
+    </div>
+  </div>
+</div>
+
+<!-- ── Funnel questionnaires ──────────────────────────────────────────────── -->
+<div class="bg-white rounded-xl border border-gray-200 p-6 mb-8">
+  <h2 class="text-lg font-semibold text-gray-900 mb-1">{% trans "Funnel questionnaire" %}</h2>
+  <p class="text-xs text-gray-400 mb-5">{% trans "Chaque lien envoyé compte pour une entrée — un abandon est un questionnaire commencé (consentement donné) mais jamais terminé." %}</p>
+
+  {% if funnel.sent %}
+  <div class="space-y-3">
+    <div>
+      <div class="flex justify-between text-sm mb-1">
+        <span class="font-medium text-gray-700">{% trans "Liens envoyés" %}</span>
+        <span class="text-gray-500">{{ funnel.sent }}</span>
+      </div>
+      <div class="h-3 rounded-full bg-indigo-600" style="width: 100%"></div>
+    </div>
+    <div>
+      <div class="flex justify-between text-sm mb-1">
+        <span class="font-medium text-gray-700">{% trans "Commencés (consentement donné)" %}</span>
+        <span class="text-gray-500">{{ funnel.started }}{% if funnel.start_rate is not None %} · {{ funnel.start_rate }}%{% endif %}</span>
+      </div>
+      <div class="h-3 rounded-full bg-indigo-400" style="width: {% widthratio funnel.started funnel.sent 100 %}%"></div>
+    </div>
+    <div>
+      <div class="flex justify-between text-sm mb-1">
+        <span class="font-medium text-gray-700">{% trans "Complétés" %}</span>
+        <span class="text-gray-500">{{ funnel.completed }}{% if funnel.completion_rate is not None %} · {{ funnel.completion_rate }}%{% endif %}</span>
+      </div>
+      <div class="h-3 rounded-full bg-green-500" style="width: {% widthratio funnel.completed funnel.sent 100 %}%"></div>
+    </div>
+  </div>
+  {% if funnel.abandon_count %}
+  <p class="text-xs text-amber-600 mt-4">
+    ⚠️ {% blocktrans count n=funnel.abandon_count %}{{ n }} questionnaire commencé n'a pas été terminé.{% plural %}{{ n }} questionnaires commencés n'ont pas été terminés.{% endblocktrans %}
+  </p>
+  {% endif %}
+  {% else %}
+  <p class="text-sm text-gray-400">{% trans "Aucun questionnaire envoyé pour le moment." %}</p>
+  {% endif %}
+</div>
+
+<!-- ── Graphiques ─────────────────────────────────────────────────────────── -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+  <div class="bg-white rounded-xl border border-gray-200 p-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-4">{% trans "Profils OCEAN complétés par mois" %}</h2>
+    <canvas id="profilesChart" height="220"></canvas>
+  </div>
+  <div class="bg-white rounded-xl border border-gray-200 p-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-4">{% trans "Statut des questionnaires" %}</h2>
+    <div class="max-w-[260px] mx-auto">
+      <canvas id="statusChart" height="220"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ── Fit moyen par poste ────────────────────────────────────────────────── -->
+<div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+  <div class="p-6 pb-3">
+    <h2 class="text-lg font-semibold text-gray-900">{% trans "Fit moyen par poste actif" %}</h2>
+    <p class="text-xs text-gray-400 mt-1">
+      {% trans "Moyenne des scores de fit des personnes évaluées — un indicateur de vivier, jamais une décision." %}
+    </p>
+  </div>
+  {% if fit_by_position %}
+  <table class="min-w-full divide-y divide-gray-200">
+    <thead class="bg-gray-50">
+      <tr>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{% trans "Poste" %}</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{% trans "Personnes évaluées" %}</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{% trans "Fit moyen" %}</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-200">
+      {% for row in fit_by_position %}
+      <tr class="hover:bg-gray-50">
+        <td class="px-6 py-3 text-sm font-medium text-gray-900">
+          {% get_current_language as LANG %}
+          {% if LANG == "en" and row.position__title_en %}{{ row.position__title_en }}{% else %}{{ row.position__title_fr }}{% endif %}
+        </td>
+        <td class="px-6 py-3 text-sm text-gray-500">{{ row.n }}</td>
+        <td class="px-6 py-3">
+          <div class="flex items-center gap-3">
+            <div class="w-32 h-2 rounded-full bg-gray-100 overflow-hidden">
+              <div class="h-2 rounded-full {% if row.avg_fit >= 75 %}bg-green-500{% elif row.avg_fit >= 50 %}bg-indigo-400{% else %}bg-amber-400{% endif %}"
+                   style="width: {{ row.avg_fit|floatformat:0 }}%"></div>
+            </div>
+            <span class="text-sm text-gray-700">{{ row.avg_fit|floatformat:1 }}%</span>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="px-6 pb-6 text-sm text-gray-400">{% trans "Aucun résultat de fit pour le moment." %}</p>
+  {% endif %}
+</div>
+
+{{ profiles_by_month|json_script:"profiles-data" }}
+{{ status_breakdown|json_script:"status-data" }}
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  const profilesData = JSON.parse(document.getElementById("profiles-data").textContent);
+  const statusData = JSON.parse(document.getElementById("status-data").textContent);
+
+  new Chart(document.getElementById("profilesChart"), {
+    type: "bar",
+    data: {
+      labels: profilesData.map(d => d.label),
+      datasets: [{
+        label: "{% trans 'Profils complétés' %}",
+        data: profilesData.map(d => d.count),
+        backgroundColor: "#6366f1",
+        borderRadius: 6,
+      }],
+    },
+    options: {
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true, ticks: { precision: 0 } } },
+    },
+  });
+
+  new Chart(document.getElementById("statusChart"), {
+    type: "doughnut",
+    data: {
+      labels: [
+        "{% trans 'En attente' %}",
+        "{% trans 'En cours' %}",
+        "{% trans 'Complété' %}",
+        "{% trans 'Expiré' %}",
+      ],
+      datasets: [{
+        data: [statusData.pending, statusData.in_progress, statusData.completed, statusData.expired],
+        backgroundColor: ["#e5e7eb", "#fbbf24", "#22c55e", "#f87171"],
+      }],
+    },
+    options: {
+      plugins: { legend: { position: "bottom" } },
+    },
+  });
+</script>
+{% endblock %}

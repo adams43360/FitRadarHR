@@ -9,6 +9,7 @@ from apps.positions.models import Position
 from apps.teams.models import Person, Team
 from core.managers import get_org_object_or_404
 
+from .analytics import build_analytics_context
 from .models import AuditLog
 from .services import (
     audit,
@@ -188,3 +189,20 @@ def audit_log(request):
     paginator = Paginator(logs_qs, 25)
     logs = paginator.get_page(request.GET.get("page", 1))
     return render(request, "reports/audit_log.html", {"logs": logs})
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Analytics produit (KPIs) — RH only
+# ──────────────────────────────────────────────────────────────────────────────
+
+@login_required
+def analytics(request):
+    """Tableau de bord analytics — funnel questionnaires, adoption, engagement.
+
+    Définitions des métriques : docs/product/metrics.md
+    """
+    if not request.user.is_rh:
+        return HttpResponseForbidden()
+
+    context = build_analytics_context(request.user.org)
+    return render(request, "reports/analytics.html", context)

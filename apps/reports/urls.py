@@ -14,4 +14,6 @@ urlpatterns = [
     path("person/<uuid:person_pk>/team/<uuid:team_pk>/pdf/", views.team_fit_pdf, name="team_fit_pdf"),
     # Audit log (E8)
     path("audit/", views.audit_log, name="audit_log"),
+    # Analytics produit (RH only)
+    path("analytics/", views.analytics, name="analytics"),
 ]

@@ -1442,3 +1442,117 @@ msgstr "demo organization"
 msgid ""
 "Org de démo publique — données fictives, emails bloqués, reset périodique."
 msgstr "Public demo org — fictional data, emails blocked, periodic reset."
+
+#: templates/reports/analytics.html
+msgid "Analytics"
+msgstr "Analytics"
+
+#: templates/reports/analytics.html
+msgid ""
+"Adoption du questionnaire, engagement sur les restitutions et couverture des"
+" profils — sur l'ensemble de votre organisation."
+msgstr ""
+"Questionnaire adoption, report engagement and profile coverage — across your"
+" entire organization."
+
+#: templates/reports/analytics.html
+msgid "Taux de complétion"
+msgstr "Completion rate"
+
+#: templates/reports/analytics.html
+msgid "%(completed)s complétés sur %(sent)s envoyés"
+msgstr "%(completed)s completed out of %(sent)s sent"
+
+#: templates/reports/analytics.html
+msgid "j"
+msgstr "d"
+
+#: templates/reports/analytics.html
+msgid "Délai moyen de passation"
+msgstr "Average completion time"
+
+#: templates/reports/analytics.html
+msgid "entre l'envoi du lien et la complétion"
+msgstr "between link sending and completion"
+
+#: templates/reports/analytics.html
+msgid "Couverture des profils"
+msgstr "Profile coverage"
+
+#: templates/reports/analytics.html
+msgid ""
+"%(profiles)s profils — %(collaborators)s collaborateurs, %(candidates)s "
+"candidats"
+msgstr ""
+"%(profiles)s profiles — %(collaborators)s collaborators, %(candidates)s "
+"candidates"
+
+#: templates/reports/analytics.html
+msgid "Rapports consultés"
+msgstr "Reports viewed"
+
+#: templates/reports/analytics.html
+msgid "%(days)s derniers jours — dont %(pdf)s exports PDF"
+msgstr "last %(days)s days — including %(pdf)s PDF exports"
+
+#: templates/reports/analytics.html
+msgid "Funnel questionnaire"
+msgstr "Questionnaire funnel"
+
+#: templates/reports/analytics.html
+msgid ""
+"Chaque lien envoyé compte pour une entrée — un abandon est un questionnaire "
+"commencé (consentement donné) mais jamais terminé."
+msgstr ""
+"Each link sent counts as one entry — an abandonment is a questionnaire "
+"started (consent given) but never finished."
+
+#: templates/reports/analytics.html
+msgid "Liens envoyés"
+msgstr "Links sent"
+
+#: templates/reports/analytics.html
+msgid "Commencés (consentement donné)"
+msgstr "Started (consent given)"
+
+#: templates/reports/analytics.html
+msgid "Complétés"
+msgstr "Completed"
+
+#: templates/reports/analytics.html
+msgid "Profils OCEAN complétés par mois"
+msgstr "OCEAN profiles completed per month"
+
+#: templates/reports/analytics.html
+msgid "Statut des questionnaires"
+msgstr "Questionnaire status"
+
+#: templates/reports/analytics.html
+msgid "Fit moyen par poste actif"
+msgstr "Average fit per active position"
+
+#: templates/reports/analytics.html
+msgid ""
+"Moyenne des scores de fit des personnes évaluées — un indicateur de vivier, "
+"jamais une décision."
+msgstr ""
+"Average fit score of assessed people — a talent-pool indicator, never a "
+"decision."
+
+#: templates/reports/analytics.html
+msgid "Fit moyen"
+msgstr "Average fit"
+
+#: templates/reports/analytics.html
+msgid "Aucun résultat de fit pour le moment."
+msgstr "No fit results yet."
+
+#: templates/reports/analytics.html
+msgid "Profils complétés"
+msgstr "Profiles completed"
+
+#: templates/reports/analytics.html
+msgid "%(n)s questionnaire commencé n'a pas été terminé."
+msgid_plural "%(n)s questionnaires commencés n'ont pas été terminés."
+msgstr[0] "%(n)s questionnaire was started but never finished."
+msgstr[1] "%(n)s questionnaires were started but never finished."
