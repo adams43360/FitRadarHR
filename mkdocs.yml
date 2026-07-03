@@ -96,5 +96,6 @@ nav:
     - Analytics: reports/analytics.md
   - À propos:
     - about/big-five.md
+    - Roadmap: about/roadmap.md
     - about/privacy.md
     - about/license.md

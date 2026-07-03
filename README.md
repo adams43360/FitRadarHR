@@ -1,8 +1,23 @@
 # FitRadarHR
 
-> 🚧 Projet en cours de développement — porté en public pour démontrer une démarche produit et technique de bout en bout.
+[![Tests](https://github.com/adams43360/FitRadarHR/actions/workflows/tests.yml/badge.svg)](https://github.com/adams43360/FitRadarHR/actions/workflows/tests.yml)
+[![Docs](https://github.com/adams43360/FitRadarHR/actions/workflows/docs.yml/badge.svg)](https://adams43360.github.io/FitRadarHR)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
+> Projet porté en public pour démontrer une démarche produit de bout en bout — cadrage, delivery, mesure — menée par un Product Manager avec l'IA. Voir le [making-of](docs/product/making-of.md).
 
 **FitRadarHR** est un outil **gratuit et open source** (MIT), bilingue FR/EN, qui aide les équipes RH et les managers à évaluer la compatibilité d'une personne — candidat à l'embauche ou collaborateur en mobilité interne — avec un poste et/ou une équipe, sur la base du modèle de personnalité scientifiquement validé **Big Five / OCEAN** (questionnaire IPIP, domaine public).
+
+## Fonctionnalités
+
+- **Questionnaire Big Five** (IPIP 50 ou 100 items) — lien tokenisé, consentement RGPD explicite, passation par blocs avec reprise, scoring OCEAN
+- **Fit Poste** — profil cible par plages OCEAN, score de proximité par dimension, classement du vivier
+- **Fit Équipe** — profil agrégé de l'équipe, signaux de complémentarité (similaire / différent / complémentaire)
+- **Rapports** — radar charts, infobulles pédagogiques, « points à approfondir » en entretien, export PDF
+- **Analytics** — funnel du questionnaire, taux de complétion, couverture des profils, engagement ([définitions des métriques](docs/product/metrics.md))
+- **Multi-tenant** — organisations B2B et comptes personnels, isolation stricte par org
+- **Conformité** — journal d'audit immuable, droit à l'effacement, politique de confidentialité
+- **Mode démo** — environnement public « Nexatech » réinitialisé toutes les 24 h (`make seed-demo`)
 
 ## Principes fondateurs
 
@@ -15,8 +30,12 @@
 ## Documentation
 
 - 📖 **[Documentation utilisateur](https://adams43360.github.io/FitRadarHR)** — guide complet sur GitHub Pages
+- 🗺️ **[Roadmap publique V2](https://adams43360.github.io/FitRadarHR/about/roadmap/)** — priorisée RICE
+- 📓 **[Changelog](CHANGELOG.md)**
 - [`docs/product/00-cadrage.md`](docs/product/00-cadrage.md) — cadrage produit complet
 - [`docs/product/user-stories.md`](docs/product/user-stories.md) — user stories E1–E8
+- [`docs/product/metrics.md`](docs/product/metrics.md) — North Star, funnel AARRR, anti-métriques
+- [`docs/product/making-of.md`](docs/product/making-of.md) — comment ce produit a été construit (PM × IA)
 - [`docs/technical/stack.md`](docs/technical/stack.md) — décisions techniques
 - [`docs/technical/schema.md`](docs/technical/schema.md) — schéma de données (ER + entités)
 
@@ -59,33 +78,36 @@ L'application est accessible sur **http://localhost:8000**.
 | `make logs` | Afficher les logs |
 | `make test` | Lancer les tests |
 
-## Statut d'avancement
+## Essayer la démo
 
-- [x] Cadrage produit validé
-- [x] User stories E1–E8 rédigées
-- [x] Stack technique définie
-- [x] Schéma de données complet
-- [x] Scaffold Django (modèles, migrations, auth B2B/B2C, dashboard)
-- [x] Docker Compose dev opérationnel
-- [x] Documentation utilisateur publiée (GitHub Pages)
-- [x] Vues Postes — liste, création, détail, modification, archivage, profil Big Five (E2)
-- [x] Vues Équipes — liste, création, détail, modification, membres + liste Personnes (E3)
-- [x] Questionnaire Big Five — envoi lien, consentement RGPD, passation par blocs, scoring OCEAN, profil sauvegardé (E4)
-- [x] Moteur de calcul Fit — Fit Poste (plage OCEAN), Fit Équipe (agrégat + complémentarité), déclenchement auto (E5)
-- [x] Rapports & radar chart — profil OCEAN, fit poste, fit équipe, complémentarité (E6)
+Avec `DEMO_MODE=True` dans le `.env`, un bouton **« Essayer la démo »** apparaît sur la
+page de connexion : accès un clic (sans mot de passe) à une organisation fictive complète —
+« Nexatech », éditeur de logiciels d'une centaine de personnes, avec équipes, profils OCEAN,
+postes ouverts et rapports de fit.
 
-## Epics
+```bash
+make seed-demo   # crée / réinitialise l'org démo
+```
+
+Données fictives, déterministes, réinitialisées toutes les 24 h en production
+(service `demo-reset`). Aucun email réel ne part de la démo.
+
+## Statut du projet
+
+**V1 complète** — les 8 epics du cadrage sont livrés et couverts par 89 tests.
 
 | # | Epic | Statut |
 |---|---|---|
-| E1 | Authentification & organisations | ✅ Modèles + inscription B2B/B2C |
-| E2 | Gestion des postes | ✅ Liste, création, modification, archivage, profil OCEAN |
-| E3 | Gestion des équipes | ✅ Liste, création, modification, membres, liste Personnes |
-| E4 | Questionnaire Big Five | ✅ Envoi lien, passation, scoring, profil BigFive |
-| E5 | Moteur de calcul de Fit | ✅ Fit Poste + Fit Équipe + complémentarité |
-| E6 | Rapports & restitution | ✅ Profil OCEAN, Fit Poste, Fit Équipe, radar charts |
-| E7 | Internationalisation | 🔄 En continu |
-| E8 | Conformité & gouvernance | 🔄 En continu |
+| E1 | Authentification & organisations | ✅ |
+| E2 | Gestion des postes (+ départements) | ✅ |
+| E3 | Gestion des équipes | ✅ |
+| E4 | Questionnaire Big Five (50 & 100 items) | ✅ |
+| E5 | Moteur de calcul de Fit | ✅ |
+| E6 | Rapports, radar charts, export PDF, analytics | ✅ |
+| E7 | Internationalisation FR/EN | ✅ |
+| E8 | Conformité & gouvernance (RGPD, audit) | ✅ |
+
+La suite : voir la [roadmap publique V2](https://adams43360.github.io/FitRadarHR/about/roadmap/) priorisée RICE.
 
 ## Licence
 
