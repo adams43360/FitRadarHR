@@ -23,6 +23,14 @@ DIMENSION_TOOLTIPS = {
             "High score: intellectual curiosity, creativity, openness to new ideas and abstract thinking.\n"
             "Low score: pragmatism, preference for concrete approaches and proven methods."
         ),
+        "de": (
+            "Hoher Wert: intellektuelle Neugier, Kreativität, Offenheit für neue Ideen und abstraktes Denken.\n"
+            "Niedriger Wert: Pragmatismus, Vorliebe für konkrete Ansätze und bewährte Methoden."
+        ),
+        "es": (
+            "Puntuación alta: curiosidad intelectual, creatividad, gusto por la novedad y las ideas abstractas.\n"
+            "Puntuación baja: pragmatismo, preferencia por lo concreto y los métodos probados."
+        ),
     },
     "conscientiousness": {
         "fr": (
@@ -32,6 +40,14 @@ DIMENSION_TOOLTIPS = {
         "en": (
             "High score: rigor, organization, attention to detail and planning.\n"
             "Low score: flexibility, spontaneity, preference for adaptability over strict processes."
+        ),
+        "de": (
+            "Hoher Wert: Sorgfalt, Organisation, Liebe zum Detail und zur Planung.\n"
+            "Niedriger Wert: Flexibilität, Spontaneität, Vorliebe für Anpassungsfähigkeit gegenüber starren Prozessen."
+        ),
+        "es": (
+            "Puntuación alta: rigor, organización, atención al detalle y a la planificación.\n"
+            "Puntuación baja: flexibilidad, espontaneidad, preferencia por la adaptabilidad frente a los procesos estrictos."
         ),
     },
     "extraversion": {
@@ -43,6 +59,14 @@ DIMENSION_TOOLTIPS = {
             "High score: social ease, assertiveness, energy in interactions and group work.\n"
             "Low score: preference for autonomy, thinking before acting, and quieter environments."
         ),
+        "de": (
+            "Hoher Wert: soziale Leichtigkeit, Durchsetzungsvermögen, Energie in Interaktionen und Teamarbeit.\n"
+            "Niedriger Wert: Vorliebe für Autonomie, Nachdenken vor dem Handeln und ruhigere Umgebungen."
+        ),
+        "es": (
+            "Puntuación alta: soltura social, asertividad, energía en las interacciones y el trabajo en grupo.\n"
+            "Puntuación baja: preferencia por la autonomía, la reflexión antes de actuar y los entornos tranquilos."
+        ),
     },
     "agreeableness": {
         "fr": (
@@ -53,6 +77,14 @@ DIMENSION_TOOLTIPS = {
             "High score: cooperation, empathy, kindness, team-oriented.\n"
             "Low score: critical thinking, independence of judgment, directness in communication."
         ),
+        "de": (
+            "Hoher Wert: Kooperationsbereitschaft, Empathie, Freundlichkeit, Ausrichtung auf das Kollektiv.\n"
+            "Niedriger Wert: ausgeprägter kritischer Geist, Urteilsunabhängigkeit, direkte Offenheit."
+        ),
+        "es": (
+            "Puntuación alta: cooperación, empatía, amabilidad, orientación hacia el colectivo.\n"
+            "Puntuación baja: espíritu crítico marcado, independencia de juicio, franqueza directa."
+        ),
     },
     "neuroticism": {
         "fr": (
@@ -62,6 +94,14 @@ DIMENSION_TOOLTIPS = {
         "en": (
             "High score: higher sensitivity to stress, emotional reactivity, tendency toward anxiety or self-doubt.\n"
             "Low score: emotional stability, calm under pressure, resilience when facing challenges."
+        ),
+        "de": (
+            "Hoher Wert: erhöhte Stressempfindlichkeit, emotionale Reaktivität, Neigung zu Angst oder Selbstzweifel.\n"
+            "Niedriger Wert: emotionale Stabilität, Ruhe unter Druck, Widerstandsfähigkeit gegenüber Schwierigkeiten."
+        ),
+        "es": (
+            "Puntuación alta: mayor sensibilidad al estrés, reactividad emocional, tendencia a la ansiedad o la duda personal.\n"
+            "Puntuación baja: estabilidad emocional, calma bajo presión, resiliencia frente a las dificultades."
         ),
     },
 }
@@ -95,6 +135,14 @@ _POSITION_MSGS = {
                 "it may be worth exploring the person's past experiences with innovation or change."
             ),
         },
+        "de": {
+            "too_high": "Der Offenheitswert liegt über der Zielspanne. Wenn die Stelle prozedurale Genauigkeit oder repetitive Ausführung erfordert, kann es hilfreich sein, im Gespräch zu erkunden, wie die Person in einem strukturierten Rahmen aufblüht.",
+            "too_low": "Der Offenheitswert liegt unter der Zielspanne. Wenn die Stelle Kreativität oder Anpassung an sich verändernde Kontexte erfordert, kann es hilfreich sein, die bisherigen Erfahrungen der Person mit Innovation oder Veränderung zu erkunden.",
+        },
+        "es": {
+            "too_high": "La puntuación de Apertura supera el rango objetivo. Si el puesto exige rigor procedimental o ejecución repetitiva, puede ser útil explorar en la entrevista cómo la persona se desenvuelve en un marco estructurado.",
+            "too_low": "La puntuación de Apertura está por debajo del rango objetivo. Si el puesto implica creatividad o adaptación a contextos cambiantes, puede ser útil explorar las experiencias pasadas de la persona en innovación o adaptación.",
+        },
     },
     "conscientiousness": {
         "fr": {
@@ -120,6 +168,14 @@ _POSITION_MSGS = {
                 "If the role demands deadline management, strong organization or attention to detail, "
                 "it may be worth exploring the person's personal organizational methods."
             ),
+        },
+        "de": {
+            "too_high": "Der Gewissenhaftigkeitswert liegt über der Zielspanne. In einem agilen oder kreativen Umfeld kann zu viel Genauigkeit manchmal die Anpassungsfähigkeit bremsen — ein Punkt, der sich für ein vertiefendes Gespräch eignet.",
+            "too_low": "Der Gewissenhaftigkeitswert liegt unter der Zielspanne. Wenn die Stelle Terminmanagement, strenge Organisation oder Liebe zum Detail erfordert, kann es hilfreich sein, die persönlichen Organisationsmethoden der Person zu erkunden.",
+        },
+        "es": {
+            "too_high": "La puntuación de Responsabilidad supera el rango objetivo. En un entorno ágil o creativo, un exceso de rigor puede a veces frenar la adaptabilidad — un punto útil para profundizar en la entrevista.",
+            "too_low": "La puntuación de Responsabilidad está por debajo del rango objetivo. Si el puesto exige gestión de plazos, organización rigurosa o atención al detalle, puede ser útil explorar los métodos de organización personal de la persona.",
         },
     },
     "extraversion": {
@@ -147,6 +203,14 @@ _POSITION_MSGS = {
                 "it may be worth exploring how the person handles high-social situations."
             ),
         },
+        "de": {
+            "too_high": "Der Extraversionswert liegt über der Zielspanne. Bei einer Stelle, die anhaltende Konzentration oder autonomes Arbeiten erfordert, kann es hilfreich sein, die Präferenzen der Person hinsichtlich ihres Arbeitsumfelds zu erkunden.",
+            "too_low": "Der Extraversionswert liegt unter der Zielspanne. Wenn die Stelle Präsentationen, Führung oder zahlreiche Interaktionen umfasst, kann es hilfreich sein, zu erkunden, wie die Person mit stark sozialen Situationen umgeht.",
+        },
+        "es": {
+            "too_high": "La puntuación de Extraversión supera el rango objetivo. En un puesto que requiere concentración sostenida o trabajo autónomo, puede ser útil explorar las preferencias de la persona respecto a su entorno de trabajo.",
+            "too_low": "La puntuación de Extraversión está por debajo del rango objetivo. Si el puesto implica presentaciones, gestión de personas o numerosas interacciones, puede ser útil explorar cómo la persona maneja las situaciones de alta exigencia social.",
+        },
     },
     "agreeableness": {
         "fr": {
@@ -172,6 +236,14 @@ _POSITION_MSGS = {
                 "If the role requires strong collaboration or diplomacy, "
                 "it may be worth exploring the person's experiences in conflict management and cooperation."
             ),
+        },
+        "de": {
+            "too_high": "Der Verträglichkeitswert liegt über der Zielspanne. Bei Stellen, die das Hinterfragen von Ideen, Verhandlungen oder schwierige Entscheidungen erfordern, kann es hilfreich sein zu erkunden, wie die Person mit Meinungsverschiedenheiten umgeht.",
+            "too_low": "Der Verträglichkeitswert liegt unter der Zielspanne. Wenn die Stelle starke Zusammenarbeit oder Diplomatie erfordert, kann es hilfreich sein, die Erfahrungen der Person im Konfliktmanagement und in der Kooperation zu erkunden.",
+        },
+        "es": {
+            "too_high": "La puntuación de Amabilidad supera el rango objetivo. En puestos que requieren cuestionar ideas, negociar o tomar decisiones difíciles, puede ser útil explorar cómo la persona gestiona las situaciones de desacuerdo.",
+            "too_low": "La puntuación de Amabilidad está por debajo del rango objetivo. Si el puesto exige una fuerte colaboración o diplomacia, puede ser útil explorar las experiencias de la persona en gestión de conflictos y cooperación.",
         },
     },
     "neuroticism": {
@@ -199,6 +271,14 @@ _POSITION_MSGS = {
                 "this is worth discussing."
             ),
         },
+        "de": {
+            "too_high": "Der Neurotizismuswert liegt über der Zielspanne. In Umgebungen mit hohem Druck oder häufigen Unwägbarkeiten kann es hilfreich sein, im Gespräch zu erkunden, wie die Person mit Stress und anspruchsvollen Situationen umgeht.",
+            "too_low": "Der Neurotizismuswert ist besonders niedrig, was auf eine sehr hohe emotionale Stabilität hinweist. Wenn die Stelle von Sensibilität für menschliche Anliegen profitiert (sensible Kundenbeziehungen, Mediation), verdient dieser Punkt Beachtung.",
+        },
+        "es": {
+            "too_high": "La puntuación de Neuroticismo supera el rango objetivo. En entornos de alta presión o con imprevistos frecuentes, puede ser útil explorar en la entrevista cómo la persona gestiona el estrés y las situaciones exigentes.",
+            "too_low": "La puntuación de Neuroticismo es particularmente baja, lo que indica una muy alta estabilidad emocional. Si el puesto se beneficia de sensibilidad hacia aspectos humanos (relación con clientes sensibles, mediación), este punto merece ser mencionado.",
+        },
     },
 }
 
@@ -210,7 +290,7 @@ def get_position_exploration_points(dim_details, lang):
 
     dim_details doit contenir : dim_key, label, score, min, max.
     """
-    lang = lang if lang in ("fr", "en") else "fr"
+    lang = lang if lang in ("fr", "en", "de", "es") else "fr"
     points = []
     for d in dim_details:
         dim_key = d.get("dim_key")
@@ -252,6 +332,14 @@ _TEAM_MSGS = {
                 "Depending on the direction of the gap, this can enrich creativity or operational grounding."
             ),
         },
+        "de": {
+            "different": "Die Person unterscheidet sich von der Gruppe in Bezug auf Offenheit. Das kann zu Divergenzen bei den Arbeitsmethoden führen — ein Thema, das sich für die Einarbeitung eignet.",
+            "complementary": "Die Person bringt eine andere Perspektive zur Offenheit ein, wo das Team homogen ist. Je nach Richtung der Abweichung kann dies die Kreativität oder die operative Verankerung der Gruppe bereichern.",
+        },
+        "es": {
+            "different": "La persona se distingue del equipo en Apertura. Esto puede generar divergencias en los métodos de trabajo — un tema útil de abordar durante la incorporación.",
+            "complementary": "La persona aporta una perspectiva diferente sobre la Apertura donde el equipo es homogéneo. Según el sentido de la diferencia, esto puede enriquecer la creatividad o el anclaje operativo del grupo.",
+        },
     },
     "conscientiousness": {
         "fr": {
@@ -275,6 +363,14 @@ _TEAM_MSGS = {
                 "The person brings a different profile on Conscientiousness in a homogeneous team. "
                 "Depending on the direction, this may bring structure or flexibility to the group."
             ),
+        },
+        "de": {
+            "different": "Die Person unterscheidet sich von der Gruppe in Bezug auf Gewissenhaftigkeit. Eine deutliche Abweichung bei diesem Merkmal kann die kollektive Dynamik in Bezug auf Organisation beeinflussen — ein Punkt, der bei der Einarbeitung zu antizipieren ist.",
+            "complementary": "Die Person bringt ein anderes Profil zur Gewissenhaftigkeit in ein homogenes Team ein. Je nach Richtung der Abweichung kann dies Struktur oder Flexibilität für die Gruppe bedeuten.",
+        },
+        "es": {
+            "different": "La persona se distingue del equipo en Responsabilidad. Una diferencia marcada en este rasgo puede afectar la dinámica colectiva en materia de organización — un punto a anticipar durante la incorporación.",
+            "complementary": "La persona aporta un perfil diferente en Responsabilidad dentro de un equipo homogéneo. Según el sentido de la diferencia, esto puede aportar estructura o flexibilidad al grupo.",
         },
     },
     "extraversion": {
@@ -300,6 +396,14 @@ _TEAM_MSGS = {
                 "bringing social energy or reflective perspective depending on the direction."
             ),
         },
+        "de": {
+            "different": "Die Person unterscheidet sich von der Gruppe in Bezug auf Extraversion. Dieser Unterschied kann die interne Kommunikation und die Dynamik von Besprechungen beeinflussen — ein Punkt, der zu antizipieren ist.",
+            "complementary": "Die Abweichung bei der Extraversion gegenüber einem homogenen Team kann komplementär sein: je nach Richtung der Abweichung bringt sie soziale Energie oder reflektierten Abstand.",
+        },
+        "es": {
+            "different": "La persona se distingue del equipo en Extraversión. Esta diferencia puede influir en la comunicación interna y en la dinámica de las reuniones — un punto a anticipar.",
+            "complementary": "La diferencia de Extraversión respecto a un equipo homogéneo puede ser complementaria: aporta energía social o distancia reflexiva según el sentido de la diferencia.",
+        },
     },
     "agreeableness": {
         "fr": {
@@ -322,6 +426,14 @@ _TEAM_MSGS = {
                 "The person brings a different profile on Agreeableness in a homogeneous team. "
                 "This can enrich critical thinking or group cohesion depending on the direction of the gap."
             ),
+        },
+        "de": {
+            "different": "Die Person unterscheidet sich von der Gruppe in Bezug auf Verträglichkeit. Eine deutliche Abweichung kann die Zusammenarbeit und das Teamklima beeinflussen — nützlich, dies im Gespräch zu erkunden.",
+            "complementary": "Die Person bringt ein anderes Profil zur Verträglichkeit in ein homogenes Team ein. Je nach Richtung der Abweichung kann dies den kritischen Geist oder den Zusammenhalt der Gruppe bereichern.",
+        },
+        "es": {
+            "different": "La persona se distingue del equipo en Amabilidad. Una diferencia notable puede influir en la cooperación y el clima del equipo — útil de explorar en la entrevista.",
+            "complementary": "La persona aporta un perfil diferente en Amabilidad dentro de un equipo homogéneo. Esto puede enriquecer el espíritu crítico o la cohesión del grupo según el sentido de la diferencia.",
         },
     },
     "neuroticism": {
@@ -347,6 +459,14 @@ _TEAM_MSGS = {
                 "Depending on the direction, this may bring resilience or sensitivity to human concerns."
             ),
         },
+        "de": {
+            "different": "Die Person unterscheidet sich von der Gruppe in Bezug auf Neurotizismus. Eine deutliche Abweichung bei diesem Merkmal kann die kollektive Dynamik in Drucksituationen beeinflussen — ein Punkt, der bei der Einarbeitung zu antizipieren ist.",
+            "complementary": "Die Person bringt ein anderes Neurotizismus-Profil in ein homogenes Team ein. Je nach Richtung der Abweichung kann dies Resilienz oder Sensibilität für menschliche Anliegen bedeuten.",
+        },
+        "es": {
+            "different": "La persona se distingue del equipo en Neuroticismo. Una diferencia notable en este rasgo puede afectar la dinámica colectiva en situaciones de presión — un punto a anticipar durante la incorporación.",
+            "complementary": "La persona aporta un perfil de Neuroticismo diferente dentro de un equipo homogéneo. Según el sentido de la diferencia, esto puede aportar resiliencia o sensibilidad hacia aspectos humanos.",
+        },
     },
 }
 
@@ -359,7 +479,7 @@ def get_team_exploration_points(dim_details, lang):
 
     dim_details doit contenir : dim_key, label, signal.
     """
-    lang = lang if lang in ("fr", "en") else "fr"
+    lang = lang if lang in ("fr", "en", "de", "es") else "fr"
     points = []
     for d in dim_details:
         dim_key = d.get("dim_key")

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Questionnaire — FitRadarHR</title>
+  <title>{% trans "Questionnaire" %} — FitRadarHR</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 text-gray-900 min-h-screen py-8 px-4">
@@ -15,8 +15,7 @@
     <div class="flex items-center justify-between mb-2">
       <span class="text-sm font-medium text-indigo-600">FitRadarHR</span>
       <span class="text-sm text-gray-500">
-        {% if link.language == "fr" %}Partie{% else %}Part{% endif %}
-        {{ block|add:1 }} / {{ total_blocks }}
+        {% blocktrans with current=block|add:1 total=total_blocks %}Partie {{ current }} / {{ total }}{% endblocktrans %}
       </span>
     </div>
     <div class="w-full bg-gray-200 rounded-full h-2">
@@ -24,11 +23,8 @@
       <div class="bg-indigo-600 h-2 rounded-full transition-all" style="width: {{ pct }}%"></div>
     </div>
     <p class="text-xs text-gray-400 mt-1 text-right">
-      {% if link.language == "fr" %}
-        {% widthratio block|add:1 total_blocks 100 as pct_done %}{{ pct_done }}% complété
-      {% else %}
-        {% widthratio block|add:1 total_blocks 100 as pct_done %}{{ pct_done }}% complete
-      {% endif %}
+      {% widthratio block|add:1 total_blocks 100 as pct_done %}
+      {% blocktrans with pct=pct_done %}{{ pct }}% complété{% endblocktrans %}
     </p>
   </div>
 
@@ -37,11 +33,7 @@
   {% endif %}
 
   <div class="mb-4 text-sm text-gray-500">
-    {% if link.language == "fr" %}
-      Pour chaque affirmation, indiquez dans quelle mesure elle vous correspond.
-    {% else %}
-      For each statement, indicate how well it describes you.
-    {% endif %}
+    {% trans "Pour chaque affirmation, indiquez dans quelle mesure elle vous correspond." %}
   </div>
 
   <form method="post" class="space-y-4">
@@ -49,7 +41,7 @@
     {% for item in items %}
     <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
       <p class="text-gray-900 font-medium mb-4">
-        {% if link.language == "fr" %}{{ item.fr }}{% else %}{{ item.en }}{% endif %}
+        {{ item.text }}
       </p>
       <div class="grid grid-cols-5 gap-2">
         {% for val, label in scale.items %}
@@ -71,10 +63,10 @@
 
     <button type="submit"
       class="w-full rounded-xl bg-indigo-600 px-4 py-3 text-sm font-semibold text-white hover:bg-indigo-700 transition mt-4">
-      {% if link.language == "fr" %}
-        {% if block|add:1 == total_blocks %}Terminer le questionnaire →{% else %}Page suivante →{% endif %}
+      {% if block|add:1 == total_blocks %}
+        {% trans "Terminer le questionnaire →" %}
       {% else %}
-        {% if block|add:1 == total_blocks %}Finish questionnaire →{% else %}Next page →{% endif %}
+        {% trans "Page suivante →" %}
       {% endif %}
     </button>
   </form>

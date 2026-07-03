@@ -278,6 +278,29 @@ class LicenseWordingTests(TestCase):
                 "Bilingual & open source code",
             )
 
+    def test_license_strings_translated_to_german_and_spanish(self):
+        """Item #8 roadmap V2 — parité ES/DE, y compris sur les chaînes de
+        licence ajoutées lors du passage à Fair Source (FSL-1.1-MIT)."""
+        from django.utils import translation
+        with translation.override("de"):
+            self.assertEqual(
+                translation.gettext("Code source ouvert (FSL-1.1-MIT)"),
+                "Quelloffener Code (FSL-1.1-MIT)",
+            )
+            self.assertEqual(
+                translation.gettext("Bilingue & code source ouvert"),
+                "Zweisprachig & quelloffener Code",
+            )
+        with translation.override("es"):
+            self.assertEqual(
+                translation.gettext("Code source ouvert (FSL-1.1-MIT)"),
+                "Código fuente abierto (FSL-1.1-MIT)",
+            )
+            self.assertEqual(
+                translation.gettext("Bilingue & code source ouvert"),
+                "Bilingüe y código fuente abierto",
+            )
+
 
 class InviteManagerTests(TestCase):
     """Invitation de managers dans l'org — item #2 de la roadmap V2."""

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% if link.language == "fr" %}Merci !{% else %}Thank you!{% endif %} — FitRadarHR</title>
+  <title>{% trans "Merci !" %} — FitRadarHR</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 text-gray-900 min-h-screen flex items-center justify-center p-4">
@@ -12,30 +12,18 @@
 
   <div class="text-5xl mb-4">🎉</div>
   <h1 class="text-2xl font-bold text-gray-900 mb-2">
-    {% if link.language == "fr" %}Merci, {{ person.first_name }} !{% else %}Thank you, {{ person.first_name }}!{% endif %}
+    {% blocktrans with first_name=person.first_name %}Merci, {{ first_name }} !{% endblocktrans %}
   </h1>
   <p class="text-gray-500 text-sm mb-6">
-    {% if link.language == "fr" %}
-      Votre questionnaire a bien été enregistré. Votre profil Big Five a été calculé et transmis à votre organisation.
-    {% else %}
-      Your questionnaire has been recorded. Your Big Five profile has been computed and sent to your organization.
-    {% endif %}
+    {% trans "Votre questionnaire a bien été enregistré. Votre profil Big Five a été calculé et transmis à votre organisation." %}
   </p>
 
   <div class="bg-indigo-50 rounded-xl p-4 text-sm text-indigo-800 mb-6">
-    {% if link.language == "fr" %}
-      <p>Vous pouvez fermer cette fenêtre. Vos données brutes ont été supprimées — seul votre profil agrégé est conservé.</p>
-    {% else %}
-      <p>You may close this window. Your raw answers have been deleted — only your aggregated profile is kept.</p>
-    {% endif %}
+    <p>{% trans "Vous pouvez fermer cette fenêtre. Vos données brutes ont été supprimées — seul votre profil agrégé est conservé." %}</p>
   </div>
 
   <p class="text-xs text-gray-400">
-    {% if link.language == "fr" %}
-      Propulsé par <strong>FitRadarHR</strong> — outil open source basé sur le modèle Big Five / OCEAN (IPIP)
-    {% else %}
-      Powered by <strong>FitRadarHR</strong> — open source tool based on Big Five / OCEAN (IPIP)
-    {% endif %}
+    {% blocktrans %}Propulsé par <strong>FitRadarHR</strong> — outil open source basé sur le modèle Big Five / OCEAN (IPIP){% endblocktrans %}
   </p>
 </div>
 </body>

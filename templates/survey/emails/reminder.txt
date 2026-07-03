@@ -1,31 +1,14 @@
-{% if link.language == "fr" %}Bonjour {{ person.first_name }},
+{% load i18n %}{% blocktrans with first_name=person.first_name %}Bonjour {{ first_name }},{% endblocktrans %}
 
-Vous avez reçu il y a quelques jours une invitation à compléter un questionnaire
-de personnalité Big Five (IPIP). Nous n'avons pas encore reçu vos réponses.
+{% trans "Vous avez reçu il y a quelques jours une invitation à compléter un questionnaire de personnalité Big Five (IPIP). Nous n'avons pas encore reçu vos réponses." %}
 
-Le questionnaire prend environ {% if link.questionnaire_version == "100" %}20{% else %}10{% endif %} minutes.
-Vos réponses sont confidentielles. Seul un profil agrégé (5 scores) sera conservé.
+{% blocktrans with minutes=duration_minutes %}Le questionnaire prend environ {{ minutes }} minutes.{% endblocktrans %}
+{% trans "Vos réponses sont confidentielles. Seul un profil agrégé (5 scores) sera conservé." %}
 
-→ Accéder au questionnaire :
+→ {% trans "Accéder au questionnaire :" %}
 {{ survey_url }}
 
-{% if days_left > 0 %}Ce lien expire dans {{ days_left }} jour{{ days_left|pluralize }}.{% else %}Ce lien arrive à expiration très prochainement.{% endif %}
+{% if days_left > 0 %}{% blocktrans count days=days_left %}Ce lien expire dans {{ days }} jour.{% plural %}Ce lien expire dans {{ days }} jours.{% endblocktrans %}{% else %}{% trans "Ce lien arrive à expiration très prochainement." %}{% endif %}
 
 ---
-Propulsé par FitRadarHR — outil open source basé sur le modèle Big Five / OCEAN (IPIP, domaine public)
-{% else %}Hello {{ person.first_name }},
-
-A few days ago you received an invitation to complete a Big Five personality
-questionnaire (IPIP). We haven't received your answers yet.
-
-The questionnaire takes about {% if link.questionnaire_version == "100" %}20{% else %}10{% endif %} minutes.
-Your answers are confidential. Only an aggregated profile (5 scores) will be kept.
-
-→ Access the questionnaire:
-{{ survey_url }}
-
-{% if days_left > 0 %}This link expires in {{ days_left }} day{{ days_left|pluralize }}.{% else %}This link is about to expire.{% endif %}
-
----
-Powered by FitRadarHR — open source tool based on Big Five / OCEAN (IPIP, public domain)
-{% endif %}
+{% trans "Propulsé par FitRadarHR — outil open source basé sur le modèle Big Five / OCEAN (IPIP, domaine public)" %}

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% if link.language == "fr" %}Questionnaire de personnalité{% else %}Personality questionnaire{% endif %} — FitRadarHR</title>
+  <title>{% trans "Questionnaire de personnalité" %} — FitRadarHR</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 text-gray-900 min-h-screen flex items-center justify-center p-4">
@@ -13,42 +13,23 @@
   <div class="text-center mb-8">
     <span class="text-3xl font-bold text-indigo-600">FitRadarHR</span>
     <h1 class="text-xl font-semibold text-gray-900 mt-4">
-      {% if link.language == "fr" %}
-        Bonjour {{ person.first_name }} 👋
-      {% else %}
-        Hello {{ person.first_name }} 👋
-      {% endif %}
+      {% blocktrans with first_name=person.first_name %}Bonjour {{ first_name }} 👋{% endblocktrans %}
     </h1>
     <p class="text-gray-500 mt-2 text-sm">
-      {% if link.language == "fr" %}
-        Vous avez été invité(e) à compléter un questionnaire de personnalité Big Five (IPIP).
-        Ce questionnaire comporte <strong>{{ link.questionnaire_version }} questions</strong> et prend environ <strong>{% if link.questionnaire_version == "100" %}20{% else %}10{% endif %} minutes</strong>.
-      {% else %}
-        You have been invited to complete a Big Five personality questionnaire (IPIP).
-        It contains <strong>{{ link.questionnaire_version }} questions</strong> and takes about <strong>{% if link.questionnaire_version == "100" %}20{% else %}10{% endif %} minutes</strong>.
-      {% endif %}
+      {% blocktrans with n=link.questionnaire_version minutes=duration_minutes %}Vous avez été invité(e) à compléter un questionnaire de personnalité Big Five (IPIP). Ce questionnaire comporte <strong>{{ n }} questions</strong> et prend environ <strong>{{ minutes }} minutes</strong>.{% endblocktrans %}
     </p>
   </div>
 
   <div class="bg-indigo-50 rounded-xl p-5 mb-6 text-sm text-gray-700 space-y-3">
     <p class="font-medium text-indigo-800">
-      {% if link.language == "fr" %}🔒 Vos droits et la protection de vos données{% else %}🔒 Your rights and data protection{% endif %}
+      🔒 {% trans "Vos droits et la protection de vos données" %}
     </p>
-    {% if link.language == "fr" %}
     <ul class="list-disc list-inside space-y-1 text-gray-600">
-      <li>Vos réponses sont <strong>confidentielles</strong> et traitées uniquement par votre organisation.</li>
-      <li>Le résultat est un <strong>profil indicatif</strong> — aucune décision automatique n'est prise.</li>
-      <li>Vous pouvez demander l'accès ou la suppression de vos données à tout moment.</li>
-      <li>Seul votre profil agrégé (5 scores) est conservé — les réponses détaillées sont supprimées après calcul.</li>
+      <li>{% blocktrans %}Vos réponses sont <strong>confidentielles</strong> et traitées uniquement par votre organisation.{% endblocktrans %}</li>
+      <li>{% blocktrans %}Le résultat est un <strong>profil indicatif</strong> — aucune décision automatique n'est prise.{% endblocktrans %}</li>
+      <li>{% trans "Vous pouvez demander l'accès ou la suppression de vos données à tout moment." %}</li>
+      <li>{% trans "Seul votre profil agrégé (5 scores) est conservé — les réponses détaillées sont supprimées après calcul." %}</li>
     </ul>
-    {% else %}
-    <ul class="list-disc list-inside space-y-1 text-gray-600">
-      <li>Your answers are <strong>confidential</strong> and processed only by your organization.</li>
-      <li>The result is an <strong>indicative profile</strong> — no automated decision is made.</li>
-      <li>You can request access or deletion of your data at any time.</li>
-      <li>Only your aggregated profile (5 scores) is kept — detailed answers are deleted after scoring.</li>
-    </ul>
-    {% endif %}
   </div>
 
   <form method="post">
@@ -56,20 +37,12 @@
     <input type="hidden" name="consent" value="yes">
     <button type="submit"
       class="w-full rounded-xl bg-indigo-600 px-4 py-3 text-sm font-semibold text-white hover:bg-indigo-700 transition">
-      {% if link.language == "fr" %}
-        J'accepte et je commence le questionnaire →
-      {% else %}
-        I agree and start the questionnaire →
-      {% endif %}
+      {% trans "J'accepte et je commence le questionnaire →" %}
     </button>
   </form>
 
   <p class="text-xs text-gray-400 text-center mt-4">
-    {% if link.language == "fr" %}
-      En cliquant, vous consentez explicitement au traitement de vos données dans le cadre de cette évaluation.
-    {% else %}
-      By clicking, you explicitly consent to the processing of your data as part of this assessment.
-    {% endif %}
+    {% trans "En cliquant, vous consentez explicitement au traitement de vos données dans le cadre de cette évaluation." %}
   </p>
 </div>
 </body>

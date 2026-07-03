@@ -83,7 +83,7 @@ User stories à rattacher systématiquement à l'un de ces epics (voir `00-cadra
 | E4 | Questionnaire Big Five | ✅ Envoi lien, création personne à la volée, rattachement poste, passation, scoring |
 | E5 | Moteur de calcul de Fit | ✅ Fit Poste + Fit Équipe + complémentarité + recalcul coéquipiers |
 | E6 | Rapports & restitution | ✅ Profil OCEAN, Fit Poste, Fit Équipe, radar charts, export PDF, fit équipe cible, infobulles OCEAN, points à approfondir |
-| E7 | Internationalisation | ✅ FR/EN — 300+ strings traduites |
+| E7 | Internationalisation | ✅ FR/EN/ES/DE — 478 strings UI + questionnaire IPIP-100 traduit (ES/DE sourcés sur traductions officielles quand elles existent) |
 | E8 | Conformité & gouvernance | ✅ Droit à l'effacement, audit log viewer, politique de confidentialité |
 
 ## État d'avancement
@@ -112,16 +112,26 @@ User stories à rattacher systématiquement à l'un de ces epics (voir `00-cadra
 - [x] Analytics produit — page `/reports/analytics/` (RH) : funnel questionnaire (envoyé→commencé→complété), taux de complétion, délai moyen, couverture des profils, profils/mois (Chart.js), engagement 30 j via audit log, fit moyen par poste ; définitions dans `docs/product/metrics.md` (North Star, AARRR, anti-métriques)
 - [x] Vitrine produit — landing page publique (`/`, i18n), widget de feedback in-app (modèle `Feedback` org-scoped, admin lecture seule), roadmap publique V2 priorisée RICE (`docs/user/about/roadmap.md`), `CHANGELOG.md`, making-of PM × IA (`docs/product/making-of.md`), README enrichi (badges CI/docs, fonctionnalités, statut V1)
 - [x] Mode démo public — org fictive « Nexatech » (~100 pers., 10 équipes aux archétypes OCEAN contrastés) seedée par `manage.py seed_demo` (idempotente, déterministe), bouton "Essayer la démo" (connexion sans mot de passe, `DEMO_MODE=True`), bannière, garde-fous (aucun email réel — lien affiché à l'écran, effacement RGPD désactivé, domaines `.example`), reset 24 h via service `demo-reset` (`--profile demo`), doc utilisateur `getting-started/demo.md`
+- [x] SSO Keycloak/OIDC — un IdP par organisation, additif au mot de passe, provisioning JIT scopé par org, écran `/settings/sso/`, point d'entrée `/login/sso/` (roadmap V2 #7, US-E1-05)
+- [x] Licence Fair Source (FSL-1.1-MIT) — remplace MIT, code toujours public/modifiable/auto-hébergeable, usage commercial concurrent réservé, conversion en MIT 2 ans après chaque publication
+- [x] Traduction ES/DE complète (roadmap V2 #8, US-E7-03) — questionnaire IPIP-100 traduit (DE 100/100 sourcé sur la traduction officielle Streib & Wiedmaier 2001 ; ES 50/100 officiels de Oliveira et al. 2013 + 50 items d'extension traduits en interne, limite documentée dans `docs/product/translations-ipip.md` et `docs/user/about/big-five.md`), contenus de rapport (libellés/infobulles/points à approfondir) en DE/ES, catalogue UI complet (478 chaînes) traduit, `Language.choices` étendu partout (questionnaire, org, utilisateur), 193 tests au total
 
 ## Conventions de travail
 
 - **Stack** : Django 5 + HTMX + Alpine.js + Tailwind CSS + PostgreSQL 16 + Docker Compose
-- **Auth V1** : django-allauth (email/password) — Keycloak/OIDC reporté en V2
+- **Auth** : django-allauth (email/password) + SSO OIDC optionnel par organisation
+  (`allauth.socialaccount`, provider `openid_connect`, un `SocialApp` par org — voir
+  `apps/accounts/sso.py`) — additif, jamais un remplacement du mot de passe
 - **Commits** : Conventional Commits — `feat:`, `fix:`, `docs:`, `refactor:`, `test:`
 - **User stories** : format `En tant que [rôle], je veux [besoin], afin de [valeur]`
   avec critères d'acceptation explicites, rédigées en français
 - **Code et variables** : en anglais
-- **i18n** : toute string UI via `gettext_lazy(_(...))`, jamais de texte en dur
+- **i18n** : toute string UI via `gettext_lazy(_(...))`, jamais de texte en dur —
+  4 langues (FR/EN/ES/DE). Exception assumée : le contenu du questionnaire IPIP
+  (`apps/survey/ipip_data.py`) et les contenus de rapport indexés par dimension
+  (`apps/fit/engine.py::DIMENSION_LABELS`, `apps/reports/insights.py`) utilisent des
+  dicts `{"fr": ..., "en": ..., "de": ..., "es": ...}` plutôt que gettext, car ce sont
+  des données scientifiques sourcées (traductions IPIP officielles), pas de la chrome UI
 - **Multi-tenant** : chaque modèle lié à une org filtre systématiquement par `org_id`
   via un Django model manager (`OrgQuerySet` dans `core/managers.py` — `for_org()` /
   `get_org_object_or_404()`) — aucune vue ne peut afficher des données cross-tenant

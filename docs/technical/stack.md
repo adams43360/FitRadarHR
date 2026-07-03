@@ -40,7 +40,7 @@
 | Brique | Choix | Notes |
 |---|---|---|
 | Authentification V1 | **django-allauth** | Email + mot de passe, invitations par lien |
-| i18n | **Django i18n natif** | FR/EN dès le scaffold, fichiers `.po` / `.mo` |
+| i18n | **Django i18n natif** | FR/EN/ES/DE, fichiers `.po` / `.mo` — questionnaire IPIP sourcé sur traductions officielles quand elles existent (voir `docs/product/translations-ipip.md`) |
 | Emails | **Django Email** + SMTP | Sendgrid ou SMTP self-hosted (ex. Postfix/Mailcow) |
 | Export PDF | **WeasyPrint** | HTML → PDF côté serveur, léger sur VPS |
 | Liens tokenisés | **Django signing** (`TimestampSigner`) | Liens questionnaire sécurisés, expiration configurable |
@@ -118,6 +118,7 @@ docker compose exec app python manage.py migrate  # migrations
 | **SMTP V1** | Gmail SMTP avec App Password Google. Limite : 500 emails/jour (gratuit) ou 2 000 (Workspace). Migration vers Resend/Sendgrid possible en changeant uniquement la config. |
 | **Multi-tenant** | **Option A — `tenant_id` (row-level).** Toutes les orgs partagent les mêmes tables, chaque ligne porte un `org_id`. Filtrage automatique via Django model managers. Simple, solide, standard pour une V1 SaaS. |
 | **SSO Keycloak / OIDC (V2)** | **Un IdP par organisation**, via `allauth.socialaccount` + provider générique `openid_connect`. Chaque `OrgSSOConfig` synchronise un `SocialApp` dédié (`provider_id=login_slug`) — pas de configuration statique dans `settings.py`, tout est piloté par la base pour rester cohérent avec le multi-tenant existant. Le SSO s'ajoute à l'email/mot de passe, il ne le remplace jamais (pas de verrouillage si l'IdP tombe). |
+| **API publique en lecture seule (V2)** | App dédiée `apps.api`, montée hors `i18n_patterns` sous `/api/v1/` (un client machine n'a pas de préférence de langue navigateur). Authentification par **clé API par organisation** (`Authorization: Api-Key <clé>`, schéma volontairement distinct de `Bearer`/OAuth2 — pas de flux OAuth2, juste une clé opaque scopée à un tenant), hashée en SHA-256 (`ApiKey.key_hash`), jamais stockée en clair. Pas de dépendance à Django REST Framework : vues fonction + `JsonResponse` + pagination maison via `django.core.paginator.Paginator`, cohérent avec le reste du projet qui reste volontairement peu dépendant. Endpoints strictement GET : postes/équipes (métadonnées), personnes + statut questionnaire, résultats de fit — **jamais** les scores Big Five bruts (choix produit RGPD de minimisation des données transmises à des tiers). |
 
 ---
 

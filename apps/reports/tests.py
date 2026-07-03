@@ -13,6 +13,12 @@ from apps.teams.models import Person
 from core.testing import create_org_and_user, create_profile
 
 from .models import AuditLog
+from .insights import (
+    DIMENSION_TOOLTIPS,
+    get_position_exploration_points,
+    get_team_exploration_points,
+)
+from apps.fit.engine import DIMENSION_LABELS, DIMENSIONS
 
 
 class ReportTenantIsolationTests(TestCase):
@@ -404,3 +410,65 @@ class AnalyticsTests(TestCase):
         self.client.force_login(rh_empty)
         resp = self.client.get(reverse("reports:analytics"))
         self.assertEqual(resp.status_code, 200)
+
+
+class ReportsGermanSpanishContentTests(TestCase):
+    """Item #8 roadmap V2 — parité DE/ES sur les contenus de rapport (pas seulement l'UI).
+
+    DIMENSION_LABELS, DIMENSION_TOOLTIPS et les banques de « points à
+    approfondir » (`apps/reports/insights.py`) sont indexés par langue en dur
+    (pas via gettext) — même logique que `ipip_data.py`. Ces tests garantissent
+    qu'aucune des 5 dimensions n'a été oubliée lors de l'ajout de de/es.
+    """
+
+    def test_dimension_labels_cover_all_four_languages(self):
+        for dim in DIMENSIONS:
+            self.assertEqual(set(DIMENSION_LABELS[dim].keys()), {"fr", "en", "de", "es"}, dim)
+            for lang in ("de", "es"):
+                self.assertTrue(DIMENSION_LABELS[dim][lang], f"{dim}/{lang}")
+
+    def test_dimension_tooltips_cover_all_four_languages(self):
+        for dim in DIMENSIONS:
+            self.assertEqual(set(DIMENSION_TOOLTIPS[dim].keys()), {"fr", "en", "de", "es"}, dim)
+            for lang in ("de", "es"):
+                self.assertTrue(DIMENSION_TOOLTIPS[dim][lang], f"{dim}/{lang}")
+
+    def test_position_exploration_points_in_german(self):
+        dim_details = [
+            {"dim_key": "openness", "label": "Offenheit", "score": 90, "min": 30, "max": 60},
+        ]
+        points = get_position_exploration_points(dim_details, "de")
+        self.assertEqual(len(points), 1)
+        self.assertIn("Offenheitswert", points[0]["message"])
+
+    def test_position_exploration_points_in_spanish(self):
+        dim_details = [
+            {"dim_key": "openness", "label": "Apertura", "score": 5, "min": 30, "max": 60},
+        ]
+        points = get_position_exploration_points(dim_details, "es")
+        self.assertEqual(len(points), 1)
+        self.assertIn("Apertura", points[0]["message"])
+
+    def test_team_exploration_points_in_german_and_spanish(self):
+        dim_details_de = [
+            {"dim_key": "extraversion", "label": "Extraversion", "signal": "different"},
+        ]
+        points_de = get_team_exploration_points(dim_details_de, "de")
+        self.assertEqual(len(points_de), 1)
+        self.assertIn("Extraversion", points_de[0]["message"])
+
+        dim_details_es = [
+            {"dim_key": "extraversion", "label": "Extraversión", "signal": "complementary"},
+        ]
+        points_es = get_team_exploration_points(dim_details_es, "es")
+        self.assertEqual(len(points_es), 1)
+        self.assertIn("Extraversión", points_es[0]["message"])
+
+    def test_unknown_language_falls_back_to_french(self):
+        """Une langue non supportée ne doit jamais lever d'exception."""
+        dim_details = [
+            {"dim_key": "openness", "label": "Ouverture", "score": 90, "min": 30, "max": 60},
+        ]
+        points = get_position_exploration_points(dim_details, "it")
+        self.assertEqual(len(points), 1)
+        self.assertIn("Ouverture", points[0]["message"])

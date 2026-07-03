@@ -1,4 +1,5 @@
 {% load i18n static %}
+{% load i18n_extras %}
 <nav class="bg-white shadow-sm border-b border-gray-200">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between h-16 items-center">
@@ -21,22 +22,22 @@
         <a href="{% url 'reports:audit_log' %}" class="text-sm text-gray-600 hover:text-indigo-600">{% trans "Audit" %}</a>
         <a href="{% url 'accounts:members' %}" class="text-sm text-gray-600 hover:text-indigo-600">{% trans "Membres" %}</a>
         <a href="{% url 'accounts:sso_config' %}" class="text-sm text-gray-600 hover:text-indigo-600">{% trans "SSO" %}</a>
+        <a href="{% url 'accounts:api_keys_settings' %}" class="text-sm text-gray-600 hover:text-indigo-600">{% trans "API" %}</a>
         {% endif %}
 
         <!-- Sélecteur de langue -->
         <form action="{% url 'set_language' %}" method="post" class="flex items-center gap-1">
           {% csrf_token %}
-          {# Retire le préfixe /en/ de l'URL avant redirection — sinon le préfixe écrase le cookie de langue #}
+          {# Retire le préfixe de langue (/en/, /es/, /de/...) de l'URL avant redirection — #}
+          {# sinon le préfixe écrase le cookie de langue (voir apps/accounts/templatetags/i18n_extras.py) #}
           {% get_current_language as CURRENT_LANG %}
-          {% if request.path|slice:":3" == "/en" %}
-          <input name="next" type="hidden" value="{{ request.path|slice:'3:' }}">
-          {% else %}
-          <input name="next" type="hidden" value="{{ request.get_full_path }}">
-          {% endif %}
+          <input name="next" type="hidden" value="{{ request.get_full_path|strip_lang_prefix }}">
           <select name="language" onchange="this.form.submit()"
             class="text-sm border-0 bg-transparent text-gray-500 cursor-pointer">
             <option value="fr" {% if LANGUAGE_CODE == 'fr' %}selected{% endif %}>🇫🇷 FR</option>
             <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>🇬🇧 EN</option>
+            <option value="es" {% if LANGUAGE_CODE == 'es' %}selected{% endif %}>🇪🇸 ES</option>
+            <option value="de" {% if LANGUAGE_CODE == 'de' %}selected{% endif %}>🇩🇪 DE</option>
           </select>
         </form>
 

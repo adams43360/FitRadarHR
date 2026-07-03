@@ -11,7 +11,9 @@ from django.utils import timezone
 from apps.fit.models import BigFiveProfile, BigFiveProfileHistory
 from apps.teams.models import Person
 
-from .ipip_data import DIMENSIONS, ITEMS
+from django.utils import translation
+
+from .ipip_data import DIMENSIONS, ITEMS, ITEMS_BY_ID, SCALE_DE, SCALE_ES, SCALES
 from .models import ConsentRecord, QuestionnaireLink, QuestionnaireSession
 from .scoring import compute_scores, validate_answers
 
@@ -320,3 +322,216 @@ class SendRemindersCommandTests(TestCase):
         self._make_link(days_ago=4, status=QuestionnaireLink.Status.IN_PROGRESS)
         call_command("send_reminders")
         self.assertEqual(len(mail.outbox), 1)
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Traduction ES/DE du questionnaire IPIP-100 — item #8 de la roadmap V2
+# ──────────────────────────────────────────────────────────────────────────────
+
+class IpipTranslationsTests(SimpleTestCase):
+    """Couverture DE/ES des 100 items IPIP et des échelles de réponse.
+
+    DE : traduction officielle IPIP 100 items (Streib & Wiedmaier, 2001).
+    ES : traduction officielle IPIP 50 items (de Oliveira et al., 2013) pour
+    les items officiels, complétée par une adaptation maison pour l'extension
+    et les 4 items non-officiels — voir `docs/product/translations-ipip.md`.
+    """
+
+    def test_every_item_has_de_and_es_text(self):
+        for item in ITEMS:
+            self.assertIn("de", item, item["id"])
+            self.assertIn("es", item, item["id"])
+            self.assertTrue(item["de"].strip(), item["id"])
+            self.assertTrue(item["es"].strip(), item["id"])
+
+    def test_de_and_es_distinct_from_fr_and_en(self):
+        """Garde-fou anti-copier-coller : aucune traduction DE/ES ne doit être
+        un simple doublon du texte FR ou EN (signe d'un oubli de traduction)."""
+        for item in ITEMS:
+            self.assertNotEqual(item["de"], item["fr"], item["id"])
+            self.assertNotEqual(item["de"], item["en"], item["id"])
+            self.assertNotEqual(item["es"], item["fr"], item["id"])
+            self.assertNotEqual(item["es"], item["en"], item["id"])
+
+    def test_scale_de_and_es_have_five_levels(self):
+        self.assertEqual(set(SCALE_DE.keys()), {1, 2, 3, 4, 5})
+        self.assertEqual(set(SCALE_ES.keys()), {1, 2, 3, 4, 5})
+        for scale in (SCALE_DE, SCALE_ES):
+            for label in scale.values():
+                self.assertTrue(label.strip())
+
+    def test_scales_dict_exposes_all_four_languages(self):
+        self.assertEqual(set(SCALES.keys()), {"fr", "en", "de", "es"})
+
+    def test_scoring_is_language_independent(self):
+        """Le scoring repose uniquement sur id/key — la langue d'affichage ne
+        doit jamais influencer un score calculé."""
+        answers = _answers(direct_value=5, reversed_value=1)
+        scores = compute_scores(answers)
+        for dim in DIMENSIONS:
+            self.assertEqual(scores[dim], 100.0, dim)
+        # Un item consulté en allemand ou en espagnol reste le même item côté scoring
+        self.assertEqual(ITEMS_BY_ID["E1"]["key"], 1)
+        self.assertTrue(ITEMS_BY_ID["E1"]["de"])
+        self.assertTrue(ITEMS_BY_ID["E1"]["es"])
+
+
+class QuestionnaireLanguageFlowTests(TestCase):
+    """Passation complète du questionnaire en allemand et en espagnol."""
+
+    def setUp(self):
+        from core.testing import create_org_and_user
+
+        self.org, self.user = create_org_and_user(email="rh@org.test")
+        self.person = Person.objects.create(
+            org=self.org, email="kandidat@org.test",
+            first_name="Kandi", last_name="Dat", created_by=self.user,
+        )
+
+    def _create_link(self, language):
+        return QuestionnaireLink.objects.create(
+            org=self.org, person=self.person,
+            token=secrets.token_urlsafe(32),
+            language=language,
+            sent_by=self.user,
+            expires_at=timezone.now() + timedelta(days=7),
+        )
+
+    def test_consent_page_renders_in_german(self):
+        link = self._create_link("de")
+        resp = self.client.get(reverse("survey:start", kwargs={"token": link.token}))
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.context["link"].language, "de")
+
+    def test_consent_page_renders_in_spanish(self):
+        link = self._create_link("es")
+        resp = self.client.get(reverse("survey:start", kwargs={"token": link.token}))
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.context["link"].language, "es")
+
+    def test_questions_page_shows_german_item_text_and_scale(self):
+        link = self._create_link("de")
+        ConsentRecord.objects.create(link=link, ip_address="127.0.0.1", language="de")
+        QuestionnaireSession.objects.get_or_create(link=link)
+        resp = self.client.get(reverse("survey:questions", kwargs={"token": link.token, "block": 0}))
+        self.assertEqual(resp.status_code, 200)
+        first_item_de = ITEMS_BY_ID["E1"]["de"]
+        self.assertContains(resp, first_item_de)
+        # Échelle de réponse en allemand
+        self.assertContains(resp, SCALE_DE[1])
+
+    def test_questions_page_shows_spanish_item_text_and_scale(self):
+        link = self._create_link("es")
+        ConsentRecord.objects.create(link=link, ip_address="127.0.0.1", language="es")
+        QuestionnaireSession.objects.get_or_create(link=link)
+        resp = self.client.get(reverse("survey:questions", kwargs={"token": link.token, "block": 0}))
+        self.assertEqual(resp.status_code, 200)
+        first_item_es = ITEMS_BY_ID["E1"]["es"]
+        self.assertContains(resp, first_item_es)
+        self.assertContains(resp, SCALE_ES[1])
+
+    def test_full_submission_in_german_computes_profile(self):
+        link = self._create_link("de")
+        ConsentRecord.objects.create(link=link, ip_address="127.0.0.1", language="de")
+        answers = _answers(direct_value=5, reversed_value=1)
+        QuestionnaireSession.objects.create(link=link, answers=answers)
+        resp = self.client.get(reverse("survey:submit", kwargs={"token": link.token}))
+        self.assertRedirects(resp, reverse("survey:done", kwargs={"token": link.token}))
+        profile = BigFiveProfile.objects.get(person=self.person)
+        self.assertEqual(profile.openness, 100)
+
+    def test_done_page_renders_in_spanish(self):
+        link = self._create_link("es")
+        link.status = QuestionnaireLink.Status.COMPLETED
+        link.completed_at = timezone.now()
+        link.save()
+        resp = self.client.get(reverse("survey:done", kwargs={"token": link.token}))
+        self.assertEqual(resp.status_code, 200)
+
+
+class LanguageChoicesExtendedTests(SimpleTestCase):
+    """`Language.choices` doit couvrir FR/EN/ES/DE partout où une langue de
+    questionnaire ou d'interface est proposée (item #8 roadmap V2)."""
+
+    def test_questionnaire_link_language_choices(self):
+        codes = {code for code, _ in QuestionnaireLink.Language.choices}
+        self.assertEqual(codes, {"fr", "en", "es", "de"})
+
+    def test_organization_and_user_language_choices(self):
+        from apps.accounts.models import Organization, User
+
+        self.assertEqual(
+            {code for code, _ in Organization.Language.choices}, {"fr", "en", "es", "de"}
+        )
+        self.assertEqual(
+            {code for code, _ in User.Language.choices}, {"fr", "en", "es", "de"}
+        )
+
+
+class SendFormLanguageOptionsTests(TestCase):
+    """Le formulaire d'envoi doit proposer les 4 langues (pas seulement FR/EN)."""
+
+    def setUp(self):
+        from core.testing import create_org_and_user
+
+        self.org, self.user = create_org_and_user(email="rh2@org.test")
+
+    def test_send_form_lists_all_four_languages(self):
+        self.client.force_login(self.user)
+        resp = self.client.get(reverse("survey:send"))
+        content = resp.content.decode()
+        self.assertIn('value="es"', content)
+        self.assertIn('value="de"', content)
+
+
+class UITranslationCoverageEsDeTests(SimpleTestCase):
+    """Couverture ES/DE d'un échantillon représentatif du catalogue UI —
+    complète les tests de couverture EN déjà existants (item #8 roadmap V2)."""
+
+    def test_key_strings_translated_in_german(self):
+        with translation.override("de"):
+            self.assertEqual(translation.gettext("Tableau de bord"), "Dashboard")
+            self.assertEqual(translation.gettext("Envoyer un questionnaire"), "Fragebogen senden")
+            self.assertEqual(
+                translation.gettext("Veuillez répondre à toutes les questions avant de continuer."),
+                "Bitte beantworten Sie alle Fragen, bevor Sie fortfahren.",
+            )
+            self.assertEqual(translation.gettext("Politique de confidentialité"), "Datenschutzrichtlinie")
+
+    def test_key_strings_translated_in_spanish(self):
+        with translation.override("es"):
+            self.assertEqual(translation.gettext("Tableau de bord"), "Panel de control")
+            self.assertEqual(translation.gettext("Envoyer un questionnaire"), "Enviar un cuestionario")
+            self.assertEqual(
+                translation.gettext("Veuillez répondre à toutes les questions avant de continuer."),
+                "Responda a todas las preguntas antes de continuar.",
+            )
+            self.assertEqual(translation.gettext("Politique de confidentialité"), "Política de privacidad")
+
+    def test_plural_forms_translated_in_german_and_spanish(self):
+        with translation.override("de"):
+            self.assertEqual(
+                translation.ngettext(
+                    "%(n)s personne", "%(n)s personnes", 1
+                ) % {"n": 1},
+                "1 Person",
+            )
+            self.assertEqual(
+                translation.ngettext(
+                    "%(n)s personne", "%(n)s personnes", 3
+                ) % {"n": 3},
+                "3 Personen",
+            )
+        with translation.override("es"):
+            self.assertEqual(
+                translation.ngettext(
+                    "%(n)s personne", "%(n)s personnes", 1
+                ) % {"n": 1},
+                "1 persona",
+            )
+            self.assertEqual(
+                translation.ngettext(
+                    "%(n)s personne", "%(n)s personnes", 3
+                ) % {"n": 3},
+                "3 personas",
+            )

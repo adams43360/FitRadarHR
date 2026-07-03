@@ -16,6 +16,8 @@ class QuestionnaireLink(models.Model):
     class Language(models.TextChoices):
         FR = "fr", "Français"
         EN = "en", "English"
+        ES = "es", "Español"
+        DE = "de", "Deutsch"
 
     class Version(models.TextChoices):
         V50 = "50", _("50 items")

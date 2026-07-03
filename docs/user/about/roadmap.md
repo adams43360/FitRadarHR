@@ -2,7 +2,8 @@
 
 La V1 de FitRadarHR est complète (epics E1–E8 livrés). Cette page présente les
 candidats à la **V2**, priorisés avec la méthode **RICE** — en toute transparence,
-comme le reste du projet.
+comme le reste du projet. Les items 1 à 8 sont déjà livrés ; seul l'item 9 reste
+un candidat.
 
 ## Comment lire le score RICE
 
@@ -15,17 +16,17 @@ comme le reste du projet.
 
 ## Priorisation V2
 
-| # | Fonctionnalité | Reach | Impact | Conf. | Effort | Score RICE |
-|---|---|---|---|---|---|---|
-| 1 | Relances automatiques de questionnaire | 8 | 2 | 80 % | 1 | **12.8** |
-| 2 | Invitation de managers dans l'org | 7 | 2 | 80 % | 2 | **5.6** |
-| 3 | Comparaison de candidats sur un poste | 6 | 2 | 80 % | 2 | **4.8** |
-| 4 | Import CSV des personnes | 6 | 1 | 100 % | 1.5 | **4.0** |
-| 5 | Re-passation & suivi longitudinal | 5 | 2 | 50 % | 2 | **2.5** |
-| 6 | Cohortes de rétention dans Analytics | 4 | 1 | 80 % | 1.5 | **2.1** |
-| 7 | SSO Keycloak / OIDC | 3 | 1 | 80 % | 3 | **0.8** |
-| 8 | Traductions ES / DE | 2 | 1 | 80 % | 2 | **0.8** |
-| 9 | API publique (lecture seule) | 2 | 1 | 50 % | 3 | **0.3** |
+| # | Fonctionnalité | Reach | Impact | Conf. | Effort | Score RICE | Statut |
+|---|---|---|---|---|---|---|---|
+| 1 | Relances automatiques de questionnaire | 8 | 2 | 80 % | 1 | **12.8** | ✅ Livré |
+| 2 | Invitation de managers dans l'org | 7 | 2 | 80 % | 2 | **5.6** | ✅ Livré |
+| 3 | Comparaison de candidats sur un poste | 6 | 2 | 80 % | 2 | **4.8** | ✅ Livré |
+| 4 | Import CSV des personnes | 6 | 1 | 100 % | 1.5 | **4.0** | ✅ Livré |
+| 5 | Re-passation & suivi longitudinal | 5 | 2 | 50 % | 2 | **2.5** | ✅ Livré |
+| 6 | Cohortes de rétention dans Analytics | 4 | 1 | 80 % | 1.5 | **2.1** | ✅ Livré |
+| 7 | SSO Keycloak / OIDC | 3 | 1 | 80 % | 3 | **0.8** | ✅ Livré |
+| 8 | Traductions ES / DE | 2 | 1 | 80 % | 2 | **0.8** | ✅ Livré |
+| 9 | API publique (lecture seule) | 2 | 1 | 50 % | 3 | **0.3** | ✅ Livré |
 
 ## Les arguments, item par item
 
@@ -52,12 +53,21 @@ en discovery.
 **6. Cohortes de rétention** — approfondit la page Analytics pour les orgs matures.
 Réservé aux orgs déjà activées, donc reach plus faible.
 
-**7. SSO / OIDC** — nécessaire pour les organisations plus grandes, mais reach
-faible sur la cible actuelle (PME/scale-ups) et effort élevé. Décision assumée
-depuis le cadrage : reporté tant que la demande n'est pas avérée.
+**7. SSO / OIDC** — nécessaire pour les organisations plus grandes ; reach plus
+faible sur la cible actuelle (PME/scale-ups) mais un IdP par organisation, additif
+au mot de passe (jamais un remplacement), rend le coût de maintenance acceptable.
+Livré, non encore validé avec un IdP réel en production.
 
-**8–9. Traductions & API** — valeur réelle mais pas différenciante aujourd'hui.
-L'API attendra des cas d'usage concrets d'intégration (ATS/SIRH).
+**8. Traductions ES/DE** — parité complète, questionnaire IPIP inclus, pas
+seulement l'interface. Le questionnaire allemand est intégralement sourcé sur la
+traduction IPIP officielle (100/100 items) ; l'espagnol l'est pour la version
+courte (50 items) mais la version longue introduit une zone traduite en interne,
+faute de source officielle publiée — voir `docs/user/about/big-five.md`.
+
+**9. API publique (lecture seule)** — valeur réelle mais pas différenciante
+aujourd'hui. Livrée avec un périmètre volontairement restreint : postes/équipes,
+personnes + statut questionnaire, résultats de fit — jamais les profils Big Five
+bruts (minimisation RGPD). Authentification par clé API par organisation.
 
 ## Ce qui ne sera jamais fait
 

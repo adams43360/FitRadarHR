@@ -4,6 +4,78 @@ Toutes les évolutions notables de FitRadarHR sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) —
 le projet n'étant pas encore versionné, les entrées sont datées.
 
+## 2026-07-03 (9)
+
+### Ajouté
+- **API publique en lecture seule** (item #9 roadmap V2, RICE 0.3, US-E1-06) :
+  nouvelle app `apps.api`, montée hors `i18n_patterns` sous `/api/v1/`.
+  - Modèle `ApiKey` : une organisation génère une clé (préfixe `frk_`), affichée
+    en clair **une seule fois** ; seule son empreinte SHA-256 (`key_hash`) est
+    stockée. Révocation par horodatage (`revoked_at`), jamais de suppression
+    physique — cohérent avec l'`AuditLog` immuable du reste du produit.
+  - Authentification par en-tête `Authorization: Api-Key <clé>` (décorateurs
+    `apps/api/auth.py::api_key_required`/`api_get_endpoint`), scoping strict
+    via `request.api_org` — mêmes garanties multi-tenant que le reste de
+    l'application (`.for_org()`).
+  - 8 endpoints JSON strictement GET : postes, équipes, personnes (+ statut
+    questionnaire), résultats de fit Poste/Équipe. **Les scores Big Five bruts
+    ne sont jamais exposés** — seul un indicateur booléen "profil renseigné" et
+    les résultats de fit dérivés le sont, par choix produit RGPD (minimisation
+    des données transmises à des tiers), confirmé explicitement en amont du
+    développement.
+  - Pagination maison (`Paginator`, `page`/`page_size`, max 100/page) — pas de
+    dépendance ajoutée à Django REST Framework, cohérent avec le style du
+    projet.
+  - Écran de gestion `/settings/api/` (RH only) : génération, liste (préfixe,
+    dates, statut), révocation.
+  - 32 nouveaux tests : authentification (succès/échec/clé révoquée),
+    isolation cross-tenant, pagination, contenu des 8 endpoints (avec garde-fou
+    explicite contre toute fuite de score Big Five brut), accès RH only de
+    l'écran de gestion.
+  - Documentation : `docs/user/getting-started/api.md` (authentification,
+    référence des endpoints, pagination, exemples `curl`), US-E1-06 dans
+    `docs/product/user-stories.md`, entrées `docs/technical/stack.md` et
+    `docs/technical/schema.md`.
+
+## 2026-07-03 (8)
+
+### Ajouté
+- **Traductions ES/DE — parité complète, questionnaire inclus** (item #8
+  roadmap V2, RICE 0.8, US-E7-03) : FitRadarHR est maintenant disponible en
+  français, anglais, espagnol et allemand — interface **et** questionnaire
+  Big Five IPIP-100, pas seulement la chrome UI.
+  - Questionnaire IPIP-100 (`apps/survey/ipip_data.py`) : traduction allemande
+    sourcée sur la traduction officielle IPIP 100 items (Streib & Wiedmaier,
+    2001, Universität Bielefeld) — couverture 100/100. Traduction espagnole
+    sourcée sur la traduction officielle IPIP 50 items (de Oliveira, Cherubini
+    & Oliver, 2013, ACM TOCHI) pour les 50 premiers items ; les 50 items
+    d'extension (51–100) et les 4 items sans équivalent Goldberg (C5, C10, O4,
+    O5, déjà des adaptations FR/EN maison) sont traduits en interne — limite
+    documentée avec disclaimer utilisateur (`docs/user/about/big-five.md`) et
+    méthodologie complète (`docs/product/translations-ipip.md`).
+  - Échelles de réponse `SCALE_DE`/`SCALE_ES` (Likert 1-5), dict `SCALES`
+    indexé par code langue.
+  - Contenus de rapport traduits : libellés de dimension
+    (`apps/fit/engine.py::DIMENSION_LABELS`), infobulles OCEAN et « points à
+    approfondir » Fit Poste/Fit Équipe (`apps/reports/insights.py`), templates
+    PDF (`templates/reports/pdf/*.html`, convertis du branchement `{% if lang
+    == "fr" %}` en `{% trans %}`).
+  - `QuestionnaireLink.Language`, `Organization.Language`, `User.Language`
+    étendus à ES/DE ; `settings.LANGUAGES` ; sélecteur de langue de la navbar
+    et filtre `strip_lang_prefix` généralisés à N langues (au lieu d'un
+    traitement spécifique à `/en/`).
+  - Catalogue UI complet traduit : `locale/es/LC_MESSAGES/django.po`(.mo) et
+    `locale/de/LC_MESSAGES/django.po`(.mo), 478 chaînes chacun (formes
+    plurielles incluses).
+  - Templates de passation (`consent.html`, `questions.html`, `done.html`,
+    emails d'invitation/relance/confirmation) migrés du branchement bilingue
+    FR/EN codé en dur vers `{% trans %}`/`{% blocktrans %}`, langue activée via
+    `translation.override(link.language)`.
+- 24 nouveaux tests (couverture traductions IPIP — garde-fou anti-oubli DE/ES
+  identiques au FR/EN —, scoring indépendant de la langue, rendu des pages de
+  passation en DE/ES, contenus de rapport DE/ES, couverture du catalogue UI,
+  extension des `Language.choices`) — 193 tests au total.
+
 ## 2026-07-03 (7)
 
 ### Modifié

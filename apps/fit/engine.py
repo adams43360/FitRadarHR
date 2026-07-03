@@ -17,11 +17,11 @@ DIMENSIONS = ["openness", "conscientiousness", "extraversion", "agreeableness", 
 
 
 DIMENSION_LABELS = {
-    "openness":          {"fr": "Ouverture",         "en": "Openness"},
-    "conscientiousness": {"fr": "Conscienciosité",   "en": "Conscientiousness"},
-    "extraversion":      {"fr": "Extraversion",      "en": "Extraversion"},
-    "agreeableness":     {"fr": "Agréabilité",       "en": "Agreeableness"},
-    "neuroticism":       {"fr": "Neuroticisme",      "en": "Neuroticism"},
+    "openness":          {"fr": "Ouverture",         "en": "Openness",          "de": "Offenheit",           "es": "Apertura"},
+    "conscientiousness": {"fr": "Conscienciosité",   "en": "Conscientiousness", "de": "Gewissenhaftigkeit",  "es": "Responsabilidad"},
+    "extraversion":      {"fr": "Extraversion",      "en": "Extraversion",      "de": "Extraversion",        "es": "Extraversión"},
+    "agreeableness":     {"fr": "Agréabilité",       "en": "Agreeableness",     "de": "Verträglichkeit",     "es": "Amabilidad"},
+    "neuroticism":       {"fr": "Neuroticisme",      "en": "Neuroticism",       "de": "Neurotizismus",       "es": "Neuroticismo"},
 }
 
 # Seuils pour les signaux de complémentarité (fit équipe)

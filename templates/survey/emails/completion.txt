@@ -1,17 +1,8 @@
-{% if lang == "en" %}Hello {{ sent_by.full_name|default:sent_by.email }},
+{% load i18n %}{% blocktrans with name=sent_by.full_name|default:sent_by.email %}Bonjour {{ name }},{% endblocktrans %}
 
-The questionnaire of {{ person.full_name }} ({{ person.email }}) has just been completed.
+{% blocktrans with full_name=person.full_name email=person.email %}Le questionnaire de {{ full_name }} ({{ email }}) vient d'être complété.{% endblocktrans %}
 
-Their Big Five profile is now available in FitRadarHR.
-
----
-FitRadarHR — automated notification
-{% else %}Bonjour {{ sent_by.full_name|default:sent_by.email }},
-
-Le questionnaire de {{ person.full_name }} ({{ person.email }}) vient d'être complété.
-
-Son profil Big Five est maintenant disponible dans FitRadarHR.
+{% trans "Son profil Big Five est maintenant disponible dans FitRadarHR." %}
 
 ---
-FitRadarHR — notification automatique
-{% endif %}
+{% trans "FitRadarHR — notification automatique" %}

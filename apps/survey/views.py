@@ -18,7 +18,7 @@ from apps.fit.models import BigFiveProfile, BigFiveProfileHistory
 from apps.teams.models import Person
 
 from .forms import SendLinkForm
-from .ipip_data import ITEMS, SCALE_EN, SCALE_FR
+from .ipip_data import ITEMS, SCALES, SCALE_EN
 from .models import ConsentRecord, QuestionnaireLink, QuestionnaireSession
 from .scoring import ALGORITHM_VERSION, compute_scores, validate_answers
 from apps.fit.engine import compute_all_fits_for_person
@@ -188,10 +188,12 @@ def questionnaire_start(request, token):
         link.save()
         return redirect("survey:questions", token=token, block=0)
 
-    return render(request, "survey/consent.html", {
-        "link": link,
-        "person": link.person,
-    })
+    with translation.override(link.language):
+        return render(request, "survey/consent.html", {
+            "link": link,
+            "person": link.person,
+            "duration_minutes": 20 if link.questionnaire_version == "100" else 10,
+        })
 
 
 def questionnaire_questions(request, token, block):
@@ -212,11 +214,12 @@ def questionnaire_questions(request, token, block):
     if block < 0 or block >= total_blocks:
         return redirect("survey:questions", token=token, block=0)
 
+    lang = link.language if link.language in SCALES else "en"
     block_items = [
-        {**item, "current_answer": session.answers.get(item["id"])}
+        {**item, "text": item.get(lang, item["en"]), "current_answer": session.answers.get(item["id"])}
         for item in items_for_version[block * BLOCK_SIZE: (block + 1) * BLOCK_SIZE]
     ]
-    scale = SCALE_FR if link.language == "fr" else SCALE_EN
+    scale = SCALES.get(lang, SCALE_EN)
 
     if request.method == "POST":
         for item in block_items:
@@ -228,16 +231,17 @@ def questionnaire_questions(request, token, block):
 
         missing = [i["id"] for i in block_items if i["id"] not in session.answers]
         if missing:
-            error_msg = _("Veuillez répondre à toutes les questions avant de continuer.")
-            return render(request, "survey/questions.html", {
-                "link": link,
-                "items": block_items,
-                "scale": scale,
-                "block": block,
-                "total_blocks": total_blocks,
-                "answers": session.answers,
-                "error": error_msg,
-            })
+            with translation.override(link.language):
+                error_msg = _("Veuillez répondre à toutes les questions avant de continuer.")
+                return render(request, "survey/questions.html", {
+                    "link": link,
+                    "items": block_items,
+                    "scale": scale,
+                    "block": block,
+                    "total_blocks": total_blocks,
+                    "answers": session.answers,
+                    "error": error_msg,
+                })
 
         next_block = block + 1
         if next_block < total_blocks:
@@ -245,15 +249,16 @@ def questionnaire_questions(request, token, block):
         else:
             return redirect("survey:submit", token=token)
 
-    return render(request, "survey/questions.html", {
-        "link": link,
-        "items": block_items,
-        "scale": scale,
-        "block": block,
-        "total_blocks": total_blocks,
-        "answers": session.answers,
-        "error": None,
-    })
+    with translation.override(link.language):
+        return render(request, "survey/questions.html", {
+            "link": link,
+            "items": block_items,
+            "scale": scale,
+            "block": block,
+            "total_blocks": total_blocks,
+            "answers": session.answers,
+            "error": None,
+        })
 
 
 def questionnaire_submit(request, token):
@@ -317,7 +322,8 @@ def questionnaire_done(request, token):
     except QuestionnaireLink.DoesNotExist:
         return render(request, "survey/expired.html", {"token": token})
 
-    return render(request, "survey/done.html", {"link": link, "person": link.person})
+    with translation.override(link.language):
+        return render(request, "survey/done.html", {"link": link, "person": link.person})
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -340,6 +346,7 @@ def _send_invitation_email(link, request):
             "person": link.person,
             "survey_url": survey_url,
             "validity_days": LINK_VALIDITY_DAYS,
+            "duration_minutes": 20 if link.questionnaire_version == "100" else 10,
         })
     send_mail(
         subject=subject,
@@ -374,6 +381,7 @@ def send_reminder_email(link):
             "person": link.person,
             "survey_url": survey_url,
             "days_left": days_left,
+            "duration_minutes": 20 if link.questionnaire_version == "100" else 10,
         })
     send_mail(
         subject=subject,

@@ -97,6 +97,23 @@
 
 ---
 
+### US-E1-06 — API publique en lecture seule (clé API par organisation)
+**En tant que** RH (ADMIN), **je veux** générer une clé API pour mon organisation, **afin de** connecter un outil tiers (ATS, SIRH) à FitRadarHR en lecture seule, sans intervention manuelle.
+
+**Critères d'acceptation :**
+- [ ] Un RH accède à un écran `/settings/api/` listant les clés API de son organisation (nom, préfixe, date de création, dernière utilisation, statut actif/révoquée)
+- [ ] La génération d'une clé affiche sa valeur en clair **une seule fois** ; elle n'est plus jamais ré-affichable ensuite (seul le préfixe non secret reste visible dans la liste)
+- [ ] La révocation d'une clé est immédiate et définitive (pas de suppression physique de l'enregistrement, pour garder une trace d'audit) ; une clé révoquée est immédiatement rejetée par l'API
+- [ ] Chaque clé est scopée à **une seule organisation** — isolation multi-tenant stricte, aucune fuite cross-tenant possible via l'API
+- [ ] L'authentification se fait via l'en-tête `Authorization: Api-Key <clé>` ; toute requête sans en-tête valide reçoit une erreur 401 explicite
+- [ ] L'API est strictement **en lecture seule** (GET uniquement) — aucun endpoint ne permet de créer, modifier ou supprimer une donnée
+- [ ] Le périmètre exposé couvre : postes et équipes (métadonnées), personnes et statut de leur questionnaire, résultats de fit (poste et équipe)
+- [ ] **Les scores Big Five bruts (O/C/E/A/N d'un `BigFiveProfile`) ne sont jamais exposés par l'API**, sous quelque forme que ce soit — seul un indicateur booléen "profil renseigné" et les résultats de fit dérivés sont disponibles, par choix produit RGPD (minimisation des données transmises à des tiers)
+- [ ] Les listes sont paginées (page/page_size), avec une taille de page maximale pour éviter les exports de masse non maîtrisés
+- [ ] L'écran de gestion des clés est réservé aux RH (403 pour un Manager, redirection login pour un anonyme)
+
+---
+
 ### US-E1-04 — Gestion des rôles
 **En tant que** RH (ADMIN), **je veux** modifier le rôle d'un utilisateur ou le désactiver, **afin de** maintenir un contrôle sur les accès.
 
@@ -379,13 +396,13 @@
 ## E7 — Internationalisation
 
 ### US-E7-01 — Choix de la langue de l'interface
-**En tant qu'** utilisateur connecté (RH ou Manager), **je veux** choisir la langue de l'interface (FR ou EN), **afin d'** utiliser le produit dans ma langue.
+**En tant qu'** utilisateur connecté (RH ou Manager), **je veux** choisir la langue de l'interface (FR, EN, ES ou DE), **afin d'** utiliser le produit dans ma langue.
 
 **Critères d'acceptation :**
-- [ ] La langue est sélectionnable dans les préférences du compte
-- [ ] Le choix est persistant (mémorisé entre les sessions)
-- [ ] Toutes les pages et tous les composants sont traduits (pas de texte en dur dans le code)
-- [ ] Les dates, nombres et formats régionaux s'adaptent à la langue choisie
+- [x] La langue est sélectionnable dans le sélecteur de la navbar (FR/EN/ES/DE)
+- [x] Le choix est persistant (cookie de langue Django, mémorisé entre les sessions)
+- [x] Toutes les pages et tous les composants sont traduits (pas de texte en dur dans le code — `{% trans %}`/`gettext_lazy` partout, `locale/{en,es,de}/LC_MESSAGES/django.po`)
+- [ ] Les dates, nombres et formats régionaux s'adaptent à la langue choisie (non fait — dates toujours au format `d/m/Y`)
 
 ---
 
@@ -393,9 +410,36 @@
 **En tant que** RH, **je veux** que les emails et le questionnaire envoyés à un candidat soient dans sa langue, **afin d'** offrir une expérience adaptée.
 
 **Critères d'acceptation :**
-- [ ] Lors de l'envoi du lien questionnaire, le RH peut choisir la langue de l'email (FR ou EN)
-- [ ] Le candidat peut modifier la langue au moment d'ouvrir le questionnaire (indépendamment de la langue de l'email)
-- [ ] Les emails système (invitation, notification de complétion) respectent la langue de l'utilisateur destinataire
+- [x] Lors de l'envoi du lien questionnaire, le RH peut choisir la langue de l'email parmi FR/EN/ES/DE
+- [x] Le candidat peut modifier la langue au moment d'ouvrir le questionnaire (indépendamment de la langue de l'email)
+- [x] Les emails système (invitation, relance, notification de complétion) respectent la langue de l'utilisateur destinataire
+
+---
+
+### US-E7-03 — Parité complète ES/DE, questionnaire IPIP inclus
+**En tant que** RH ou Candidat, **je veux** pouvoir utiliser FitRadarHR — interface *et* questionnaire Big Five — en espagnol et en allemand, **afin de** couvrir des organisations et candidats hispanophones et germanophones sans dégrader la rigueur scientifique de l'instrument.
+
+**Contexte** : contrairement à une simple traduction d'interface, le questionnaire IPIP est
+l'instrument qui *qualifie* le profil (règle non négociable #1 du cadrage) — sa traduction devait
+donc être sourcée sur des traductions IPIP officielles plutôt que traduite librement.
+
+**Critères d'acceptation :**
+- [x] Les 100 items IPIP ont une traduction allemande sourcée sur la traduction officielle
+  IPIP 100 items (Streib & Wiedmaier, 2001, Universität Bielefeld) — couverture 100/100
+- [x] Les 100 items IPIP ont une traduction espagnole : sourcée sur la traduction officielle
+  IPIP 50 items (de Oliveira et al., 2013, ACM TOCHI) pour les 50 premiers items officiels,
+  complétée par une traduction maison pour les 50 items d'extension (pas de source officielle
+  publiée à ce jour) — limite documentée dans `docs/user/about/big-five.md` et
+  `docs/product/translations-ipip.md`
+- [x] Les échelles de réponse (Likert 1-5) sont traduites en DE/ES (`SCALE_DE`/`SCALE_ES`)
+- [x] Les contenus de rapport (libellés de dimension, infobulles, "points à approfondir")
+  sont disponibles en DE/ES, pas seulement l'UI de navigation
+- [x] `QuestionnaireLink.Language`, `Organization.Language` et `User.Language` proposent
+  les 4 langues
+- [x] Le catalogue UI complet (478 chaînes) est traduit en DE et en ES
+- [x] Tests : couverture des traductions IPIP (aucun item DE/ES identique au FR/EN — garde-fou
+  anti-oubli), scoring indépendant de la langue, rendu des pages de passation en DE/ES,
+  couverture du catalogue UI
 
 ---
 
@@ -409,7 +453,7 @@
 - [x] Le consentement est recueilli par une case à cocher active (pas pré-cochée)
 - [x] Le consentement est horodaté et conservé (preuve en cas de demande RGPD)
 - [x] Sans consentement, le questionnaire ne peut pas être démarré
-- [x] La page de consentement est disponible en FR et EN
+- [x] La page de consentement est disponible en FR, EN, ES et DE
 
 ---
 

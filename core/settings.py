@@ -57,6 +57,7 @@ LOCAL_APPS = [
     "apps.survey",
     "apps.fit",
     "apps.reports",
+    "apps.api",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -156,6 +157,8 @@ LANGUAGE_CODE = "fr"
 LANGUAGES = [
     ("fr", "Français"),
     ("en", "English"),
+    ("es", "Español"),
+    ("de", "Deutsch"),
 ]
 
 TIME_ZONE = "Europe/Paris"

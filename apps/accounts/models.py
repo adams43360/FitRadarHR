@@ -20,6 +20,8 @@ class Organization(models.Model):
     class Language(models.TextChoices):
         FR = "fr", "Français"
         EN = "en", "English"
+        ES = "es", "Español"
+        DE = "de", "Deutsch"
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(_("nom"), max_length=255)
@@ -75,6 +77,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Language(models.TextChoices):
         FR = "fr", "Français"
         EN = "en", "English"
+        ES = "es", "Español"
+        DE = "de", "Deutsch"
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     org = models.ForeignKey(

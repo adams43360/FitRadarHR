@@ -1,0 +1,2308 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FitRadarHR 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-01 11:52+0200\n"
+"PO-Revision-Date: 2026-07-01 12:00+0200\n"
+"Last-Translator: FitRadarHR <contact@fitradarhr.com>\n"
+"Language-Team: English\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: apps/accounts/models.py:11
+msgid "Organisation"
+msgstr "Organización"
+
+#: apps/accounts/models.py:12 templates/accounts/signup_choice.html:32
+msgid "Usage personnel"
+msgstr "Uso personal"
+
+#: apps/accounts/models.py:15
+msgid "50 items (~10 min)"
+msgstr "50 ítems (~10 min)"
+
+#: apps/accounts/models.py:16
+msgid "100 items (~20 min)"
+msgstr "100 ítems (~20 min)"
+
+#: apps/accounts/models.py:23 apps/accounts/models.py:80
+#: apps/teams/models.py:10 apps/teams/models.py:34
+msgid "nom"
+msgstr "nombre"
+
+#: apps/accounts/models.py:25
+msgid "type de compte"
+msgstr "tipo de cuenta"
+
+#: apps/accounts/models.py:28
+msgid "version du questionnaire"
+msgstr "versión del cuestionario"
+
+#: apps/accounts/models.py:32
+msgid "langue par défaut"
+msgstr "idioma predeterminado"
+
+#: apps/accounts/models.py:34 apps/accounts/models.py:85
+msgid "actif"
+msgstr "activo"
+
+#: apps/accounts/models.py:35 apps/accounts/models.py:91
+msgid "créé le"
+msgstr "creado el"
+
+#: apps/accounts/models.py:38 apps/accounts/models.py:76
+#: apps/positions/models.py:13
+msgid "organisation"
+msgstr "organización"
+
+#: apps/accounts/models.py:39
+msgid "organisations"
+msgstr "organizaciones"
+
+#: apps/accounts/models.py:48
+msgid "L'email est obligatoire"
+msgstr "El correo electrónico es obligatorio"
+
+#: apps/accounts/models.py:65
+msgid "Responsable RH"
+msgstr "Responsable de RR. HH."
+
+#: apps/accounts/models.py:66 templates/teams/detail.html:19
+#: templates/teams/list.html:38
+msgid "Manager"
+msgstr "Manager"
+
+#: apps/accounts/models.py:67
+msgid "Utilisateur solo"
+msgstr "Usuario individual"
+
+#: apps/accounts/models.py:78 apps/teams/models.py:32
+msgid "email"
+msgstr "correo electrónico"
+
+#: apps/accounts/models.py:79 apps/teams/models.py:33
+msgid "prénom"
+msgstr "nombre"
+
+#: apps/accounts/models.py:81
+msgid "rôle"
+msgstr "rol"
+
+#: apps/accounts/models.py:83
+msgid "langue"
+msgstr "idioma"
+
+#: apps/accounts/models.py:86
+msgid "staff"
+msgstr "staff"
+
+#: apps/accounts/models.py:89
+msgid "invité par"
+msgstr "invitado por"
+
+#: apps/accounts/models.py:92
+msgid "dernière connexion"
+msgstr "última conexión"
+
+#: apps/accounts/models.py:100
+msgid "utilisateur"
+msgstr "usuario"
+
+#: apps/accounts/models.py:101
+msgid "utilisateurs"
+msgstr "usuarios"
+
+#: apps/accounts/views.py:12
+msgid "Nom de l'organisation"
+msgstr "Nombre de la organización"
+
+#: apps/accounts/views.py:13 apps/accounts/views.py:33
+#: templates/teams/person_create.html:28
+msgid "Prénom"
+msgstr "Nombre"
+
+#: apps/accounts/views.py:14 apps/accounts/views.py:34
+#: templates/teams/person_create.html:35
+msgid "Nom"
+msgstr "Apellido"
+
+#: apps/accounts/views.py:15
+msgid "Email professionnel"
+msgstr "Correo electrónico profesional"
+
+#: apps/accounts/views.py:16 apps/accounts/views.py:36
+#: templates/accounts/login.html:25
+msgid "Mot de passe"
+msgstr "Contraseña"
+
+#: apps/accounts/views.py:17 apps/accounts/views.py:37
+msgid "Confirmer le mot de passe"
+msgstr "Confirmar contraseña"
+
+#: apps/accounts/views.py:22 apps/accounts/views.py:42
+msgid "Les mots de passe ne correspondent pas."
+msgstr "Las contraseñas no coinciden."
+
+#: apps/accounts/views.py:28 apps/accounts/views.py:48
+msgid "Cet email est déjà utilisé."
+msgstr "Este correo electrónico ya está en uso."
+
+#: apps/accounts/views.py:35 templates/accounts/login.html:20
+#: templates/teams/person_create.html:44
+msgid "Email"
+msgstr "Correo electrónico"
+
+#: apps/fit/models.py:17
+msgid "ouverture"
+msgstr "apertura"
+
+#: apps/fit/models.py:18
+msgid "conscienciosité"
+msgstr "responsabilidad"
+
+#: apps/fit/models.py:19
+msgid "extraversion"
+msgstr "extraversión"
+
+#: apps/fit/models.py:20
+msgid "agréabilité"
+msgstr "amabilidad"
+
+#: apps/fit/models.py:21
+msgid "neuroticisme"
+msgstr "neuroticismo"
+
+#: apps/fit/models.py:27
+msgid "profil Big Five"
+msgstr "perfil Big Five"
+
+#: apps/fit/models.py:55 apps/fit/models.py:95
+msgid "fit ouverture"
+msgstr "fit apertura"
+
+#: apps/fit/models.py:56 apps/fit/models.py:96
+msgid "fit conscienciosité"
+msgstr "fit responsabilidad"
+
+#: apps/fit/models.py:57 apps/fit/models.py:97
+msgid "fit extraversion"
+msgstr "fit extraversión"
+
+#: apps/fit/models.py:58 apps/fit/models.py:98
+msgid "fit agréabilité"
+msgstr "fit amabilidad"
+
+#: apps/fit/models.py:59 apps/fit/models.py:99
+msgid "fit neuroticisme"
+msgstr "fit neuroticismo"
+
+#: apps/fit/models.py:60 apps/fit/models.py:100
+msgid "fit global"
+msgstr "fit global"
+
+#: apps/fit/models.py:66
+msgid "résultat fit poste"
+msgstr "resultado fit puesto"
+
+#: apps/fit/models.py:67
+msgid "résultats fit poste"
+msgstr "resultados fit puesto"
+
+#: apps/fit/models.py:104
+msgid "complémentarité"
+msgstr "complementariedad"
+
+#: apps/fit/models.py:111
+msgid "résultat fit équipe"
+msgstr "resultado fit equipo"
+
+#: apps/fit/models.py:112
+msgid "résultats fit équipe"
+msgstr "resultados fit equipo"
+
+#: apps/positions/forms.py:13
+msgid "Ex. : Chargé(e) de recrutement"
+msgstr "Ej.: Responsable de selección"
+
+#: apps/positions/forms.py:22
+msgid "Contexte, missions principales..."
+msgstr "Contexto, principales funciones..."
+
+#: apps/positions/forms.py:31
+msgid "Ex. : Ressources humaines"
+msgstr "Ej.: Recursos Humanos"
+
+#: apps/positions/forms.py:38
+msgid "Ouverture à l'expérience (O)"
+msgstr "Apertura a la experiencia (O)"
+
+#: apps/positions/forms.py:39
+msgid ""
+"Curiosité intellectuelle, créativité, goût pour la nouveauté et "
+"l'innovation."
+msgstr ""
+"Curiosidad intelectual, creatividad y gusto por la novedad y la innovación."
+
+#: apps/positions/forms.py:42
+msgid "Conscience / Rigueur (C)"
+msgstr "Responsabilidad (C)"
+
+#: apps/positions/forms.py:43
+msgid "Organisation, fiabilité, sens des responsabilités et autodiscipline."
+msgstr ""
+"Organización, fiabilidad, sentido de la responsabilidad y autodisciplina."
+
+#: apps/positions/forms.py:46
+msgid "Extraversion (E)"
+msgstr "Extraversión (E)"
+
+#: apps/positions/forms.py:47
+msgid "Sociabilité, assertivité, énergie dans les interactions sociales."
+msgstr "Sociabilidad, asertividad, energía en las interacciones sociales."
+
+#: apps/positions/forms.py:50
+msgid "Agréabilité (A)"
+msgstr "Amabilidad (A)"
+
+#: apps/positions/forms.py:51
+msgid "Coopération, empathie, confiance et souci du collectif."
+msgstr "Cooperación, empatía, confianza y preocupación por el colectivo."
+
+#: apps/positions/forms.py:54
+msgid "Stabilité émotionnelle (N)"
+msgstr "Estabilidad emocional (N)"
+
+#: apps/positions/forms.py:55
+msgid ""
+"Calme, gestion du stress et résistance aux émotions négatives. Un score "
+"faible indique une grande stabilité."
+msgstr ""
+"Calma, gestión del estrés y resistencia a las emociones negativas. Una "
+"puntuación baja indica una gran estabilidad."
+
+#: apps/positions/forms.py:93
+msgid "Le maximum doit être supérieur ou égal au minimum."
+msgstr "El máximo debe ser mayor o igual que el mínimo."
+
+#: apps/positions/models.py:9
+msgid "Actif"
+msgstr "Activo"
+
+#: apps/positions/models.py:10
+msgid "Archivé"
+msgstr "Archivado"
+
+#: apps/positions/models.py:14
+msgid "titre (FR)"
+msgstr "título (FR)"
+
+#: apps/positions/models.py:15
+msgid "titre (EN)"
+msgstr "título (EN)"
+
+#: apps/positions/models.py:16
+msgid "description (FR)"
+msgstr "descripción (FR)"
+
+#: apps/positions/models.py:17
+msgid "description (EN)"
+msgstr "descripción (EN)"
+
+#: apps/positions/models.py:18
+msgid "département"
+msgstr "departamento"
+
+#: apps/positions/models.py:19
+msgid "statut"
+msgstr "estado"
+
+#: apps/positions/models.py:25
+msgid "poste"
+msgstr "puesto"
+
+#: apps/positions/models.py:26
+msgid "postes"
+msgstr "puestos"
+
+#: apps/positions/models.py:56
+msgid "profil de poste"
+msgstr "perfil del puesto"
+
+#: apps/positions/views.py:33
+msgid "Poste créé avec succès."
+msgstr "Puesto creado correctamente."
+
+#: apps/positions/views.py:69
+msgid "Poste mis à jour."
+msgstr "Puesto actualizado."
+
+#: apps/positions/views.py:82
+msgid "Poste archivé."
+msgstr "Puesto archivado."
+
+#: apps/positions/views.py:97
+msgid "Profil Big Five enregistré."
+msgstr "Perfil Big Five guardado."
+
+#: apps/reports/models.py:10 templates/reports/position_fit.html:4
+#: templates/reports/position_fit.html:13
+msgid "Fit Poste"
+msgstr "Fit Puesto"
+
+#: apps/reports/models.py:11 templates/reports/team_fit.html:4
+#: templates/reports/team_fit.html:13
+msgid "Fit Équipe"
+msgstr "Fit Equipo"
+
+#: apps/reports/models.py:31
+msgid "rapport de fit"
+msgstr "informe de fit"
+
+#: apps/reports/models.py:32
+msgid "rapports de fit"
+msgstr "informes de fit"
+
+#: apps/reports/models.py:52
+msgid "journal d'audit"
+msgstr "registro de auditoría"
+
+#: apps/reports/models.py:53
+msgid "journaux d'audit"
+msgstr "registros de auditoría"
+
+#: apps/survey/forms.py:8 apps/teams/forms.py:57
+msgid "Email de la personne"
+msgstr "Correo electrónico de la persona"
+
+#: apps/survey/forms.py:15
+msgid "Version du questionnaire"
+msgstr "Versión del cuestionario"
+
+#: apps/survey/forms.py:23
+msgid "Langue du questionnaire"
+msgstr "Idioma del cuestionario"
+
+#: apps/survey/models.py:10 templates/survey/dashboard.html:46
+msgid "En attente"
+msgstr "Pendiente"
+
+#: apps/survey/models.py:11 templates/survey/dashboard.html:42
+msgid "En cours"
+msgstr "En curso"
+
+#: apps/survey/models.py:12 templates/survey/dashboard.html:40
+msgid "Complété"
+msgstr "Completado"
+
+#: apps/survey/models.py:13 templates/survey/dashboard.html:44
+msgid "Expiré"
+msgstr "Caducado"
+
+#: apps/survey/models.py:20
+msgid "50 items"
+msgstr "50 ítems"
+
+#: apps/survey/models.py:21
+msgid "100 items"
+msgstr "100 ítems"
+
+#: apps/survey/models.py:36
+msgid "lien questionnaire"
+msgstr "enlace del cuestionario"
+
+#: apps/survey/models.py:37
+msgid "liens questionnaire"
+msgstr "enlaces del cuestionario"
+
+#: apps/survey/models.py:54
+msgid "consentement"
+msgstr "consentimiento"
+
+#: apps/survey/models.py:73
+msgid "session questionnaire"
+msgstr "sesión del cuestionario"
+
+#: apps/survey/views.py:61
+msgid ""
+"Aucune personne trouvée avec cet email dans votre organisation. Créez-la "
+"d'abord dans la liste des Personnes."
+msgstr ""
+"No se encontró ninguna persona con este correo electrónico en su "
+"organización. Créela primero en la lista de Personas."
+
+#: apps/survey/views.py:76
+#, python-format
+msgid "Lien envoyé à %(email)s."
+msgstr "Enlace enviado a %(email)s."
+
+#: apps/survey/views.py:86
+msgid "Ce questionnaire est déjà complété."
+msgstr "Este cuestionario ya se ha completado."
+
+#: apps/survey/views.py:92
+#, python-format
+msgid "Lien renvoyé à %(email)s."
+msgstr "Enlace reenviado a %(email)s."
+
+#: apps/survey/views.py:177
+msgid "Veuillez répondre à toutes les questions avant de continuer."
+msgstr "Responda a todas las preguntas antes de continuar."
+
+#: apps/teams/forms.py:13
+msgid "Ex. : Équipe produit, Sales EMEA…"
+msgstr "Ej.: Equipo de producto, Ventas EMEA…"
+
+#: apps/teams/forms.py:18
+msgid "Contexte, missions de l'équipe… (optionnel)"
+msgstr "Contexto, misión del equipo… (opcional)"
+
+#: apps/teams/forms.py:31
+msgid "— Aucun manager assigné —"
+msgstr "— Ningún manager asignado —"
+
+#: apps/teams/forms.py:60
+msgid "prenom.nom@exemple.com"
+msgstr "nombre.apellido@ejemplo.com"
+
+#: apps/teams/models.py:11
+msgid "description"
+msgstr "descripción"
+
+#: apps/teams/models.py:16
+msgid "équipe"
+msgstr "equipo"
+
+#: apps/teams/models.py:17
+msgid "équipes"
+msgstr "equipos"
+
+#: apps/teams/models.py:27 templates/teams/detail.html:48
+#: templates/teams/person_list.html:26
+msgid "Candidat"
+msgstr "Candidato"
+
+#: apps/teams/models.py:28 templates/teams/detail.html:48
+#: templates/teams/person_list.html:26
+msgid "Collaborateur"
+msgstr "Colaborador"
+
+#: apps/teams/models.py:40
+msgid "personne"
+msgstr "persona"
+
+#: apps/teams/models.py:41
+msgid "personnes"
+msgstr "personas"
+
+#: apps/teams/models.py:68
+msgid "appartenance équipe"
+msgstr "pertenencia al equipo"
+
+#: apps/teams/views.py:31
+msgid "Équipe créée avec succès."
+msgstr "Equipo creado correctamente."
+
+#: apps/teams/views.py:65
+msgid "Équipe mise à jour."
+msgstr "Equipo actualizado."
+
+#: apps/teams/views.py:85
+msgid ""
+"Aucune personne avec cet email dans votre organisation. Ajoutez-la d'abord "
+"depuis la liste des personnes."
+msgstr ""
+"No hay ninguna persona con este correo electrónico en su organización. "
+"Agréguela primero desde la lista de personas."
+
+#: apps/teams/views.py:91
+msgid "Cette personne est déjà membre de l'équipe."
+msgstr "Esta persona ya es miembro del equipo."
+
+#: apps/teams/views.py:132
+msgid "Personne ajoutée avec succès."
+msgstr "Persona agregada correctamente."
+
+#: apps/teams/views.py:135
+msgid "Cette adresse email est déjà enregistrée dans votre organisation."
+msgstr ""
+"Esta dirección de correo electrónico ya está registrada en su organización."
+
+#: templates/accounts/dashboard.html:4
+msgid "Tableau de bord"
+msgstr "Panel de control"
+
+#: templates/accounts/dashboard.html:9
+#, python-format
+msgid "Bonjour, %(name)s 👋"
+msgstr "Hola, %(name)s 👋"
+
+#: templates/accounts/dashboard.html:20
+msgid "Postes actifs"
+msgstr "Puestos activos"
+
+#: templates/accounts/dashboard.html:27 templates/partials/navbar.html:12
+#: templates/teams/create.html:10 templates/teams/detail.html:10
+#: templates/teams/edit.html:10 templates/teams/list.html:4
+#: templates/teams/list.html:8 templates/teams/person_create.html:10
+#: templates/teams/person_list.html:9
+msgid "Équipes"
+msgstr "Equipos"
+
+#: templates/accounts/dashboard.html:33
+msgid "Personnes évaluées"
+msgstr "Personas evaluadas"
+
+#: templates/accounts/dashboard.html:41
+msgid "Actions rapides"
+msgstr "Acciones rápidas"
+
+#: templates/accounts/dashboard.html:46 templates/positions/create.html:4
+#: templates/positions/create.html:12 templates/positions/list.html:11
+#: templates/positions/list.html:75
+msgid "Nouveau poste"
+msgstr "Nuevo puesto"
+
+#: templates/accounts/dashboard.html:51 templates/teams/create.html:4
+#: templates/teams/create.html:12 templates/teams/list.html:16
+#: templates/teams/list.html:50
+msgid "Nouvelle équipe"
+msgstr "Nuevo equipo"
+
+#: templates/accounts/dashboard.html:55 templates/reports/list.html:58
+#: templates/survey/send.html:4 templates/survey/send.html:10
+msgid "Envoyer un questionnaire"
+msgstr "Enviar un cuestionario"
+
+#: templates/accounts/login.html:4 templates/accounts/login.html:9
+msgid "Connexion"
+msgstr "Inicio de sesión"
+
+#: templates/accounts/login.html:13
+msgid "Email ou mot de passe incorrect."
+msgstr "Correo electrónico o contraseña incorrectos."
+
+#: templates/accounts/login.html:33 templates/accounts/signup_choice.html:43
+msgid "Se connecter"
+msgstr "Iniciar sesión"
+
+#: templates/accounts/login.html:38
+msgid "Pas encore de compte ?"
+msgstr "¿Aún no tiene una cuenta?"
+
+#: templates/accounts/login.html:39
+msgid "S'inscrire"
+msgstr "Registrarse"
+
+#: templates/accounts/signup_b2b.html:4
+msgid "Créer un compte organisation"
+msgstr "Crear una cuenta de organización"
+
+#: templates/accounts/signup_b2b.html:8 templates/accounts/signup_b2c.html:8
+msgid "Retour"
+msgstr "Volver"
+
+#: templates/accounts/signup_b2b.html:12
+msgid "Compte organisation"
+msgstr "Cuenta de organización"
+
+#: templates/accounts/signup_b2b.html:13 templates/accounts/signup_b2c.html:13
+msgid "Gratuit, sans carte bancaire."
+msgstr "Gratis, sin tarjeta bancaria."
+
+#: templates/accounts/signup_b2b.html:21
+msgid "Votre organisation"
+msgstr "Su organización"
+
+#: templates/accounts/signup_b2b.html:24
+msgid "Votre compte"
+msgstr "Su cuenta"
+
+#: templates/accounts/signup_b2b.html:36 templates/accounts/signup_b2c.html:32
+msgid "Créer mon compte"
+msgstr "Crear mi cuenta"
+
+#: templates/accounts/signup_b2c.html:4
+msgid "Créer un compte personnel"
+msgstr "Crear una cuenta personal"
+
+#: templates/accounts/signup_b2c.html:12
+msgid "Compte personnel"
+msgstr "Cuenta personal"
+
+#: templates/accounts/signup_choice.html:4
+msgid "Créer un compte"
+msgstr "Crear una cuenta"
+
+#: templates/accounts/signup_choice.html:8
+msgid "Bienvenue sur FitRadarHR"
+msgstr "Bienvenido a FitRadarHR"
+
+#: templates/accounts/signup_choice.html:9
+msgid "Choisissez votre type de compte — gratuit dans les deux cas."
+msgstr "Elija su tipo de cuenta — gratuita en ambos casos."
+
+#: templates/accounts/signup_choice.html:19
+msgid "Pour mon organisation"
+msgstr "Para mi organización"
+
+#: templates/accounts/signup_choice.html:22
+msgid ""
+"RH, manager, PME ou grande entreprise. Invitez votre équipe et gérez "
+"plusieurs postes et collaborateurs."
+msgstr ""
+"RR. HH., manager, pyme o gran empresa. Invite a su equipo y gestione varios "
+"puestos y colaboradores."
+
+#: templates/accounts/signup_choice.html:35
+msgid ""
+"Consultant, manager indépendant ou petite équipe. Démarrez seul, sans avoir "
+"à configurer une organisation."
+msgstr ""
+"Consultor, manager independiente o equipo pequeño. Empiece solo, sin "
+"necesidad de configurar una organización."
+
+#: templates/accounts/signup_choice.html:42
+msgid "Déjà un compte ?"
+msgstr "¿Ya tiene una cuenta?"
+
+#: templates/partials/navbar.html:10 templates/positions/create.html:10
+#: templates/positions/detail.html:11 templates/positions/edit.html:10
+#: templates/positions/list.html:4 templates/positions/list.html:8
+#: templates/positions/profile_edit.html:10
+msgid "Postes"
+msgstr "Puestos"
+
+#: templates/partials/navbar.html:13 templates/survey/dashboard.html:4
+#: templates/survey/dashboard.html:8
+msgid "Questionnaires"
+msgstr "Cuestionarios"
+
+#: templates/partials/navbar.html:14 templates/reports/list.html:4
+#: templates/reports/list.html:8
+msgid "Rapports"
+msgstr "Informes"
+
+#: templates/partials/navbar.html:28
+msgid "Déconnexion"
+msgstr "Cerrar sesión"
+
+#: templates/positions/create.html:15
+msgid "Créer un poste"
+msgstr "Crear un puesto"
+
+#: templates/positions/create.html:23
+msgid "Titre du poste (français)"
+msgstr "Título del puesto (francés)"
+
+#: templates/positions/create.html:34
+msgid "Titre du poste (anglais)"
+msgstr "Título del puesto (inglés)"
+
+#: templates/positions/create.html:35 templates/positions/create.html:44
+#: templates/positions/create.html:53 templates/positions/create.html:62
+#: templates/positions/edit.html:32 templates/positions/edit.html:39
+#: templates/positions/edit.html:46 templates/positions/edit.html:53
+#: templates/teams/create.html:30 templates/teams/create.html:37
+msgid "optionnel"
+msgstr "opcional"
+
+#: templates/positions/create.html:43 templates/positions/edit.html:39
+msgid "Département"
+msgstr "Departamento"
+
+#: templates/positions/create.html:52 templates/positions/edit.html:46
+msgid "Description (français)"
+msgstr "Descripción (francés)"
+
+#: templates/positions/create.html:61 templates/positions/edit.html:53
+msgid "Description (anglais)"
+msgstr "Descripción (inglés)"
+
+#: templates/positions/create.html:70 templates/positions/edit.html:60
+#: templates/positions/profile_edit.html:76 templates/teams/create.html:43
+#: templates/teams/edit.html:41 templates/teams/person_create.html:56
+msgid "Annuler"
+msgstr "Cancelar"
+
+#: templates/positions/create.html:74
+msgid "Créer le poste"
+msgstr "Crear el puesto"
+
+#: templates/positions/create.html:80
+msgid "Après la création, vous pourrez définir le profil Big Five cible."
+msgstr "Después de la creación, podrá definir el perfil Big Five objetivo."
+
+#: templates/positions/detail.html:32 templates/positions/detail.html:64
+#: templates/positions/edit.html:4 templates/positions/edit.html:14
+#: templates/teams/detail.html:27 templates/teams/edit.html:4
+#: templates/teams/edit.html:14
+msgid "Modifier"
+msgstr "Modificar"
+
+#: templates/positions/detail.html:36
+msgid "Archiver ce poste ?"
+msgstr "¿Archivar este puesto?"
+
+#: templates/positions/detail.html:40
+msgid "Archiver"
+msgstr "Archivar"
+
+#: templates/positions/detail.html:51 templates/teams/create.html:30
+#: templates/teams/edit.html:31
+msgid "Description"
+msgstr "Descripción"
+
+#: templates/positions/detail.html:61 templates/positions/profile_edit.html:17
+msgid "Profil Big Five cible"
+msgstr "Perfil Big Five objetivo"
+
+#: templates/positions/detail.html:64
+msgid "Définir"
+msgstr "Definir"
+
+#: templates/positions/detail.html:88
+msgid "Aucun profil Big Five défini pour ce poste."
+msgstr "No se ha definido ningún perfil Big Five para este puesto."
+
+#: templates/positions/detail.html:92
+msgid "Définir le profil cible"
+msgstr "Definir el perfil objetivo"
+
+#: templates/positions/edit.html:17
+msgid "Modifier le poste"
+msgstr "Modificar el puesto"
+
+#: templates/positions/edit.html:24
+msgid "Titre (français)"
+msgstr "Título (francés)"
+
+#: templates/positions/edit.html:32
+msgid "Titre (anglais)"
+msgstr "Título (inglés)"
+
+#: templates/positions/edit.html:64 templates/teams/edit.html:44
+msgid "Enregistrer"
+msgstr "Guardar"
+
+#: templates/positions/list.html:20
+msgid "Actifs"
+msgstr "Activos"
+
+#: templates/positions/list.html:25
+msgid "Archivés"
+msgstr "Archivados"
+
+#: templates/positions/list.html:41
+msgid "Profil configuré"
+msgstr "Perfil configurado"
+
+#: templates/positions/list.html:45
+msgid "Sans profil"
+msgstr "Sin perfil"
+
+#: templates/positions/list.html:57
+msgid "Voir"
+msgstr "Ver"
+
+#: templates/positions/list.html:67
+msgid "Aucun poste archivé."
+msgstr "No hay puestos archivados."
+
+#: templates/positions/list.html:69
+msgid "Aucun poste actif. Créez votre premier poste pour commencer."
+msgstr "Ningún puesto activo. Cree su primer puesto para empezar."
+
+#: templates/positions/profile_edit.html:4
+#: templates/positions/profile_edit.html:14
+#: templates/reports/person_profile.html:4
+msgid "Profil Big Five"
+msgstr "Perfil Big Five"
+
+#: templates/positions/profile_edit.html:19
+msgid ""
+"Pour chaque dimension, définissez la fourchette souhaitée (0–100) avec les "
+"curseurs Min et Max."
+msgstr ""
+"Para cada dimensión, defina el rango deseado (0–100) con los controles Mín. "
+"y Máx."
+
+#: templates/positions/profile_edit.html:41
+msgid "Min"
+msgstr "Mín"
+
+#: templates/positions/profile_edit.html:51
+msgid "Max"
+msgstr "Máx"
+
+#: templates/positions/profile_edit.html:80
+msgid "Enregistrer le profil"
+msgstr "Guardar el perfil"
+
+#: templates/reports/list.html:20
+msgid "Profil calculé le"
+msgstr "Perfil calculado el"
+
+#: templates/reports/list.html:24
+msgid "Voir le profil"
+msgstr "Ver el perfil"
+
+#: templates/reports/list.html:30
+msgid "Fits disponibles"
+msgstr "Fits disponibles"
+
+#: templates/reports/list.html:55
+msgid "Aucun profil Big Five disponible pour le moment."
+msgstr "Actualmente no hay ningún perfil Big Five disponible."
+
+#: templates/reports/list.html:56
+msgid "Envoyez un questionnaire depuis l'onglet Questionnaires."
+msgstr "Envíe un cuestionario desde la pestaña Cuestionarios."
+
+#: templates/reports/person_profile.html:8
+msgid "Retour aux rapports"
+msgstr "Volver a los informes"
+
+#: templates/reports/person_profile.html:16
+#: templates/reports/position_fit.html:17 templates/reports/team_fit.html:18
+msgid "Calculé le"
+msgstr "Calculado el"
+
+#: templates/reports/person_profile.html:21
+msgid ""
+"Ce profil est une aide à la décision. Il ne constitue pas une recommandation"
+" et doit être interprété avec le contexte humain."
+msgstr ""
+"Este perfil es una ayuda para la toma de decisiones. No constituye una "
+"recomendación y debe interpretarse con el contexto humano."
+
+#: templates/reports/person_profile.html:27
+msgid "Profil OCEAN"
+msgstr "Perfil OCEAN"
+
+#: templates/reports/person_profile.html:35
+msgid "Scores par dimension"
+msgstr "Puntuaciones por dimensión"
+
+#: templates/reports/person_profile.html:45
+msgid "Fit Postes"
+msgstr "Fit Puestos"
+
+#: templates/reports/person_profile.html:61
+msgid "Fit Équipes"
+msgstr "Fit Equipos"
+
+#: templates/reports/position_fit.html:24
+msgid ""
+"Ce rapport est une aide à la décision. Aucun score ne constitue une "
+"recommandation automatique."
+msgstr ""
+"Este informe es una ayuda para la toma de decisiones. Ninguna puntuación "
+"constituye una recomendación automática."
+
+#: templates/reports/position_fit.html:30
+msgid "Fit global"
+msgstr "Fit global"
+
+#: templates/reports/position_fit.html:40
+msgid "Moyenne des 5 dimensions"
+msgstr "Promedio de las 5 dimensiones"
+
+#: templates/reports/position_fit.html:47 templates/reports/team_fit.html:47
+msgid "Radar comparatif"
+msgstr "Radar comparativo"
+
+#: templates/reports/position_fit.html:53
+#: templates/reports/position_fit.html:114
+msgid "Cible poste"
+msgstr "Objetivo del puesto"
+
+#: templates/reports/position_fit.html:62 templates/reports/team_fit.html:62
+msgid "Dimension"
+msgstr "Dimensión"
+
+#: templates/reports/position_fit.html:63
+msgid "Score"
+msgstr "Puntuación"
+
+#: templates/reports/position_fit.html:64
+msgid "Cible"
+msgstr "Objetivo"
+
+#: templates/reports/position_fit.html:65
+msgid "Fit"
+msgstr "Fit"
+
+#: templates/reports/team_fit.html:15
+msgid "Comparé à"
+msgstr "Comparado con"
+
+#: templates/reports/team_fit.html:15
+msgid "membre(s)"
+msgstr "miembro(s)"
+
+#: templates/reports/team_fit.html:25
+msgid ""
+"Ce rapport est une aide à la décision. La complémentarité peut être un atout"
+" — une différence n'est pas un problème."
+msgstr ""
+"Este informe es una ayuda para la toma de decisiones. La complementariedad "
+"puede ser una ventaja — una diferencia no es un problema."
+
+#: templates/reports/team_fit.html:31
+msgid "Similarité globale"
+msgstr "Similitud global"
+
+#: templates/reports/team_fit.html:40
+msgid ""
+"Un score bas peut indiquer une complémentarité — voir le tableau ci-dessous"
+msgstr ""
+"Una puntuación baja puede indicar complementariedad — ver la tabla a "
+"continuación"
+
+#: templates/reports/team_fit.html:53 templates/reports/team_fit.html:114
+msgid "Moyenne équipe"
+msgstr "Promedio del equipo"
+
+#: templates/reports/team_fit.html:64
+msgid "Équipe"
+msgstr "Equipo"
+
+#: templates/reports/team_fit.html:65
+msgid "Signal"
+msgstr "Señal"
+
+#: templates/reports/team_fit.html:85
+msgid "Complémentaire"
+msgstr "Complementario"
+
+#: templates/reports/team_fit.html:85
+msgid ""
+"l'équipe est homogène sur cette dimension, la personne apporte de la "
+"diversité"
+msgstr ""
+"el equipo es homogéneo en esta dimensión, la persona aporta diversidad"
+
+#: templates/reports/team_fit.html:86
+msgid "Différent"
+msgstr "Diferente"
+
+#: templates/reports/team_fit.html:86
+msgid "écart notable mais équipe déjà hétérogène"
+msgstr "diferencia notable pero equipo ya heterogéneo"
+
+#: templates/reports/team_fit.html:87
+msgid "Similaire"
+msgstr "Similar"
+
+#: templates/reports/team_fit.html:87
+msgid "aligné avec le profil de l'équipe"
+msgstr "alineado con el perfil del equipo"
+
+#: templates/survey/dashboard.html:11
+msgid "Envoyer un lien"
+msgstr "Enviar un enlace"
+
+#: templates/survey/dashboard.html:20
+msgid "Personne"
+msgstr "Persona"
+
+#: templates/survey/dashboard.html:21
+msgid "Version"
+msgstr "Versión"
+
+#: templates/survey/dashboard.html:22
+msgid "Langue"
+msgstr "Idioma"
+
+#: templates/survey/dashboard.html:23
+msgid "Statut"
+msgstr "Estado"
+
+#: templates/survey/dashboard.html:24
+msgid "Envoyé le"
+msgstr "Enviado el"
+
+#: templates/survey/dashboard.html:25
+msgid "Par"
+msgstr "Por"
+
+#: templates/survey/dashboard.html:57
+msgid "Renvoyer"
+msgstr "Reenviar"
+
+#: templates/survey/dashboard.html:69
+msgid "Aucun questionnaire envoyé pour le moment."
+msgstr "Aún no se ha enviado ningún cuestionario."
+
+#: templates/survey/dashboard.html:72
+msgid "Envoyer un premier lien"
+msgstr "Enviar un primer enlace"
+
+#: templates/survey/send.html:9
+msgid "Retour aux questionnaires"
+msgstr "Volver a los cuestionarios"
+
+#: templates/survey/send.html:11
+msgid "La personne recevra un lien par email valable 7 jours."
+msgstr ""
+"La persona recibirá un enlace por correo electrónico válido durante 7 días."
+
+#: templates/survey/send.html:24
+msgid "Envoyer le lien"
+msgstr "Enviar el enlace"
+
+#: templates/survey/send.html:31
+msgid "La personne n'a pas encore de fiche ? "
+msgstr "¿La persona aún no tiene una ficha? "
+
+#: templates/survey/send.html:32
+msgid "Créer une personne"
+msgstr "Crear una persona"
+
+#: templates/teams/create.html:15
+msgid "Créer une équipe"
+msgstr "Crear un equipo"
+
+#: templates/teams/create.html:22 templates/teams/edit.html:24
+msgid "Nom de l'équipe"
+msgstr "Nombre del equipo"
+
+#: templates/teams/create.html:37 templates/teams/edit.html:36
+msgid "Manager responsable"
+msgstr "Manager responsable"
+
+#: templates/teams/create.html:46
+msgid "Créer l'équipe"
+msgstr "Crear el equipo"
+
+#: templates/teams/detail.html:35
+msgid "Membres"
+msgstr "Miembros"
+
+#: templates/teams/detail.html:53
+msgid "Retirer ce membre ?"
+msgstr "¿Eliminar a este miembro?"
+
+#: templates/teams/detail.html:57
+msgid "Retirer"
+msgstr "Eliminar"
+
+#: templates/teams/detail.html:65
+msgid "Aucun membre pour l'instant."
+msgstr "Aún no hay miembros."
+
+#: templates/teams/detail.html:71
+msgid "Ajouter un membre par email"
+msgstr "Agregar un miembro por correo electrónico"
+
+#: templates/teams/detail.html:77 templates/teams/person_create.html:59
+msgid "Ajouter"
+msgstr "Agregar"
+
+#: templates/teams/detail.html:81
+msgid "La personne doit être enregistrée dans"
+msgstr "La persona debe estar registrada en"
+
+#: templates/teams/detail.html:82
+msgid "la liste des personnes"
+msgstr "la lista de personas"
+
+#: templates/teams/edit.html:17
+msgid "Modifier l'équipe"
+msgstr "Modificar el equipo"
+
+#: templates/teams/list.html:12 templates/teams/person_create.html:12
+#: templates/teams/person_list.html:4 templates/teams/person_list.html:10
+msgid "Personnes"
+msgstr "Personas"
+
+#: templates/teams/list.html:30
+msgid "membre"
+msgstr "miembro"
+
+#: templates/teams/list.html:47
+msgid "Aucune équipe. Créez votre première équipe pour commencer."
+msgstr "Ningún equipo. Cree su primer equipo para empezar."
+
+#: templates/teams/person_create.html:4 templates/teams/person_create.html:14
+#: templates/teams/person_list.html:14 templates/teams/person_list.html:40
+msgid "Nouvelle personne"
+msgstr "Nueva persona"
+
+#: templates/teams/person_create.html:17
+msgid "Ajouter une personne"
+msgstr "Agregar una persona"
+
+#: templates/teams/person_create.html:19
+msgid ""
+"Un candidat ou collaborateur à qui vous pourrez envoyer un questionnaire Big"
+" Five."
+msgstr ""
+"Un candidato o colaborador al que podrá enviarle un cuestionario Big Five."
+
+#: templates/teams/person_create.html:51
+msgid "Type"
+msgstr "Tipo"
+
+#: templates/teams/person_list.html:37
+msgid ""
+"Aucune personne enregistrée. Ajoutez des candidats ou collaborateurs pour "
+"constituer vos équipes."
+msgstr ""
+"Ninguna persona registrada. Agregue candidatos o colaboradores para formar "
+"sus equipos."
+
+msgid "avec profil"
+msgstr "con perfil"
+
+msgid "tous postes"
+msgstr "todos los puestos"
+
+msgid "questionnaires"
+msgstr "cuestionarios"
+
+msgid "Fit moyen (postes)"
+msgstr "Fit medio (puestos)"
+
+msgid "Questionnaires en attente"
+msgstr "Cuestionarios pendientes"
+
+msgid "Voir tout"
+msgstr "Ver todo"
+
+msgid "Renvoyer"
+msgstr "Reenviar"
+
+msgid "Profils récents"
+msgstr "Perfiles recientes"
+
+msgid "Aucun questionnaire en attente"
+msgstr "Ningún cuestionario pendiente"
+
+msgid "Aucun profil complété pour l'instant"
+msgstr "Aún no hay ningún perfil completado"
+
+msgid "Activité récente"
+msgstr "Actividad reciente"
+
+msgid "Profil consulté"
+msgstr "Perfil consultado"
+
+msgid "Fit poste consulté"
+msgstr "Fit puesto consultado"
+
+msgid "Fit équipe consulté"
+msgstr "Fit equipo consultado"
+
+msgid "Profil exporté PDF"
+msgstr "Perfil exportado a PDF"
+
+msgid "Fit poste exporté PDF"
+msgstr "Fit puesto exportado a PDF"
+
+msgid "Fit équipe exporté PDF"
+msgstr "Fit equipo exportado a PDF"
+
+msgid "Aucune activité enregistrée"
+msgstr "Ninguna actividad registrada"
+
+msgid "Effacement des données"
+msgstr "Borrado de datos"
+
+msgid "Effacement des données personnelles"
+msgstr "Borrado de datos personales"
+
+msgid "Action irréversible — RGPD Art. 17"
+msgstr "Acción irreversible — RGPD Art. 17"
+
+msgid ""
+"Vous êtes sur le point d'anonymiser les données personnelles de "
+"<strong>%(name)s</strong>."
+msgstr ""
+"Está a punto de anonimizar los datos personales de "
+"<strong>%(name)s</strong>."
+
+msgid ""
+"Les informations suivantes seront remplacées par des valeurs anonymes :"
+msgstr "La siguiente información se sustituirá por valores anónimos:"
+
+msgid "Prénom et nom → [supprimé]"
+msgstr "Nombre y apellido → [eliminado]"
+
+msgid "Adresse email → adresse anonymisée"
+msgstr "Dirección de correo electrónico → dirección anonimizada"
+
+msgid ""
+"Les profils Big Five, résultats de fit et journaux d'audit sont conservés "
+"(traçabilité EU AI Act)."
+msgstr ""
+"Los perfiles Big Five, los resultados de fit y los registros de auditoría se"
+" conservan (trazabilidad EU AI Act)."
+
+msgid "Confirmer l'effacement"
+msgstr "Confirmar el borrado"
+
+msgid "Vous n'avez pas les droits pour effectuer cette action."
+msgstr "No tiene permisos para realizar esta acción."
+
+msgid "Les données personnelles ont été anonymisées."
+msgstr "Los datos personales han sido anonimizados."
+
+msgid "Effacement RGPD"
+msgstr "Borrado RGPD"
+
+msgid "Envoyer questionnaire"
+msgstr "Enviar cuestionario"
+
+msgid "Journal d'audit"
+msgstr "Registro de auditoría"
+
+msgid "Traçabilité des actions — EU AI Act & RGPD"
+msgstr "Trazabilidad de las acciones — EU AI Act y RGPD"
+
+msgid "Entité"
+msgstr "Entidad"
+
+msgid "Détails"
+msgstr "Detalles"
+
+msgid "%(start)s–%(end)s sur %(total)s"
+msgstr "%(start)s–%(end)s de %(total)s"
+
+msgid "Aucune entrée dans le journal d'audit."
+msgstr "No hay entradas en el registro de auditoría."
+
+msgid "Audit"
+msgstr "Auditoría"
+
+msgid "Politique de confidentialité"
+msgstr "Política de privacidad"
+
+msgid "Dernière mise à jour : janvier 2025"
+msgstr "Última actualización: enero de 2025"
+
+msgid "Responsable du traitement"
+msgstr "Responsable del tratamiento"
+
+msgid ""
+"FitRadarHR est un outil open source (licence MIT) utilisé au sein de votre "
+"organisation. Le responsable du traitement des données est l'organisation "
+"qui déploie et administre cet outil."
+msgstr ""
+"FitRadarHR es una herramienta de código abierto (licencia MIT) utilizada "
+"dentro de su organización. El responsable del tratamiento de datos es la "
+"organización que implementa y administra esta herramienta."
+
+msgid "Données collectées"
+msgstr "Datos recopilados"
+
+msgid "Identité : prénom, nom, adresse email"
+msgstr "Identidad: nombre, apellido, dirección de correo electrónico"
+
+msgid ""
+"Profil psychologique Big Five / OCEAN — uniquement via le questionnaire IPIP"
+" validé scientifiquement"
+msgstr ""
+"Perfil psicológico Big Five / OCEAN — únicamente a través del cuestionario "
+"IPIP validado científicamente"
+
+msgid "Résultats de compatibilité (fit) avec les postes et équipes"
+msgstr "Resultados de compatibilidad (fit) con los puestos y equipos"
+
+msgid "Journal d'audit des actions (traçabilité EU AI Act)"
+msgstr "Registro de auditoría de las acciones (trazabilidad EU AI Act)"
+
+msgid "Base légale"
+msgstr "Base legal"
+
+msgid ""
+"Le traitement des données de personnalité repose sur le consentement "
+"explicite de la personne évaluée (Art. 9 RGPD), recueilli avant toute "
+"passation du questionnaire."
+msgstr ""
+"El tratamiento de los datos de personalidad se basa en el consentimiento "
+"explícito de la persona evaluada (Art. 9 RGPD), recabado antes de cualquier "
+"realización del cuestionario."
+
+msgid "Finalité du traitement"
+msgstr "Finalidad del tratamiento"
+
+msgid ""
+"Les données sont utilisées exclusivement à des fins d'aide à la décision RH "
+"(compatibilité poste/équipe). Aucune décision automatisée ne produit d'effet"
+" juridique — un humain reste responsable de toute décision de recrutement ou"
+" de mobilité."
+msgstr ""
+"Los datos se utilizan exclusivamente con fines de apoyo a la decisión de RR."
+" HH. (compatibilidad puesto/equipo). Ninguna decisión automatizada produce "
+"efectos jurídicos — una persona sigue siendo responsable de cualquier "
+"decisión de contratación o movilidad."
+
+msgid "Durée de conservation"
+msgstr "Duración de conservación"
+
+msgid ""
+"Les données sont conservées pendant la durée d'utilisation de l'outil. Elles"
+" peuvent être anonymisées à tout moment sur demande (droit à l'effacement, "
+"Art. 17 RGPD)."
+msgstr ""
+"Los datos se conservan durante el período de uso de la herramienta. Pueden "
+"anonimizarse en cualquier momento previa solicitud (derecho al borrado, Art."
+" 17 RGPD)."
+
+msgid "Vos droits"
+msgstr "Sus derechos"
+
+msgid "Droit d'accès à vos données (Art. 15 RGPD)"
+msgstr "Derecho de acceso a sus datos (Art. 15 RGPD)"
+
+msgid "Droit de rectification (Art. 16 RGPD)"
+msgstr "Derecho de rectificación (Art. 16 RGPD)"
+
+msgid "Droit à l'effacement / anonymisation (Art. 17 RGPD)"
+msgstr "Derecho al borrado / anonimización (Art. 17 RGPD)"
+
+msgid "Droit de retrait du consentement à tout moment"
+msgstr "Derecho a retirar el consentimiento en cualquier momento"
+
+msgid "Droit d'introduire une réclamation auprès de la CNIL (France)"
+msgstr "Derecho a presentar una reclamación ante la CNIL (Francia)"
+
+msgid ""
+"Pour exercer ces droits, contactez l'administrateur de votre organisation."
+msgstr ""
+"Para ejercer estos derechos, contacte con el administrador de su "
+"organización."
+
+msgid "EU AI Act"
+msgstr "EU AI Act"
+
+msgid ""
+"FitRadarHR est susceptible d'être classifié comme système d'IA à haut risque"
+" (Annexe III, Art. 6 EU AI Act). À ce titre, chaque restitution est tracée "
+"dans un journal d'audit immuable, et aucune décision n'est prise sans "
+"supervision humaine documentée."
+msgstr ""
+"FitRadarHR puede ser clasificado como sistema de IA de alto riesgo (Anexo "
+"III, Art. 6 EU AI Act). Por ello, cada restitución queda registrada en un "
+"registro de auditoría inmutable, y no se toma ninguna decisión sin "
+"supervisión humana documentada."
+
+msgid "Outil open source (MIT)"
+msgstr "Herramienta de código abierto (MIT)"
+
+#. python: services.py / survey views
+msgid "Votre questionnaire de personnalité Big Five"
+msgstr "Su cuestionario de personalidad Big Five"
+
+#. python: services.py / survey views
+msgid "Questionnaire complété — %(name)s"
+msgstr "Cuestionario completado — %(name)s"
+
+#: templates/accounts/login.html
+msgid "Essayer la démo"
+msgstr "Probar la demo"
+
+#: templates/accounts/login.html
+msgid "Sans inscription — données fictives, réinitialisées toutes les 24 h."
+msgstr "Sin registro — datos ficticios, restablecidos cada 24 h."
+
+#: templates/base.html
+msgid ""
+"Environnement de démonstration — données fictives, réinitialisées toutes les"
+" 24 h. Les emails ne sont pas envoyés."
+msgstr ""
+"Entorno de demostración — datos ficticios, restablecidos cada 24 h. No se "
+"envían correos electrónicos."
+
+#: apps/accounts/views.py
+msgid "La démonstration n'est pas disponible pour le moment."
+msgstr "La demostración no está disponible en este momento."
+
+#: apps/survey/views.py
+msgid "Mode démo — aucun email envoyé."
+msgstr "Modo demo — no se ha enviado ningún correo electrónico."
+
+#: apps/survey/views.py
+msgid "Ouvrir le questionnaire"
+msgstr "Abrir el cuestionario"
+
+#: apps/teams/views.py
+msgid "Cette action est désactivée en mode démonstration."
+msgstr "Esta acción está desactivada en modo demostración."
+
+#: apps/accounts/models.py
+msgid "organisation de démonstration"
+msgstr "organización de demostración"
+
+#: apps/accounts/models.py
+msgid ""
+"Org de démo publique — données fictives, emails bloqués, reset périodique."
+msgstr ""
+"Organización de demo pública — datos ficticios, correos bloqueados, reinicio"
+" periódico."
+
+#: templates/reports/analytics.html
+msgid "Analytics"
+msgstr "Analítica"
+
+#: templates/reports/analytics.html
+msgid ""
+"Adoption du questionnaire, engagement sur les restitutions et couverture des"
+" profils — sur l'ensemble de votre organisation."
+msgstr ""
+"Adopción del cuestionario, participación en las restituciones y cobertura de"
+" los perfiles — en toda su organización."
+
+#: templates/reports/analytics.html
+msgid "Taux de complétion"
+msgstr "Tasa de finalización"
+
+#: templates/reports/analytics.html
+msgid "%(completed)s complétés sur %(sent)s envoyés"
+msgstr "%(completed)s completados de %(sent)s enviados"
+
+#: templates/reports/analytics.html
+msgid "j"
+msgstr "d"
+
+#: templates/reports/analytics.html
+msgid "Délai moyen de passation"
+msgstr "Tiempo medio de realización"
+
+#: templates/reports/analytics.html
+msgid "entre l'envoi du lien et la complétion"
+msgstr "entre el envío del enlace y la finalización"
+
+#: templates/reports/analytics.html
+msgid "Couverture des profils"
+msgstr "Cobertura de perfiles"
+
+#: templates/reports/analytics.html
+msgid ""
+"%(profiles)s profils — %(collaborators)s collaborateurs, %(candidates)s "
+"candidats"
+msgstr ""
+"%(profiles)s perfiles — %(collaborators)s colaboradores, %(candidates)s "
+"candidatos"
+
+#: templates/reports/analytics.html
+msgid "Rapports consultés"
+msgstr "Informes consultados"
+
+#: templates/reports/analytics.html
+msgid "%(days)s derniers jours — dont %(pdf)s exports PDF"
+msgstr "últimos %(days)s días — de los cuales %(pdf)s exportaciones PDF"
+
+#: templates/reports/analytics.html
+msgid "Funnel questionnaire"
+msgstr "Embudo del cuestionario"
+
+#: templates/reports/analytics.html
+msgid ""
+"Chaque lien envoyé compte pour une entrée — un abandon est un questionnaire "
+"commencé (consentement donné) mais jamais terminé."
+msgstr ""
+"Cada enlace enviado cuenta como una entrada — un abandono es un cuestionario"
+" iniciado (consentimiento otorgado) pero nunca terminado."
+
+#: templates/reports/analytics.html
+msgid "Liens envoyés"
+msgstr "Enlaces enviados"
+
+#: templates/reports/analytics.html
+msgid "Commencés (consentement donné)"
+msgstr "Iniciados (consentimiento otorgado)"
+
+#: templates/reports/analytics.html
+msgid "Complétés"
+msgstr "Completados"
+
+#: templates/reports/analytics.html
+msgid "Profils OCEAN complétés par mois"
+msgstr "Perfiles OCEAN completados por mes"
+
+#: templates/reports/analytics.html
+msgid "Statut des questionnaires"
+msgstr "Estado de los cuestionarios"
+
+#: templates/reports/analytics.html
+msgid "Fit moyen par poste actif"
+msgstr "Fit medio por puesto activo"
+
+#: templates/reports/analytics.html
+msgid ""
+"Moyenne des scores de fit des personnes évaluées — un indicateur de vivier, "
+"jamais une décision."
+msgstr ""
+"Promedio de las puntuaciones de fit de las personas evaluadas — un indicador"
+" de la cantera de talento, nunca una decisión."
+
+#: templates/reports/analytics.html
+msgid "Fit moyen"
+msgstr "Fit medio"
+
+#: templates/reports/analytics.html
+msgid "Aucun résultat de fit pour le moment."
+msgstr "Aún no hay ningún resultado de fit."
+
+#: templates/reports/analytics.html
+msgid "Profils complétés"
+msgstr "Perfiles completados"
+
+#: templates/reports/analytics.html
+msgid "%(n)s questionnaire commencé n'a pas été terminé."
+msgid_plural "%(n)s questionnaires commencés n'ont pas été terminés."
+msgstr[0] "%(n)s cuestionario iniciado no se completó."
+msgstr[1] "%(n)s cuestionarios iniciados no se completaron."
+
+#: templates/accounts/landing.html
+msgid "Votre message est vide."
+msgstr "Su mensaje está vacío."
+
+#: templates/accounts/landing.html
+msgid "Merci pour votre retour ! Il alimente directement la roadmap."
+msgstr "¡Gracias por su comentario! Alimenta directamente la hoja de ruta."
+
+#: templates/accounts/landing.html
+msgid "Donner mon avis"
+msgstr "Dar mi opinión"
+
+#: templates/accounts/landing.html
+msgid "Votre avis compte"
+msgstr "Su opinión cuenta"
+
+#: templates/accounts/landing.html
+msgid ""
+"Une idée, un irritant, une fonctionnalité qui manque ? Vos retours "
+"alimentent directement la roadmap."
+msgstr ""
+"¿Una idea, un problema, una función que falta? Sus comentarios alimentan "
+"directamente la hoja de ruta."
+
+#: templates/accounts/landing.html
+msgid "Votre message…"
+msgstr "Su mensaje…"
+
+#: templates/accounts/landing.html
+msgid "Envoyer"
+msgstr "Enviar"
+
+#: templates/accounts/landing.html
+msgid "Le fit candidat-poste-équipe, éclairé par la science"
+msgstr "El fit candidato-puesto-equipo, basado en la ciencia"
+
+#: templates/accounts/landing.html
+msgid "Gratuit · Open source (MIT) · Auto-hébergeable"
+msgstr "Gratis · Código abierto (MIT) · Autoalojable"
+
+#: templates/accounts/landing.html
+msgid "Évaluez le fit entre une personne, un poste et une équipe"
+msgstr "Evalúe el fit entre una persona, un puesto y un equipo"
+
+#: templates/accounts/landing.html
+msgid ""
+"FitRadarHR s'appuie sur le Big Five — le modèle de personnalité le plus "
+"validé scientifiquement — pour éclairer vos recrutements et mobilités "
+"internes. L'outil informe, vous décidez."
+msgstr ""
+"FitRadarHR se apoya en el Big Five — el modelo de personalidad más validado "
+"científicamente — para orientar sus contrataciones y movilidades internas. "
+"La herramienta informa, usted decide."
+
+#: templates/accounts/landing.html
+msgid "Créer un compte gratuit"
+msgstr "Crear una cuenta gratuita"
+
+#: templates/accounts/landing.html
+msgid ""
+"Démo sans inscription — données fictives, réinitialisées toutes les 24 h."
+msgstr "Demo sin registro — datos ficticios, restablecidos cada 24 h."
+
+#: templates/accounts/landing.html
+msgid "Comment ça marche"
+msgstr "Cómo funciona"
+
+#: templates/accounts/landing.html
+msgid "Envoyez le questionnaire"
+msgstr "Envíe el cuestionario"
+
+#: templates/accounts/landing.html
+msgid ""
+"Un lien sécurisé, un consentement RGPD explicite, 10 à 20 minutes de "
+"passation. Le profil OCEAN est calculé automatiquement."
+msgstr ""
+"Un enlace seguro, un consentimiento RGPD explícito, de 10 a 20 minutos de "
+"realización. El perfil OCEAN se calcula automáticamente."
+
+#: templates/accounts/landing.html
+msgid "Définissez vos cibles"
+msgstr "Defina sus objetivos"
+
+#: templates/accounts/landing.html
+msgid ""
+"Profil cible par poste (plages OCEAN), équipes avec leurs membres. Le fit se"
+" calcule et se recalcule tout seul."
+msgstr ""
+"Perfil objetivo por puesto (rangos OCEAN), equipos con sus miembros. El fit "
+"se calcula y recalcula automáticamente."
+
+#: templates/accounts/landing.html
+msgid "Explorez les rapports"
+msgstr "Explore los informes"
+
+#: templates/accounts/landing.html
+msgid ""
+"Radar charts, complémentarités d'équipe, points à approfondir en entretien, "
+"export PDF. Des éclairages, jamais un verdict."
+msgstr ""
+"Gráficos radar, complementariedades de equipo, puntos a profundizar en la "
+"entrevista, exportación a PDF. Perspectivas, nunca un veredicto."
+
+#: templates/accounts/landing.html
+msgid "Tout ce qu'il faut, rien de superflu"
+msgstr "Todo lo necesario, nada superfluo"
+
+#: templates/accounts/landing.html
+msgid ""
+"Score de proximité entre un profil OCEAN et la plage cible du poste, "
+"dimension par dimension, avec classement du vivier."
+msgstr ""
+"Puntuación de proximidad entre un perfil OCEAN y el rango objetivo del "
+"puesto, dimensión por dimensión, con clasificación de la cantera."
+
+#: templates/accounts/landing.html
+msgid "Fit Équipe & complémentarité"
+msgstr "Fit Equipo y complementariedad"
+
+#: templates/accounts/landing.html
+msgid ""
+"Profil agrégé de l'équipe et signaux de complémentarité : la diversité de "
+"personnalités est une force, pas un défaut."
+msgstr ""
+"Perfil agregado del equipo y señales de complementariedad: la diversidad de "
+"personalidades es una fortaleza, no un defecto."
+
+#: templates/accounts/landing.html
+msgid "Rapports & radar charts"
+msgstr "Informes y gráficos radar"
+
+#: templates/accounts/landing.html
+msgid ""
+"Restitutions visuelles avec infobulles pédagogiques, questions à explorer en"
+" entretien et export PDF."
+msgstr ""
+"Restituciones visuales con información contextual, preguntas a explorar en "
+"la entrevista y exportación a PDF."
+
+#: templates/accounts/landing.html
+msgid ""
+"Funnel du questionnaire, taux de complétion, couverture des profils : "
+"pilotez l'adoption dans votre organisation."
+msgstr ""
+"Embudo del cuestionario, tasa de finalización, cobertura de perfiles: "
+"controle la adopción en su organización."
+
+#: templates/accounts/landing.html
+msgid "RGPD & EU AI Act by design"
+msgstr "RGPD y EU AI Act by design"
+
+#: templates/accounts/landing.html
+msgid ""
+"Consentement explicite, journal d'audit immuable, droit à l'effacement, "
+"supervision humaine à chaque étape."
+msgstr ""
+"Consentimiento explícito, registro de auditoría inmutable, derecho al "
+"borrado, supervisión humana en cada etapa."
+
+#: templates/accounts/landing.html
+msgid "Bilingue & open source"
+msgstr "Bilingüe y de código abierto"
+
+#: templates/accounts/landing.html
+msgid ""
+"FR/EN natif, licence MIT, auto-hébergeable sur votre infrastructure — vos "
+"données RH restent chez vous."
+msgstr ""
+"Nativo FR/EN, licencia MIT, autoalojable en su infraestructura — sus datos "
+"de RR. HH. permanecen con usted."
+
+#: templates/accounts/landing.html
+msgid "Pourquoi le Big Five, et pas le MBTI ?"
+msgstr "¿Por qué el Big Five y no el MBTI?"
+
+#: templates/accounts/landing.html
+msgid ""
+"Le Big Five (OCEAN) est le modèle de personnalité qui fait consensus dans la"
+" recherche en psychologie : cinq dimensions continues, mesurables, stables "
+"et prédictives — là où les typologies binaires populaires n'ont jamais "
+"démontré leur validité scientifique."
+msgstr ""
+"El Big Five (OCEAN) es el modelo de personalidad que goza de consenso en la "
+"investigación psicológica: cinco dimensiones continuas, medibles, estables y"
+" predictivas — mientras que las tipologías binarias populares nunca han "
+"demostrado su validez científica."
+
+#: templates/accounts/landing.html
+msgid ""
+"FitRadarHR utilise le questionnaire IPIP, instrument du domaine public issu "
+"de la recherche académique. Et parce qu'aucun questionnaire ne résume une "
+"personne : l'outil ne produit jamais de recommandation automatique — il "
+"éclaire l'échange humain, il ne le remplace pas."
+msgstr ""
+"FitRadarHR utiliza el cuestionario IPIP, un instrumento de dominio público "
+"procedente de la investigación académica. Y como ningún cuestionario resume "
+"a una persona: la herramienta nunca produce una recomendación automática — "
+"ilumina el intercambio humano, no lo sustituye."
+
+#: templates/accounts/landing.html
+msgid "Prêt à explorer ?"
+msgstr "¿Listo para explorar?"
+
+#: templates/accounts/landing.html
+msgid "Deux minutes suffisent pour voir un rapport de fit complet."
+msgstr "Dos minutos bastan para ver un informe de fit completo."
+
+#: templates/accounts/landing.html
+msgid "Voir le code sur GitHub"
+msgstr "Ver el código en GitHub"
+
+#: added-2026-07-03
+msgid "Cet email est déjà utilisé par un compte existant."
+msgstr ""
+"Este correo electrónico ya está siendo utilizado por una cuenta existente."
+
+#: added-2026-07-03
+msgid "Invitation envoyée à %(email)s."
+msgstr "Invitación enviada a %(email)s."
+
+#: added-2026-07-03
+msgid "Comparaison limitée aux %(n)d premières personnes sélectionnées."
+msgstr "Comparación limitada a las primeras %(n)d personas seleccionadas."
+
+#: added-2026-07-03
+msgid "Définissez d'abord le profil Big Five cible du poste."
+msgstr "Defina primero el perfil Big Five objetivo del puesto."
+
+#: added-2026-07-03
+msgid "Sélectionnez au moins 2 personnes à comparer."
+msgstr "Seleccione al menos 2 personas para comparar."
+
+#: added-2026-07-03
+msgid "Adresse email invalide : %(email)s"
+msgstr "Dirección de correo electrónico no válida: %(email)s"
+
+#: added-2026-07-03
+msgid "Colonnes manquantes dans le CSV : %(cols)s"
+msgstr "Columnas faltantes en el CSV: %(cols)s"
+
+#: added-2026-07-03
+msgid "Email en doublon dans le fichier : %(email)s"
+msgstr "Correo electrónico duplicado en el archivo: %(email)s"
+
+#: added-2026-07-03
+msgid "Le fichier est vide."
+msgstr "El archivo está vacío."
+
+#: added-2026-07-03
+msgid "Le fichier n'est pas un CSV valide (encodage non reconnu)."
+msgstr "El archivo no es un CSV válido (codificación no reconocida)."
+
+#: added-2026-07-03
+msgid "Prénom, nom et email sont obligatoires."
+msgstr "El nombre, el apellido y el correo electrónico son obligatorios."
+
+#: added-2026-07-03
+msgid "Fichier CSV"
+msgstr "Archivo CSV"
+
+#: added-2026-07-03
+msgid "Le fichier doit être au format .csv"
+msgstr "El archivo debe estar en formato .csv"
+
+#: added-2026-07-03
+msgid "Le fichier est trop volumineux (2 Mo max)."
+msgstr "El archivo es demasiado grande (2 MB máx.)."
+
+#: added-2026-07-03
+msgid ""
+"%(n)d ligne(s) ignorée(s) — email déjà présent dans votre organisation."
+msgstr ""
+"%(n)d línea(s) ignorada(s) — correo electrónico ya presente en su "
+"organización."
+
+#: added-2026-07-03
+msgid "%(n)d personne(s) importée(s) avec succès."
+msgstr "%(n)d persona(s) importada(s) con éxito."
+
+#: added-2026-07-03
+msgid "Le fichier ne contenait aucune ligne exploitable."
+msgstr "El archivo no contenía ninguna línea utilizable."
+
+#: added-2026-07-03
+msgid "Importer un CSV"
+msgstr "Importar un CSV"
+
+#: added-2026-07-03
+msgid "Importer des personnes"
+msgstr "Importar personas"
+
+#: added-2026-07-03
+msgid ""
+"Ajoutez plusieurs candidats ou collaborateurs d'un coup à partir d'un "
+"fichier CSV."
+msgstr ""
+"Agregue varios candidatos o colaboradores a la vez a partir de un archivo "
+"CSV."
+
+#: added-2026-07-03
+msgid "Colonnes attendues :"
+msgstr "Columnas esperadas:"
+
+#: added-2026-07-03
+msgid ""
+"person_type est optionnel (candidate/collaborator, candidate par défaut)."
+msgstr ""
+"person_type es opcional (candidate/collaborator, candidate por defecto)."
+
+#: added-2026-07-03
+msgid "Télécharger un modèle"
+msgstr "Descargar una plantilla"
+
+#: added-2026-07-03
+msgid "Importer"
+msgstr "Importar"
+
+#: added-2026-07-03
+msgid "Lignes ignorées"
+msgstr "Líneas ignoradas"
+
+#: added-2026-07-03
+msgid "Ligne"
+msgstr "Línea"
+
+#: added-2026-07-03
+msgid "Membres de l'organisation"
+msgstr "Miembros de la organización"
+
+#: added-2026-07-03
+msgid "Inviter un manager"
+msgstr "Invitar a un manager"
+
+#: added-2026-07-03
+msgid ""
+"La personne invitée reçoit un email pour définir son mot de passe et se "
+"connecter."
+msgstr ""
+"La persona invitada recibe un correo electrónico para definir su contraseña "
+"e iniciar sesión."
+
+#: added-2026-07-03
+msgid "Envoyer l'invitation"
+msgstr "Enviar la invitación"
+
+#: added-2026-07-03
+msgid "Comparaison de candidats"
+msgstr "Comparación de candidatos"
+
+#: added-2026-07-03
+msgid ""
+"Cette vue est une aide à la lecture comparée. Aucun classement ne constitue "
+"une recommandation automatique."
+msgstr ""
+"Esta vista es una ayuda para la lectura comparada. Ninguna clasificación "
+"constituye una recomendación automática."
+
+#: added-2026-07-03
+msgid "Comparer la sélection (2 à 5)"
+msgstr "Comparar la selección (2 a 5)"
+
+#: added-2026-07-03
+msgid "Repasser le questionnaire"
+msgstr "Volver a realizar el cuestionario"
+
+#: added-2026-07-03
+msgid "Évolution du profil"
+msgstr "Evolución del perfil"
+
+#: added-2026-07-03
+msgid "Date"
+msgstr "Fecha"
+
+#: added-2026-07-03
+msgid "actuel"
+msgstr "actual"
+
+#: added-2026-07-03
+msgid "Cohortes de rétention"
+msgstr "Cohortes de retención"
+
+#: added-2026-07-03
+msgid ""
+"Pour chaque cohorte (mois de la première passation complétée), part des "
+"personnes dont le rapport de profil a été consulté au moins une fois durant "
+"chaque mois suivant."
+msgstr ""
+"Para cada cohorte (mes de la primera realización completada), proporción de "
+"personas cuyo informe de perfil se consultó al menos una vez durante cada "
+"mes siguiente."
+
+#: added-2026-07-03
+msgid "Cohorte"
+msgstr "Cohorte"
+
+#: added-2026-07-03
+msgid "Pas encore assez de données pour calculer des cohortes de rétention."
+msgstr "Aún no hay suficientes datos para calcular cohortes de retención."
+
+#: added-2026-07-03
+msgid "%(n)s personne"
+msgid_plural "%(n)s personnes"
+msgstr[0] "%(n)s persona"
+msgstr[1] "%(n)s personas"
+
+#: added-2026-07-03
+msgid "Connexion SSO (SAML/OIDC)"
+msgstr "Inicio de sesión SSO (SAML/OIDC)"
+
+#: added-2026-07-03
+msgid ""
+"Connectez le fournisseur d'identité (Keycloak ou tout IdP compatible OIDC) "
+"de votre organisation. Le SSO s'ajoute à la connexion email/mot de passe "
+"existante — il ne la remplace jamais."
+msgstr ""
+"Conecte el proveedor de identidad (Keycloak o cualquier IdP compatible con "
+"OIDC) de su organización. El SSO se añade al inicio de sesión existente por "
+"correo electrónico/contraseña — nunca lo sustituye."
+
+#: added-2026-07-03
+msgid "Secret déjà enregistré."
+msgstr "Secreto ya guardado."
+
+#: added-2026-07-03
+msgid "Connexion SSO"
+msgstr "Inicio de sesión SSO"
+
+#: added-2026-07-03
+msgid ""
+"Saisissez l'identifiant de connexion fourni par votre organisation pour être"
+" redirigé vers votre fournisseur d'identité."
+msgstr ""
+"Introduzca el identificador de conexión proporcionado por su organización "
+"para ser redirigido a su proveedor de identidad."
+
+#: added-2026-07-03
+msgid "Identifiant de connexion"
+msgstr "Identificador de conexión"
+
+#: added-2026-07-03
+msgid "Continuer"
+msgstr "Continuar"
+
+#: added-2026-07-03
+msgid "Se connecter avec email et mot de passe"
+msgstr "Iniciar sesión con correo electrónico y contraseña"
+
+#: added-2026-07-03
+msgid "Se connecter via votre organisation (SSO)"
+msgstr "Iniciar sesión a través de su organización (SSO)"
+
+#: added-2026-07-03
+msgid "activé"
+msgstr "activado"
+
+#: added-2026-07-03
+msgid "nom d'affichage"
+msgstr "nombre para mostrar"
+
+#: added-2026-07-03
+msgid "Affiché sur le bouton « Se connecter avec… »."
+msgstr "Se muestra en el botón «Iniciar sesión con…»."
+
+#: added-2026-07-03
+msgid "identifiant de connexion"
+msgstr "identificador de conexión"
+
+#: added-2026-07-03
+msgid "Utilisé dans l'URL de connexion SSO — doit être unique."
+msgstr "Se utiliza en la URL de inicio de sesión SSO — debe ser único."
+
+#: added-2026-07-03
+msgid "URL d'émetteur OIDC"
+msgstr "URL del emisor OIDC"
+
+#: added-2026-07-03
+msgid "Endpoint de découverte OIDC de votre fournisseur d'identité."
+msgstr "Endpoint de descubrimiento OIDC de su proveedor de identidad."
+
+#: added-2026-07-03
+msgid "client ID"
+msgstr "ID de cliente"
+
+#: added-2026-07-03
+msgid "client secret"
+msgstr "secreto de cliente"
+
+#: added-2026-07-03
+msgid "Jamais ré-affiché après saisie."
+msgstr "Nunca se vuelve a mostrar después de introducirlo."
+
+#: added-2026-07-03
+msgid "configuration SSO"
+msgstr "configuración SSO"
+
+#: added-2026-07-03
+msgid "configurations SSO"
+msgstr "configuraciones SSO"
+
+#: added-2026-07-03
+msgid "mis à jour le"
+msgstr "actualizado el"
+
+#: added-2026-07-03
+msgid "Client secret"
+msgstr "Secreto de cliente"
+
+#: added-2026-07-03
+msgid "Laisser vide pour conserver le secret déjà enregistré."
+msgstr "Dejar en blanco para conservar el secreto ya guardado."
+
+#: added-2026-07-03
+msgid "Nom d'affichage"
+msgstr "Nombre para mostrar"
+
+#: added-2026-07-03
+msgid "Client ID"
+msgstr "ID de cliente"
+
+#: added-2026-07-03
+msgid "Activé"
+msgstr "Activado"
+
+#: added-2026-07-03
+msgid ""
+"Cet identifiant de connexion est déjà utilisé par une autre organisation."
+msgstr ""
+"Este identificador de conexión ya está siendo utilizado por otra "
+"organización."
+
+#: added-2026-07-03
+msgid "Le client secret est obligatoire à la création."
+msgstr "El secreto de cliente es obligatorio al crear la configuración."
+
+#: added-2026-07-03
+msgid "Connexion SSO non disponible pour cette organisation."
+msgstr "Inicio de sesión SSO no disponible para esta organización."
+
+#: added-2026-07-03
+msgid "Votre fournisseur d'identité n'a pas transmis d'adresse email."
+msgstr ""
+"Su proveedor de identidad no ha proporcionado ninguna dirección de correo "
+"electrónico."
+
+#: added-2026-07-03
+msgid "Un compte existe déjà avec cet email dans une autre organisation."
+msgstr ""
+"Ya existe una cuenta con este correo electrónico en otra organización."
+
+#: added-2026-07-03
+msgid "Configuration SSO enregistrée."
+msgstr "Configuración SSO guardada."
+
+#: added-2026-07-03
+msgid "Aucune organisation active ne correspond à cet identifiant."
+msgstr "Ninguna organización activa corresponde a este identificador."
+
+#: added-2026-07-03
+msgid ""
+"URL de connexion SSO à communiquer à vos utilisateurs : identifiant « "
+"%(slug)s » sur la page de connexion."
+msgstr ""
+"URL de inicio de sesión SSO para comunicar a sus usuarios: identificador "
+"«%(slug)s» en la página de inicio de sesión."
+
+#: added-2026-07-03
+msgid "Code source ouvert (FSL-1.1-MIT)"
+msgstr "Código fuente abierto (FSL-1.1-MIT)"
+
+#: added-2026-07-03
+msgid "Gratuit · Code source ouvert · Auto-hébergeable"
+msgstr "Gratis · Código fuente abierto · Autoalojable"
+
+#: added-2026-07-03
+msgid "Bilingue & code source ouvert"
+msgstr "Bilingüe y código fuente abierto"
+
+#: added-2026-07-03
+msgid ""
+"FR/EN natif, licence Fair Source (FSL-1.1-MIT), auto-hébergeable sur votre "
+"infrastructure — vos données RH restent chez vous."
+msgstr ""
+"Nativo FR/EN, licencia Fair Source (FSL-1.1-MIT), autoalojable en su "
+"infraestructura — sus datos de RR. HH. permanecen con usted."
+
+#: added-2026-07-03
+msgid ""
+"FitRadarHR est un outil au code source ouvert (licence Fair Source "
+"FSL-1.1-MIT) utilisé au sein de votre organisation. Le responsable du "
+"traitement des données est l'organisation qui déploie et administre cet "
+"outil."
+msgstr ""
+"FitRadarHR es un software de código fuente abierto (licencia Fair Source "
+"FSL-1.1-MIT) utilizado dentro de su organización. El responsable del "
+"tratamiento de datos es la organización que implementa y administra esta "
+"herramienta."
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Clés API"
+msgstr "Claves API"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid ""
+"Connectez un outil tiers (ATS, SIRH…) à FitRadarHR en lecture seule. Chaque "
+"clé donne accès aux postes, équipes, personnes et résultats de fit de votre "
+"organisation — jamais aux profils Big Five bruts."
+msgstr ""
+"Conecte una herramienta externa (ATS, SIRH…) a FitRadarHR en modo de solo "
+"lectura. Cada clave da acceso a los puestos, equipos, personas y resultados "
+"de fit de su organización — nunca a los perfiles Big Five brutos."
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Copiez cette clé maintenant : elle ne sera plus jamais affichée."
+msgstr "Copie esta clave ahora: no volverá a mostrarse nunca más."
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Générer une nouvelle clé"
+msgstr "Generar una nueva clave"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Générer"
+msgstr "Generar"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Nom de la clé"
+msgstr "Nombre de la clave"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Préfixe"
+msgstr "Prefijo"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Créée le"
+msgstr "Creada el"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Dernière utilisation"
+msgstr "Último uso"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Jamais"
+msgstr "Nunca"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Active"
+msgstr "Activa"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Révoquée"
+msgstr "Revocada"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid ""
+"Révoquer cette clé ? Toute intégration l'utilisant cessera de fonctionner "
+"immédiatement."
+msgstr ""
+"¿Revocar esta clave? Cualquier integración que la use dejará de funcionar de"
+" inmediato."
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Révoquer"
+msgstr "Revocar"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Aucune clé API pour le moment."
+msgstr "Todavía no hay claves API."
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid ""
+"Authentification : en-tête <code>Authorization: Api-Key &lt;clé&gt;</code> "
+"sur les requêtes vers <code>/api/v1/</code>."
+msgstr ""
+"Autenticación: cabecera <code>Authorization: Api-Key &lt;clave&gt;</code> en"
+" las solicitudes a <code>/api/v1/</code>."
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "API"
+msgstr "API"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Clé API générée."
+msgstr "Clave API generada."
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Clé API révoquée."
+msgstr "Clave API revocada."
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "clé API"
+msgstr "clave API"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "clés API"
+msgstr "claves API"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "préfixe"
+msgstr "prefijo"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "empreinte de la clé"
+msgstr "huella de la clave"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "créée le"
+msgstr "creada el"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "dernière utilisation"
+msgstr "último uso"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "révoquée le"
+msgstr "revocada el"
+
+#: apps/api/models.py:0 apps/accounts/forms.py:0 apps/accounts/views.py:0
+#: templates/accounts/api_keys.html:0
+msgid "Pour vous y retrouver, ex. « Intégration ATS Greenhouse »."
+msgstr ""
+"Para que la reconozca después, p. ej. «Integración con ATS Greenhouse»."
