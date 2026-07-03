@@ -35,10 +35,16 @@ def _normalize_person_type(raw):
     return PERSON_TYPE_ALIASES.get(key, Person.PersonType.CANDIDATE)
 
 
-def import_persons_csv(uploaded_file, org, user):
+def import_persons_csv(uploaded_file, org, user, max_new=None):
     """Parse et importe un fichier CSV de personnes pour `org`.
 
-    Renvoie {"created": int, "skipped_existing": int, "row_errors": [(line, message), ...]}.
+    `max_new` (optionnel) plafonne le nombre de personnes réellement créées —
+    utilisé pour respecter le quota du plan gratuit (roadmap V3 #2) : les
+    lignes excédentaires sont comptées dans `skipped_quota` plutôt que rejetées
+    silencieusement ou en erreur.
+
+    Renvoie {"created": int, "skipped_existing": int, "skipped_quota": int,
+    "row_errors": [(line, message), ...]}.
     Lève CSVImportError si le fichier est illisible ou si les colonnes obligatoires manquent.
     """
     try:
@@ -67,6 +73,7 @@ def import_persons_csv(uploaded_file, org, user):
 
     created = 0
     skipped_existing = 0
+    skipped_quota = 0
     row_errors = []
     to_create = []
 
@@ -97,6 +104,10 @@ def import_persons_csv(uploaded_file, org, user):
             continue
         seen_in_file.add(email)
 
+        if max_new is not None and len(to_create) >= max_new:
+            skipped_quota += 1
+            continue
+
         to_create.append(Person(
             org=org,
             email=email,
@@ -113,5 +124,6 @@ def import_persons_csv(uploaded_file, org, user):
     return {
         "created": created,
         "skipped_existing": skipped_existing,
+        "skipped_quota": skipped_quota,
         "row_errors": row_errors,
     }

@@ -2362,3 +2362,174 @@ msgstr ""
 #: templates/reports/person_profile.html:0
 msgid "Poste"
 msgstr "Puesto"
+
+#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
+#: apps/teams/views.py:0 templates/accounts/billing.html:0
+msgid "Abonnement"
+msgstr "Suscripción"
+
+#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
+#: apps/teams/views.py:0 templates/accounts/billing.html:0
+msgid ""
+"Un essai gratuit de 14 jours à la création de votre organisation, puis un "
+"abonnement unique donnant accès à tout FitRadarHR sans limite."
+msgstr ""
+"Una prueba gratuita de 14 días al crear su organización, luego una "
+"suscripción única que da acceso ilimitado a todo FitRadarHR."
+
+#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
+#: apps/teams/views.py:0 templates/accounts/billing.html:0
+msgid "Abonnement actif"
+msgstr "Suscripción activa"
+
+#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
+#: apps/teams/views.py:0 templates/accounts/billing.html:0
+msgid "Prochain renouvellement le %(date)s."
+msgstr "Próxima renovación el %(date)s."
+
+#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
+#: apps/teams/views.py:0 templates/accounts/billing.html:0
+msgid "Essai gratuit — %(n)s jour(s) restant(s)"
+msgstr "Prueba gratuita — %(n)s día(s) restante(s)"
+
+#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
+#: apps/teams/views.py:0 templates/accounts/billing.html:0
+msgid ""
+"Accès complet pendant l'essai. Passez à l'abonnement à tout moment pour "
+"continuer sans interruption ensuite."
+msgstr ""
+"Acceso completo durante la prueba. Suscríbase en cualquier momento para "
+"continuar sin interrupción después."
+
+#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
+#: apps/teams/views.py:0 templates/accounts/billing.html:0
+msgid "Plan gratuit (essai terminé)"
+msgstr "Plan gratuito (prueba finalizada)"
+
+#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
+#: apps/teams/views.py:0 templates/accounts/billing.html:0
+msgid ""
+"Des quotas d'usage s'appliquent désormais (postes actifs, personnes, "
+"questionnaires envoyés par mois). Passez à l'abonnement pour les lever."
+msgstr ""
+"Ahora se aplican cuotas de uso (puestos activos, personas, cuestionarios "
+"enviados al mes). Suscríbase para eliminarlas."
+
+#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
+#: apps/teams/views.py:0 templates/accounts/billing.html:0
+msgid "S'abonner"
+msgstr "Suscribirse"
+
+#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
+#: apps/teams/views.py:0 templates/accounts/billing.html:0
+msgid "Gérer mon abonnement"
+msgstr "Gestionar mi suscripción"
+
+#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
+#: apps/teams/views.py:0 templates/accounts/billing.html:0
+msgid ""
+"Configuration Stripe requise pour activer les paiements (voir la "
+"documentation)."
+msgstr ""
+"Se requiere configurar Stripe para habilitar los pagos (consulte la "
+"documentación)."
+
+#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
+#: apps/teams/views.py:0 templates/accounts/billing.html:0
+msgid "La facturation Stripe n'est pas configurée."
+msgstr "La facturación de Stripe no está configurada."
+
+#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
+#: apps/teams/views.py:0 templates/accounts/billing.html:0
+msgid "Aucun abonnement à gérer pour le moment."
+msgstr "No hay ninguna suscripción que gestionar por el momento."
+
+#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
+#: apps/teams/views.py:0 templates/accounts/billing.html:0
+msgid ""
+"Limite du plan gratuit déjà atteinte — aucune personne supplémentaire ne "
+"peut être importée. Passez à l'abonnement pour continuer."
+msgstr ""
+"Ya se alcanzó el límite del plan gratuito: no se puede importar ninguna "
+"persona adicional. Suscríbase para continuar."
+
+#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
+#: apps/teams/views.py:0 templates/accounts/billing.html:0
+msgid ""
+"%(n)d ligne(s) non importée(s) — limite du plan gratuit atteinte. Passez à "
+"l'abonnement pour importer le reste."
+msgstr ""
+"%(n)d fila(s) no importada(s) — límite del plan gratuito alcanzado. "
+"Suscríbase para importar el resto."
+
+#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
+#: apps/teams/views.py:0 templates/accounts/billing.html:0
+msgid ""
+"Limite du plan gratuit atteinte (%(n)d postes actifs). Passez à l'abonnement"
+" pour en créer davantage."
+msgstr ""
+"Límite del plan gratuito alcanzado (%(n)d puestos activos). Suscríbase para "
+"crear más."
+
+#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
+#: apps/teams/views.py:0 templates/accounts/billing.html:0
+msgid ""
+"Limite du plan gratuit atteinte (%(n)d personnes). Passez à l'abonnement "
+"pour en ajouter davantage."
+msgstr ""
+"Límite del plan gratuito alcanzado (%(n)d personas). Suscríbase para añadir "
+"más."
+
+#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
+#: apps/teams/views.py:0 templates/accounts/billing.html:0
+msgid ""
+"Limite du plan gratuit atteinte (%(n)d questionnaires envoyés ce mois-ci). "
+"Passez à l'abonnement pour en envoyer davantage."
+msgstr ""
+"Límite del plan gratuito alcanzado (%(n)d cuestionarios enviados este mes). "
+"Suscríbase para enviar más."
+
+#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
+#: apps/teams/views.py:0 templates/accounts/billing.html:0
+msgid "Essai"
+msgstr "Prueba"
+
+#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
+#: apps/teams/views.py:0 templates/accounts/billing.html:0
+msgid "Paiement en retard"
+msgstr "Pago atrasado"
+
+#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
+#: apps/teams/views.py:0 templates/accounts/billing.html:0
+msgid "Résilié"
+msgstr "Cancelado"
+
+#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
+#: apps/teams/views.py:0 templates/accounts/billing.html:0
+msgid "fin d'essai"
+msgstr "fin de la prueba"
+
+#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
+#: apps/teams/views.py:0 templates/accounts/billing.html:0
+msgid "ID client Stripe"
+msgstr "ID de cliente de Stripe"
+
+#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
+#: apps/teams/views.py:0 templates/accounts/billing.html:0
+msgid "ID abonnement Stripe"
+msgstr "ID de suscripción de Stripe"
+
+#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
+#: apps/teams/views.py:0 templates/accounts/billing.html:0
+msgid "fin de période en cours"
+msgstr "fin del período actual"
+
+#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
+#: apps/teams/views.py:0 templates/accounts/billing.html:0
+msgid "abonnement"
+msgstr "suscripción"
+
+#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
+#: apps/teams/views.py:0 templates/accounts/billing.html:0
+msgid "abonnements"
+msgstr "suscripciones"

@@ -4,11 +4,13 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponseForbidden
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from django.utils.http import url_has_allowed_host_and_scheme
 
 from apps.api.models import ApiKey
+from apps.billing.models import Subscription
 
 from .forms import ApiKeyGenerateForm, InviteManagerForm, OrgSSOConfigForm, SignupB2BForm, SignupB2CForm
 from .models import Feedback, Organization, OrgSSOConfig, User
@@ -50,6 +52,7 @@ def signup_b2b(request):
             org=org,
             role=User.Role.RH,
         )
+        Subscription.start_trial(org)
         login(request, user, backend="django.contrib.auth.backends.ModelBackend")
         return redirect("accounts:dashboard")
 
@@ -76,6 +79,7 @@ def signup_b2c(request):
             org=org,
             role=User.Role.SOLO,
         )
+        Subscription.start_trial(org)
         login(request, user, backend="django.contrib.auth.backends.ModelBackend")
         return redirect("accounts:dashboard")
 
@@ -329,6 +333,74 @@ def api_keys_settings(request):
         "keys": keys,
         "new_raw_key": new_raw_key,
     })
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Facturation — essai gratuit et abonnement (item #2 roadmap V3, US-E1-07)
+# ──────────────────────────────────────────────────────────────────────────────
+
+@login_required
+def billing_settings(request):
+    """Statut de l'essai/abonnement de l'org — RH only.
+
+    N'expose le bouton "S'abonner" que si Stripe est configuré
+    (`STRIPE_SECRET_KEY`/`STRIPE_PRICE_ID`) — sinon affiche un message
+    "configuration requise" plutôt que de planter."""
+    if not request.user.is_rh:
+        return HttpResponseForbidden()
+
+    from apps.billing import stripe_client
+    from apps.billing.models import Subscription
+
+    org = request.user.org
+    subscription = Subscription.get_or_create_for_org(org)
+
+    return render(request, "accounts/billing.html", {
+        "subscription": subscription,
+        "stripe_configured": stripe_client.is_configured(),
+    })
+
+
+@login_required
+def billing_checkout(request):
+    if not request.user.is_rh:
+        return HttpResponseForbidden()
+    if request.method != "POST":
+        return redirect("accounts:billing_settings")
+
+    from apps.billing import stripe_client
+    if not stripe_client.is_configured():
+        messages.error(request, _("La facturation Stripe n'est pas configurée."))
+        return redirect("accounts:billing_settings")
+
+    session = stripe_client.create_checkout_session(
+        request.user.org,
+        success_url=request.build_absolute_uri(reverse("accounts:billing_settings")),
+        cancel_url=request.build_absolute_uri(reverse("accounts:billing_settings")),
+    )
+    return redirect(session.url)
+
+
+@login_required
+def billing_portal(request):
+    if not request.user.is_rh:
+        return HttpResponseForbidden()
+    if request.method != "POST":
+        return redirect("accounts:billing_settings")
+
+    from apps.billing import stripe_client
+    if not stripe_client.is_configured():
+        messages.error(request, _("La facturation Stripe n'est pas configurée."))
+        return redirect("accounts:billing_settings")
+
+    session = stripe_client.create_portal_session(
+        request.user.org,
+        return_url=request.build_absolute_uri(reverse("accounts:billing_settings")),
+    )
+    if session is None:
+        messages.error(request, _("Aucun abonnement à gérer pour le moment."))
+        return redirect("accounts:billing_settings")
+    return redirect(session.url)
 
 
 @login_required

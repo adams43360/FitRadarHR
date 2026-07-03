@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.db import IntegrityError
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from apps.billing.quotas import check_quota, remaining_quota
 from core.managers import get_org_object_or_404
 from .csv_import import CSVImportError, import_persons_csv
 from .models import Team, Person, TeamMembership
@@ -130,6 +131,9 @@ def person_list(request):
 @login_required
 def person_create(request):
     if request.method == "POST":
+        if quota_error := check_quota(request.user.org, "person"):
+            messages.error(request, quota_error)
+            return redirect("accounts:billing_settings")
         form = PersonForm(request.POST)
         if form.is_valid():
             person = form.save(commit=False)
@@ -152,11 +156,20 @@ def person_create(request):
 def person_import(request):
     result = None
     if request.method == "POST":
+        org = request.user.org
+        if check_quota(org, "person"):
+            messages.error(
+                request,
+                _("Limite du plan gratuit déjà atteinte — aucune personne supplémentaire ne peut être importée. Passez à l'abonnement pour continuer."),
+            )
+            return redirect("accounts:billing_settings")
+
         form = PersonImportForm(request.POST, request.FILES)
         if form.is_valid():
             try:
                 result = import_persons_csv(
-                    form.cleaned_data["csv_file"], request.user.org, request.user
+                    form.cleaned_data["csv_file"], org, request.user,
+                    max_new=remaining_quota(org, "person"),
                 )
             except CSVImportError as exc:
                 messages.error(request, str(exc))
@@ -171,6 +184,12 @@ def person_import(request):
                         request,
                         _("%(n)d ligne(s) ignorée(s) — email déjà présent dans votre organisation.")
                         % {"n": result["skipped_existing"]}
+                    )
+                if result["skipped_quota"]:
+                    messages.warning(
+                        request,
+                        _("%(n)d ligne(s) non importée(s) — limite du plan gratuit atteinte. Passez à l'abonnement pour importer le reste.")
+                        % {"n": result["skipped_quota"]}
                     )
                 if not result["created"] and not result["skipped_existing"] and not result["row_errors"]:
                     messages.info(request, _("Le fichier ne contenait aucune ligne exploitable."))

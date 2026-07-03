@@ -4,6 +4,40 @@ Toutes les évolutions notables de FitRadarHR sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) —
 le projet n'étant pas encore versionné, les entrées sont datées.
 
+## 2026-07-03 (11)
+
+### Ajouté
+- **Essai gratuit et abonnement** (item #2 roadmap V3, RICE 3.84, US-E1-07) :
+  nouvelle app `apps.billing`, essai gratuit de 14 jours démarré automatiquement
+  à la création de toute organisation (B2B et B2C), puis un unique plan payant
+  via Stripe.
+  - Modèle `Subscription` (1:1 `Organization`) : `status` (`trialing`/`active`/
+    `past_due`/`canceled`), `trial_ends_at`, identifiants Stripe. Source de
+    vérité côté FitRadarHR, mise à jour uniquement par un webhook Stripe signé
+    (`/billing/webhook/`, hors `i18n_patterns`) — jamais interrogée en direct.
+  - Stripe Checkout (souscription) + Stripe Customer Portal (gestion,
+    résiliation) — aucun flux de paiement ré-implémenté ; le prix est un objet
+    Stripe (`STRIPE_PRICE_ID`), jamais en dur dans le code. Écran
+    `/settings/billing/` (RH only) affichant le statut et les actions,
+    avec repli "configuration Stripe requise" si les clés ne sont pas
+    renseignées, plutôt que de planter.
+  - **Quotas du plan gratuit** (`apps/billing/quotas.py`), appliqués uniquement
+    une fois l'essai terminé sans abonnement actif : 3 postes actifs, 10
+    personnes, 5 questionnaires envoyés par mois — jamais de blocage total,
+    seule la création de nouvelles ressources est limitée. Branché sur la
+    création de poste, création/import CSV de personnes, envoi de
+    questionnaire. L'import CSV plafonne les créations au quota restant et
+    signale le reste comme non importé plutôt que d'échouer entièrement.
+  - L'organisation de démonstration publique est systématiquement exemptée
+    (essai et quotas).
+  - 30 nouveaux tests (essai automatique, accès complet en essai/payant,
+    quotas par ressource, vues bloquantes, webhook Stripe mocké, accès RH only,
+    isolation multi-tenant). 261 tests au total.
+  - Documentation : `docs/user/getting-started/billing.md`, US-E1-07 dans
+    `docs/product/user-stories.md`, entrées `docs/technical/stack.md` et
+    `docs/technical/schema.md`.
+  - `docs/user/about/roadmap.md` : item #2 V3 marqué livré.
+
 ## 2026-07-03 (10)
 
 ### Ajouté

@@ -14,6 +14,7 @@ from django.utils.html import format_html
 from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 
+from apps.billing.quotas import check_quota
 from apps.fit.models import BigFiveProfile, BigFiveProfileHistory
 from apps.teams.models import Person
 
@@ -64,6 +65,10 @@ def send_questionnaire(request):
         initial["person_email"] = email
 
     if request.method == "POST":
+        if quota_error := check_quota(org, "questionnaire"):
+            messages.error(request, quota_error)
+            return redirect("accounts:billing_settings")
+
         form = SendLinkForm(request.POST, org=org)
         form.set_org(org)
         if form.is_valid():

@@ -17,6 +17,7 @@ erDiagram
     Organization ||--o{ AuditLog : "génère"
     Organization ||--o| OrgSSOConfig : "configure (optionnel)"
     Organization ||--o{ ApiKey : "génère"
+    Organization ||--o| Subscription : "a"
 
     User ||--o{ Team : "manage"
     User ||--o{ QuestionnaireLink : "envoie"
@@ -115,6 +116,24 @@ Clé d'accès à l'API publique, scopée à une seule organisation.
 | `revoked_at` | TIMESTAMP (nullable) | Révocation = horodatage, jamais de suppression physique (traçabilité, cohérent avec `AuditLog`) |
 
 > La valeur en clair n'est visible qu'une seule fois, au moment de la génération (écran `/settings/api/`). Authentification API via l'en-tête `Authorization: Api-Key <clé>`. L'API expose en lecture seule : postes, équipes, personnes (+ statut questionnaire), résultats de fit — **jamais** les scores Big Five bruts d'un `BigFiveProfile`.
+
+---
+
+### `Subscription` *(V3 — essai gratuit et abonnement, US-E1-07)*
+Statut de facturation d'une organisation — un seul plan payant, un essai gratuit à la création.
+
+| Champ | Type | Notes |
+|---|---|---|
+| `id` | UUID | — |
+| `org_id` | UUID FK → Organization (unique) | Un seul abonnement par organisation (`OneToOne`) |
+| `status` | ENUM(`trialing`, `active`, `past_due`, `canceled`) | Source de vérité côté FitRadarHR — mise à jour uniquement par le webhook Stripe |
+| `trial_ends_at` | TIMESTAMP | Fixé à la création (org créée + 14 jours) |
+| `stripe_customer_id` | VARCHAR(255), nullable | Créé au premier passage par Stripe Checkout |
+| `stripe_subscription_id` | VARCHAR(255), nullable | Renseigné par le webhook `checkout.session.completed` |
+| `current_period_end` | TIMESTAMP (nullable) | Synchronisé par le webhook `customer.subscription.updated` |
+| `created_at` / `updated_at` | TIMESTAMP | — |
+
+> Aucun prix stocké en base : le prix est un objet Stripe (`Price`) référencé par `settings.STRIPE_PRICE_ID`. `Subscription.has_full_access` fait autorité pour savoir si les quotas du plan gratuit s'appliquent (essai actif OU abonnement `active` OU organisation de démonstration → accès complet). Voir `apps/billing/quotas.py` pour les seuils du plan gratuit.
 
 ---
 

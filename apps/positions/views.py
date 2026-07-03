@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
+from apps.billing.quotas import check_quota
 from core.managers import get_org_object_or_404
 from .models import Position, PositionProfile
 from .forms import PositionForm, PositionProfileForm, DIMENSION_LABELS
@@ -28,6 +29,9 @@ def position_list(request):
 def position_create(request):
     org = request.user.org
     if request.method == "POST":
+        if quota_error := check_quota(org, "position"):
+            messages.error(request, quota_error)
+            return redirect("accounts:billing_settings")
         form = PositionForm(request.POST, org=org)
         if form.is_valid():
             position = form.save(commit=False)

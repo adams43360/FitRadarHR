@@ -23,6 +23,17 @@ DEMO_MODE = os.environ.get("DEMO_MODE", "False") == "True"
 DEMO_ORG_NAME = "Nexatech (démo)"
 DEMO_USER_EMAIL = "demo@fitradarhr.demo"
 
+# ─── Facturation (Stripe) ──────────────────────────────────────────────────────
+# Un seul plan payant, essai gratuit de 14 jours (apps/billing). Le prix est
+# configuré côté Stripe Dashboard (Produit → Price), jamais en dur ici :
+# STRIPE_PRICE_ID référence ce Price. Tant que ces variables ne sont pas
+# renseignées, l'écran /settings/billing/ affiche "configuration requise" au
+# lieu de planter — voir apps/billing/stripe_client.py::is_configured().
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "")
+STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY", "")
+STRIPE_PRICE_ID = os.environ.get("STRIPE_PRICE_ID", "")
+STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET", "")
+
 if not DEBUG and SECRET_KEY == "changeme-in-production":
     from django.core.exceptions import ImproperlyConfigured
     raise ImproperlyConfigured(
@@ -58,6 +69,7 @@ LOCAL_APPS = [
     "apps.fit",
     "apps.reports",
     "apps.api",
+    "apps.billing",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

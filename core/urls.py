@@ -10,6 +10,8 @@ urlpatterns = [
     # API publique en lecture seule (roadmap V2 #9) — hors i18n_patterns,
     # un consommateur machine n'a pas de préférence de langue de navigateur.
     path("api/v1/", include("apps.api.urls")),
+    # Webhook Stripe (roadmap V3 #2) — idem, hors i18n_patterns.
+    path("billing/", include("apps.billing.urls")),
 ]
 
 urlpatterns += i18n_patterns(

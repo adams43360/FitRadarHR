@@ -97,6 +97,22 @@
 
 ---
 
+### US-E1-07 — Essai gratuit et abonnement
+**En tant que** RH (ADMIN), **je veux** bénéficier d'un essai gratuit à la création de mon organisation puis souscrire un abonnement simple, **afin de** continuer à utiliser FitRadarHR sans limite au-delà de la période d'essai.
+
+**Critères d'acceptation :**
+- [ ] Un essai gratuit de 14 jours démarre automatiquement à la création de l'organisation (B2B et B2C), sans action de l'utilisateur
+- [ ] Pendant l'essai, l'organisation a un accès complet, sans quota
+- [ ] Un seul plan payant, sans palier — un abonnement actif lève tous les quotas
+- [ ] Passé l'essai sans abonnement actif, des quotas d'usage s'appliquent : postes actifs, personnes, questionnaires envoyés par mois — jamais un blocage total, seules les nouvelles créations sont limitées, les données existantes restent consultables
+- [ ] Un écran `/settings/billing/` (RH only) affiche le statut (essai en cours avec jours restants, abonnement actif avec date de renouvellement, ou plan gratuit après essai), avec un bouton "S'abonner" (redirection Stripe Checkout) et "Gérer mon abonnement" (Stripe Customer Portal) une fois client Stripe créé
+- [ ] Le prix est configuré côté Stripe (pas en dur dans le code) — si Stripe n'est pas configuré, l'écran affiche "configuration requise" au lieu de planter
+- [ ] Le statut d'abonnement est synchronisé via un webhook Stripe (paiement réussi, renouvellement, échec de paiement, résiliation), jamais interrogé en direct à chaque page vue
+- [ ] L'organisation de démonstration publique n'est jamais soumise aux quotas ni à l'essai
+- [ ] Le contenu est disponible en FR/EN/ES/DE
+
+---
+
 ### US-E1-06 — API publique en lecture seule (clé API par organisation)
 **En tant que** RH (ADMIN), **je veux** générer une clé API pour mon organisation, **afin de** connecter un outil tiers (ATS, SIRH) à FitRadarHR en lecture seule, sans intervention manuelle.
 

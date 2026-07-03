@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Abonnement" %} — FitRadarHR{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-1">{% trans "Abonnement" %}</h1>
+  <p class="text-sm text-gray-500 mb-6">
+    {% trans "Un essai gratuit de 14 jours à la création de votre organisation, puis un abonnement unique donnant accès à tout FitRadarHR sans limite." %}
+  </p>
+
+  <div class="bg-white rounded-2xl border border-gray-200 p-6 mb-6">
+    {% if subscription.is_paid_active %}
+      <div class="flex items-center gap-2 mb-2">
+        <span class="inline-block w-2.5 h-2.5 rounded-full bg-green-500"></span>
+        <span class="text-sm font-semibold text-gray-900">{% trans "Abonnement actif" %}</span>
+      </div>
+      {% if subscription.current_period_end %}
+      <p class="text-sm text-gray-500">
+        {% blocktrans with date=subscription.current_period_end|date:"d/m/Y" %}Prochain renouvellement le {{ date }}.{% endblocktrans %}
+      </p>
+      {% endif %}
+    {% elif subscription.is_trial_active %}
+      <div class="flex items-center gap-2 mb-2">
+        <span class="inline-block w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
+        <span class="text-sm font-semibold text-gray-900">
+          {% blocktrans with n=subscription.trial_days_left %}Essai gratuit — {{ n }} jour(s) restant(s){% endblocktrans %}
+        </span>
+      </div>
+      <p class="text-sm text-gray-500">
+        {% trans "Accès complet pendant l'essai. Passez à l'abonnement à tout moment pour continuer sans interruption ensuite." %}
+      </p>
+    {% else %}
+      <div class="flex items-center gap-2 mb-2">
+        <span class="inline-block w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+        <span class="text-sm font-semibold text-gray-900">{% trans "Plan gratuit (essai terminé)" %}</span>
+      </div>
+      <p class="text-sm text-gray-500">
+        {% trans "Des quotas d'usage s'appliquent désormais (postes actifs, personnes, questionnaires envoyés par mois). Passez à l'abonnement pour les lever." %}
+      </p>
+    {% endif %}
+  </div>
+
+  {% if stripe_configured %}
+  <div class="flex items-center gap-3">
+    {% if not subscription.is_paid_active %}
+    <form method="post" action="{% url 'accounts:billing_checkout' %}">
+      {% csrf_token %}
+      <button type="submit"
+              class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors">
+        {% trans "S'abonner" %}
+      </button>
+    </form>
+    {% endif %}
+    {% if subscription.stripe_customer_id %}
+    <form method="post" action="{% url 'accounts:billing_portal' %}">
+      {% csrf_token %}
+      <button type="submit"
+              class="px-5 py-2 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors">
+        {% trans "Gérer mon abonnement" %}
+      </button>
+    </form>
+    {% endif %}
+  </div>
+  {% else %}
+  <p class="text-sm text-amber-600 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3">
+    ⚠ {% trans "Configuration Stripe requise pour activer les paiements (voir la documentation)." %}
+  </p>
+  {% endif %}
+</div>
+{% endblock %}
