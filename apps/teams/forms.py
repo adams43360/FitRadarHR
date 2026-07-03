@@ -61,6 +61,25 @@ class PersonForm(forms.ModelForm):
         }
 
 
+class PersonImportForm(forms.Form):
+    """Import en masse de personnes via un fichier CSV."""
+    csv_file = forms.FileField(
+        label=_("Fichier CSV"),
+        widget=forms.ClearableFileInput(attrs={
+            "class": "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500",
+            "accept": ".csv",
+        }),
+    )
+
+    def clean_csv_file(self):
+        f = self.cleaned_data["csv_file"]
+        if not f.name.lower().endswith(".csv"):
+            raise forms.ValidationError(_("Le fichier doit être au format .csv"))
+        if f.size > 2 * 1024 * 1024:  # 2 Mo — largement suffisant, évite les abus
+            raise forms.ValidationError(_("Le fichier est trop volumineux (2 Mo max)."))
+        return f
+
+
 class AddMemberForm(forms.Form):
     """Ajouter une personne existante (par email) à une équipe."""
     email = forms.EmailField(

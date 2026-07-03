@@ -35,3 +35,16 @@ class SignupB2BForm(BaseSignupForm):
 
 class SignupB2CForm(BaseSignupForm):
     pass
+
+
+class InviteManagerForm(forms.Form):
+    """Invitation d'un manager dans l'organisation (RH only)."""
+    first_name = forms.CharField(label=_("Prénom"), max_length=100)
+    last_name = forms.CharField(label=_("Nom"), max_length=100)
+    email = forms.EmailField(label=_("Email professionnel"))
+
+    def clean_email(self):
+        email = self.cleaned_data["email"].lower()
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError(_("Cet email est déjà utilisé par un compte existant."))
+        return email

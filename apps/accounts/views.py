@@ -2,13 +2,13 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
+from django.http import Http404, HttpResponseForbidden
 from django.shortcuts import render, redirect
 from django.utils.translation import gettext_lazy as _
 
 from django.utils.http import url_has_allowed_host_and_scheme
 
-from .forms import SignupB2BForm, SignupB2CForm
+from .forms import InviteManagerForm, SignupB2BForm, SignupB2CForm
 from .models import Feedback, Organization, User
 
 
@@ -182,6 +182,56 @@ def dashboard(request):
 @login_required
 def privacy_policy(request):
     return render(request, "accounts/privacy_policy.html")
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Membres de l'organisation — invitation de managers (item #2 de la roadmap V2)
+# ──────────────────────────────────────────────────────────────────────────────
+
+def _send_manager_invitation(user, request):
+    """Envoie un email de définition de mot de passe via le flux allauth existant
+    (aucun nouveau système de token — on réutilise le "mot de passe oublié")."""
+    from allauth.account.forms import ResetPasswordForm
+
+    form = ResetPasswordForm({"email": user.email})
+    if form.is_valid():
+        form.save(request)
+
+
+@login_required
+def org_members(request):
+    """Liste des membres de l'organisation + invitation d'un manager — RH only.
+
+    Le compte invité est créé sans mot de passe utilisable ; l'invité reçoit un
+    email (flux "mot de passe oublié" d'allauth) pour définir le sien et se connecter.
+    """
+    if not request.user.is_rh:
+        return HttpResponseForbidden()
+
+    if request.method == "POST":
+        form = InviteManagerForm(request.POST)
+        if form.is_valid():
+            d = form.cleaned_data
+            user = User.objects.create_user(
+                email=d["email"],
+                password=None,  # → set_unusable_password()
+                first_name=d["first_name"],
+                last_name=d["last_name"],
+                org=request.user.org,
+                role=User.Role.MANAGER,
+                invited_by=request.user,
+            )
+            _send_manager_invitation(user, request)
+            messages.success(
+                request,
+                _("Invitation envoyée à %(email)s.") % {"email": user.email}
+            )
+            return redirect("accounts:members")
+    else:
+        form = InviteManagerForm()
+
+    members = request.user.org.users.select_related("invited_by").order_by("-created_at")
+    return render(request, "accounts/members.html", {"members": members, "form": form})
 
 
 @login_required

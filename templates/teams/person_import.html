@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Importer des personnes" %} — FitRadarHR{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+
+  <div class="flex items-center gap-2 text-sm text-gray-400 mb-6">
+    <a href="{% url 'teams:list' %}" class="hover:text-indigo-600">{% trans "Équipes" %}</a>
+    <span>/</span>
+    <a href="{% url 'teams:persons' %}" class="hover:text-indigo-600">{% trans "Personnes" %}</a>
+    <span>/</span>
+    <span class="text-gray-700">{% trans "Importer un CSV" %}</span>
+  </div>
+
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">{% trans "Importer des personnes" %}</h1>
+  <p class="text-sm text-gray-500 mb-6">
+    {% trans "Ajoutez plusieurs candidats ou collaborateurs d'un coup à partir d'un fichier CSV." %}
+  </p>
+
+  <div class="bg-indigo-50 border border-indigo-100 rounded-xl px-4 py-3 mb-6 text-sm text-indigo-800">
+    {% trans "Colonnes attendues :" %} <code class="bg-white px-1.5 py-0.5 rounded">first_name,last_name,email,person_type</code>
+    <br>
+    <span class="text-xs text-indigo-600">
+      {% trans "person_type est optionnel (candidate/collaborator, candidate par défaut)." %}
+    </span>
+    <br>
+    <a href="{% url 'teams:person_import_template' %}" class="text-xs font-semibold underline">
+      ↓ {% trans "Télécharger un modèle" %}
+    </a>
+  </div>
+
+  <form method="post" enctype="multipart/form-data" class="bg-white rounded-2xl border border-gray-200 p-6 space-y-6">
+    {% csrf_token %}
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">
+        {% trans "Fichier CSV" %} <span class="text-red-500">*</span>
+      </label>
+      {{ form.csv_file }}
+      {% if form.csv_file.errors %}<p class="text-red-500 text-xs mt-1">{{ form.csv_file.errors.0 }}</p>{% endif %}
+    </div>
+    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+      <a href="{% url 'teams:persons' %}" class="text-sm text-gray-500 hover:text-gray-700">{% trans "Annuler" %}</a>
+      <button type="submit"
+              class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors">
+        {% trans "Importer" %}
+      </button>
+    </div>
+  </form>
+
+  {% if result and result.row_errors %}
+  <div class="mt-6 bg-white rounded-2xl border border-red-200 p-6">
+    <h2 class="text-sm font-semibold text-red-700 mb-3">
+      {% trans "Lignes ignorées" %} ({{ result.row_errors|length }})
+    </h2>
+    <ul class="space-y-1 text-sm text-gray-600">
+      {% for line, message in result.row_errors %}
+      <li>{% trans "Ligne" %} {{ line }} — {{ message }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

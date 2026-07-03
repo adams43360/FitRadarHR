@@ -19,6 +19,7 @@
         {% if user.is_rh %}
         <a href="{% url 'reports:analytics' %}" class="text-sm text-gray-600 hover:text-indigo-600">{% trans "Analytics" %}</a>
         <a href="{% url 'reports:audit_log' %}" class="text-sm text-gray-600 hover:text-indigo-600">{% trans "Audit" %}</a>
+        <a href="{% url 'accounts:members' %}" class="text-sm text-gray-600 hover:text-indigo-600">{% trans "Membres" %}</a>
         {% endif %}
 
         <!-- Sélecteur de langue -->

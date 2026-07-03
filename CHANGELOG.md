@@ -4,6 +4,21 @@ Toutes les évolutions notables de FitRadarHR sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) —
 le projet n'étant pas encore versionné, les entrées sont datées.
 
+## 2026-07-03 (3)
+
+### Ajouté
+- **Import CSV des personnes** (item #4 roadmap V2, RICE 4.0) : `teams/persons/import/` —
+  upload d'un fichier CSV (`first_name,last_name,email,person_type`), modèle téléchargeable,
+  validation ligne par ligne (email invalide, doublons fichier/org ignorés proprement).
+- **Invitation de managers** (item #2 roadmap V2, RICE 5.6) : page `/members/` (RH only) —
+  invite un utilisateur avec le rôle Manager dans l'org ; le compte est créé sans mot de
+  passe utilisable et l'invité reçoit un email (réutilise le flux "mot de passe oublié"
+  d'allauth) pour définir le sien.
+- **Comparaison de candidats sur un poste** (item #3 roadmap V2, RICE 4.8) : depuis le
+  classement de fit d'un poste, sélection de 2 à 5 personnes → radar superposé + tableau
+  comparatif par dimension (`positions/<id>/compare/`).
+- 125 tests au total (+20 depuis la version précédente).
+
 ## 2026-07-03 (2)
 
 ### Ajouté

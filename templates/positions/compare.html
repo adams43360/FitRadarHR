@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Comparaison de candidats" %} — {{ position.title_fr }}{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-between mb-4">
+  <a href="{% url 'positions:detail' pk=position.pk %}" class="text-sm text-indigo-600 hover:underline">← {{ position.title_fr }}</a>
+</div>
+
+<div class="mb-6">
+  <h1 class="text-xl font-bold text-gray-900">{% trans "Comparaison de candidats" %}</h1>
+  <p class="text-sm text-gray-600 mt-0.5">{{ position.title_fr }}</p>
+</div>
+
+<!-- Avertissement -->
+<div class="mb-6 rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-amber-800">
+  ⚠️ {% trans "Cette vue est une aide à la lecture comparée. Aucun classement ne constitue une recommandation automatique." %}
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+  <!-- Radar -->
+  <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+    <h2 class="text-sm font-semibold text-gray-700 mb-3">{% trans "Radar comparatif" %}</h2>
+    <div class="relative h-80">
+      <canvas id="compareChart"></canvas>
+    </div>
+    <div class="flex flex-wrap gap-3 mt-3 text-xs text-gray-500">
+      {% for c in candidates %}
+      <span class="flex items-center gap-1.5">
+        <span class="w-3 h-3 rounded-full inline-block" style="background-color: rgb({{ c.color }})"></span>
+        {{ c.person.first_name }}
+      </span>
+      {% endfor %}
+      <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span>{% trans "Cible poste" %}</span>
+    </div>
+  </div>
+
+  <!-- Fit global par candidat -->
+  <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+    <h2 class="text-sm font-semibold text-gray-700 mb-4">{% trans "Fit global" %}</h2>
+    <div class="space-y-4">
+      {% for c in candidates %}
+      <div>
+        <div class="flex justify-between text-sm mb-1">
+          <span class="font-medium text-gray-800">{{ c.person.full_name }}</span>
+          <span class="font-semibold
+            {% if c.fit.overall_fit >= 80 %}text-green-600
+            {% elif c.fit.overall_fit >= 60 %}text-amber-600
+            {% else %}text-red-500{% endif %}">
+            {{ c.fit.overall_fit|floatformat:0 }}%
+          </span>
+        </div>
+        <div class="w-full bg-gray-100 rounded-full h-2.5">
+          <div class="h-2.5 rounded-full
+            {% if c.fit.overall_fit >= 80 %}bg-green-500
+            {% elif c.fit.overall_fit >= 60 %}bg-amber-400
+            {% else %}bg-red-400{% endif %}"
+            style="width:{{ c.fit.overall_fit|floatformat:0 }}%; background-color: rgb({{ c.color }})"></div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<!-- Tableau par dimension -->
+<div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-x-auto mb-6">
+  <table class="min-w-full divide-y divide-gray-100">
+    <thead class="bg-gray-50">
+      <tr>
+        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500">{% trans "Dimension" %}</th>
+        <th class="px-4 py-2 text-center text-xs font-medium text-gray-500">{% trans "Cible" %}</th>
+        {% for c in candidates %}
+        <th class="px-4 py-2 text-center text-xs font-medium text-gray-500">{{ c.person.first_name }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-100">
+      {% for row in dim_rows %}
+      <tr class="hover:bg-gray-50">
+        <td class="px-4 py-3 text-sm font-medium text-gray-800">
+          {% include "partials/ocean_dim_label.html" with label=row.label tooltip=row.tooltip %}
+        </td>
+        <td class="px-4 py-3 text-center text-xs text-gray-500">[{{ row.min }}–{{ row.max }}]</td>
+        {% for cell in row.cells %}
+        <td class="px-4 py-3 text-center">
+          {% if cell.in_range %}
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">✓ {{ cell.fit|floatformat:0 }}%</span>
+          {% elif cell.fit >= 70 %}
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-700">{{ cell.fit|floatformat:0 }}%</span>
+          {% else %}
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700">{{ cell.fit|floatformat:0 }}%</span>
+          {% endif %}
+        </td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+const labels = {{ chart_labels_json|safe }};
+const posMid = {{ pos_mid_json|safe }};
+const candidateScores = {{ candidate_scores_json|safe }};
+const candidateNames = {{ candidate_names_json|safe }};
+const candidateColors = {{ candidate_colors_json|safe }};
+
+const datasets = candidateScores.map((scores, i) => ({
+  label: candidateNames[i],
+  data: scores,
+  backgroundColor: `rgba(${candidateColors[i]},0.12)`,
+  borderColor: `rgba(${candidateColors[i]},0.9)`,
+  borderWidth: 2,
+  pointBackgroundColor: `rgba(${candidateColors[i]},1)`,
+  pointRadius: 3,
+}));
+
+datasets.push({
+  label: "{% trans 'Cible poste' %}",
+  data: posMid,
+  backgroundColor: 'rgba(16,185,129,0.10)',
+  borderColor: 'rgba(16,185,129,0.8)',
+  borderWidth: 2,
+  borderDash: [5, 3],
+  pointBackgroundColor: 'rgba(16,185,129,1)',
+  pointRadius: 3,
+});
+
+new Chart(document.getElementById('compareChart').getContext('2d'), {
+  type: 'radar',
+  data: { labels: labels, datasets: datasets },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: { r: { min: 0, max: 100, ticks: { stepSize: 25, font: {size: 10} }, pointLabels: { font: {size: 11} } } },
+    plugins: { legend: { display: false } }
+  }
+});
+</script>
+{% endblock %}

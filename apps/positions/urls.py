@@ -10,4 +10,5 @@ urlpatterns = [
     path("<uuid:pk>/edit/", views.position_edit, name="edit"),
     path("<uuid:pk>/archive/", views.position_archive, name="archive"),
     path("<uuid:pk>/profile/", views.position_profile_edit, name="profile_edit"),
+    path("<uuid:pk>/compare/", views.position_compare, name="compare"),
 ]

@@ -238,3 +238,71 @@ class LandingPageTests(TestCase):
         self.client.force_login(user)
         response = self.client.get("/")
         self.assertRedirects(response, reverse("accounts:dashboard"))
+
+
+class InviteManagerTests(TestCase):
+    """Invitation de managers dans l'org — item #2 de la roadmap V2."""
+
+    def setUp(self):
+        from core.testing import create_org_and_user
+        self.org, self.rh = create_org_and_user(name="Org Invite", email="rh@invite.test")
+
+    def test_rh_can_invite_manager(self):
+        self.client.force_login(self.rh)
+        resp = self.client.post(reverse("accounts:members"), {
+            "first_name": "Sacha", "last_name": "Manager", "email": "sacha@invite.test",
+        })
+        self.assertRedirects(resp, reverse("accounts:members"))
+        user = User.objects.get(email="sacha@invite.test")
+        self.assertEqual(user.role, User.Role.MANAGER)
+        self.assertEqual(user.org, self.org)
+        self.assertEqual(user.invited_by, self.rh)
+        self.assertFalse(user.has_usable_password())
+
+    def test_invitation_sends_password_set_email(self):
+        self.client.force_login(self.rh)
+        self.client.post(reverse("accounts:members"), {
+            "first_name": "Sacha", "last_name": "Manager", "email": "sacha@invite.test",
+        })
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].to, ["sacha@invite.test"])
+
+    def test_duplicate_email_rejected(self):
+        self.client.force_login(self.rh)
+        resp = self.client.post(reverse("accounts:members"), {
+            "first_name": "Sacha", "last_name": "Manager", "email": self.rh.email,
+        })
+        self.assertEqual(resp.status_code, 200)  # re-render avec erreur
+        self.assertTrue(resp.context["form"].errors.get("email"))
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_manager_cannot_access_members_page(self):
+        from core.testing import create_org_and_user
+        _, manager = create_org_and_user(
+            name="Org2", email="manager@invite.test", role=User.Role.MANAGER
+        )
+        self.client.force_login(manager)
+        resp = self.client.get(reverse("accounts:members"))
+        self.assertEqual(resp.status_code, 403)
+
+    def test_members_list_scoped_to_own_org(self):
+        from core.testing import create_org_and_user
+        other_org, other_rh = create_org_and_user(name="Autre org", email="rh@autre.test")
+        self.client.force_login(self.rh)
+        resp = self.client.get(reverse("accounts:members"))
+        self.assertNotContains(resp, "rh@autre.test")
+
+    def test_invited_manager_can_login_after_password_reset(self):
+        """Vérifie que le compte invité (mot de passe inutilisable) peut bien
+        définir un mot de passe puis se connecter — pas de configuration
+        allauth qui bloquerait ce compte (ex. vérification email obligatoire)."""
+        self.client.force_login(self.rh)
+        self.client.post(reverse("accounts:members"), {
+            "first_name": "Sacha", "last_name": "Manager", "email": "sacha@invite.test",
+        })
+        user = User.objects.get(email="sacha@invite.test")
+        user.set_password("un-mot-de-passe-solide-123")
+        user.save()
+        self.client.logout()
+        logged_in = self.client.login(username="sacha@invite.test", password="un-mot-de-passe-solide-123")
+        self.assertTrue(logged_in)

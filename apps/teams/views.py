@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -5,8 +6,9 @@ from django.db import IntegrityError
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from core.managers import get_org_object_or_404
+from .csv_import import CSVImportError, import_persons_csv
 from .models import Team, Person, TeamMembership
-from .forms import TeamForm, PersonForm, AddMemberForm
+from .forms import TeamForm, PersonForm, PersonImportForm, AddMemberForm
 
 
 # ── Équipes ──────────────────────────────────────────────────────────────────
@@ -142,6 +144,53 @@ def person_create(request):
     else:
         form = PersonForm()
     return render(request, "teams/person_create.html", {"form": form})
+
+
+# ── Import CSV ───────────────────────────────────────────────────────────────
+
+@login_required
+def person_import(request):
+    result = None
+    if request.method == "POST":
+        form = PersonImportForm(request.POST, request.FILES)
+        if form.is_valid():
+            try:
+                result = import_persons_csv(
+                    form.cleaned_data["csv_file"], request.user.org, request.user
+                )
+            except CSVImportError as exc:
+                messages.error(request, str(exc))
+            else:
+                if result["created"]:
+                    messages.success(
+                        request,
+                        _("%(n)d personne(s) importée(s) avec succès.") % {"n": result["created"]}
+                    )
+                if result["skipped_existing"]:
+                    messages.info(
+                        request,
+                        _("%(n)d ligne(s) ignorée(s) — email déjà présent dans votre organisation.")
+                        % {"n": result["skipped_existing"]}
+                    )
+                if not result["created"] and not result["skipped_existing"] and not result["row_errors"]:
+                    messages.info(request, _("Le fichier ne contenait aucune ligne exploitable."))
+    else:
+        form = PersonImportForm()
+
+    return render(request, "teams/person_import.html", {"form": form, "result": result})
+
+
+@login_required
+def person_import_template(request):
+    """Modèle CSV téléchargeable — colonnes attendues par l'import."""
+    content = (
+        "first_name,last_name,email,person_type\n"
+        "Camille,Dupont,camille.dupont@exemple.com,candidate\n"
+        "Alex,Martin,alex.martin@exemple.com,collaborator\n"
+    )
+    response = HttpResponse(content, content_type="text/csv; charset=utf-8")
+    response["Content-Disposition"] = 'attachment; filename="modele-import-personnes.csv"'
+    return response
 
 
 # ── RGPD — Droit à l'effacement ───────────────────────────────────────────────

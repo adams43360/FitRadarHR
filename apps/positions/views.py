@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -143,6 +145,96 @@ def position_profile_edit(request, pk):
         "form": form,
         "position": position,
         "dimensions": dimensions,
+    })
+
+
+# ── Comparaison de candidats (item #3 de la roadmap V2) ──────────────────────
+
+COMPARE_COLORS = ["99,102,241", "244,63,94", "234,179,8", "14,165,233", "168,85,247"]
+COMPARE_MAX_CANDIDATES = 5
+
+
+@login_required
+def position_compare(request, pk):
+    from apps.fit.engine import DIMENSIONS, DIMENSION_LABELS as FIT_DIMENSION_LABELS
+    from apps.fit.models import PositionFitResult
+    from apps.reports.insights import DIMENSION_TOOLTIPS
+    from apps.reports.services import audit, get_lang
+
+    position = get_org_object_or_404(Position, request.user.org, pk=pk)
+    if not position.has_profile:
+        messages.error(request, _("Définissez d'abord le profil Big Five cible du poste."))
+        return redirect("positions:detail", pk=position.pk)
+
+    person_ids = request.GET.getlist("persons")
+    fits = list(
+        PositionFitResult.objects
+        .for_org(request.user.org)
+        .filter(position=position, person_id__in=person_ids)
+        .select_related("person", "person_profile")
+        .order_by("-overall_fit")
+    )
+
+    if len(fits) < 2:
+        messages.error(request, _("Sélectionnez au moins 2 personnes à comparer."))
+        return redirect("positions:detail", pk=position.pk)
+    if len(fits) > COMPARE_MAX_CANDIDATES:
+        fits = fits[:COMPARE_MAX_CANDIDATES]
+        messages.info(request, _("Comparaison limitée aux %(n)d premières personnes sélectionnées.") % {"n": COMPARE_MAX_CANDIDATES})
+
+    lang = get_lang(request)
+    profile = position.profile
+    pos_min = [getattr(profile, f"{d}_min") for d in DIMENSIONS]
+    pos_max = [getattr(profile, f"{d}_max") for d in DIMENSIONS]
+    pos_mid = [round((mn + mx) / 2, 1) for mn, mx in zip(pos_min, pos_max)]
+
+    candidates = []
+    for i, fit in enumerate(fits):
+        person_profile = fit.person_profile
+        scores = (
+            [float(getattr(person_profile, d)) for d in DIMENSIONS]
+            if person_profile else [50.0] * len(DIMENSIONS)
+        )
+        candidates.append({
+            "person": fit.person,
+            "fit": fit,
+            "scores": scores,
+            "dim_fits": [float(getattr(fit, f"{d}_fit")) for d in DIMENSIONS],
+            "color": COMPARE_COLORS[i % len(COMPARE_COLORS)],
+            "has_profile": person_profile is not None,
+        })
+
+    dim_rows = []
+    for idx, d in enumerate(DIMENSIONS):
+        dim_rows.append({
+            "label": FIT_DIMENSION_LABELS[d][lang],
+            "tooltip": DIMENSION_TOOLTIPS[d][lang],
+            "min": pos_min[idx],
+            "max": pos_max[idx],
+            "cells": [
+                {
+                    "score": c["scores"][idx],
+                    "fit": c["dim_fits"][idx],
+                    "in_range": pos_min[idx] <= c["scores"][idx] <= pos_max[idx],
+                }
+                for c in candidates
+            ],
+        })
+
+    audit(
+        request, "position_fit.compared", "Position", position.id,
+        person_ids=[str(c["person"].pk) for c in candidates],
+    )
+
+    return render(request, "positions/compare.html", {
+        "position": position,
+        "candidates": candidates,
+        "dim_rows": dim_rows,
+        "chart_labels_json": json.dumps([FIT_DIMENSION_LABELS[d][lang] for d in DIMENSIONS]),
+        "pos_mid_json": json.dumps(pos_mid),
+        "candidate_scores_json": json.dumps([c["scores"] for c in candidates]),
+        "candidate_names_json": json.dumps([c["person"].full_name for c in candidates]),
+        "candidate_colors_json": json.dumps([c["color"] for c in candidates]),
     })
 
 
