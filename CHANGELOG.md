@@ -4,6 +4,33 @@ Toutes les évolutions notables de FitRadarHR sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) —
 le projet n'étant pas encore versionné, les entrées sont datées.
 
+## 2026-07-03 (6)
+
+### Ajouté
+- **Connexion SSO Keycloak/OIDC** (item #7 roadmap V2, RICE 0.8, US-E1-05) :
+  chaque organisation peut connecter son propre fournisseur d'identité OIDC
+  (Keycloak ou équivalent) — écran de configuration RH (`/settings/sso/`),
+  point d'entrée public de connexion (`/login/sso/`), provisioning JIT d'un
+  compte à la première connexion. Le SSO s'ajoute à l'email/mot de passe
+  existant, il ne le remplace jamais. Isolation stricte multi-tenant : un
+  IdP par org, aucun partage de configuration, refus explicite en cas de
+  collision d'email entre deux organisations.
+  Intégration technique : `allauth.socialaccount` + provider générique
+  `openid_connect`, un `SocialApp` synchronisé par organisation
+  (`apps/accounts/sso.py`) — le flux OAuth2/OIDC (échange de jetons,
+  validation JWT) s'appuie sur allauth plutôt que d'être ré-écrit.
+- 22 nouveaux tests (synchro modèle ↔ SocialApp, isolation multi-tenant,
+  provisioning JIT scopé par org, refus cross-org, i18n) — 165 tests au total.
+- Documentation utilisateur `docs/user/getting-started/sso.md` et mise à
+  jour de `docs/product/user-stories.md` (US-E1-05), `docs/technical/schema.md`
+  et `docs/technical/stack.md`.
+
+**⚠️ À valider avec un IdP réel avant mise en production** : le provisioning
+JIT et l'isolation multi-tenant sont testés unitairement, mais l'échange
+OAuth2/OIDC complet (redirection, callback, validation du jeton) nécessite un
+Keycloak (ou équivalent) réel pour une validation de bout en bout — non
+disponible dans l'environnement de test automatisé.
+
 ## 2026-07-03 (5)
 
 ### Ajouté

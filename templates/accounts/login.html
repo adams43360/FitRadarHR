@@ -50,6 +50,12 @@
     </div>
     {% endif %}
 
+    <p class="mt-4 text-center text-sm">
+      <a href="{% url 'accounts:sso_login_entry' %}" class="text-indigo-600 hover:underline">
+        {% trans "Se connecter via votre organisation (SSO)" %}
+      </a>
+    </p>
+
     <p class="mt-6 text-center text-sm text-gray-400">
       {% trans "Pas encore de compte ?" %}
       <a href="{% url 'accounts:signup_choice' %}" class="text-indigo-600 hover:underline">{% trans "S'inscrire" %}</a>

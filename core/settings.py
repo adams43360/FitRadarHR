@@ -44,6 +44,8 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     "allauth",
     "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.openid_connect",
     "whitenoise.runserver_nostatic",
 ]
 
@@ -131,6 +133,14 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 LOGIN_REDIRECT_URL = "/dashboard/"
 LOGOUT_REDIRECT_URL = "/"
+
+# SSO SAML/OIDC (V2, item #7 roadmap) — un IdP par organisation, provisionné
+# dynamiquement (voir apps/accounts/models.py::OrgSSOConfig, apps/accounts/sso.py).
+# Auto-signup : provisioning JIT géré manuellement dans le pipeline (apps/accounts/adapters.py),
+# jamais par le comportement par défaut d'allauth.
+SOCIALACCOUNT_AUTO_SIGNUP = False
+SOCIALACCOUNT_ADAPTER = "apps.accounts.adapters.OrgScopedSocialAccountAdapter"
+SOCIALACCOUNT_STORE_TOKENS = False
 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},

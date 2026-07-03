@@ -102,7 +102,6 @@ docker compose exec app python manage.py migrate  # migrations
 
 | Brique | Version future | Motivation |
 |---|---|---|
-| **Keycloak / SSO OIDC** | V2+ | Auth email/mdp suffit en V1. django-allauth est déjà OIDC-compatible : le branchement Keycloak sera une configuration, pas une réécriture. |
 | **Celery + Redis** | Si besoin | Pour les notifications différées ou les calculs lourds. Pas justifié en V1. |
 | **Kubernetes** | Si forte charge | K8S = overhead non justifié pour un VPS solo. Évolution naturelle : Docker Compose → Kamal → K8S. |
 | **Mode calibré du profil de poste** | V2+ | Nécessite un volume de données historiques. |
@@ -118,7 +117,8 @@ docker compose exec app python manage.py migrate  # migrations
 | **Items IPIP** | 50 ou 100 items au choix — paramètre configurable par organisation (50 items ≈ 10 min, candidats externes ; 100 items = plus précis, mobilité interne). Les deux algorithmes de scoring sont implémentés. |
 | **SMTP V1** | Gmail SMTP avec App Password Google. Limite : 500 emails/jour (gratuit) ou 2 000 (Workspace). Migration vers Resend/Sendgrid possible en changeant uniquement la config. |
 | **Multi-tenant** | **Option A — `tenant_id` (row-level).** Toutes les orgs partagent les mêmes tables, chaque ligne porte un `org_id`. Filtrage automatique via Django model managers. Simple, solide, standard pour une V1 SaaS. |
+| **SSO Keycloak / OIDC (V2)** | **Un IdP par organisation**, via `allauth.socialaccount` + provider générique `openid_connect`. Chaque `OrgSSOConfig` synchronise un `SocialApp` dédié (`provider_id=login_slug`) — pas de configuration statique dans `settings.py`, tout est piloté par la base pour rester cohérent avec le multi-tenant existant. Le SSO s'ajoute à l'email/mot de passe, il ne le remplace jamais (pas de verrouillage si l'IdP tombe). |
 
 ---
 
-*Dernière mise à jour : 2026-06-30*
+*Dernière mise à jour : 2026-07-03*

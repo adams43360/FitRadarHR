@@ -74,6 +74,7 @@ nav:
     - Essayer la démo: getting-started/demo.md
     - Créer un compte: getting-started/signup.md
     - Tableau de bord: getting-started/dashboard.md
+    - Connexion SSO (Keycloak/OIDC): getting-started/sso.md
   - Départements:
     - departments/index.md
   - Postes:

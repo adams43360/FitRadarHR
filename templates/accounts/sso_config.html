@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Connexion SSO (SAML/OIDC)" %} — FitRadarHR{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-1">{% trans "Connexion SSO (SAML/OIDC)" %}</h1>
+  <p class="text-sm text-gray-500 mb-6">
+    {% trans "Connectez le fournisseur d'identité (Keycloak ou tout IdP compatible OIDC) de votre organisation. Le SSO s'ajoute à la connexion email/mot de passe existante — il ne la remplace jamais." %}
+  </p>
+
+  <div class="bg-white rounded-2xl border border-gray-200 p-6">
+    <form method="post" novalidate class="space-y-4">
+      {% csrf_token %}
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">{{ form.display_name.label }}</label>
+        <input type="text" name="display_name" value="{{ form.display_name.value|default:'' }}"
+               placeholder="{% trans 'Acme Corp SSO' %}"
+               class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        {% if form.display_name.errors %}<p class="text-red-500 text-xs mt-1">{{ form.display_name.errors.0 }}</p>{% endif %}
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">{{ form.login_slug.label }}</label>
+        <input type="text" name="login_slug" value="{{ form.login_slug.value|default:'' }}"
+               placeholder="acme-corp"
+               class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <p class="text-xs text-gray-400 mt-1">{{ form.login_slug.help_text }}</p>
+        {% if form.login_slug.errors %}<p class="text-red-500 text-xs mt-1">{{ form.login_slug.errors.0 }}</p>{% endif %}
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">{{ form.issuer_url.label }}</label>
+        <input type="url" name="issuer_url" value="{{ form.issuer_url.value|default:'' }}"
+               placeholder="https://idp.acme-corp.example/realms/acme"
+               class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <p class="text-xs text-gray-400 mt-1">{{ form.issuer_url.help_text }}</p>
+        {% if form.issuer_url.errors %}<p class="text-red-500 text-xs mt-1">{{ form.issuer_url.errors.0 }}</p>{% endif %}
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">{{ form.client_id.label }}</label>
+          <input type="text" name="client_id" value="{{ form.client_id.value|default:'' }}"
+                 class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          {% if form.client_id.errors %}<p class="text-red-500 text-xs mt-1">{{ form.client_id.errors.0 }}</p>{% endif %}
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">{{ form.client_secret.label }}</label>
+          <input type="password" name="client_secret" autocomplete="new-password"
+                 class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <p class="text-xs text-gray-400 mt-1">
+            {% if config %}{% trans "Secret déjà enregistré." %} {% endif %}{{ form.client_secret.help_text }}
+          </p>
+          {% if form.client_secret.errors %}<p class="text-red-500 text-xs mt-1">{{ form.client_secret.errors.0 }}</p>{% endif %}
+        </div>
+      </div>
+
+      <label class="flex items-center gap-2 text-sm text-gray-700">
+        <input type="checkbox" name="enabled" {% if form.enabled.value %}checked{% endif %}
+               class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+        {{ form.enabled.label }}
+      </label>
+
+      {% if config %}
+      <p class="text-xs text-gray-400">
+        {% blocktrans with slug=config.login_slug %}URL de connexion SSO à communiquer à vos utilisateurs : identifiant « {{ slug }} » sur la page de connexion.{% endblocktrans %}
+      </p>
+      {% endif %}
+
+      <div class="flex justify-end">
+        <button type="submit"
+                class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors">
+          {% trans "Enregistrer" %}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

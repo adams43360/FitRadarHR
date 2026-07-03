@@ -79,6 +79,24 @@
 
 ---
 
+### US-E1-05 — Connexion SSO via l'IdP OIDC de l'organisation
+**En tant que** RH (ADMIN), **je veux** configurer le fournisseur d'identité (Keycloak ou tout IdP compatible OIDC) de mon organisation, **afin que** mes utilisateurs puissent se connecter avec leurs identifiants d'entreprise plutôt qu'un mot de passe FitRadarHR dédié.
+
+**Critères d'acceptation :**
+- [ ] Un RH accède à un écran de configuration SSO depuis les paramètres de son organisation
+- [ ] Le formulaire demande : nom d'affichage (ex. "Acme Corp SSO"), identifiant de connexion (`login_slug`, unique, utilisé dans l'URL de connexion), URL d'émetteur OIDC (`issuer_url`), `client_id`, `client_secret`
+- [ ] Le `client_secret` n'est jamais ré-affiché après saisie (write-only) — seule sa présence est confirmée à l'écran
+- [ ] Un bascule "Activé / Désactivé" permet de couper le SSO sans perdre la configuration
+- [ ] Chaque organisation configure **son propre** IdP — aucune configuration n'est partagée entre organisations (isolation multi-tenant stricte)
+- [ ] Le SSO **s'ajoute** à la connexion par email/mot de passe existante — il ne la remplace jamais automatiquement, pour éviter un verrouillage en cas de panne de l'IdP
+- [ ] La page de connexion propose un lien "Se connecter via votre organisation" qui demande le `login_slug` puis redirige vers l'IdP correspondant
+- [ ] À la première connexion réussie via SSO, un compte `User` est automatiquement créé (provisioning JIT) et rattaché à l'organisation propriétaire de la configuration SSO utilisée, avec le rôle par défaut Manager (modifiable ensuite par un RH)
+- [ ] Si un compte avec le même email existe déjà dans l'organisation, la connexion SSO se rattache à ce compte plutôt que d'en créer un doublon
+- [ ] Toute erreur de configuration (IdP injoignable, identifiants invalides) affiche un message clair, sans exposer de détail technique sensible
+- [ ] L'écran de configuration est disponible en FR et EN
+
+---
+
 ### US-E1-04 — Gestion des rôles
 **En tant que** RH (ADMIN), **je veux** modifier le rôle d'un utilisateur ou le désactiver, **afin de** maintenir un contrôle sur les accès.
 
@@ -486,4 +504,4 @@
 
 ---
 
-*Dernière mise à jour : 2026-07-01*
+*Dernière mise à jour : 2026-07-03*

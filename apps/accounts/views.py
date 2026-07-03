@@ -8,8 +8,8 @@ from django.utils.translation import gettext_lazy as _
 
 from django.utils.http import url_has_allowed_host_and_scheme
 
-from .forms import InviteManagerForm, SignupB2BForm, SignupB2CForm
-from .models import Feedback, Organization, User
+from .forms import InviteManagerForm, OrgSSOConfigForm, SignupB2BForm, SignupB2CForm
+from .models import Feedback, Organization, OrgSSOConfig, User
 
 
 # ─── Vues ─────────────────────────────────────────────────────────────────────
@@ -232,6 +232,52 @@ def org_members(request):
 
     members = request.user.org.users.select_related("invited_by").order_by("-created_at")
     return render(request, "accounts/members.html", {"members": members, "form": form})
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Configuration SSO OIDC — item #7 de la roadmap V2 (US-E1-05)
+# ──────────────────────────────────────────────────────────────────────────────
+
+@login_required
+def sso_config(request):
+    """Configuration du fournisseur d'identité (Keycloak/OIDC) de l'org — RH only.
+
+    Le SSO s'ajoute à la connexion email/mot de passe, il ne la remplace
+    jamais. Chaque org configure son propre IdP (isolation multi-tenant).
+    """
+    if not request.user.is_rh:
+        return HttpResponseForbidden()
+
+    org = request.user.org
+    instance = OrgSSOConfig.objects.filter(org=org).first()
+
+    if request.method == "POST":
+        form = OrgSSOConfigForm(request.POST, instance=instance, org=org)
+        if form.is_valid():
+            config = form.save(commit=False)
+            config.org = org
+            config.save()
+            messages.success(request, _("Configuration SSO enregistrée."))
+            return redirect("accounts:sso_config")
+    else:
+        form = OrgSSOConfigForm(instance=instance, org=org)
+
+    return render(request, "accounts/sso_config.html", {"form": form, "config": instance})
+
+
+def sso_login_entry(request):
+    """Point d'entrée SSO public — demande l'identifiant de connexion de
+    l'organisation, puis redirige vers son fournisseur OIDC."""
+    if request.method == "POST":
+        slug = request.POST.get("login_slug", "").strip().lower()
+        config = OrgSSOConfig.objects.filter(login_slug=slug, enabled=True).first()
+        if config is not None:
+            return redirect("openid_connect_login", provider_id=config.login_slug)
+        messages.error(
+            request, _("Aucune organisation active ne correspond à cet identifiant.")
+        )
+
+    return render(request, "accounts/sso_login_entry.html")
 
 
 @login_required

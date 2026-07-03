@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
-from .models import User
+from .models import OrgSSOConfig, User
 
 
 class BaseSignupForm(forms.Form):
@@ -48,3 +48,50 @@ class InviteManagerForm(forms.Form):
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError(_("Cet email est déjà utilisé par un compte existant."))
         return email
+
+
+class OrgSSOConfigForm(forms.ModelForm):
+    """Configuration SSO OIDC de l'organisation — RH only (item #7 roadmap V2).
+
+    Le `client_secret` est write-only : le champ est toujours vide à
+    l'affichage, une valeur laissée vide à la sauvegarde conserve le secret
+    déjà enregistré (pas de ré-affichage, pas de perte accidentelle).
+    """
+
+    client_secret = forms.CharField(
+        label=_("Client secret"), required=False,
+        widget=forms.PasswordInput(render_value=False),
+        help_text=_("Laisser vide pour conserver le secret déjà enregistré."),
+    )
+
+    class Meta:
+        model = OrgSSOConfig
+        fields = ["display_name", "login_slug", "issuer_url", "client_id", "client_secret", "enabled"]
+        labels = {
+            "display_name": _("Nom d'affichage"),
+            "login_slug": _("Identifiant de connexion"),
+            "issuer_url": _("URL d'émetteur OIDC"),
+            "client_id": _("Client ID"),
+            "enabled": _("Activé"),
+        }
+
+    def __init__(self, *args, **kwargs):
+        self._org = kwargs.pop("org")
+        super().__init__(*args, **kwargs)
+
+    def clean_login_slug(self):
+        slug = self.cleaned_data["login_slug"].strip().lower()
+        qs = OrgSSOConfig.objects.exclude(org=self._org)
+        if qs.filter(login_slug=slug).exists():
+            raise forms.ValidationError(
+                _("Cet identifiant de connexion est déjà utilisé par une autre organisation.")
+            )
+        return slug
+
+    def clean_client_secret(self):
+        secret = self.cleaned_data.get("client_secret")
+        if not secret:
+            if self.instance and self.instance.pk:
+                return self.instance.client_secret  # conserve le secret existant
+            raise forms.ValidationError(_("Le client secret est obligatoire à la création."))
+        return secret

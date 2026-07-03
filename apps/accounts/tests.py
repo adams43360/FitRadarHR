@@ -314,3 +314,316 @@ class InviteManagerTests(TestCase):
         with translation.override("en"):
             self.assertEqual(translation.gettext("Inviter un manager"), "Invite a manager")
             self.assertEqual(translation.gettext("Membres de l'organisation"), "Organization members")
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# SSO OIDC — item #7 de la roadmap V2 (US-E1-05)
+# ──────────────────────────────────────────────────────────────────────────────
+
+class OrgSSOConfigModelTests(TestCase):
+    """Synchronisation OrgSSOConfig ↔ SocialApp (allauth)."""
+
+    def setUp(self):
+        from core.testing import create_org_and_user
+        self.org, self.rh = create_org_and_user(name="Acme Corp", email="rh@acme.test")
+
+    def _make_config(self, **kwargs):
+        from apps.accounts.models import OrgSSOConfig
+        defaults = dict(
+            org=self.org, display_name="Acme SSO", login_slug="acme",
+            issuer_url="https://idp.acme.test/realms/acme",
+            client_id="fitradarhr", client_secret="s3cr3t",
+        )
+        defaults.update(kwargs)
+        return OrgSSOConfig.objects.create(**defaults)
+
+    def test_save_creates_matching_social_app(self):
+        from allauth.socialaccount.models import SocialApp
+        self._make_config(enabled=True)
+        app = SocialApp.objects.get(provider="openid_connect", provider_id="acme")
+        self.assertEqual(app.name, "Acme SSO")
+        self.assertEqual(app.client_id, "fitradarhr")
+        self.assertEqual(app.secret, "s3cr3t")
+        self.assertEqual(app.settings["server_url"], "https://idp.acme.test/realms/acme")
+
+    def test_disabled_config_not_linked_to_site(self):
+        from django.contrib.sites.models import Site
+        from allauth.socialaccount.models import SocialApp
+
+        self._make_config(enabled=False)
+        app = SocialApp.objects.get(provider="openid_connect", provider_id="acme")
+        self.assertNotIn(Site.objects.get_current(), app.sites.all())
+
+    def test_enabling_links_site_disabling_unlinks(self):
+        from django.contrib.sites.models import Site
+        from allauth.socialaccount.models import SocialApp
+
+        config = self._make_config(enabled=True)
+        app = SocialApp.objects.get(provider="openid_connect", provider_id="acme")
+        self.assertIn(Site.objects.get_current(), app.sites.all())
+
+        config.enabled = False
+        config.save()
+        app.refresh_from_db()
+        self.assertNotIn(Site.objects.get_current(), app.sites.all())
+
+    def test_delete_removes_social_app(self):
+        from allauth.socialaccount.models import SocialApp
+
+        config = self._make_config()
+        config.delete()
+        self.assertFalse(
+            SocialApp.objects.filter(provider="openid_connect", provider_id="acme").exists()
+        )
+
+    def test_login_slug_unique_at_db_level(self):
+        from core.testing import create_org_and_user
+        from apps.accounts.models import OrgSSOConfig
+        from django.db import IntegrityError, transaction
+
+        self._make_config(login_slug="acme")
+        other_org, _ = create_org_and_user(name="Autre", email="rh@autre-sso.test")
+        with self.assertRaises(IntegrityError):
+            with transaction.atomic():
+                OrgSSOConfig.objects.create(
+                    org=other_org, display_name="Autre SSO", login_slug="acme",
+                    issuer_url="https://idp.autre.test", client_id="x", client_secret="y",
+                )
+
+
+class SSOConfigViewTests(TestCase):
+    """Écran de configuration SSO — RH only, isolation multi-tenant."""
+
+    def setUp(self):
+        from core.testing import create_org_and_user
+        self.org, self.rh = create_org_and_user(name="Acme Corp", email="rh@acme-cfg.test")
+
+    def _post(self, **overrides):
+        data = {
+            "display_name": "Acme SSO", "login_slug": "acme-cfg",
+            "issuer_url": "https://idp.acme.test/realms/acme",
+            "client_id": "fitradarhr", "client_secret": "s3cr3t",
+        }
+        data.update(overrides)
+        return self.client.post(reverse("accounts:sso_config"), data)
+
+    def test_rh_can_create_config(self):
+        from apps.accounts.models import OrgSSOConfig
+        self.client.force_login(self.rh)
+        resp = self._post()
+        self.assertRedirects(resp, reverse("accounts:sso_config"))
+        config = OrgSSOConfig.objects.get(org=self.org)
+        self.assertEqual(config.login_slug, "acme-cfg")
+        self.assertEqual(config.client_secret, "s3cr3t")
+
+    def test_manager_forbidden(self):
+        from core.testing import create_org_and_user
+        from apps.accounts.models import User
+        _, manager = create_org_and_user(
+            name="Org2", email="manager@acme-cfg.test", role=User.Role.MANAGER
+        )
+        self.client.force_login(manager)
+        resp = self.client.get(reverse("accounts:sso_config"))
+        self.assertEqual(resp.status_code, 403)
+
+    def test_client_secret_never_rendered(self):
+        self.client.force_login(self.rh)
+        self._post()
+        resp = self.client.get(reverse("accounts:sso_config"))
+        self.assertNotContains(resp, "s3cr3t")
+
+    def test_resubmit_without_secret_keeps_existing(self):
+        from apps.accounts.models import OrgSSOConfig
+        self.client.force_login(self.rh)
+        self._post()
+        self._post(client_secret="", display_name="Acme SSO (renamed)")
+        config = OrgSSOConfig.objects.get(org=self.org)
+        self.assertEqual(config.client_secret, "s3cr3t")
+        self.assertEqual(config.display_name, "Acme SSO (renamed)")
+
+    def test_login_slug_must_be_unique_across_orgs(self):
+        from core.testing import create_org_and_user
+        other_org, other_rh = create_org_and_user(name="Autre", email="rh@autre-cfg.test")
+        self.client.force_login(other_rh)
+        self._post(login_slug="taken-slug")
+
+        self.client.force_login(self.rh)
+        resp = self._post(login_slug="taken-slug")
+        self.assertEqual(resp.status_code, 200)  # re-render avec erreur
+        self.assertTrue(resp.context["form"].errors.get("login_slug"))
+
+    def test_config_isolated_per_org(self):
+        from core.testing import create_org_and_user
+        other_org, other_rh = create_org_and_user(name="Autre", email="rh@autre-cfg2.test")
+        self.client.force_login(self.rh)
+        self._post()
+
+        self.client.force_login(other_rh)
+        resp = self.client.get(reverse("accounts:sso_config"))
+        self.assertIsNone(resp.context["config"])
+
+
+class SSOLoginEntryTests(TestCase):
+    """Point d'entrée public de connexion SSO."""
+
+    def setUp(self):
+        from core.testing import create_org_and_user
+        from apps.accounts.models import OrgSSOConfig
+        self.org, self.rh = create_org_and_user(name="Acme Corp", email="rh@acme-entry.test")
+        self.config = OrgSSOConfig.objects.create(
+            org=self.org, display_name="Acme SSO", login_slug="acme-entry",
+            issuer_url="https://idp.acme.test/realms/acme",
+            client_id="fitradarhr", client_secret="s3cr3t", enabled=True,
+        )
+
+    def test_enabled_slug_redirects_to_provider(self):
+        resp = self.client.post(reverse("accounts:sso_login_entry"), {"login_slug": "acme-entry"})
+        self.assertRedirects(
+            resp, reverse("openid_connect_login", kwargs={"provider_id": "acme-entry"}),
+            fetch_redirect_response=False,
+        )
+
+    def test_disabled_config_shows_error(self):
+        self.config.enabled = False
+        self.config.save()
+        resp = self.client.post(reverse("accounts:sso_login_entry"), {"login_slug": "acme-entry"})
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "Aucune organisation active")
+
+    def test_unknown_slug_shows_error(self):
+        resp = self.client.post(reverse("accounts:sso_login_entry"), {"login_slug": "nope"})
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "Aucune organisation active")
+
+    def test_slug_matching_is_case_insensitive(self):
+        resp = self.client.post(reverse("accounts:sso_login_entry"), {"login_slug": "ACME-ENTRY"})
+        self.assertRedirects(
+            resp, reverse("openid_connect_login", kwargs={"provider_id": "acme-entry"}),
+            fetch_redirect_response=False,
+        )
+
+    def test_sso_link_visible_on_login_page(self):
+        resp = self.client.get(reverse("accounts:login"))
+        self.assertContains(resp, reverse("accounts:sso_login_entry"))
+
+
+class OrgScopedSocialAccountAdapterTests(TestCase):
+    """Provisioning JIT — logique testée sans échange OAuth2/OIDC réel
+    (nécessite un IdP en ligne, hors de portée des tests automatisés).
+    Contrat vérifié ici : la partie FitRadarHR de l'adaptateur allauth."""
+
+    def setUp(self):
+        from core.testing import create_org_and_user
+        from apps.accounts.models import OrgSSOConfig
+        from apps.accounts.adapters import OrgScopedSocialAccountAdapter
+
+        self.org, self.rh = create_org_and_user(name="Acme Corp", email="rh@acme-adapter.test")
+        self.config = OrgSSOConfig.objects.create(
+            org=self.org, display_name="Acme SSO", login_slug="acme-adapter",
+            issuer_url="https://idp.acme.test/realms/acme",
+            client_id="fitradarhr", client_secret="s3cr3t", enabled=True,
+        )
+        self.adapter = OrgScopedSocialAccountAdapter()
+
+    def _request(self):
+        from django.test import RequestFactory
+        from django.contrib.sessions.middleware import SessionMiddleware
+        from django.contrib.messages.storage.fallback import FallbackStorage
+
+        request = RequestFactory().get("/")
+        SessionMiddleware(lambda r: None).process_request(request)
+        request.session.save()
+        request._messages = FallbackStorage(request)
+        return request
+
+    def _sociallogin(self, email, provider="acme-adapter", uid="sub-1", first_name="New", last_name="Employee"):
+        from allauth.socialaccount.models import SocialAccount, SocialLogin
+        from apps.accounts.models import User
+
+        account = SocialAccount(provider=provider, uid=uid)
+        user_stub = User(email=email, first_name=first_name, last_name=last_name)
+        return SocialLogin(user=user_stub, account=account)
+
+    def test_new_user_provisioned_in_correct_org(self):
+        from apps.accounts.models import User
+
+        sociallogin = self._sociallogin(email="new@acme-adapter.test")
+        self.adapter.pre_social_login(self._request(), sociallogin)
+
+        user = User.objects.get(email="new@acme-adapter.test")
+        self.assertEqual(user.org, self.org)
+        self.assertEqual(user.role, User.Role.MANAGER)
+        self.assertFalse(user.has_usable_password())
+        self.assertTrue(sociallogin.is_existing)
+
+    def test_existing_user_same_org_is_reused(self):
+        from apps.accounts.models import User
+
+        existing = User.objects.create_user(
+            email="existing@acme-adapter.test", password=None,
+            first_name="Existing", last_name="Person", org=self.org,
+        )
+        sociallogin = self._sociallogin(email="existing@acme-adapter.test")
+        self.adapter.pre_social_login(self._request(), sociallogin)
+
+        self.assertEqual(sociallogin.user.pk, existing.pk)
+        self.assertEqual(User.objects.filter(email="existing@acme-adapter.test").count(), 1)
+
+    def test_existing_user_other_org_is_rejected(self):
+        from core.testing import create_org_and_user
+        from apps.accounts.models import User
+        from allauth.core.exceptions import ImmediateHttpResponse
+
+        other_org, _ = create_org_and_user(name="Autre", email="rh@autre-adapter.test")
+        User.objects.create_user(
+            email="cross-org@test.test", password=None,
+            first_name="Cross", last_name="Org", org=other_org,
+        )
+        sociallogin = self._sociallogin(email="cross-org@test.test")
+        with self.assertRaises(ImmediateHttpResponse):
+            self.adapter.pre_social_login(self._request(), sociallogin)
+
+        # Aucun nouveau compte n'a été créé pour l'org du SSO utilisé
+        self.assertFalse(User.objects.filter(email="cross-org@test.test", org=self.org).exists())
+
+    def test_disabled_config_rejects_login(self):
+        from allauth.core.exceptions import ImmediateHttpResponse
+
+        self.config.enabled = False
+        self.config.save()
+        sociallogin = self._sociallogin(email="anyone@acme-adapter.test")
+        with self.assertRaises(ImmediateHttpResponse):
+            self.adapter.pre_social_login(self._request(), sociallogin)
+
+    def test_existing_sociallogin_skips_provisioning(self):
+        from apps.accounts.models import User
+        from allauth.socialaccount.models import SocialAccount, SocialLogin
+
+        existing = User.objects.create_user(
+            email="already-linked@acme-adapter.test", password=None,
+            first_name="Already", last_name="Linked", org=self.org,
+        )
+        account = SocialAccount(provider="acme-adapter", uid="sub-2")
+        sociallogin = SocialLogin(user=existing, account=account)
+        self.assertTrue(sociallogin.is_existing)
+
+        # Ne doit rien lever ni rien changer — retour anticipé
+        self.adapter.pre_social_login(self._request(), sociallogin)
+        self.assertEqual(User.objects.filter(email="already-linked@acme-adapter.test").count(), 1)
+
+    def test_sso_strings_translated_to_english(self):
+        """Le catalogue EN doit couvrir les nouvelles chaînes SSO (voir
+        locale/en/LC_MESSAGES/django.po) — pas de régression bilingue."""
+        from django.utils import translation
+        with translation.override("en"):
+            self.assertEqual(
+                translation.gettext("Connexion SSO (SAML/OIDC)"), "SSO login (SAML/OIDC)"
+            )
+            self.assertEqual(
+                translation.gettext("Se connecter via votre organisation (SSO)"),
+                "Sign in via your organization (SSO)",
+            )
+            self.assertEqual(
+                translation.gettext("Un compte existe déjà avec cet email dans une autre organisation."),
+                "An account already exists with this email in another organization.",
+            )

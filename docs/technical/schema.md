@@ -15,6 +15,7 @@ erDiagram
     Organization ||--o{ Team : "a"
     Organization ||--o{ Person : "a"
     Organization ||--o{ AuditLog : "génère"
+    Organization ||--o| OrgSSOConfig : "configure (optionnel)"
 
     User ||--o{ Team : "manage"
     User ||--o{ QuestionnaireLink : "envoie"
@@ -74,7 +75,26 @@ Utilisateur ayant un compte FitRadarHR (RH, Manager, ou Solo B2C).
 | `created_at` | TIMESTAMP | — |
 | `last_login_at` | TIMESTAMP | — |
 
-> **Note :** le mot de passe est géré par django-allauth, pas stocké en clair. En V2, ce champ est remplacé par un `external_oidc_id` (Keycloak).
+> **Note :** le mot de passe est géré par django-allauth, pas stocké en clair. En V2, un utilisateur peut *en plus* se connecter via SSO (voir `OrgSSOConfig` ci-dessous) — le mot de passe n'est jamais supprimé ni remplacé, les deux modes de connexion coexistent.
+
+---
+
+### `OrgSSOConfig` *(V2)*
+Configuration SSO OIDC d'une organisation — un IdP (ex. Keycloak) par organisation, jamais partagé entre tenants.
+
+| Champ | Type | Notes |
+|---|---|---|
+| `id` | UUID | — |
+| `org_id` | UUID FK → Organization (unique) | Un seul IdP par organisation (`OneToOne`) |
+| `enabled` | BOOLEAN | Coupe le SSO sans perdre la config |
+| `display_name` | VARCHAR(100) | Affiché sur le bouton "Se connecter avec…" |
+| `login_slug` | VARCHAR(50), unique | Identifiant utilisé dans l'URL de connexion SSO |
+| `issuer_url` | URL | Émetteur OIDC (endpoint de découverte) |
+| `client_id` | VARCHAR(255) | — |
+| `client_secret` | VARCHAR(255) | Write-only côté formulaire — jamais ré-affiché |
+| `created_at` / `updated_at` | TIMESTAMP | — |
+
+> Synchronisé en interne avec un `SocialApp` de `django-allauth` (`provider="openid_connect"`, `provider_id=login_slug`) — FitRadarHR s'appuie sur le flux OIDC déjà implémenté et audité par allauth plutôt que de ré-écrire l'échange de jetons.
 
 ---
 

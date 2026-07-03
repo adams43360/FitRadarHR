@@ -1955,3 +1955,158 @@ msgid "%(n)s personne"
 msgid_plural "%(n)s personnes"
 msgstr[0] "%(n)s person"
 msgstr[1] "%(n)s people"
+
+#: added-2026-07-03
+msgid "Connexion SSO (SAML/OIDC)"
+msgstr "SSO login (SAML/OIDC)"
+
+#: added-2026-07-03
+msgid ""
+"Connectez le fournisseur d'identité (Keycloak ou tout IdP compatible OIDC) "
+"de votre organisation. Le SSO s'ajoute à la connexion email/mot de passe "
+"existante — il ne la remplace jamais."
+msgstr ""
+"Connect your organization's identity provider (Keycloak or any OIDC-"
+"compatible IdP). SSO adds to the existing email/password login — it never "
+"replaces it."
+
+#: added-2026-07-03
+msgid "Secret déjà enregistré."
+msgstr "Secret already saved."
+
+#: added-2026-07-03
+msgid "Connexion SSO"
+msgstr "SSO login"
+
+#: added-2026-07-03
+msgid ""
+"Saisissez l'identifiant de connexion fourni par votre organisation pour être"
+" redirigé vers votre fournisseur d'identité."
+msgstr ""
+"Enter the login identifier provided by your organization to be redirected to"
+" your identity provider."
+
+#: added-2026-07-03
+msgid "Identifiant de connexion"
+msgstr "Login identifier"
+
+#: added-2026-07-03
+msgid "Continuer"
+msgstr "Continue"
+
+#: added-2026-07-03
+msgid "Se connecter avec email et mot de passe"
+msgstr "Sign in with email and password"
+
+#: added-2026-07-03
+msgid "Se connecter via votre organisation (SSO)"
+msgstr "Sign in via your organization (SSO)"
+
+#: added-2026-07-03
+msgid "activé"
+msgstr "enabled"
+
+#: added-2026-07-03
+msgid "nom d'affichage"
+msgstr "display name"
+
+#: added-2026-07-03
+msgid "Affiché sur le bouton « Se connecter avec… »."
+msgstr "Shown on the \"Sign in with…\" button."
+
+#: added-2026-07-03
+msgid "identifiant de connexion"
+msgstr "login identifier"
+
+#: added-2026-07-03
+msgid "Utilisé dans l'URL de connexion SSO — doit être unique."
+msgstr "Used in the SSO login URL — must be unique."
+
+#: added-2026-07-03
+msgid "URL d'émetteur OIDC"
+msgstr "OIDC issuer URL"
+
+#: added-2026-07-03
+msgid "Endpoint de découverte OIDC de votre fournisseur d'identité."
+msgstr "OIDC discovery endpoint of your identity provider."
+
+#: added-2026-07-03
+msgid "client ID"
+msgstr "client ID"
+
+#: added-2026-07-03
+msgid "client secret"
+msgstr "client secret"
+
+#: added-2026-07-03
+msgid "Jamais ré-affiché après saisie."
+msgstr "Never shown again after being entered."
+
+#: added-2026-07-03
+msgid "configuration SSO"
+msgstr "SSO configuration"
+
+#: added-2026-07-03
+msgid "configurations SSO"
+msgstr "SSO configurations"
+
+#: added-2026-07-03
+msgid "mis à jour le"
+msgstr "updated at"
+
+#: added-2026-07-03
+msgid "Client secret"
+msgstr "Client secret"
+
+#: added-2026-07-03
+msgid "Laisser vide pour conserver le secret déjà enregistré."
+msgstr "Leave empty to keep the secret already saved."
+
+#: added-2026-07-03
+msgid "Nom d'affichage"
+msgstr "Display name"
+
+#: added-2026-07-03
+msgid "Client ID"
+msgstr "Client ID"
+
+#: added-2026-07-03
+msgid "Activé"
+msgstr "Enabled"
+
+#: added-2026-07-03
+msgid ""
+"Cet identifiant de connexion est déjà utilisé par une autre organisation."
+msgstr "This login identifier is already used by another organization."
+
+#: added-2026-07-03
+msgid "Le client secret est obligatoire à la création."
+msgstr "The client secret is required when creating a new configuration."
+
+#: added-2026-07-03
+msgid "Connexion SSO non disponible pour cette organisation."
+msgstr "SSO login is not available for this organization."
+
+#: added-2026-07-03
+msgid "Votre fournisseur d'identité n'a pas transmis d'adresse email."
+msgstr "Your identity provider did not provide an email address."
+
+#: added-2026-07-03
+msgid "Un compte existe déjà avec cet email dans une autre organisation."
+msgstr "An account already exists with this email in another organization."
+
+#: added-2026-07-03
+msgid "Configuration SSO enregistrée."
+msgstr "SSO configuration saved."
+
+#: added-2026-07-03
+msgid "Aucune organisation active ne correspond à cet identifiant."
+msgstr "No active organization matches this identifier."
+
+#: added-2026-07-03
+msgid ""
+"URL de connexion SSO à communiquer à vos utilisateurs : identifiant « "
+"%(slug)s » sur la page de connexion."
+msgstr ""
+"SSO login URL to share with your users: identifier \"%(slug)s\" on the login"
+" page."

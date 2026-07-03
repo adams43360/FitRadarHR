@@ -122,6 +122,60 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.role in (self.Role.MANAGER, self.Role.SOLO)
 
 
+class OrgSSOConfig(models.Model):
+    """Configuration SSO OIDC d'une organisation — item #7 roadmap V2.
+
+    Un IdP (ex. Keycloak) par organisation, jamais partagé entre tenants.
+    S'ajoute à la connexion email/mot de passe, ne la remplace jamais (pas de
+    verrouillage si l'IdP est indisponible). Synchronisé avec un `SocialApp`
+    d'allauth — voir [[apps.accounts.sso]].
+    """
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    org = models.OneToOneField(
+        Organization, on_delete=models.CASCADE,
+        related_name="sso_config", verbose_name=_("organisation"),
+    )
+    enabled = models.BooleanField(_("activé"), default=False)
+    display_name = models.CharField(
+        _("nom d'affichage"), max_length=100,
+        help_text=_("Affiché sur le bouton « Se connecter avec… »."),
+    )
+    login_slug = models.SlugField(
+        _("identifiant de connexion"), max_length=50, unique=True,
+        help_text=_("Utilisé dans l'URL de connexion SSO — doit être unique."),
+    )
+    issuer_url = models.URLField(
+        _("URL d'émetteur OIDC"),
+        help_text=_("Endpoint de découverte OIDC de votre fournisseur d'identité."),
+    )
+    client_id = models.CharField(_("client ID"), max_length=255)
+    client_secret = models.CharField(
+        _("client secret"), max_length=255,
+        help_text=_("Jamais ré-affiché après saisie."),
+    )
+    created_at = models.DateTimeField(_("créé le"), auto_now_add=True)
+    updated_at = models.DateTimeField(_("mis à jour le"), auto_now=True)
+
+    class Meta:
+        verbose_name = _("configuration SSO")
+        verbose_name_plural = _("configurations SSO")
+
+    def __str__(self):
+        return f"SSO {self.org} ({self.login_slug})"
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        from .sso import sync_social_app
+        sync_social_app(self)
+
+    def delete(self, *args, **kwargs):
+        from .sso import delete_social_app
+        login_slug = self.login_slug
+        super().delete(*args, **kwargs)
+        delete_social_app(login_slug)
+
+
 class Feedback(models.Model):
     """Retour utilisateur in-app — alimente la priorisation de la roadmap.
 
