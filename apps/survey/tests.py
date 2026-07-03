@@ -1,8 +1,15 @@
 """Tests du scoring IPIP Big Five et du formulaire d'envoi."""
+import secrets
+from datetime import timedelta
+
+from django.core import mail
+from django.core.management import call_command
 from django.test import SimpleTestCase, TestCase
 from django.urls import reverse
+from django.utils import timezone
 
 from .ipip_data import DIMENSIONS, ITEMS
+from .models import QuestionnaireLink
 from .scoring import compute_scores, validate_answers
 
 
@@ -164,3 +171,87 @@ class SendFormRenderingTests(TestCase):
         })
         self.assertEqual(resp.status_code, 200)  # re-render avec erreur
         self.assertTrue(resp.context["form"].errors.get("questionnaire_version"))
+
+
+class SendRemindersCommandTests(TestCase):
+    """Item #1 de la roadmap V2 : relance à J+3 des questionnaires non complétés."""
+
+    def setUp(self):
+        from apps.teams.models import Person
+        from core.testing import create_org_and_user
+
+        self.org, self.user = create_org_and_user(email="rh@org.test")
+        self.person = Person.objects.create(
+            org=self.org, email="candidate@org.test",
+            first_name="Cam", last_name="Didate", created_by=self.user,
+        )
+
+    def _make_link(self, days_ago, status=QuestionnaireLink.Status.PENDING, reminder_sent=False):
+        now = timezone.now()
+        link = QuestionnaireLink.objects.create(
+            org=self.org, person=self.person,
+            token=secrets.token_urlsafe(32),
+            sent_by=self.user,
+            status=status,
+            expires_at=now + timedelta(days=7 - days_ago),
+            reminder_sent_at=now if reminder_sent else None,
+        )
+        # sent_at a `auto_now_add=True` — .update() contourne le save() pour
+        # simuler un envoi passé sans que Django ne le réécrive à "maintenant".
+        QuestionnaireLink.objects.filter(pk=link.pk).update(sent_at=now - timedelta(days=days_ago))
+        link.refresh_from_db()
+        return link
+
+    def test_reminder_sent_for_pending_link_older_than_3_days(self):
+        link = self._make_link(days_ago=4)
+        call_command("send_reminders")
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].to, ["candidate@org.test"])
+        link.refresh_from_db()
+        self.assertIsNotNone(link.reminder_sent_at)
+
+    def test_no_reminder_for_recent_link(self):
+        self._make_link(days_ago=1)
+        call_command("send_reminders")
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_no_reminder_sent_twice(self):
+        self._make_link(days_ago=5, reminder_sent=True)
+        call_command("send_reminders")
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_no_reminder_for_completed_link(self):
+        self._make_link(days_ago=4, status=QuestionnaireLink.Status.COMPLETED)
+        call_command("send_reminders")
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_no_reminder_for_expired_link(self):
+        # sent_at 10 jours dans le passé avec une validité de 7 jours → expiré
+        now = timezone.now()
+        link = QuestionnaireLink.objects.create(
+            org=self.org, person=self.person,
+            token=secrets.token_urlsafe(32),
+            sent_by=self.user,
+            status=QuestionnaireLink.Status.PENDING,
+            expires_at=now - timedelta(days=3),
+        )
+        QuestionnaireLink.objects.filter(pk=link.pk).update(sent_at=now - timedelta(days=10))
+        call_command("send_reminders")
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_no_reminder_for_demo_org(self):
+        self.org.is_demo = True
+        self.org.save()
+        self._make_link(days_ago=4)
+        call_command("send_reminders")
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_dry_run_does_not_send_email(self):
+        self._make_link(days_ago=4)
+        call_command("send_reminders", "--dry-run")
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_in_progress_link_also_reminded(self):
+        self._make_link(days_ago=4, status=QuestionnaireLink.Status.IN_PROGRESS)
+        call_command("send_reminders")
+        self.assertEqual(len(mail.outbox), 1)

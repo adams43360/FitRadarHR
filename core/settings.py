@@ -182,6 +182,10 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "FitRadarHR <noreply@teamfit.app>")
 
+# URL de base utilisée pour reconstruire des liens absolus en dehors d'une requête HTTP
+# (ex. emails envoyés par une commande planifiée comme `send_reminders`).
+SITE_BASE_URL = os.environ.get("SITE_BASE_URL", "http://localhost:8000")
+
 # ─── Sécurité production ──────────────────────────────────────────────────────
 
 if not DEBUG:

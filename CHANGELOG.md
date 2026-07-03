@@ -4,6 +4,23 @@ Toutes les évolutions notables de FitRadarHR sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) —
 le projet n'étant pas encore versionné, les entrées sont datées.
 
+## 2026-07-03 (2)
+
+### Ajouté
+- **Relances automatiques de questionnaire** (item #1 de la roadmap V2, RICE 12.8) :
+  commande `manage.py send_reminders` — relance par email les questionnaires
+  envoyés depuis 3 jours et non complétés, une seule fois par lien
+  (`reminder_sent_at`). Garde-fou démo identique aux autres emails. Cibles
+  `make remind` / `make remind-dry-run`, à planifier via cron côté hébergement.
+- Identité visuelle FitRadarHR (logo icône radar + wordmark), intégrée au
+  favicon, à la navbar, au README et à la doc utilisateur (`branding/`).
+
+### Corrigé
+- Déploiement GitHub Pages : le workflow `docs.yml` poussait vers la branche
+  `gh-pages` alors que la Source Pages du dépôt est en mode "GitHub Actions" —
+  plus aucun nouveau contenu n'était donc publié depuis le tout premier
+  déploiement. Migré vers `actions/deploy-pages` (natif).
+
 ## 2026-07-03
 
 ### Ajouté

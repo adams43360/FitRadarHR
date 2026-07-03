@@ -1,7 +1,7 @@
 # TeamFit — Makefile
 # Usage : make <commande>
 
-.PHONY: dev stop logs shell migrate makemigrations createsuperuser test
+.PHONY: dev stop logs shell migrate makemigrations createsuperuser test remind remind-dry-run
 
 # ── Développement ────────────────────────────────────────────────────────────
 
@@ -33,6 +33,12 @@ createsuperuser:
 
 seed-demo:
 	docker compose -f docker-compose.dev.yml exec app python manage.py seed_demo --force
+
+remind:
+	docker compose -f docker-compose.dev.yml exec app python manage.py send_reminders
+
+remind-dry-run:
+	docker compose -f docker-compose.dev.yml exec app python manage.py send_reminders --dry-run
 
 test:
 	docker compose -f docker-compose.dev.yml exec app python manage.py test

@@ -39,6 +39,7 @@ class QuestionnaireLink(models.Model):
     expires_at = models.DateTimeField()
     status = models.CharField(max_length=15, choices=Status.choices, default=Status.PENDING)
     completed_at = models.DateTimeField(null=True, blank=True)
+    reminder_sent_at = models.DateTimeField(null=True, blank=True)
 
     objects = OrgManager()
 

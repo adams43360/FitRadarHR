@@ -1,6 +1,7 @@
 import secrets
 from datetime import timedelta
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
@@ -341,6 +342,42 @@ def _send_invitation_email(link, request):
         recipient_list=[link.person.email],
         fail_silently=False,
     )
+
+
+def build_survey_url(link):
+    """Reconstruit l'URL absolue de passation hors contexte de requête HTTP
+    (ex. commande planifiée `send_reminders`), à partir de SITE_BASE_URL."""
+    path = reverse("survey:start", kwargs={"token": link.token})
+    return settings.SITE_BASE_URL.rstrip("/") + path
+
+
+def send_reminder_email(link):
+    """Relance envoyée pour un questionnaire non complété depuis REMINDER_DELAY_DAYS.
+
+    Garde-fou démo : aucun email réel ne part de l'org de démonstration —
+    identique aux autres emails du parcours questionnaire.
+    """
+    if link.org.is_demo:
+        return
+    survey_url = build_survey_url(link)
+    days_left = max((link.expires_at - timezone.now()).days, 0)
+    with translation.override(link.language):
+        subject = gettext("Rappel — votre questionnaire de personnalité Big Five")
+        body = render_to_string("survey/emails/reminder.txt", {
+            "link": link,
+            "person": link.person,
+            "survey_url": survey_url,
+            "days_left": days_left,
+        })
+    send_mail(
+        subject=subject,
+        message=body,
+        from_email=None,
+        recipient_list=[link.person.email],
+        fail_silently=False,
+    )
+    link.reminder_sent_at = timezone.now()
+    link.save(update_fields=["reminder_sent_at"])
 
 
 def _send_completion_notification(link):
