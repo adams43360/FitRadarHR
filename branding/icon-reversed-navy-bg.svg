@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="sweep" x1="92.00" y1="50.00" x2="50.00" y2="8.00" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1FBFAE" stop-opacity="0.65"/>
+      <stop offset="100%" stop-color="#1FBFAE" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  
+  <line x1="50.00" y1="7.00" x2="50.00" y2="1.00" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/>
+<line x1="93.00" y1="50.00" x2="99.00" y2="50.00" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/>
+<line x1="50.00" y1="93.00" x2="50.00" y2="99.00" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/>
+<line x1="7.00" y1="50.00" x2="1.00" y2="50.00" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/>
+
+  <circle cx="50" cy="50" r="49" fill="#0F3A4A"/>
+  <circle cx="50" cy="50" r="42" fill="none" stroke="#FFFFFF" stroke-width="2.6" opacity="0.9"/>
+  <circle cx="50" cy="50" r="29" fill="none" stroke="#FFFFFF" stroke-width="1.6" opacity="0.5"/>
+  <circle cx="50" cy="50" r="16" fill="none" stroke="#FFFFFF" stroke-width="1.2" opacity="0.35"/>
+  <path d="M 50 50 L 50.00 8.00 A 42 42 0 0 1 92.00 50.00 Z" fill="url(#sweep)"/>
+  <line x1="50" y1="50" x2="92.00" y2="50.00" stroke="#1FBFAE" stroke-width="1.6" opacity="0.85"/>
+  <circle cx="74.47" cy="38.59" r="10" fill="#1FBFAE" opacity="0.18"/>
+  <circle cx="74.47" cy="38.59" r="5.2" fill="#FFFFFF"/>
+  <circle cx="74.47" cy="38.59" r="5.2" fill="none" stroke="#FFFFFF" stroke-width="1.4"/>
+  <circle cx="50" cy="50" r="2.6" fill="#FFFFFF"/>
+</svg>

@@ -1,4 +1,4 @@
-# FitRadarHR
+<img src="branding/logo-horizontal-color.svg" alt="FitRadarHR" width="360">
 
 [![Tests](https://github.com/adams43360/FitRadarHR/actions/workflows/tests.yml/badge.svg)](https://github.com/adams43360/FitRadarHR/actions/workflows/tests.yml)
 [![Docs](https://github.com/adams43360/FitRadarHR/actions/workflows/docs.yml/badge.svg)](https://adams43360.github.io/FitRadarHR)
