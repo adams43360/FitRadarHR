@@ -1911,3 +1911,19 @@ msgstr ""
 #: added-2026-07-03
 msgid "Comparer la sélection (2 à 5)"
 msgstr "Compare selection (2 to 5)"
+
+#: added-2026-07-03
+msgid "Repasser le questionnaire"
+msgstr "Retake questionnaire"
+
+#: added-2026-07-03
+msgid "Évolution du profil"
+msgstr "Profile evolution"
+
+#: added-2026-07-03
+msgid "Date"
+msgstr "Date"
+
+#: added-2026-07-03
+msgid "actuel"
+msgstr "current"

@@ -4,6 +4,18 @@ Toutes les évolutions notables de FitRadarHR sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) —
 le projet n'étant pas encore versionné, les entrées sont datées.
 
+## 2026-07-03 (4)
+
+### Ajouté
+- **Re-passation & suivi longitudinal** (item #5 roadmap V2, RICE 4.5) : chaque
+  nouvelle passation du questionnaire archive automatiquement le profil Big
+  Five précédent (`BigFiveProfileHistory`, additif — le profil courant reste
+  inchangé pour tous les calculs de fit). Le rapport de profil affiche une
+  section « Évolution du profil » (courbe + tableau, HTML et PDF) dès qu'un
+  historique existe, avec un bouton « Repasser le questionnaire ».
+- 8 nouveaux tests (archivage à la re-passation, isolation multi-tenant de
+  l'historique, rendu PDF, couverture i18n) — 136 tests au total.
+
 ## 2026-07-03 (3)
 
 ### Ajouté

@@ -42,4 +42,31 @@
     {% endfor %}
   </tbody>
 </table>
+
+{% if show_history %}
+<h2>{% if lang == "fr" %}Évolution du profil{% else %}Profile evolution{% endif %}</h2>
+<table>
+  <thead>
+    <tr>
+      <th>{% if lang == "fr" %}Date{% else %}Date{% endif %}</th>
+      {% for d in dim_details %}
+      <th>{{ d.label }}</th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in history_table %}
+    <tr>
+      <td>
+        {{ row.computed_at|date:"d/m/Y" }}
+        {% if row.is_current %} ({% if lang == "fr" %}actuel{% else %}current{% endif %}){% endif %}
+      </td>
+      {% for cell in row.cells %}
+      <td>{{ cell|floatformat:0 }}</td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
 {% endblock %}

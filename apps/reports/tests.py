@@ -47,6 +47,95 @@ class ReportTenantIsolationTests(TestCase):
         self.assertNotIn(self.profile1, BigFiveProfile.objects.for_org(self.org2))
 
 
+class ProfileEvolutionTests(TestCase):
+    """Suivi longitudinal — item #5 de la roadmap V2."""
+
+    def setUp(self):
+        from apps.fit.models import BigFiveProfileHistory
+
+        self.BigFiveProfileHistory = BigFiveProfileHistory
+        self.org, self.user = create_org_and_user(email="rh@org.test")
+        self.person = Person.objects.create(
+            org=self.org, email="alice@org.test", first_name="Alice", last_name="A"
+        )
+        self.profile = create_profile(self.person)
+
+    def test_no_history_by_default(self):
+        self.client.force_login(self.user)
+        resp = self.client.get(
+            reverse("reports:person_profile", kwargs={"person_pk": self.person.pk})
+        )
+        self.assertEqual(resp.status_code, 200)
+        self.assertFalse(resp.context["show_history"])
+        self.assertNotContains(resp, "evolutionChart")
+
+    def test_history_shown_after_archival(self):
+        self.BigFiveProfileHistory.objects.create(
+            person=self.person,
+            openness=20, conscientiousness=20, extraversion=20,
+            agreeableness=20, neuroticism=20,
+            questionnaire_version="50", computed_at=self.profile.computed_at,
+        )
+        self.client.force_login(self.user)
+        resp = self.client.get(
+            reverse("reports:person_profile", kwargs={"person_pk": self.person.pk})
+        )
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue(resp.context["show_history"])
+        self.assertEqual(len(resp.context["history_table"]), 2)
+        self.assertFalse(resp.context["history_table"][0]["is_current"])
+        self.assertTrue(resp.context["history_table"][1]["is_current"])
+        self.assertContains(resp, "evolutionChart")
+
+    def test_history_strings_translated_to_english(self):
+        """Le catalogue EN doit couvrir les nouvelles chaînes de l'évolution de
+        profil (voir locale/en/LC_MESSAGES/django.po) — pas de régression bilingue."""
+        from django.utils import translation
+        with translation.override("en"):
+            self.assertEqual(
+                translation.gettext("Repasser le questionnaire"), "Retake questionnaire"
+            )
+            self.assertEqual(
+                translation.gettext("Évolution du profil"), "Profile evolution"
+            )
+            self.assertEqual(translation.gettext("actuel"), "current")
+
+    def test_pdf_renders_with_history(self):
+        """L'export PDF ne doit pas planter quand un historique existe (item #5)."""
+        self.BigFiveProfileHistory.objects.create(
+            person=self.person,
+            openness=30, conscientiousness=30, extraversion=30,
+            agreeableness=30, neuroticism=30,
+            questionnaire_version="50", computed_at=self.profile.computed_at,
+        )
+        self.client.force_login(self.user)
+        resp = self.client.get(
+            reverse("reports:person_profile_pdf", kwargs={"person_pk": self.person.pk})
+        )
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp["Content-Type"], "application/pdf")
+
+    def test_history_isolated_by_tenant(self):
+        """L'historique d'une personne d'une autre org ne doit jamais fuiter."""
+        org2, user2 = create_org_and_user(name="Org 2", email="rh@org2.test")
+        person2 = Person.objects.create(
+            org=org2, email="bob@org2.test", first_name="Bob", last_name="B"
+        )
+        create_profile(person2)
+        self.BigFiveProfileHistory.objects.create(
+            person=person2,
+            openness=10, conscientiousness=10, extraversion=10,
+            agreeableness=10, neuroticism=10,
+            questionnaire_version="50", computed_at=self.profile.computed_at,
+        )
+        # L'historique de person2 ne doit pas apparaître sur le rapport de self.person
+        self.client.force_login(self.user)
+        resp = self.client.get(
+            reverse("reports:person_profile", kwargs={"person_pk": self.person.pk})
+        )
+        self.assertFalse(resp.context["show_history"])
+
+
 class AuditLogTests(TestCase):
     def setUp(self):
         self.org, self.rh = create_org_and_user(email="rh@org.test")

@@ -7,10 +7,16 @@
 <div class="mb-4">
   <div class="flex items-center justify-between">
   <a href="{% url 'reports:list' %}" class="text-sm text-indigo-600 hover:underline">← {% trans "Retour aux rapports" %}</a>
-  <a href="{% url 'reports:person_profile_pdf' person_pk=person.pk %}"
-     class="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-50">
-    ↓ PDF
-  </a>
+  <div class="flex items-center gap-2">
+    <a href="{% url 'survey:send' %}?email={{ person.email|urlencode }}"
+       class="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-50">
+      ↻ {% trans "Repasser le questionnaire" %}
+    </a>
+    <a href="{% url 'reports:person_profile_pdf' person_pk=person.pk %}"
+       class="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-50">
+      ↓ PDF
+    </a>
+  </div>
 </div>
 </div>
 
@@ -56,6 +62,41 @@
     </div>
   </div>
 </div>
+
+{% if show_history %}
+<!-- Évolution du profil (item #5 roadmap V2 — suivi longitudinal) -->
+<div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 mb-8">
+  <h2 class="text-sm font-semibold text-gray-700 mb-4">{% trans "Évolution du profil" %}</h2>
+  <div class="relative h-64 mb-6">
+    <canvas id="evolutionChart"></canvas>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="min-w-full text-sm">
+      <thead>
+        <tr class="text-left text-gray-500 border-b border-gray-200">
+          <th class="py-2 pr-4">{% trans "Date" %}</th>
+          {% for d in dim_details %}
+          <th class="py-2 pr-4">{{ d.label }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in history_table %}
+        <tr class="border-b border-gray-100 {% if row.is_current %}font-semibold text-gray-900{% else %}text-gray-600{% endif %}">
+          <td class="py-2 pr-4">
+            {{ row.computed_at|date:"d/m/Y" }}
+            {% if row.is_current %}<span class="ml-1 text-xs text-indigo-600">({% trans "actuel" %})</span>{% endif %}
+          </td>
+          {% for cell in row.cells %}
+          <td class="py-2 pr-4">{{ cell|floatformat:0 }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endif %}
 
 <!-- Fits disponibles -->
 {% if position_fits or team_fits %}
@@ -140,5 +181,34 @@ new Chart(ctx, {
   }
 });
 
+{% if show_history %}
+// Évolution du profil dans le temps (item #5 roadmap V2)
+const historyLabels = {{ history_labels_json|safe }};
+const historySeries = {{ history_series_json|safe }};
+const dimKeys = ['openness', 'conscientiousness', 'extraversion', 'agreeableness', 'neuroticism'];
+const dimColors = ['#6366f1', '#10b981', '#f59e0b', '#ec4899', '#0ea5e9'];
+
+const evolutionCtx = document.getElementById('evolutionChart').getContext('2d');
+new Chart(evolutionCtx, {
+  type: 'line',
+  data: {
+    labels: historyLabels,
+    datasets: dimKeys.map((key, i) => ({
+      label: labels[i],
+      data: historySeries[key],
+      borderColor: dimColors[i],
+      backgroundColor: dimColors[i],
+      tension: 0.3,
+      pointRadius: 3,
+      fill: false,
+    })),
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: { y: { min: 0, max: 100, ticks: { stepSize: 25 } } },
+    plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } } },
+  }
+});
+{% endif %}
 </script>
 {% endblock %}

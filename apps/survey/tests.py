@@ -8,8 +8,11 @@ from django.test import SimpleTestCase, TestCase
 from django.urls import reverse
 from django.utils import timezone
 
+from apps.fit.models import BigFiveProfile, BigFiveProfileHistory
+from apps.teams.models import Person
+
 from .ipip_data import DIMENSIONS, ITEMS
-from .models import QuestionnaireLink
+from .models import ConsentRecord, QuestionnaireLink, QuestionnaireSession
 from .scoring import compute_scores, validate_answers
 
 
@@ -171,6 +174,68 @@ class SendFormRenderingTests(TestCase):
         })
         self.assertEqual(resp.status_code, 200)  # re-render avec erreur
         self.assertTrue(resp.context["form"].errors.get("questionnaire_version"))
+
+
+class RetakeArchivalTests(TestCase):
+    """Re-passation & suivi longitudinal — item #5 de la roadmap V2.
+
+    Une nouvelle passation ne doit jamais écraser silencieusement le profil
+    précédent : il doit être archivé dans `BigFiveProfileHistory` avant d'être
+    remplacé, pour permettre le suivi de l'évolution dans le temps.
+    """
+
+    def setUp(self):
+        from core.testing import create_org_and_user
+
+        self.org, self.user = create_org_and_user(email="rh@org.test")
+        self.person = Person.objects.create(
+            org=self.org, email="candidate@org.test",
+            first_name="Cam", last_name="Didate", created_by=self.user,
+        )
+
+    def _submit_via_link(self, direct_value, reversed_value):
+        link = QuestionnaireLink.objects.create(
+            org=self.org, person=self.person,
+            token=secrets.token_urlsafe(32),
+            sent_by=self.user,
+            status=QuestionnaireLink.Status.IN_PROGRESS,
+            expires_at=timezone.now() + timedelta(days=7),
+        )
+        ConsentRecord.objects.create(link=link, ip_address="127.0.0.1", language="fr")
+        answers = _answers(direct_value, reversed_value)
+        QuestionnaireSession.objects.create(link=link, answers=answers)
+        resp = self.client.get(reverse("survey:submit", kwargs={"token": link.token}))
+        self.assertRedirects(resp, reverse("survey:done", kwargs={"token": link.token}))
+        return link
+
+    def test_first_submission_creates_no_history(self):
+        self._submit_via_link(direct_value=5, reversed_value=1)
+        profile = BigFiveProfile.objects.get(person=self.person)
+        self.assertEqual(profile.openness, 100)
+        self.assertEqual(BigFiveProfileHistory.objects.filter(person=self.person).count(), 0)
+
+    def test_second_submission_archives_previous_profile(self):
+        self._submit_via_link(direct_value=5, reversed_value=1)  # profil initial : 100 partout
+        self._submit_via_link(direct_value=1, reversed_value=5)  # re-passation : 0 partout
+
+        history = BigFiveProfileHistory.objects.filter(person=self.person)
+        self.assertEqual(history.count(), 1)
+        self.assertEqual(history.first().openness, 100)  # ancien profil archivé tel quel
+
+        current = BigFiveProfile.objects.get(person=self.person)
+        self.assertEqual(current.openness, 0)  # profil courant mis à jour
+
+    def test_third_submission_archives_second_profile_too(self):
+        self._submit_via_link(direct_value=5, reversed_value=1)
+        self._submit_via_link(direct_value=1, reversed_value=5)
+        self._submit_via_link(direct_value=3, reversed_value=3)
+
+        history = BigFiveProfileHistory.objects.filter(person=self.person).order_by("archived_at")
+        self.assertEqual(history.count(), 2)
+        self.assertEqual([h.openness for h in history], [100, 0])
+
+        current = BigFiveProfile.objects.get(person=self.person)
+        self.assertEqual(current.openness, 50)
 
 
 class SendRemindersCommandTests(TestCase):

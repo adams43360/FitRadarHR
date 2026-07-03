@@ -14,7 +14,7 @@ from django.utils.html import format_html
 from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 
-from apps.fit.models import BigFiveProfile
+from apps.fit.models import BigFiveProfile, BigFiveProfileHistory
 from apps.teams.models import Person
 
 from .forms import SendLinkForm
@@ -275,6 +275,12 @@ def questionnaire_submit(request, token):
         return redirect("survey:questions", token=token, block=0)
 
     scores = compute_scores(session.answers)
+
+    # Re-passation (item #5 roadmap V2) : archiver le profil précédent avant
+    # de l'écraser, pour permettre le suivi longitudinal sur le rapport profil.
+    existing_profile = getattr(link.person, "big_five_profile", None)
+    if existing_profile is not None:
+        BigFiveProfileHistory.archive(existing_profile)
 
     BigFiveProfile.objects.update_or_create(
         person=link.person,

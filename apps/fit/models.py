@@ -42,6 +42,62 @@ class BigFiveProfile(models.Model):
         }
 
 
+class BigFiveProfileHistory(models.Model):
+    """Instantané d'un profil Big Five remplacé par une re-passation.
+
+    Item #5 de la roadmap V2 — suivi longitudinal. `BigFiveProfile` reste la
+    source de vérité pour le profil *courant* (toutes les vues de fit s'appuient
+    dessus, inchangé) ; cette table ne sert qu'à l'affichage de l'évolution
+    dans le temps sur le rapport de profil.
+    """
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    person = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="profile_history")
+    openness = models.DecimalField(_("ouverture"), max_digits=5, decimal_places=2)
+    conscientiousness = models.DecimalField(_("conscienciosité"), max_digits=5, decimal_places=2)
+    extraversion = models.DecimalField(_("extraversion"), max_digits=5, decimal_places=2)
+    agreeableness = models.DecimalField(_("agréabilité"), max_digits=5, decimal_places=2)
+    neuroticism = models.DecimalField(_("neuroticisme"), max_digits=5, decimal_places=2)
+    questionnaire_version = models.CharField(max_length=3, choices=BigFiveProfile.Version.choices)
+    algorithm_version = models.CharField(max_length=20, default="v1.0")
+    computed_at = models.DateTimeField(_("calculé le"))  # date du profil archivé, pas de l'archivage
+    archived_at = models.DateTimeField(auto_now_add=True)
+
+    objects = PersonOrgManager()
+
+    class Meta:
+        verbose_name = _("historique profil Big Five")
+        verbose_name_plural = _("historique profils Big Five")
+        ordering = ["computed_at"]
+
+    def __str__(self):
+        return f"Historique — {self.person} ({self.computed_at:%d/%m/%Y})"
+
+    def as_dict(self):
+        return {
+            "O": float(self.openness),
+            "C": float(self.conscientiousness),
+            "E": float(self.extraversion),
+            "A": float(self.agreeableness),
+            "N": float(self.neuroticism),
+        }
+
+    @classmethod
+    def archive(cls, profile):
+        """Archive un BigFiveProfile existant avant qu'il ne soit écrasé."""
+        return cls.objects.create(
+            person=profile.person,
+            openness=profile.openness,
+            conscientiousness=profile.conscientiousness,
+            extraversion=profile.extraversion,
+            agreeableness=profile.agreeableness,
+            neuroticism=profile.neuroticism,
+            questionnaire_version=profile.questionnaire_version,
+            algorithm_version=profile.algorithm_version,
+            computed_at=profile.computed_at,
+        )
+
+
 class PositionFitResult(models.Model):
     """Résultat du calcul de fit entre une personne et un poste."""
 

@@ -10,6 +10,8 @@ from django.utils.translation import gettext_lazy as _
 from apps.fit.engine import DIMENSION_LABELS, DIMENSIONS, compute_team_profile
 from apps.teams.models import TeamMembership
 
+from apps.fit.models import BigFiveProfileHistory
+
 from .insights import (
     DIMENSION_TOOLTIPS,
     get_position_exploration_points,
@@ -69,6 +71,34 @@ def active_member_profiles(team, exclude_person):
 # Contextes de rapport
 # ──────────────────────────────────────────────────────────────────────────────
 
+def build_person_profile_evolution(person, profile, lang):
+    """Item #5 roadmap V2 — historique des passations pour le suivi longitudinal.
+
+    Renvoie les données pour le graphique d'évolution (une passation courante ne
+    donne rien à afficher : `show_history` reste False dans ce cas) et pour le
+    tableau détaillé, du plus ancien au plus récent (le profil courant en dernier).
+    """
+    history_qs = person.profile_history.order_by("computed_at")
+    points = list(history_qs) + [profile]
+
+    history_labels = [p.computed_at.strftime("%d/%m/%Y") for p in points]
+    history_series = {d: [float(getattr(p, d)) for p in points] for d in DIMENSIONS}
+    history_table = [
+        {
+            "computed_at": p.computed_at,
+            "cells": [float(getattr(p, d)) for d in DIMENSIONS],
+            "is_current": p is profile,
+        }
+        for p in points
+    ]
+    return {
+        "show_history": len(points) > 1,
+        "history_labels_json": json.dumps(history_labels),
+        "history_series_json": json.dumps(history_series),
+        "history_table": history_table,
+    }
+
+
 def build_person_profile_context(person, profile, lang):
     scores = person_scores(profile)
     dim_details = [
@@ -80,7 +110,7 @@ def build_person_profile_context(person, profile, lang):
         }
         for i, d in enumerate(DIMENSIONS)
     ]
-    return {
+    context = {
         "person": person,
         "profile": profile,
         "lang": lang,
@@ -88,6 +118,8 @@ def build_person_profile_context(person, profile, lang):
         "chart_labels_json": json.dumps(dim_labels(lang)),
         "chart_scores_json": json.dumps(scores),
     }
+    context.update(build_person_profile_evolution(person, profile, lang))
+    return context
 
 
 def build_position_fit_context(person, position, fit, lang):
