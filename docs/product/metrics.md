@@ -71,6 +71,24 @@ L'audit log EU AI Act sert ici une double fonction : traçabilité réglementair
 **et** source des métriques d'engagement — aucune instrumentation supplémentaire,
 aucune donnée nouvelle collectée (privacy by design).
 
+### Cohortes de rétention
+
+Sur la page Analytics, chaque **cohorte** regroupe les personnes activées le
+même mois (mois de leur première passation *complétée*). Pour chaque mois
+suivant (M0, M1, M2…), on affiche la part de la cohorte dont le rapport de
+profil a été consulté au moins une fois (`profile.viewed`) — même source
+d'audit log que l'engagement 30 j, aucune donnée supplémentaire collectée.
+
+Une re-passation ultérieure (voir [suivi longitudinal](../user/survey/track.md))
+ne recrée jamais une cohorte : l'activation reste datée de la toute première
+passation complétée de la personne.
+
+Granularité **mensuelle** (et non hebdomadaire comme envisagé initialement en V2,
+cf. section 5) : à l'échelle d'une seule org (quelques dizaines de personnes par
+mois), une cohorte hebdomadaire serait trop clairsemée pour être lisible ; le
+mensuel reste cohérent avec le graphique "Profils par mois" déjà présent sur
+la page.
+
 ### Vivier par poste
 
 **Fit moyen par poste actif** : moyenne des `overall_fit` des personnes évaluées.
@@ -95,4 +113,5 @@ Conformément aux règles non négociables du cadrage :
 - Événements d'activation org-level agrégés multi-tenant (dashboard super-admin)
 - Temps médian de passation par bloc de questions (détection des blocs qui font décrocher)
 - Taux de conversion démo → inscription
-- Cohortes de rétention hebdomadaires par org
+- ~~Cohortes de rétention hebdomadaires par org~~ — livré en version **mensuelle**
+  et org-scoped (voir section 3 ci-dessus)

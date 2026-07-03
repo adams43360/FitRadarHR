@@ -67,7 +67,9 @@ def _retention_cohorts(org, now):
     cohorts = {}
     for row in first_completions:
         key = _month_key(row["first_completed"])
-        cohorts.setdefault(key, set()).add(row["person_id"])
+        # str() : la personne est comparée aux `person_id` du JSONField metadata
+        # de l'audit log (toujours des chaînes), jamais des objets UUID.
+        cohorts.setdefault(key, set()).add(str(row["person_id"]))
 
     if not cohorts:
         return []

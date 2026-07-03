@@ -1,9 +1,14 @@
 """Tests d'isolation multi-tenant, droits et audit — rapports."""
+import uuid
+from datetime import timedelta
+
 from django.test import TestCase
 from django.urls import reverse
+from django.utils import timezone
 
 from apps.accounts.models import User
 from apps.fit.models import BigFiveProfile
+from apps.survey.models import QuestionnaireLink
 from apps.teams.models import Person
 from core.testing import create_org_and_user, create_profile
 
@@ -134,6 +139,131 @@ class ProfileEvolutionTests(TestCase):
             reverse("reports:person_profile", kwargs={"person_pk": self.person.pk})
         )
         self.assertFalse(resp.context["show_history"])
+
+
+class RetentionCohortTests(TestCase):
+    """Cohortes de rétention mensuelles — item #6 de la roadmap V2."""
+
+    def setUp(self):
+        from apps.reports.analytics import _add_months
+
+        self.add_months = _add_months
+        self.org, self.rh = create_org_and_user(email="rh@cohort.test")
+        self.now = timezone.now()
+        self.current_month = self.now.replace(
+            day=1, hour=0, minute=0, second=0, microsecond=0
+        )
+        self.cohort_a = self.add_months(self.current_month, -1)  # 1 mois avant "aujourd'hui"
+        self.cohort_b = self.add_months(self.current_month, -3)  # 3 mois avant
+
+        self.p1 = Person.objects.create(org=self.org, email="p1@cohort.test", first_name="P", last_name="1")
+        self.p2 = Person.objects.create(org=self.org, email="p2@cohort.test", first_name="P", last_name="2")
+        self.p3 = Person.objects.create(org=self.org, email="p3@cohort.test", first_name="P", last_name="3")
+
+        self._complete_link(self.p1, self.cohort_a)
+        self._complete_link(self.p2, self.cohort_a)
+        self._complete_link(self.p3, self.cohort_b)
+
+        # p1 consulté le mois de la cohorte ET le mois suivant (rétention pleine)
+        self._view(self.p1, self.cohort_a)
+        self._view(self.p1, self.add_months(self.cohort_a, 1))
+        # p2 consulté seulement le mois de la cohorte (pas de rétention le mois suivant)
+        self._view(self.p2, self.cohort_a)
+        # p3 jamais consulté (rétention nulle sur toute la cohorte)
+
+    def _complete_link(self, person, month_dt):
+        QuestionnaireLink.objects.create(
+            org=self.org, person=person, token=f"tok-{uuid.uuid4()}",
+            sent_by=self.rh, expires_at=self.now + timedelta(days=7),
+            status=QuestionnaireLink.Status.COMPLETED,
+            completed_at=month_dt.replace(day=15),
+        )
+
+    def _view(self, person, month_dt):
+        log = AuditLog.objects.create(
+            org=self.org, user=self.rh, action="profile.viewed", entity_type="BigFiveProfile",
+            entity_id=uuid.uuid4(), metadata={"person_id": str(person.id)},
+        )
+        AuditLog.objects.filter(pk=log.pk).update(created_at=month_dt.replace(day=20))
+
+    def _cohort_row(self, ctx, label_month):
+        label = label_month.strftime("%m/%Y")
+        return next(r for r in ctx["retention_cohorts"] if r["label"] == label)
+
+    def test_cohort_sizes(self):
+        from apps.reports.analytics import build_analytics_context
+
+        ctx = build_analytics_context(self.org)
+        row_a = self._cohort_row(ctx, self.cohort_a)
+        row_b = self._cohort_row(ctx, self.cohort_b)
+        self.assertEqual(row_a["size"], 2)
+        self.assertEqual(row_b["size"], 1)
+
+    def test_retention_rates(self):
+        from apps.reports.analytics import build_analytics_context
+
+        ctx = build_analytics_context(self.org)
+        row_a = self._cohort_row(ctx, self.cohort_a)
+        # Offset 0 : p1 + p2 ont consulté → 100%
+        self.assertEqual(row_a["cells"][0]["rate"], 100.0)
+        # Offset 1 : seul p1 a consulté → 50%
+        self.assertEqual(row_a["cells"][1]["rate"], 50.0)
+
+        row_b = self._cohort_row(ctx, self.cohort_b)
+        # p3 n'a jamais consulté son rapport
+        self.assertEqual(row_b["cells"][0]["rate"], 0.0)
+
+    def test_future_offsets_are_none(self):
+        """Un mois pas encore atteint ne doit jamais afficher un taux (ni 0 %)."""
+        from apps.reports.analytics import build_analytics_context
+
+        ctx = build_analytics_context(self.org)
+        row_a = self._cohort_row(ctx, self.cohort_a)
+        # La cohorte A n'a que 2 mois d'existence (offset 0 et 1) : au-delà, None.
+        self.assertIsNone(row_a["cells"][2])
+
+    def test_retake_does_not_create_phantom_cohort(self):
+        """Une re-passation ne doit pas faire apparaître une nouvelle cohorte
+        pour une personne déjà activée avant la fenêtre d'affichage."""
+        from apps.reports.analytics import build_analytics_context, RETENTION_MONTHS_WINDOW
+
+        # p1 a en réalité été activé bien avant la fenêtre affichée...
+        old_month = self.add_months(self.current_month, -(RETENTION_MONTHS_WINDOW + 3))
+        self._complete_link(self.p1, old_month)
+        # ... la re-passation plus récente (self.cohort_a) ne doit donc pas
+        # recréer p1 dans la cohorte de self.cohort_a.
+        ctx = build_analytics_context(self.org)
+        row_a = self._cohort_row(ctx, self.cohort_a)
+        self.assertEqual(row_a["size"], 1)  # seul p2 reste dans cette cohorte
+
+    def test_tenant_isolation(self):
+        other_org, other_rh = create_org_and_user(name="Autre org", email="rh@autre-cohort.test")
+        from apps.reports.analytics import build_analytics_context
+
+        ctx = build_analytics_context(other_org)
+        self.assertEqual(ctx["retention_cohorts"], [])
+
+    def test_analytics_page_renders_cohorts(self):
+        self.client.force_login(self.rh)
+        resp = self.client.get(reverse("reports:analytics"))
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "Cohortes de rétention")
+
+    def test_cohort_strings_translated_to_english(self):
+        """Le catalogue EN doit couvrir les nouvelles chaînes des cohortes de
+        rétention (voir locale/en/LC_MESSAGES/django.po) — pas de régression bilingue."""
+        from django.utils import translation
+        with translation.override("en"):
+            self.assertEqual(translation.gettext("Cohortes de rétention"), "Retention cohorts")
+            self.assertEqual(translation.gettext("Cohorte"), "Cohort")
+            self.assertEqual(
+                translation.ngettext("%(n)s personne", "%(n)s personnes", 1) % {"n": 1},
+                "1 person",
+            )
+            self.assertEqual(
+                translation.ngettext("%(n)s personne", "%(n)s personnes", 3) % {"n": 3},
+                "3 people",
+            )
 
 
 class AuditLogTests(TestCase):

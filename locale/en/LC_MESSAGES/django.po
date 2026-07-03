@@ -1927,3 +1927,31 @@ msgstr "Date"
 #: added-2026-07-03
 msgid "actuel"
 msgstr "current"
+
+#: added-2026-07-03
+msgid "Cohortes de rétention"
+msgstr "Retention cohorts"
+
+#: added-2026-07-03
+msgid ""
+"Pour chaque cohorte (mois de la première passation complétée), part des "
+"personnes dont le rapport de profil a été consulté au moins une fois durant "
+"chaque mois suivant."
+msgstr ""
+"For each cohort (month of the first completed questionnaire), share of "
+"people whose profile report was viewed at least once during each following "
+"month."
+
+#: added-2026-07-03
+msgid "Cohorte"
+msgstr "Cohort"
+
+#: added-2026-07-03
+msgid "Pas encore assez de données pour calculer des cohortes de rétention."
+msgstr "Not enough data yet to compute retention cohorts."
+
+#: added-2026-07-03
+msgid "%(n)s personne"
+msgid_plural "%(n)s personnes"
+msgstr[0] "%(n)s person"
+msgstr[1] "%(n)s people"

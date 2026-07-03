@@ -4,6 +4,18 @@ Toutes les évolutions notables de FitRadarHR sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) —
 le projet n'étant pas encore versionné, les entrées sont datées.
 
+## 2026-07-03 (5)
+
+### Ajouté
+- **Cohortes de rétention** (item #6 roadmap V2, RICE 2.1) : nouvelle section
+  sur `/reports/analytics/` — pour chaque cohorte (mois de première passation
+  complétée), taux de consultation du rapport de profil mois par mois (M0,
+  M1, M2…), en heatmap. Granularité mensuelle plutôt qu'hebdomadaire (org-scoped,
+  volumes trop faibles pour du hebdo) — rationale dans `docs/product/metrics.md`.
+  Une re-passation (item #5) ne recrée jamais de cohorte fantôme.
+- 7 nouveaux tests (tailles/taux de cohorte, offsets futurs, isolation
+  multi-tenant, non-régression re-passation, i18n) — 143 tests au total.
+
 ## 2026-07-03 (4)
 
 ### Ajouté
