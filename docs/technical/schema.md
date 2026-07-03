@@ -16,6 +16,7 @@ erDiagram
     Organization ||--o{ Person : "a"
     Organization ||--o{ AuditLog : "génère"
     Organization ||--o| OrgSSOConfig : "configure (optionnel)"
+    Organization ||--o{ ApiKey : "génère"
 
     User ||--o{ Team : "manage"
     User ||--o{ QuestionnaireLink : "envoie"
@@ -95,6 +96,25 @@ Configuration SSO OIDC d'une organisation — un IdP (ex. Keycloak) par organisa
 | `created_at` / `updated_at` | TIMESTAMP | — |
 
 > Synchronisé en interne avec un `SocialApp` de `django-allauth` (`provider="openid_connect"`, `provider_id=login_slug`) — FitRadarHR s'appuie sur le flux OIDC déjà implémenté et audité par allauth plutôt que de ré-écrire l'échange de jetons.
+
+---
+
+### `ApiKey` *(V2 — API publique en lecture seule, US-E1-06)*
+Clé d'accès à l'API publique, scopée à une seule organisation.
+
+| Champ | Type | Notes |
+|---|---|---|
+| `id` | UUID | — |
+| `org_id` | UUID FK → Organization | Isolation tenant stricte |
+| `name` | VARCHAR(100) | Libellé libre, ex. "Intégration ATS Greenhouse" |
+| `key_prefix` | VARCHAR(12), unique | Préfixe non secret (`frk_…`), affiché dans la liste pour identifier une clé |
+| `key_hash` | VARCHAR(64) | Empreinte SHA-256 de la clé — la valeur en clair n'est **jamais stockée** |
+| `created_by_id` | UUID FK → User (nullable) | — |
+| `created_at` | TIMESTAMP | — |
+| `last_used_at` | TIMESTAMP (nullable) | Mis à jour à chaque appel API authentifié |
+| `revoked_at` | TIMESTAMP (nullable) | Révocation = horodatage, jamais de suppression physique (traçabilité, cohérent avec `AuditLog`) |
+
+> La valeur en clair n'est visible qu'une seule fois, au moment de la génération (écran `/settings/api/`). Authentification API via l'en-tête `Authorization: Api-Key <clé>`. L'API expose en lecture seule : postes, équipes, personnes (+ statut questionnaire), résultats de fit — **jamais** les scores Big Five bruts d'un `BigFiveProfile`.
 
 ---
 

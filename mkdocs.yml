@@ -75,6 +75,7 @@ nav:
     - Créer un compte: getting-started/signup.md
     - Tableau de bord: getting-started/dashboard.md
     - Connexion SSO (Keycloak/OIDC): getting-started/sso.md
+    - API publique: getting-started/api.md
   - Départements:
     - departments/index.md
   - Postes:

@@ -8,7 +8,9 @@ from django.utils.translation import gettext_lazy as _
 
 from django.utils.http import url_has_allowed_host_and_scheme
 
-from .forms import InviteManagerForm, OrgSSOConfigForm, SignupB2BForm, SignupB2CForm
+from apps.api.models import ApiKey
+
+from .forms import ApiKeyGenerateForm, InviteManagerForm, OrgSSOConfigForm, SignupB2BForm, SignupB2CForm
 from .models import Feedback, Organization, OrgSSOConfig, User
 
 
@@ -278,6 +280,55 @@ def sso_login_entry(request):
         )
 
     return render(request, "accounts/sso_login_entry.html")
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Clés API — item #9 de la roadmap V2 (API publique en lecture seule, US-E1-06)
+# ──────────────────────────────────────────────────────────────────────────────
+
+@login_required
+def api_keys_settings(request):
+    """Gestion des clés API de l'org — RH only.
+
+    La valeur en clair d'une clé n'est affichée qu'une seule fois, juste après
+    sa génération (`request.session["_new_api_key"]`, consommée immédiatement
+    au rendu pour ne jamais persister en clair nulle part)."""
+    if not request.user.is_rh:
+        return HttpResponseForbidden()
+
+    org = request.user.org
+
+    if request.method == "POST":
+        action = request.POST.get("action")
+        if action == "generate":
+            form = ApiKeyGenerateForm(request.POST)
+            if form.is_valid():
+                instance, raw_key = ApiKey.generate(
+                    org=org, name=form.cleaned_data["name"], created_by=request.user,
+                )
+                request.session["_new_api_key"] = raw_key
+                request.session["_new_api_key_id"] = str(instance.id)
+                messages.success(request, _("Clé API générée."))
+                return redirect("accounts:api_keys_settings")
+        elif action == "revoke":
+            key = ApiKey.objects.for_org(org).filter(pk=request.POST.get("key_id")).first()
+            if key is not None and key.is_active:
+                key.revoke()
+                messages.success(request, _("Clé API révoquée."))
+            return redirect("accounts:api_keys_settings")
+    else:
+        form = ApiKeyGenerateForm()
+
+    new_key_id = request.session.pop("_new_api_key_id", None)
+    new_raw_key = request.session.pop("_new_api_key", None) if new_key_id else None
+
+    keys = ApiKey.objects.for_org(org)
+
+    return render(request, "accounts/api_keys.html", {
+        "form": form,
+        "keys": keys,
+        "new_raw_key": new_raw_key,
+    })
 
 
 @login_required

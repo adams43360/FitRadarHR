@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Clés API" %} — FitRadarHR{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-1">{% trans "Clés API" %}</h1>
+  <p class="text-sm text-gray-500 mb-6">
+    {% trans "Connectez un outil tiers (ATS, SIRH…) à FitRadarHR en lecture seule. Chaque clé donne accès aux postes, équipes, personnes et résultats de fit de votre organisation — jamais aux profils Big Five bruts." %}
+  </p>
+
+  {% if new_raw_key %}
+  <div class="bg-amber-50 border border-amber-300 rounded-2xl p-5 mb-6">
+    <p class="text-sm font-medium text-amber-800 mb-2">
+      {% trans "Copiez cette clé maintenant : elle ne sera plus jamais affichée." %}
+    </p>
+    <code class="block w-full bg-white border border-amber-200 rounded-lg px-3 py-2 text-sm font-mono text-gray-800 break-all select-all">{{ new_raw_key }}</code>
+  </div>
+  {% endif %}
+
+  <div class="bg-white rounded-2xl border border-gray-200 p-6 mb-6">
+    <h2 class="text-sm font-semibold text-gray-900 mb-3">{% trans "Générer une nouvelle clé" %}</h2>
+    <form method="post" novalidate class="flex items-end gap-3">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="generate">
+      <div class="flex-1">
+        <label class="block text-sm font-medium text-gray-700 mb-1">{{ form.name.label }}</label>
+        <input type="text" name="name" value="{{ form.name.value|default:'' }}"
+               placeholder="{% trans 'Intégration ATS Greenhouse' %}"
+               class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        {% if form.name.errors %}<p class="text-red-500 text-xs mt-1">{{ form.name.errors.0 }}</p>{% endif %}
+      </div>
+      <button type="submit"
+              class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors">
+        {% trans "Générer" %}
+      </button>
+    </form>
+  </div>
+
+  <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+    <table class="w-full text-sm">
+      <thead class="bg-gray-50 text-left text-gray-500">
+        <tr>
+          <th class="px-4 py-2 font-medium">{% trans "Nom de la clé" %}</th>
+          <th class="px-4 py-2 font-medium">{% trans "Préfixe" %}</th>
+          <th class="px-4 py-2 font-medium">{% trans "Créée le" %}</th>
+          <th class="px-4 py-2 font-medium">{% trans "Dernière utilisation" %}</th>
+          <th class="px-4 py-2 font-medium">{% trans "Statut" %}</th>
+          <th class="px-4 py-2"></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        {% for key in keys %}
+        <tr>
+          <td class="px-4 py-2 text-gray-900">{{ key.name }}</td>
+          <td class="px-4 py-2 font-mono text-gray-500">{{ key.key_prefix }}…</td>
+          <td class="px-4 py-2 text-gray-500">{{ key.created_at|date:"d/m/Y" }}</td>
+          <td class="px-4 py-2 text-gray-500">
+            {% if key.last_used_at %}{{ key.last_used_at|date:"d/m/Y H:i" }}{% else %}{% trans "Jamais" %}{% endif %}
+          </td>
+          <td class="px-4 py-2">
+            {% if key.is_active %}
+            <span class="inline-block px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-xs">{% trans "Active" %}</span>
+            {% else %}
+            <span class="inline-block px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 text-xs">{% trans "Révoquée" %}</span>
+            {% endif %}
+          </td>
+          <td class="px-4 py-2 text-right">
+            {% if key.is_active %}
+            <form method="post" onsubmit="return confirm('{% trans "Révoquer cette clé ? Toute intégration l'utilisant cessera de fonctionner immédiatement." %}');">
+              {% csrf_token %}
+              <input type="hidden" name="action" value="revoke">
+              <input type="hidden" name="key_id" value="{{ key.id }}">
+              <button type="submit" class="text-red-600 hover:text-red-800 text-xs font-medium">{% trans "Révoquer" %}</button>
+            </form>
+            {% endif %}
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" class="px-4 py-6 text-center text-gray-400">{% trans "Aucune clé API pour le moment." %}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <p class="text-xs text-gray-400 mt-4">
+    {% blocktrans %}Authentification : en-tête <code>Authorization: Api-Key &lt;clé&gt;</code> sur les requêtes vers <code>/api/v1/</code>.{% endblocktrans %}
+  </p>
+</div>
+{% endblock %}

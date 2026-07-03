@@ -13,6 +13,7 @@ urlpatterns = [
     path("login/sso/", views.sso_login_entry, name="sso_login_entry"),
     path("demo/", views.demo_login, name="demo_login"),
     path("settings/sso/", views.sso_config, name="sso_config"),
+    path("settings/api/", views.api_keys_settings, name="api_keys_settings"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("dashboard/", views.dashboard, name="dashboard"),
     path("members/", views.org_members, name="members"),

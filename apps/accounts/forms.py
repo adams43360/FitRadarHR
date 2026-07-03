@@ -95,3 +95,13 @@ class OrgSSOConfigForm(forms.ModelForm):
                 return self.instance.client_secret  # conserve le secret existant
             raise forms.ValidationError(_("Le client secret est obligatoire à la création."))
         return secret
+
+
+class ApiKeyGenerateForm(forms.Form):
+    """Génération d'une clé API publique — RH only (item #9 roadmap V2, US-E1-06)."""
+
+    name = forms.CharField(
+        label=_("Nom de la clé"),
+        max_length=100,
+        help_text=_("Pour vous y retrouver, ex. « Intégration ATS Greenhouse »."),
+    )

@@ -7,6 +7,9 @@ from django.conf.urls.i18n import i18n_patterns
 urlpatterns = [
     # Changement de langue
     path("i18n/", include("django.conf.urls.i18n")),
+    # API publique en lecture seule (roadmap V2 #9) — hors i18n_patterns,
+    # un consommateur machine n'a pas de préférence de langue de navigateur.
+    path("api/v1/", include("apps.api.urls")),
 ]
 
 urlpatterns += i18n_patterns(
