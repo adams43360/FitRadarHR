@@ -5,10 +5,18 @@
 
 ## Le projet
 
-**FitRadarHR** — un outil bilingue (FR/EN), gratuit et open source (MIT), qui aide les RH et
-managers à évaluer la compatibilité d'une personne (candidat ou collaborateur en mobilité
-interne) avec un poste et/ou une équipe, en s'appuyant sur le modèle de personnalité
-**Big Five / OCEAN** (questionnaire IPIP, domaine public).
+**FitRadarHR** — un outil bilingue (FR/EN), au code source ouvert (licence Fair Source
+FSL-1.1-MIT depuis le 2026-07-03 — anciennement MIT), qui aide les RH et managers à évaluer
+la compatibilité d'une personne (candidat ou collaborateur en mobilité interne) avec un poste
+et/ou une équipe, en s'appuyant sur le modèle de personnalité **Big Five / OCEAN**
+(questionnaire IPIP, domaine public).
+
+> **Licence (2026-07-03)** : passage de MIT à FSL-1.1-MIT — le code reste librement
+> consultable, modifiable et auto-hébergeable, mais un usage commercial concurrent est
+> réservé sans autorisation. Conversion automatique en MIT deux ans après chaque
+> publication. Raison : Damien envisage une éventuelle offre payante à terme (essai gratuit
+> puis abonnement) et voulait garder cette option ouverte sans bloquer la vitrine publique
+> du code. Voir `LICENSE` et `docs/user/about/license.md`.
 
 Le cadrage produit complet est dans `docs/product/00-cadrage.md` — à lire avant toute
 décision de conception ou de développement structurante.

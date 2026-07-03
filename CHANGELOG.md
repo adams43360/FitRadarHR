@@ -4,6 +4,21 @@ Toutes les évolutions notables de FitRadarHR sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) —
 le projet n'étant pas encore versionné, les entrées sont datées.
 
+## 2026-07-03 (7)
+
+### Modifié
+- **Changement de licence : MIT → Fair Source (FSL-1.1-MIT)**. Le code reste public,
+  consultable, modifiable et auto-hébergeable pour un usage interne, éducatif ou de
+  recherche ; seul un usage commercial concurrent (revendre ou héberger un service
+  qui se substitue à FitRadarHR) reste réservé sans autorisation. Chaque version
+  repasse automatiquement en MIT deux ans après sa publication.
+  Raison : possibilité envisagée d'une offre payante future (essai gratuit puis
+  abonnement) — voir `CLAUDE.md`. Fichiers mis à jour : `LICENSE` (nouveau),
+  `README.md`, `docs/user/index.md`, `docs/user/about/license.md`, landing page,
+  pied de page, politique de confidentialité (toute mention "licence MIT" retirée
+  des pages publiques). 4 nouveaux tests (contenu des pages, i18n) — 169 tests
+  au total.
+
 ## 2026-07-03 (6)
 
 ### Ajouté

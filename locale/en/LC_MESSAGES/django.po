@@ -2110,3 +2110,34 @@ msgid ""
 msgstr ""
 "SSO login URL to share with your users: identifier \"%(slug)s\" on the login"
 " page."
+
+#: added-2026-07-03
+msgid "Code source ouvert (FSL-1.1-MIT)"
+msgstr "Open source code (FSL-1.1-MIT)"
+
+#: added-2026-07-03
+msgid "Gratuit · Code source ouvert · Auto-hébergeable"
+msgstr "Free · Open source code · Self-hostable"
+
+#: added-2026-07-03
+msgid "Bilingue & code source ouvert"
+msgstr "Bilingual & open source code"
+
+#: added-2026-07-03
+msgid ""
+"FR/EN natif, licence Fair Source (FSL-1.1-MIT), auto-hébergeable sur votre "
+"infrastructure — vos données RH restent chez vous."
+msgstr ""
+"Native FR/EN, Fair Source license (FSL-1.1-MIT), self-hostable on your own "
+"infrastructure — your HR data stays with you."
+
+#: added-2026-07-03
+msgid ""
+"FitRadarHR est un outil au code source ouvert (licence Fair Source "
+"FSL-1.1-MIT) utilisé au sein de votre organisation. Le responsable du "
+"traitement des données est l'organisation qui déploie et administre cet "
+"outil."
+msgstr ""
+"FitRadarHR is open source code software (Fair Source FSL-1.1-MIT license) "
+"used within your organization. The data controller is the organization that "
+"deploys and administers this tool."

@@ -240,6 +240,45 @@ class LandingPageTests(TestCase):
         self.assertRedirects(response, reverse("accounts:dashboard"))
 
 
+class LicenseWordingTests(TestCase):
+    """Changement de licence MIT → Fair Source (FSL-1.1-MIT), 2026-07-03.
+
+    Aucune page publique ne doit plus affirmer "licence MIT" — le produit
+    n'est plus "open source" au sens strict depuis ce changement."""
+
+    def test_landing_page_no_longer_claims_mit(self):
+        response = self.client.get("/")
+        self.assertNotContains(response, "Open source (MIT)")
+        self.assertNotContains(response, "licence MIT")
+        self.assertContains(response, "FSL-1.1-MIT")
+
+    def test_footer_no_longer_claims_mit(self):
+        response = self.client.get("/")
+        self.assertContains(response, "FSL-1.1-MIT")
+
+    def test_privacy_policy_reflects_new_license(self):
+        from core.testing import create_org_and_user
+        _, user = create_org_and_user(name="Org Licence", email="rh@licence.test")
+        self.client.force_login(user)
+        response = self.client.get(reverse("accounts:privacy_policy"))
+        self.assertContains(response, "FSL-1.1-MIT")
+        self.assertNotContains(response, "licence MIT")
+
+    def test_license_strings_translated_to_english(self):
+        """Le catalogue EN doit couvrir les nouvelles chaînes liées à la
+        licence (voir locale/en/LC_MESSAGES/django.po)."""
+        from django.utils import translation
+        with translation.override("en"):
+            self.assertEqual(
+                translation.gettext("Code source ouvert (FSL-1.1-MIT)"),
+                "Open source code (FSL-1.1-MIT)",
+            )
+            self.assertEqual(
+                translation.gettext("Bilingue & code source ouvert"),
+                "Bilingual & open source code",
+            )
+
+
 class InviteManagerTests(TestCase):
     """Invitation de managers dans l'org — item #2 de la roadmap V2."""
 

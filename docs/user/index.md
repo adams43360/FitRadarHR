@@ -1,6 +1,6 @@
 # FitRadarHR
 
-**FitRadarHR** est un outil gratuit et open source qui aide les équipes RH et les managers à évaluer la compatibilité personnalité d'un candidat ou collaborateur avec un poste ou une équipe, en s'appuyant sur le modèle scientifique **Big Five / OCEAN**.
+**FitRadarHR** est un outil au code source ouvert qui aide les équipes RH et les managers à évaluer la compatibilité personnalité d'un candidat ou collaborateur avec un poste ou une équipe, en s'appuyant sur le modèle scientifique **Big Five / OCEAN**.
 
 ---
 
@@ -11,7 +11,7 @@ Le recrutement et la mobilité interne reposent trop souvent sur l'intuition. Fi
 - ✅ **Questionnaire validé scientifiquement** — le modèle Big Five (IPIP) est la référence mondiale en psychologie de la personnalité
 - ✅ **Pas de score de décision unique** — FitRadarHR informe, jamais ne décide
 - ✅ **RGPD by design** — consentement explicite, droit à l'effacement, traçabilité
-- ✅ **Open source et gratuit** — MIT License, hébergeable sur votre propre infrastructure
+- ✅ **Code source ouvert** — licence [Fair Source (FSL-1.1-MIT)](about/license.md), hébergeable sur votre propre infrastructure pour votre usage interne
 
 ---
 

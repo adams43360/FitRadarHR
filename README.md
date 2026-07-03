@@ -2,11 +2,11 @@
 
 [![Tests](https://github.com/adams43360/FitRadarHR/actions/workflows/tests.yml/badge.svg)](https://github.com/adams43360/FitRadarHR/actions/workflows/tests.yml)
 [![Docs](https://github.com/adams43360/FitRadarHR/actions/workflows/docs.yml/badge.svg)](https://adams43360.github.io/FitRadarHR)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![License: FSL-1.1-MIT](https://img.shields.io/badge/License-FSL--1.1--MIT-blue.svg)](LICENSE)
 
 > Projet porté en public pour démontrer une démarche produit de bout en bout — cadrage, delivery, mesure — menée par un Product Manager avec l'IA. Voir le [making-of](docs/product/making-of.md).
 
-**FitRadarHR** est un outil **gratuit et open source** (MIT), bilingue FR/EN, qui aide les équipes RH et les managers à évaluer la compatibilité d'une personne — candidat à l'embauche ou collaborateur en mobilité interne — avec un poste et/ou une équipe, sur la base du modèle de personnalité scientifiquement validé **Big Five / OCEAN** (questionnaire IPIP, domaine public).
+**FitRadarHR** est un outil **source ouverte** (Fair Source — [FSL-1.1-MIT](LICENSE)), bilingue FR/EN, qui aide les équipes RH et les managers à évaluer la compatibilité d'une personne — candidat à l'embauche ou collaborateur en mobilité interne — avec un poste et/ou une équipe, sur la base du modèle de personnalité scientifiquement validé **Big Five / OCEAN** (questionnaire IPIP, domaine public). Le code est librement consultable, utilisable en interne et modifiable ; seul un usage commercial concurrent est réservé — voir [Licence](#licence).
 
 ## Fonctionnalités
 
@@ -111,4 +111,4 @@ La suite : voir la [roadmap publique V2](https://adams43360.github.io/FitRadarHR
 
 ## Licence
 
-[MIT](LICENSE) — libre d'utilisation, de modification et de redistribution.
+[Functional Source License 1.1, MIT Future License](LICENSE) (FSL-1.1-MIT) — code source ouvert et modifiable, utilisation libre (y compris auto-hébergement interne, usage commercial non concurrent, prestations de service), à l'exception d'un usage commercial concurrent sans autorisation. Chaque version passe automatiquement sous licence **MIT** deux ans après sa publication. Détails : [docs/user/about/license.md](docs/user/about/license.md).
