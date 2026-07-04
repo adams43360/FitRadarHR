@@ -130,6 +130,26 @@
 
 ---
 
+### US-E1-08 — Refonte du menu de navigation principal (catégories + sous-menus déroulants)
+**En tant que** utilisateur connecté (RH, Manager, Admin), **je veux** un menu principal organisé en catégories avec des sous-menus déroulants, **afin de** naviguer sans que les liens ne chevauchent le logo à mesure que de nouvelles fonctionnalités s'ajoutent.
+
+**Contexte :** le menu s'est allongé au fil des livraisons (Départements, Postes, Équipes, Questionnaires, Rapports, Analytics, Audit, Membres, SSO, API, Abonnement…) au point de chevaucher le logo sur écran standard. Regrouper les entrées par catégorie avec un menu déroulant limite la casse à chaque nouvel ajout.
+
+**Critères d'acceptation :**
+- [x] Les liens du menu sont regroupés en catégories principales cohérentes (Organisation → Départements/Équipes/Membres ; Recrutement → Postes/Questionnaires/Rapports ; Pilotage → Analytics/Audit ; Paramètres → SSO/API/Abonnement), plutôt qu'une liste plate
+- [x] Chaque catégorie principale ouvre un sous-menu déroulant au clic, sans rechargement de page
+- [x] Aucun chevauchement avec le logo sur les largeurs d'écran usuelles (desktop et tablette) ; comportement mobile prévu (bouton burger + panneau empilé sous le seuil `lg`)
+- [x] La visibilité des entrées reste conditionnée aux mêmes règles de permission qu'aujourd'hui (ex. Abonnement/SSO/API réservés RH) — une catégorie sans item visible est masquée entièrement (cas Manager : Pilotage/Paramètres disparaissent)
+- [x] Tous les libellés passent par le système i18n existant (FR/EN/ES/DE), aucun texte en dur
+- [x] Le menu déroulant est utilisable au clavier (Échap pour fermer, clic extérieur, boutons nativement focusables/activables)
+- [x] Aucune régression sur les liens existants (mêmes URLs, mêmes noms de routes) — source unique des liens via le template tag `navbar_categories`, partagée desktop/mobile
+
+**Livré (2026-07-04)** : template tag `apps/accounts/templatetags/navbar_tags.py::navbar_categories`,
+partiel `templates/partials/_navbar_menu.html` (rendu desktop dropdown / mobile empilé),
+`templates/partials/navbar.html` réécrit. 261 tests toujours au vert.
+
+---
+
 ### US-E1-04 — Gestion des rôles
 **En tant que** RH (ADMIN), **je veux** modifier le rôle d'un utilisateur ou le désactiver, **afin de** maintenir un contrôle sur les accès.
 

@@ -2537,3 +2537,19 @@ msgstr "Abonnement"
 #: apps/teams/views.py:0 templates/accounts/billing.html:0
 msgid "abonnements"
 msgstr "Abonnements"
+
+#: apps/accounts/templatetags/navbar_tags.py:34
+msgid "Recrutement"
+msgstr "Rekrutierung"
+
+#: apps/accounts/templatetags/navbar_tags.py:45
+msgid "Pilotage"
+msgstr "Steuerung"
+
+#: apps/accounts/templatetags/navbar_tags.py:53
+msgid "Paramètres"
+msgstr "Einstellungen"
+
+#: templates/partials/navbar.html:33
+msgid "Menu"
+msgstr "Menü"

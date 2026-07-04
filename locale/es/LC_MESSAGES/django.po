@@ -2533,3 +2533,19 @@ msgstr "suscripción"
 #: apps/teams/views.py:0 templates/accounts/billing.html:0
 msgid "abonnements"
 msgstr "suscripciones"
+
+#: apps/accounts/templatetags/navbar_tags.py:34
+msgid "Recrutement"
+msgstr "Selección"
+
+#: apps/accounts/templatetags/navbar_tags.py:45
+msgid "Pilotage"
+msgstr "Seguimiento"
+
+#: apps/accounts/templatetags/navbar_tags.py:53
+msgid "Paramètres"
+msgstr "Configuración"
+
+#: templates/partials/navbar.html:33
+msgid "Menu"
+msgstr "Menú"

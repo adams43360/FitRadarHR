@@ -1,37 +1,64 @@
 {% load i18n static %}
 {% load i18n_extras %}
-<nav class="bg-white shadow-sm border-b border-gray-200">
+<nav class="bg-white shadow-sm border-b border-gray-200" x-data="{ mobileOpen: false }">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between h-16 items-center">
-      <a href="/" class="flex items-center gap-2 text-xl font-bold text-teal-700">
+      <a href="/" class="flex items-center gap-2 text-xl font-bold text-teal-700 shrink-0">
         <img src="{% static 'img/branding/icon-color.svg' %}" alt="" class="h-8 w-8" width="32" height="32">
         <span>Fit<span class="text-gray-900">Radar</span><span class="text-teal-500">HR</span></span>
       </a>
 
       {% if user.is_authenticated %}
-      <div class="flex items-center gap-6">
-        {% if user.is_rh %}
-        <a href="{% url 'departments:list' %}" class="text-sm text-gray-600 hover:text-indigo-600">{% trans "Départements" %}</a>
-        <a href="{% url 'positions:list' %}" class="text-sm text-gray-600 hover:text-indigo-600">{% trans "Postes" %}</a>
-        {% endif %}
-        <a href="{% url 'teams:list' %}" class="text-sm text-gray-600 hover:text-indigo-600">{% trans "Équipes" %}</a>
-        <a href="{% url 'survey:dashboard' %}" class="text-sm text-gray-600 hover:text-indigo-600">{% trans "Questionnaires" %}</a>
-        <a href="{% url 'reports:list' %}" class="text-sm text-gray-600 hover:text-indigo-600">{% trans "Rapports" %}</a>
-        {% if user.is_rh %}
-        <a href="{% url 'reports:analytics' %}" class="text-sm text-gray-600 hover:text-indigo-600">{% trans "Analytics" %}</a>
-        <a href="{% url 'reports:audit_log' %}" class="text-sm text-gray-600 hover:text-indigo-600">{% trans "Audit" %}</a>
-        <a href="{% url 'accounts:members' %}" class="text-sm text-gray-600 hover:text-indigo-600">{% trans "Membres" %}</a>
-        <a href="{% url 'accounts:sso_config' %}" class="text-sm text-gray-600 hover:text-indigo-600">{% trans "SSO" %}</a>
-        <a href="{% url 'accounts:api_keys_settings' %}" class="text-sm text-gray-600 hover:text-indigo-600">{% trans "API" %}</a>
-        <a href="{% url 'accounts:billing_settings' %}" class="text-sm text-gray-600 hover:text-indigo-600">{% trans "Abonnement" %}</a>
-        {% endif %}
+      <div class="flex items-center gap-4">
+        <!-- Nav desktop : catégories avec sous-menus déroulants -->
+        <div class="hidden lg:flex items-center gap-6">
+          {% include "partials/_navbar_menu.html" with mobile=False %}
 
-        <!-- Sélecteur de langue -->
+          <!-- Sélecteur de langue -->
+          <form action="{% url 'set_language' %}" method="post" class="flex items-center gap-1">
+            {% csrf_token %}
+            {% get_current_language as CURRENT_LANG %}
+            <input name="next" type="hidden" value="{{ request.get_full_path|strip_lang_prefix }}">
+            <select name="language" onchange="this.form.submit()"
+              class="text-sm border-0 bg-transparent text-gray-500 cursor-pointer">
+              <option value="fr" {% if LANGUAGE_CODE == 'fr' %}selected{% endif %}>🇫🇷 FR</option>
+              <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>🇬🇧 EN</option>
+              <option value="es" {% if LANGUAGE_CODE == 'es' %}selected{% endif %}>🇪🇸 ES</option>
+              <option value="de" {% if LANGUAGE_CODE == 'de' %}selected{% endif %}>🇩🇪 DE</option>
+            </select>
+          </form>
+
+          <a href="{% url 'account_logout' %}"
+            class="text-sm text-gray-500 hover:text-red-600">{% trans "Déconnexion" %}</a>
+        </div>
+
+        <!-- Bouton menu mobile -->
+        <button type="button" class="lg:hidden p-2 -mr-2 text-gray-500 hover:text-indigo-600 focus:outline-none"
+          @click="mobileOpen = !mobileOpen" :aria-expanded="mobileOpen.toString()" aria-controls="mobile-menu"
+          aria-label="{% trans 'Menu' %}">
+          <svg x-show="!mobileOpen" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg x-show="mobileOpen" x-cloak class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if user.is_authenticated %}
+  <!-- Panneau mobile -->
+  <div id="mobile-menu" x-show="mobileOpen" x-cloak x-transition
+    @keydown.escape.window="mobileOpen = false"
+    class="lg:hidden border-t border-gray-100 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 space-y-5">
+      {% include "partials/_navbar_menu.html" with mobile=True %}
+
+      <div class="flex items-center justify-between border-t border-gray-100 pt-4">
         <form action="{% url 'set_language' %}" method="post" class="flex items-center gap-1">
           {% csrf_token %}
-          {# Retire le préfixe de langue (/en/, /es/, /de/...) de l'URL avant redirection — #}
-          {# sinon le préfixe écrase le cookie de langue (voir apps/accounts/templatetags/i18n_extras.py) #}
-          {% get_current_language as CURRENT_LANG %}
           <input name="next" type="hidden" value="{{ request.get_full_path|strip_lang_prefix }}">
           <select name="language" onchange="this.form.submit()"
             class="text-sm border-0 bg-transparent text-gray-500 cursor-pointer">
@@ -41,11 +68,10 @@
             <option value="de" {% if LANGUAGE_CODE == 'de' %}selected{% endif %}>🇩🇪 DE</option>
           </select>
         </form>
-
         <a href="{% url 'account_logout' %}"
           class="text-sm text-gray-500 hover:text-red-600">{% trans "Déconnexion" %}</a>
       </div>
-      {% endif %}
     </div>
   </div>
+  {% endif %}
 </nav>

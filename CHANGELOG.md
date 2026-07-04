@@ -4,6 +4,26 @@ Toutes les évolutions notables de FitRadarHR sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) —
 le projet n'étant pas encore versionné, les entrées sont datées.
 
+## 2026-07-04 (12)
+
+### Modifié
+- **Refonte du menu de navigation principal** (US-E1-08) : les liens (jusqu'à
+  11 pour un RH) sont désormais regroupés en 4 catégories avec sous-menus
+  déroulants — Organisation (Départements, Équipes, Membres), Recrutement
+  (Postes, Questionnaires, Rapports), Pilotage (Analytics, Audit), Paramètres
+  (SSO, API, Abonnement). Corrige le chevauchement avec le logo constaté sur
+  écran standard à mesure des ajouts de fonctionnalités.
+  - Nouveau template tag `navbar_categories` (`apps/accounts/templatetags/navbar_tags.py`)
+    : source unique des catégories/liens (et de leur restriction RH), partagée
+    entre le rendu desktop (menus déroulants Alpine.js) et le panneau mobile
+    (accordéon empilé) — évite toute divergence entre les deux.
+  - Comportement mobile : bouton menu burger sous le seuil `lg`, panneau
+    empilé par catégorie.
+  - Dropdowns utilisables au clavier (fermeture Échap, clic extérieur), sans
+    changement des routes existantes.
+  - i18n : nouveaux libellés "Recrutement", "Pilotage", "Paramètres", "Menu"
+    traduits EN/ES/DE ("Organisation" déjà présent au catalogue).
+
 ## 2026-07-03 (11)
 
 ### Ajouté
