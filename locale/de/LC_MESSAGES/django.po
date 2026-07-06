@@ -2413,11 +2413,11 @@ msgstr "Kostenloser Plan (Testphase beendet)"
 #: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
 #: apps/teams/views.py:0 templates/accounts/billing.html:0
 msgid ""
-"Des quotas d'usage s'appliquent désormais (postes actifs, personnes, "
-"questionnaires envoyés par mois). Passez à l'abonnement pour les lever."
+"Le plan gratuit est limité à 25 personnes dans l'organisation. Passez à "
+"l'abonnement pour lever cette limite."
 msgstr ""
-"Es gelten nun Nutzungsquoten (aktive Stellen, Personen, monatlich versendete"
-" Fragebögen). Abonnieren Sie, um sie aufzuheben."
+"Der kostenlose Plan ist auf 25 Personen in der Organisation begrenzt. "
+"Abonnieren Sie, um dieses Limit aufzuheben."
 
 #: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
 #: apps/teams/views.py:0 templates/accounts/billing.html:0
@@ -2469,29 +2469,11 @@ msgstr ""
 #: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
 #: apps/teams/views.py:0 templates/accounts/billing.html:0
 msgid ""
-"Limite du plan gratuit atteinte (%(n)d postes actifs). Passez à l'abonnement"
-" pour en créer davantage."
-msgstr ""
-"Limit des kostenlosen Plans erreicht (%(n)d aktive Stellen). Abonnieren Sie,"
-" um weitere zu erstellen."
-
-#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
-#: apps/teams/views.py:0 templates/accounts/billing.html:0
-msgid ""
 "Limite du plan gratuit atteinte (%(n)d personnes). Passez à l'abonnement "
 "pour en ajouter davantage."
 msgstr ""
 "Limit des kostenlosen Plans erreicht (%(n)d Personen). Abonnieren Sie, um "
 "weitere hinzuzufügen."
-
-#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
-#: apps/teams/views.py:0 templates/accounts/billing.html:0
-msgid ""
-"Limite du plan gratuit atteinte (%(n)d questionnaires envoyés ce mois-ci). "
-"Passez à l'abonnement pour en envoyer davantage."
-msgstr ""
-"Limit des kostenlosen Plans erreicht (%(n)d in diesem Monat versendete "
-"Fragebögen). Abonnieren Sie, um weitere zu versenden."
 
 #: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
 #: apps/teams/views.py:0 templates/accounts/billing.html:0

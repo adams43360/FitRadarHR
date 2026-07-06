@@ -4,6 +4,23 @@ Toutes les évolutions notables de FitRadarHR sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) —
 le projet n'étant pas encore versionné, les entrées sont datées.
 
+## 2026-07-06 (13)
+
+### Modifié
+- **Simplification du modèle payant** : le plan gratuit passe d'une triple
+  limite (3 postes actifs, 10 personnes, 5 questionnaires/mois) à un **seuil
+  unique et cumulé de 25 personnes** dans l'organisation
+  (`apps/billing/quotas.py`).
+  - Création de postes désormais libre — c'est le début du parcours, pas
+    l'endroit où mettre de la friction. Limite mensuelle de questionnaires
+    supprimée — le nombre de personnes capture implicitement ce volume,
+    chaque personne recevant en général un lien.
+  - L'envoi d'un questionnaire à une personne existante reste libre ; seule la
+    création à la volée d'une nouvelle personne lors de l'envoi est soumise au
+    seuil (sinon la limite serait contournable par ce chemin).
+  - Mise à jour : écran `/settings/billing/`, tests, doc utilisateur
+    (`billing.md`), `stack.md`, `schema.md`, US-E1-07, traductions EN/ES/DE.
+
 ## 2026-07-04 (12)
 
 ### Modifié

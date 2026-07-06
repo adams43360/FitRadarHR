@@ -2392,11 +2392,11 @@ msgstr "Free plan (trial ended)"
 #: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
 #: apps/teams/views.py:0 templates/accounts/billing.html:0
 msgid ""
-"Des quotas d'usage s'appliquent désormais (postes actifs, personnes, "
-"questionnaires envoyés par mois). Passez à l'abonnement pour les lever."
+"Le plan gratuit est limité à 25 personnes dans l'organisation. Passez à "
+"l'abonnement pour lever cette limite."
 msgstr ""
-"Usage quotas now apply (active positions, people, questionnaires sent per "
-"month). Subscribe to remove them."
+"The free plan is limited to 25 people in the organization. Subscribe to "
+"remove this limit."
 
 #: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
 #: apps/teams/views.py:0 templates/accounts/billing.html:0
@@ -2447,26 +2447,9 @@ msgstr ""
 #: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
 #: apps/teams/views.py:0 templates/accounts/billing.html:0
 msgid ""
-"Limite du plan gratuit atteinte (%(n)d postes actifs). Passez à l'abonnement"
-" pour en créer davantage."
-msgstr ""
-"Free plan limit reached (%(n)d active positions). Subscribe to create more."
-
-#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
-#: apps/teams/views.py:0 templates/accounts/billing.html:0
-msgid ""
 "Limite du plan gratuit atteinte (%(n)d personnes). Passez à l'abonnement "
 "pour en ajouter davantage."
 msgstr "Free plan limit reached (%(n)d people). Subscribe to add more."
-
-#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
-#: apps/teams/views.py:0 templates/accounts/billing.html:0
-msgid ""
-"Limite du plan gratuit atteinte (%(n)d questionnaires envoyés ce mois-ci). "
-"Passez à l'abonnement pour en envoyer davantage."
-msgstr ""
-"Free plan limit reached (%(n)d questionnaires sent this month). Subscribe to"
-" send more."
 
 #: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
 #: apps/teams/views.py:0 templates/accounts/billing.html:0

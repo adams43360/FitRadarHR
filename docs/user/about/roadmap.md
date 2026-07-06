@@ -99,7 +99,8 @@ abonnement. Reach élevé (touche potentiellement toutes les orgs à terme) et
 impact fort (c'est le modèle économique), mais effort important : intégration
 Stripe, quotas par plan, écrans de facturation, gestion des dépassements.
 Livré : essai de 14 jours automatique, un seul plan payant (Stripe Checkout +
-Customer Portal), quotas d'usage post-essai (postes/personnes/questionnaires).
+Customer Portal), limite post-essai simplifiée depuis (seuil unique de
+25 personnes — postes et questionnaires libres).
 
 **3. Cartographie des manques d'équipe** — étend la complémentarité déjà
 calculée : à partir du profil agrégé d'une équipe, faire ressortir les

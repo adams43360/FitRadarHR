@@ -133,7 +133,7 @@ Statut de facturation d'une organisation — un seul plan payant, un essai gratu
 | `current_period_end` | TIMESTAMP (nullable) | Synchronisé par le webhook `customer.subscription.updated` |
 | `created_at` / `updated_at` | TIMESTAMP | — |
 
-> Aucun prix stocké en base : le prix est un objet Stripe (`Price`) référencé par `settings.STRIPE_PRICE_ID`. `Subscription.has_full_access` fait autorité pour savoir si les quotas du plan gratuit s'appliquent (essai actif OU abonnement `active` OU organisation de démonstration → accès complet). Voir `apps/billing/quotas.py` pour les seuils du plan gratuit.
+> Aucun prix stocké en base : le prix est un objet Stripe (`Price`) référencé par `settings.STRIPE_PRICE_ID`. `Subscription.has_full_access` fait autorité pour savoir si le quota du plan gratuit s'applique (essai actif OU abonnement `active` OU organisation de démonstration → accès complet). Voir `apps/billing/quotas.py` pour le seuil du plan gratuit (limite unique : 25 personnes au total dans l'organisation).
 
 ---
 

@@ -75,53 +75,56 @@ class QuotaTests(TestCase):
         sub.trial_ends_at = timezone.now() - timedelta(days=1)
         sub.save()
 
-    def test_position_quota_blocks_at_limit(self):
-        for i in range(quotas.FREE_MAX_ACTIVE_POSITIONS):
-            Position.objects.create(org=self.org, title_fr=f"Poste {i}", created_by=self.user)
-        self.assertIsNotNone(quotas.check_quota(self.org, "position"))
-
-    def test_position_quota_allows_under_limit(self):
-        Position.objects.create(org=self.org, title_fr="Poste 1", created_by=self.user)
-        self.assertIsNone(quotas.check_quota(self.org, "position"))
-
-    def test_person_quota_blocks_at_limit(self):
+    def _fill_person_quota(self):
         for i in range(quotas.FREE_MAX_PEOPLE):
             Person.objects.create(org=self.org, email=f"p{i}@org.test", first_name="P", last_name=str(i))
+
+    def test_person_quota_blocks_at_limit(self):
+        self._fill_person_quota()
         self.assertIsNotNone(quotas.check_quota(self.org, "person"))
 
-    def test_questionnaire_quota_blocks_at_limit(self):
+    def test_person_quota_allows_under_limit(self):
+        Person.objects.create(org=self.org, email="p@org.test", first_name="P", last_name="P")
+        self.assertIsNone(quotas.check_quota(self.org, "person"))
+
+    def test_positions_never_quota_limited(self):
+        # La création de postes est libre, même hors essai/abonnement
+        for i in range(10):
+            Position.objects.create(org=self.org, title_fr=f"Poste {i}", created_by=self.user)
+        self.assertIsNone(quotas.check_quota(self.org, "position"))
+
+    def test_questionnaires_never_quota_limited(self):
+        # L'envoi de questionnaires est libre — le volume est capturé
+        # implicitement par le nombre de personnes
         from apps.survey.models import QuestionnaireLink
         person = Person.objects.create(org=self.org, email="c@org.test", first_name="C", last_name="D")
-        for i in range(quotas.FREE_MAX_QUESTIONNAIRES_PER_MONTH):
+        for i in range(10):
             QuestionnaireLink.objects.create(
                 org=self.org, person=person, token=f"tok{i}",
                 questionnaire_version="50", sent_by=self.user,
                 expires_at=timezone.now() + timedelta(days=7),
             )
-        self.assertIsNotNone(quotas.check_quota(self.org, "questionnaire"))
+        self.assertIsNone(quotas.check_quota(self.org, "questionnaire"))
 
     def test_no_quota_during_trial(self):
         sub = Subscription.objects.get(org=self.org)
         sub.trial_ends_at = timezone.now() + timedelta(days=1)
         sub.save()
-        for i in range(quotas.FREE_MAX_ACTIVE_POSITIONS + 2):
-            Position.objects.create(org=self.org, title_fr=f"Poste {i}", created_by=self.user)
-        self.assertIsNone(quotas.check_quota(self.org, "position"))
+        self._fill_person_quota()
+        self.assertIsNone(quotas.check_quota(self.org, "person"))
 
     def test_no_quota_when_paid_active(self):
         sub = Subscription.objects.get(org=self.org)
         sub.status = Subscription.Status.ACTIVE
         sub.save()
-        for i in range(quotas.FREE_MAX_ACTIVE_POSITIONS + 2):
-            Position.objects.create(org=self.org, title_fr=f"Poste {i}", created_by=self.user)
-        self.assertIsNone(quotas.check_quota(self.org, "position"))
+        self._fill_person_quota()
+        self.assertIsNone(quotas.check_quota(self.org, "person"))
 
     def test_demo_org_never_quota_blocked(self):
         self.org.is_demo = True
         self.org.save()
-        for i in range(quotas.FREE_MAX_ACTIVE_POSITIONS + 2):
-            Position.objects.create(org=self.org, title_fr=f"Poste {i}", created_by=self.user)
-        self.assertIsNone(quotas.check_quota(self.org, "position"))
+        self._fill_person_quota()
+        self.assertIsNone(quotas.check_quota(self.org, "person"))
 
     def test_remaining_quota_person(self):
         self.assertEqual(quotas.remaining_quota(self.org, "person"), quotas.FREE_MAX_PEOPLE)
@@ -140,18 +143,43 @@ class QuotaEnforcedViewTests(TestCase):
         sub.save()
         self.client.force_login(self.user)
 
-    def test_position_create_blocked_over_quota(self):
-        for i in range(quotas.FREE_MAX_ACTIVE_POSITIONS):
-            Position.objects.create(org=self.org, title_fr=f"Poste {i}", created_by=self.user)
-        response = self.client.post(reverse("positions:create"), {
-            "title_fr": "Poste en trop", "status": "active",
-        })
-        self.assertRedirects(response, reverse("accounts:billing_settings"))
-        self.assertFalse(Position.objects.filter(title_fr="Poste en trop").exists())
-
-    def test_person_create_blocked_over_quota(self):
+    def _fill_person_quota(self):
         for i in range(quotas.FREE_MAX_PEOPLE):
             Person.objects.create(org=self.org, email=f"p{i}@org.test", first_name="P", last_name=str(i))
+
+    def test_position_create_never_blocked(self):
+        # Plus de limite sur les postes : la création reste possible hors quota
+        for i in range(5):
+            Position.objects.create(org=self.org, title_fr=f"Poste {i}", created_by=self.user)
+        response = self.client.post(reverse("positions:create"), {
+            "title_fr": "Poste supplémentaire", "status": "active",
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertNotEqual(response.url, reverse("accounts:billing_settings"))
+        self.assertTrue(Position.objects.filter(title_fr="Poste supplémentaire").exists())
+
+    def test_send_questionnaire_existing_person_never_blocked(self):
+        # L'envoi à une personne déjà existante n'est pas soumis au quota
+        self._fill_person_quota()
+        response = self.client.post(reverse("survey:send"), {
+            "person_email": "p0@org.test",
+            "questionnaire_version": "50", "language": "fr",
+        })
+        self.assertRedirects(response, reverse("survey:dashboard"))
+
+    def test_send_questionnaire_new_person_blocked_over_quota(self):
+        # Créer une personne à la volée via l'envoi compte dans le quota
+        self._fill_person_quota()
+        response = self.client.post(reverse("survey:send"), {
+            "person_email": "nouveau@org.test",
+            "first_name": "Nouveau", "last_name": "Venu",
+            "questionnaire_version": "50", "language": "fr",
+        })
+        self.assertRedirects(response, reverse("accounts:billing_settings"))
+        self.assertFalse(Person.objects.filter(email="nouveau@org.test").exists())
+
+    def test_person_create_blocked_over_quota(self):
+        self._fill_person_quota()
         response = self.client.post(reverse("teams:person_create"), {
             "first_name": "Trop", "last_name": "Plein", "email": "trop@org.test",
             "person_type": "candidate",

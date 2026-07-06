@@ -8,22 +8,18 @@ Aucune limite : postes, personnes, questionnaires envoyés, rapports — tout es
 
 ## À la fin de l'essai
 
-Sans abonnement actif, des quotas d'usage raisonnables s'appliquent pour continuer à utiliser FitRadarHR gratuitement :
+Sans abonnement actif, une seule limite s'applique pour continuer à utiliser FitRadarHR gratuitement : **25 personnes** (candidats + collaborateurs) au total dans l'organisation.
 
-| Ressource | Limite du plan gratuit |
-|---|---|
-| Postes actifs | 3 |
-| Personnes (candidats + collaborateurs) | 10 |
-| Questionnaires envoyés | 5 par mois |
+La création de postes et l'envoi de questionnaires restent libres — envoyer un questionnaire à une nouvelle personne la crée automatiquement et compte donc dans la limite.
 
 !!! note "Jamais de blocage total"
-    Dépasser un quota bloque uniquement la **création** de nouvelles ressources. Vos données existantes (postes, rapports, profils déjà calculés) restent consultables sans interruption.
+    Atteindre la limite bloque uniquement l'**ajout** de nouvelles personnes. Vos données existantes (postes, rapports, profils déjà calculés) restent consultables sans interruption.
 
 ## S'abonner
 
 Un RH accède à l'écran de facturation depuis le lien **Abonnement** de la barre de navigation (`/settings/billing/`).
 
-- **S'abonner** redirige vers une page de paiement sécurisée (Stripe Checkout). Un seul plan, sans palier : l'abonnement lève tous les quotas.
+- **S'abonner** redirige vers une page de paiement sécurisée (Stripe Checkout). Un seul plan, sans palier : l'abonnement lève la limite de personnes.
 - **Gérer mon abonnement** ouvre le portail client Stripe — moyen de paiement, factures, résiliation.
 
 Le statut affiché (essai en cours avec jours restants, abonnement actif avec date de renouvellement, ou plan gratuit après essai) est synchronisé automatiquement avec Stripe ; aucune action manuelle n'est nécessaire après paiement.

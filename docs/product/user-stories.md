@@ -103,8 +103,8 @@
 **Critères d'acceptation :**
 - [ ] Un essai gratuit de 14 jours démarre automatiquement à la création de l'organisation (B2B et B2C), sans action de l'utilisateur
 - [ ] Pendant l'essai, l'organisation a un accès complet, sans quota
-- [ ] Un seul plan payant, sans palier — un abonnement actif lève tous les quotas
-- [ ] Passé l'essai sans abonnement actif, des quotas d'usage s'appliquent : postes actifs, personnes, questionnaires envoyés par mois — jamais un blocage total, seules les nouvelles créations sont limitées, les données existantes restent consultables
+- [ ] Un seul plan payant, sans palier — un abonnement actif lève la limite
+- [ ] Passé l'essai sans abonnement actif, un seuil unique et cumulé s'applique : 25 personnes au total dans l'organisation. La création de postes et l'envoi de questionnaires restent libres (le nombre de personnes capture implicitement le volume de questionnaires) — jamais un blocage total, seul l'ajout de nouvelles personnes est limité, les données existantes restent consultables
 - [ ] Un écran `/settings/billing/` (RH only) affiche le statut (essai en cours avec jours restants, abonnement actif avec date de renouvellement, ou plan gratuit après essai), avec un bouton "S'abonner" (redirection Stripe Checkout) et "Gérer mon abonnement" (Stripe Customer Portal) une fois client Stripe créé
 - [ ] Le prix est configuré côté Stripe (pas en dur dans le code) — si Stripe n'est pas configuré, l'écran affiche "configuration requise" au lieu de planter
 - [ ] Le statut d'abonnement est synchronisé via un webhook Stripe (paiement réussi, renouvellement, échec de paiement, résiliation), jamais interrogé en direct à chaque page vue

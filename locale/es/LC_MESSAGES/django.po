@@ -2409,11 +2409,11 @@ msgstr "Plan gratuito (prueba finalizada)"
 #: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
 #: apps/teams/views.py:0 templates/accounts/billing.html:0
 msgid ""
-"Des quotas d'usage s'appliquent désormais (postes actifs, personnes, "
-"questionnaires envoyés par mois). Passez à l'abonnement pour les lever."
+"Le plan gratuit est limité à 25 personnes dans l'organisation. Passez à "
+"l'abonnement pour lever cette limite."
 msgstr ""
-"Ahora se aplican cuotas de uso (puestos activos, personas, cuestionarios "
-"enviados al mes). Suscríbase para eliminarlas."
+"El plan gratuito está limitado a 25 personas en la organización. Suscríbase "
+"para eliminar este límite."
 
 #: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
 #: apps/teams/views.py:0 templates/accounts/billing.html:0
@@ -2465,29 +2465,11 @@ msgstr ""
 #: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
 #: apps/teams/views.py:0 templates/accounts/billing.html:0
 msgid ""
-"Limite du plan gratuit atteinte (%(n)d postes actifs). Passez à l'abonnement"
-" pour en créer davantage."
-msgstr ""
-"Límite del plan gratuito alcanzado (%(n)d puestos activos). Suscríbase para "
-"crear más."
-
-#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
-#: apps/teams/views.py:0 templates/accounts/billing.html:0
-msgid ""
 "Limite du plan gratuit atteinte (%(n)d personnes). Passez à l'abonnement "
 "pour en ajouter davantage."
 msgstr ""
 "Límite del plan gratuito alcanzado (%(n)d personas). Suscríbase para añadir "
 "más."
-
-#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
-#: apps/teams/views.py:0 templates/accounts/billing.html:0
-msgid ""
-"Limite du plan gratuit atteinte (%(n)d questionnaires envoyés ce mois-ci). "
-"Passez à l'abonnement pour en envoyer davantage."
-msgstr ""
-"Límite del plan gratuito alcanzado (%(n)d cuestionarios enviados este mes). "
-"Suscríbase para enviar más."
 
 #: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
 #: apps/teams/views.py:0 templates/accounts/billing.html:0

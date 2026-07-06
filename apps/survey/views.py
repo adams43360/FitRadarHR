@@ -65,14 +65,19 @@ def send_questionnaire(request):
         initial["person_email"] = email
 
     if request.method == "POST":
-        if quota_error := check_quota(org, "questionnaire"):
-            messages.error(request, quota_error)
-            return redirect("accounts:billing_settings")
-
         form = SendLinkForm(request.POST, org=org)
         form.set_org(org)
         if form.is_valid():
             email = form.cleaned_data["person_email"]
+
+            # L'envoi de questionnaire est libre ; seule la création à la
+            # volée d'une nouvelle personne est soumise au quota du plan
+            # gratuit (seuil unique sur le nombre total de personnes).
+            if not org.persons.filter(email=email).exists():
+                if quota_error := check_quota(org, "person"):
+                    messages.error(request, quota_error)
+                    return redirect("accounts:billing_settings")
+
             first_name = form.cleaned_data.get("first_name", "").strip()
             last_name = form.cleaned_data.get("last_name", "").strip()
             version = form.cleaned_data["questionnaire_version"]
