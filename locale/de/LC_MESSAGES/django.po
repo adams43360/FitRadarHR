@@ -2373,16 +2373,6 @@ msgstr "Abonnement"
 
 #: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
 #: apps/teams/views.py:0 templates/accounts/billing.html:0
-msgid ""
-"Un essai gratuit de 14 jours à la création de votre organisation, puis un "
-"abonnement unique donnant accès à tout FitRadarHR sans limite."
-msgstr ""
-"Ein 14-tägiges kostenloses Testangebot bei der Erstellung Ihrer "
-"Organisation, danach ein einziges Abonnement mit uneingeschränktem Zugriff "
-"auf ganz FitRadarHR."
-
-#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
-#: apps/teams/views.py:0 templates/accounts/billing.html:0
 msgid "Abonnement actif"
 msgstr "Aktives Abonnement"
 
@@ -2390,34 +2380,6 @@ msgstr "Aktives Abonnement"
 #: apps/teams/views.py:0 templates/accounts/billing.html:0
 msgid "Prochain renouvellement le %(date)s."
 msgstr "Nächste Verlängerung am %(date)s."
-
-#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
-#: apps/teams/views.py:0 templates/accounts/billing.html:0
-msgid "Essai gratuit — %(n)s jour(s) restant(s)"
-msgstr "Kostenloses Testangebot — noch %(n)s Tag(e)"
-
-#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
-#: apps/teams/views.py:0 templates/accounts/billing.html:0
-msgid ""
-"Accès complet pendant l'essai. Passez à l'abonnement à tout moment pour "
-"continuer sans interruption ensuite."
-msgstr ""
-"Voller Zugriff während der Testphase. Abonnieren Sie jederzeit, um danach "
-"ohne Unterbrechung fortzufahren."
-
-#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
-#: apps/teams/views.py:0 templates/accounts/billing.html:0
-msgid "Plan gratuit (essai terminé)"
-msgstr "Kostenloser Plan (Testphase beendet)"
-
-#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
-#: apps/teams/views.py:0 templates/accounts/billing.html:0
-msgid ""
-"Le plan gratuit est limité à 25 personnes dans l'organisation. Passez à "
-"l'abonnement pour lever cette limite."
-msgstr ""
-"Der kostenlose Plan ist auf 25 Personen in der Organisation begrenzt. "
-"Abonnieren Sie, um dieses Limit aufzuheben."
 
 #: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
 #: apps/teams/views.py:0 templates/accounts/billing.html:0
@@ -2477,11 +2439,6 @@ msgstr ""
 
 #: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
 #: apps/teams/views.py:0 templates/accounts/billing.html:0
-msgid "Essai"
-msgstr "Testphase"
-
-#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
-#: apps/teams/views.py:0 templates/accounts/billing.html:0
 msgid "Paiement en retard"
 msgstr "Zahlung überfällig"
 
@@ -2489,11 +2446,6 @@ msgstr "Zahlung überfällig"
 #: apps/teams/views.py:0 templates/accounts/billing.html:0
 msgid "Résilié"
 msgstr "Gekündigt"
-
-#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
-#: apps/teams/views.py:0 templates/accounts/billing.html:0
-msgid "fin d'essai"
-msgstr "Testende"
 
 #: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
 #: apps/teams/views.py:0 templates/accounts/billing.html:0
@@ -2535,3 +2487,25 @@ msgstr "Einstellungen"
 #: templates/partials/navbar.html:33
 msgid "Menu"
 msgstr "Menü"
+
+#: templates/accounts/billing.html:0
+msgid ""
+"FitRadarHR est gratuit sans limite de durée jusqu'à %(n)s personnes. Au-"
+"delà, un abonnement unique donne accès à tout FitRadarHR sans limite."
+msgstr ""
+"FitRadarHR ist ohne zeitliche Begrenzung kostenlos für bis zu %(n)s "
+"Personen. Darüber hinaus bietet ein einziges Abonnement unbegrenzten Zugriff"
+" auf ganz FitRadarHR."
+
+#: templates/accounts/billing.html:0
+msgid "Plan gratuit"
+msgstr "Kostenloser Plan"
+
+#: templates/accounts/billing.html:0
+msgid "%(count)s personne(s) sur %(max)s incluses dans le plan gratuit."
+msgstr "%(count)s von %(max)s Personen im kostenlosen Plan enthalten."
+
+#: templates/accounts/billing.html:0
+msgid "Passez à l'abonnement — 39 €/mois — pour lever cette limite."
+msgstr ""
+"Wechseln Sie zum Abonnement — 39 €/Monat — um dieses Limit aufzuheben."

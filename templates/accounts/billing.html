@@ -7,7 +7,7 @@
 <div class="max-w-2xl mx-auto">
   <h1 class="text-2xl font-bold text-gray-900 mb-1">{% trans "Abonnement" %}</h1>
   <p class="text-sm text-gray-500 mb-6">
-    {% trans "Un essai gratuit de 14 jours à la création de votre organisation, puis un abonnement unique donnant accès à tout FitRadarHR sans limite." %}
+    {% blocktrans with n=free_max_people %}FitRadarHR est gratuit sans limite de durée jusqu'à {{ n }} personnes. Au-delà, un abonnement unique donne accès à tout FitRadarHR sans limite.{% endblocktrans %}
   </p>
 
   <div class="bg-white rounded-2xl border border-gray-200 p-6 mb-6">
@@ -21,23 +21,16 @@
         {% blocktrans with date=subscription.current_period_end|date:"d/m/Y" %}Prochain renouvellement le {{ date }}.{% endblocktrans %}
       </p>
       {% endif %}
-    {% elif subscription.is_trial_active %}
-      <div class="flex items-center gap-2 mb-2">
-        <span class="inline-block w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
-        <span class="text-sm font-semibold text-gray-900">
-          {% blocktrans with n=subscription.trial_days_left %}Essai gratuit — {{ n }} jour(s) restant(s){% endblocktrans %}
-        </span>
-      </div>
-      <p class="text-sm text-gray-500">
-        {% trans "Accès complet pendant l'essai. Passez à l'abonnement à tout moment pour continuer sans interruption ensuite." %}
-      </p>
     {% else %}
       <div class="flex items-center gap-2 mb-2">
-        <span class="inline-block w-2.5 h-2.5 rounded-full bg-amber-500"></span>
-        <span class="text-sm font-semibold text-gray-900">{% trans "Plan gratuit (essai terminé)" %}</span>
+        <span class="inline-block w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
+        <span class="text-sm font-semibold text-gray-900">{% trans "Plan gratuit" %}</span>
       </div>
+      <p class="text-sm text-gray-500 mb-1">
+        {% blocktrans with count=person_count max=free_max_people %}{{ count }} personne(s) sur {{ max }} incluses dans le plan gratuit.{% endblocktrans %}
+      </p>
       <p class="text-sm text-gray-500">
-        {% trans "Le plan gratuit est limité à 25 personnes dans l'organisation. Passez à l'abonnement pour lever cette limite." %}
+        {% blocktrans %}Passez à l'abonnement — 39 €/mois — pour lever cette limite.{% endblocktrans %}
       </p>
     {% endif %}
   </div>

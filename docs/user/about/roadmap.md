@@ -76,7 +76,7 @@ Les items #1 et #2 sont livrés ; les items 3 à 8 restent des candidats non tra
 | # | Fonctionnalité | Reach | Impact | Conf. | Effort | Score RICE | Statut |
 |---|---|---|---|---|---|---|---|
 | 1 | Fit inversé — meilleurs postes pour une personne | 5 | 2 | 90 % | 1.5 | **6.0** | ✅ Livré |
-| 2 | Monétisation (essai gratuit → abonnement) | 8 | 3 | 80 % | 5 | **3.84** | ✅ Livré |
+| 2 | Monétisation (plan gratuit → abonnement) | 8 | 3 | 80 % | 5 | **3.84** | ✅ Livré |
 | 3 | Cartographie des manques d'une équipe | 5 | 2 | 60 % | 2 | **3.0** | Candidat |
 | 4 | Portail candidat / collaborateur (accès à son profil) | 6 | 2 | 70 % | 3 | **2.8** | Candidat |
 | 5 | Dossier de conformité AI Act exportable | 3 | 2 | 70 % | 2 | **2.1** | Candidat |
@@ -98,9 +98,11 @@ résultats de fit déjà produits par le moteur (E5).
 abonnement. Reach élevé (touche potentiellement toutes les orgs à terme) et
 impact fort (c'est le modèle économique), mais effort important : intégration
 Stripe, quotas par plan, écrans de facturation, gestion des dépassements.
-Livré : essai de 14 jours automatique, un seul plan payant (Stripe Checkout +
-Customer Portal), limite post-essai simplifiée depuis (seuil unique de
-25 personnes — postes et questionnaires libres).
+Livré : un seul plan payant (39 €/mois, Stripe Checkout + Customer Portal) et
+un plan gratuit permanent (seuil unique de 25 personnes — postes et
+questionnaires libres). Le modèle initial à essai de 14 jours a été abandonné
+au profit du freemium : plus simple à comprendre, sans pression artificielle
+à la conversion.
 
 **3. Cartographie des manques d'équipe** — étend la complémentarité déjà
 calculée : à partir du profil agrégé d'une équipe, faire ressortir les

@@ -4,7 +4,7 @@ FitRadarHR est distribué sous la **Functional Source License, version 1.1, MIT 
 
 !!! info "Changement de licence — 2026-07-03"
     FitRadarHR était initialement distribué sous licence MIT. Il est passé en FSL-1.1-MIT
-    pour protéger une éventuelle offre commerciale future (essai gratuit puis abonnement)
+    pour protéger une éventuelle offre commerciale future (plan gratuit puis abonnement)
     contre une reprise du code par un tiers, tout en gardant le code public et modifiable
     pour un usage interne, éducatif ou de recherche.
 

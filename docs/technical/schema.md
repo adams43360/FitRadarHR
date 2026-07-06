@@ -119,21 +119,20 @@ Clé d'accès à l'API publique, scopée à une seule organisation.
 
 ---
 
-### `Subscription` *(V3 — essai gratuit et abonnement, US-E1-07)*
-Statut de facturation d'une organisation — un seul plan payant, un essai gratuit à la création.
+### `Subscription` *(V3 — plan gratuit et abonnement, US-E1-07)*
+Statut de facturation d'une organisation — plan gratuit permanent (≤ 25 personnes) ou un seul plan payant. Le champ `trial_ends_at` et le statut `trialing` du modèle initial (essai 14 jours) ont été supprimés le 2026-07-06 (migration `billing.0002`).
 
 | Champ | Type | Notes |
 |---|---|---|
 | `id` | UUID | — |
 | `org_id` | UUID FK → Organization (unique) | Un seul abonnement par organisation (`OneToOne`) |
-| `status` | ENUM(`trialing`, `active`, `past_due`, `canceled`) | Source de vérité côté FitRadarHR — mise à jour uniquement par le webhook Stripe |
-| `trial_ends_at` | TIMESTAMP | Fixé à la création (org créée + 14 jours) |
+| `status` | ENUM(`free`, `active`, `past_due`, `canceled`) | Source de vérité côté FitRadarHR — mise à jour uniquement par le webhook Stripe (`free` par défaut à la création) |
 | `stripe_customer_id` | VARCHAR(255), nullable | Créé au premier passage par Stripe Checkout |
 | `stripe_subscription_id` | VARCHAR(255), nullable | Renseigné par le webhook `checkout.session.completed` |
 | `current_period_end` | TIMESTAMP (nullable) | Synchronisé par le webhook `customer.subscription.updated` |
 | `created_at` / `updated_at` | TIMESTAMP | — |
 
-> Aucun prix stocké en base : le prix est un objet Stripe (`Price`) référencé par `settings.STRIPE_PRICE_ID`. `Subscription.has_full_access` fait autorité pour savoir si le quota du plan gratuit s'applique (essai actif OU abonnement `active` OU organisation de démonstration → accès complet). Voir `apps/billing/quotas.py` pour le seuil du plan gratuit (limite unique : 25 personnes au total dans l'organisation).
+> Aucun prix stocké en base : le prix facturé est un objet Stripe (`Price`) référencé par `settings.STRIPE_PRICE_ID` — le prix affiché sur l'écran abonnement (39 €/mois) doit rester cohérent avec lui. `Subscription.has_full_access` fait autorité pour savoir si le quota du plan gratuit s'applique (abonnement `active` OU organisation de démonstration → accès complet). Voir `apps/billing/quotas.py` pour le seuil du plan gratuit (limite unique : 25 personnes au total dans l'organisation).
 
 ---
 

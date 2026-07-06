@@ -14,8 +14,8 @@ et/ou une équipe, en s'appuyant sur le modèle de personnalité **Big Five / OC
 > **Licence (2026-07-03)** : passage de MIT à FSL-1.1-MIT — le code reste librement
 > consultable, modifiable et auto-hébergeable, mais un usage commercial concurrent est
 > réservé sans autorisation. Conversion automatique en MIT deux ans après chaque
-> publication. Raison : Damien envisage une éventuelle offre payante à terme (essai gratuit
-> puis abonnement) et voulait garder cette option ouverte sans bloquer la vitrine publique
+> publication. Raison : Damien envisage une éventuelle offre payante à terme (plan gratuit ≤ 25 personnes
+> puis abonnement 39 €/mois) et voulait garder cette option ouverte sans bloquer la vitrine publique
 > du code. Voir `LICENSE` et `docs/user/about/license.md`.
 
 Le cadrage produit complet est dans `docs/product/00-cadrage.md` — à lire avant toute

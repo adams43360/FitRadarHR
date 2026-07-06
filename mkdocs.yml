@@ -76,7 +76,7 @@ nav:
     - Tableau de bord: getting-started/dashboard.md
     - Connexion SSO (Keycloak/OIDC): getting-started/sso.md
     - API publique: getting-started/api.md
-    - Essai gratuit et abonnement: getting-started/billing.md
+    - Plan gratuit et abonnement: getting-started/billing.md
   - Départements:
     - departments/index.md
   - Postes:

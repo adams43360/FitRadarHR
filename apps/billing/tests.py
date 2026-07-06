@@ -1,4 +1,4 @@
-"""Tests facturation — essai gratuit et abonnement (roadmap V3 #2, US-E1-07)."""
+"""Tests facturation — plan gratuit permanent (≤ 25 personnes) et abonnement (US-E1-07)."""
 from datetime import timedelta
 from unittest.mock import MagicMock, patch
 
@@ -19,30 +19,22 @@ class SubscriptionModelTests(TestCase):
     def setUp(self):
         self.org, self.user = create_org_and_user()
 
-    def test_start_trial_sets_14_day_window(self):
-        sub = Subscription.start_trial(self.org)
-        self.assertEqual(sub.status, Subscription.Status.TRIALING)
-        delta = sub.trial_ends_at - timezone.now()
-        self.assertTrue(timedelta(days=13, hours=23) < delta <= timedelta(days=14))
+    def test_start_free_plan_creates_free_subscription(self):
+        sub = Subscription.start_free_plan(self.org)
+        self.assertEqual(sub.status, Subscription.Status.FREE)
 
     def test_get_or_create_is_idempotent(self):
         sub1 = Subscription.get_or_create_for_org(self.org)
         sub2 = Subscription.get_or_create_for_org(self.org)
         self.assertEqual(sub1.pk, sub2.pk)
 
-    def test_has_full_access_during_trial(self):
-        sub = Subscription.start_trial(self.org)
-        self.assertTrue(sub.has_full_access)
-
-    def test_has_full_access_false_after_trial_expires_unpaid(self):
-        sub = Subscription.start_trial(self.org)
-        sub.trial_ends_at = timezone.now() - timedelta(days=1)
-        sub.save()
+    def test_free_plan_has_no_full_access(self):
+        # Pas d'essai : les quotas du plan gratuit s'appliquent dès la création
+        sub = Subscription.start_free_plan(self.org)
         self.assertFalse(sub.has_full_access)
 
     def test_has_full_access_true_when_paid_active(self):
-        sub = Subscription.start_trial(self.org)
-        sub.trial_ends_at = timezone.now() - timedelta(days=1)
+        sub = Subscription.start_free_plan(self.org)
         sub.status = Subscription.Status.ACTIVE
         sub.save()
         self.assertTrue(sub.has_full_access)
@@ -50,13 +42,12 @@ class SubscriptionModelTests(TestCase):
     def test_demo_org_always_has_full_access(self):
         self.org.is_demo = True
         self.org.save()
-        sub = Subscription.start_trial(self.org)
-        sub.trial_ends_at = timezone.now() - timedelta(days=1)
+        sub = Subscription.start_free_plan(self.org)
         sub.status = Subscription.Status.CANCELED
         sub.save()
         self.assertTrue(sub.has_full_access)
 
-    def test_signup_b2b_creates_trial_subscription(self):
+    def test_signup_b2b_creates_free_subscription(self):
         response = self.client.post(reverse("accounts:signup_b2b"), {
             "org_name": "Acme", "first_name": "A", "last_name": "B",
             "email": "acme@example.com", "password1": "correct horse battery",
@@ -64,16 +55,14 @@ class SubscriptionModelTests(TestCase):
         })
         self.assertEqual(response.status_code, 302)
         org = Organization.objects.get(name="Acme")
-        self.assertTrue(Subscription.objects.filter(org=org, status=Subscription.Status.TRIALING).exists())
+        self.assertTrue(Subscription.objects.filter(org=org, status=Subscription.Status.FREE).exists())
 
 
 class QuotaTests(TestCase):
     def setUp(self):
         self.org, self.user = create_org_and_user()
-        # Essai expiré, pas d'abonnement → quotas du plan gratuit actifs
-        sub = Subscription.start_trial(self.org)
-        sub.trial_ends_at = timezone.now() - timedelta(days=1)
-        sub.save()
+        # Plan gratuit par défaut → quotas actifs
+        Subscription.start_free_plan(self.org)
 
     def _fill_person_quota(self):
         for i in range(quotas.FREE_MAX_PEOPLE):
@@ -88,7 +77,7 @@ class QuotaTests(TestCase):
         self.assertIsNone(quotas.check_quota(self.org, "person"))
 
     def test_positions_never_quota_limited(self):
-        # La création de postes est libre, même hors essai/abonnement
+        # La création de postes est libre, même sur le plan gratuit
         for i in range(10):
             Position.objects.create(org=self.org, title_fr=f"Poste {i}", created_by=self.user)
         self.assertIsNone(quotas.check_quota(self.org, "position"))
@@ -105,13 +94,6 @@ class QuotaTests(TestCase):
                 expires_at=timezone.now() + timedelta(days=7),
             )
         self.assertIsNone(quotas.check_quota(self.org, "questionnaire"))
-
-    def test_no_quota_during_trial(self):
-        sub = Subscription.objects.get(org=self.org)
-        sub.trial_ends_at = timezone.now() + timedelta(days=1)
-        sub.save()
-        self._fill_person_quota()
-        self.assertIsNone(quotas.check_quota(self.org, "person"))
 
     def test_no_quota_when_paid_active(self):
         sub = Subscription.objects.get(org=self.org)
@@ -138,9 +120,7 @@ class QuotaEnforcedViewTests(TestCase):
 
     def setUp(self):
         self.org, self.user = create_org_and_user()
-        sub = Subscription.start_trial(self.org)
-        sub.trial_ends_at = timezone.now() - timedelta(days=1)
-        sub.save()
+        Subscription.start_free_plan(self.org)
         self.client.force_login(self.user)
 
     def _fill_person_quota(self):
@@ -195,18 +175,27 @@ class BillingSettingsViewTests(TestCase):
             email="manager@org.test", password="test-password",
             first_name="M", last_name="U", org=self.org, role=User.Role.MANAGER,
         )
-        Subscription.start_trial(self.org)
+        Subscription.start_free_plan(self.org)
 
     def test_manager_forbidden(self):
         self.client.force_login(self.manager_user)
         response = self.client.get(reverse("accounts:billing_settings"))
         self.assertEqual(response.status_code, 403)
 
-    def test_rh_sees_trial_status(self):
+    def test_rh_sees_free_plan_status_and_price(self):
         self.client.force_login(self.rh_user)
         response = self.client.get(reverse("accounts:billing_settings"))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "14")
+        self.assertContains(response, "Plan gratuit")
+        self.assertContains(response, "39")
+        self.assertNotContains(response, "Essai")
+
+    def test_no_trial_wording_anywhere(self):
+        # Le modèle freemium a remplacé l'essai 14 jours — aucune mention résiduelle
+        self.client.force_login(self.rh_user)
+        response = self.client.get(reverse("accounts:billing_settings"))
+        self.assertNotContains(response, "14 jours")
+        self.assertNotContains(response, "restant")
 
     @override_settings(STRIPE_SECRET_KEY="", STRIPE_PRICE_ID="")
     def test_not_configured_shows_notice_and_blocks_checkout(self):
@@ -242,7 +231,7 @@ class BillingSettingsViewTests(TestCase):
 class StripeWebhookTests(TestCase):
     def setUp(self):
         self.org, self.user = create_org_and_user()
-        self.sub = Subscription.start_trial(self.org)
+        self.sub = Subscription.start_free_plan(self.org)
 
     def _post_event(self, event):
         with patch("stripe.Webhook.construct_event", return_value=event):
@@ -292,6 +281,21 @@ class StripeWebhookTests(TestCase):
         self.assertIsNotNone(self.sub.current_period_end)
 
     @override_settings(STRIPE_WEBHOOK_SECRET="whsec_test")
+    def test_stripe_trialing_status_treated_as_active(self):
+        # Plus d'essai côté FitRadarHR : un essai configuré côté Stripe
+        # équivaut à un abonnement actif
+        self.sub.stripe_subscription_id = "sub_123"
+        self.sub.save()
+        event = {
+            "type": "customer.subscription.updated",
+            "data": {"object": {"id": "sub_123", "status": "trialing"}},
+        }
+        response = self._post_event(event)
+        self.assertEqual(response.status_code, 200)
+        self.sub.refresh_from_db()
+        self.assertEqual(self.sub.status, Subscription.Status.ACTIVE)
+
+    @override_settings(STRIPE_WEBHOOK_SECRET="whsec_test")
     def test_subscription_deleted_cancels(self):
         self.sub.stripe_subscription_id = "sub_123"
         self.sub.status = Subscription.Status.ACTIVE
@@ -320,15 +324,13 @@ class StripeWebhookTests(TestCase):
 class CsvImportQuotaTests(TestCase):
     def setUp(self):
         self.org, self.user = create_org_and_user()
-        sub = Subscription.start_trial(self.org)
-        sub.trial_ends_at = timezone.now() - timedelta(days=1)
-        sub.save()
+        Subscription.start_free_plan(self.org)
 
     def test_import_capped_by_remaining_quota(self):
         from apps.teams.csv_import import import_persons_csv
         import io
 
-        # Déjà à 2 personnes du quota (max 10)
+        # Déjà à 2 personnes du quota
         for i in range(quotas.FREE_MAX_PEOPLE - 2):
             Person.objects.create(org=self.org, email=f"existing{i}@org.test", first_name="E", last_name=str(i))
 
@@ -347,8 +349,8 @@ class CrossOrgIsolationTests(TestCase):
     def test_subscription_scoped_per_org(self):
         org1, _ = create_org_and_user(name="Org 1", email="a@org1.test")
         org2, _ = create_org_and_user(name="Org 2", email="a@org2.test")
-        sub1 = Subscription.start_trial(org1)
-        sub2 = Subscription.start_trial(org2)
+        sub1 = Subscription.start_free_plan(org1)
+        sub2 = Subscription.start_free_plan(org2)
         self.assertNotEqual(sub1.pk, sub2.pk)
         self.assertIn(sub1, Subscription.objects.for_org(org1))
         self.assertNotIn(sub2, Subscription.objects.for_org(org1))

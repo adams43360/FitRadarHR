@@ -1,6 +1,8 @@
 """
-Quota du plan gratuit — s'applique uniquement une fois l'essai terminé et
-en l'absence d'abonnement actif (voir `Subscription.has_full_access`).
+Quota du plan gratuit — s'applique en l'absence d'abonnement payant actif
+(voir `Subscription.has_full_access`). Le plan gratuit n'est pas limité dans
+le temps : une organisation qui reste sous le seuil peut utiliser FitRadarHR
+aussi longtemps qu'elle le souhaite.
 
 Modèle : un seuil unique et cumulé sur le nombre total de personnes de
 l'organisation (`org.persons.count()`). La création de postes et l'envoi de
@@ -43,7 +45,7 @@ def check_quota(org, resource):
 
 def remaining_quota(org, resource):
     """Renvoie le nombre de ressources encore créables, ou `None` si illimité
-    (essai/abonnement actif/démo). Utilisé pour capper l'import CSV en masse."""
+    (abonnement actif/démo). Utilisé pour capper l'import CSV en masse."""
     if has_full_access(org):
         return None
     if resource == "person":

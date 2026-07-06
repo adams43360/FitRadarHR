@@ -52,7 +52,7 @@ def signup_b2b(request):
             org=org,
             role=User.Role.RH,
         )
-        Subscription.start_trial(org)
+        Subscription.start_free_plan(org)
         login(request, user, backend="django.contrib.auth.backends.ModelBackend")
         return redirect("accounts:dashboard")
 
@@ -79,7 +79,7 @@ def signup_b2c(request):
             org=org,
             role=User.Role.SOLO,
         )
-        Subscription.start_trial(org)
+        Subscription.start_free_plan(org)
         login(request, user, backend="django.contrib.auth.backends.ModelBackend")
         return redirect("accounts:dashboard")
 
@@ -336,12 +336,12 @@ def api_keys_settings(request):
 
 
 # ──────────────────────────────────────────────────────────────────────────────
-# Facturation — essai gratuit et abonnement (item #2 roadmap V3, US-E1-07)
+# Facturation — plan gratuit (≤ 25 personnes) et abonnement (US-E1-07)
 # ──────────────────────────────────────────────────────────────────────────────
 
 @login_required
 def billing_settings(request):
-    """Statut de l'essai/abonnement de l'org — RH only.
+    """Statut du plan (gratuit ou abonnement) de l'org — RH only.
 
     N'expose le bouton "S'abonner" que si Stripe est configuré
     (`STRIPE_SECRET_KEY`/`STRIPE_PRICE_ID`) — sinon affiche un message
@@ -351,6 +351,7 @@ def billing_settings(request):
 
     from apps.billing import stripe_client
     from apps.billing.models import Subscription
+    from apps.billing.quotas import FREE_MAX_PEOPLE
 
     org = request.user.org
     subscription = Subscription.get_or_create_for_org(org)
@@ -358,6 +359,8 @@ def billing_settings(request):
     return render(request, "accounts/billing.html", {
         "subscription": subscription,
         "stripe_configured": stripe_client.is_configured(),
+        "free_max_people": FREE_MAX_PEOPLE,
+        "person_count": org.persons.count(),
     })
 
 

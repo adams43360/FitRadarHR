@@ -97,18 +97,21 @@
 
 ---
 
-### US-E1-07 — Essai gratuit et abonnement
-**En tant que** RH (ADMIN), **je veux** bénéficier d'un essai gratuit à la création de mon organisation puis souscrire un abonnement simple, **afin de** continuer à utiliser FitRadarHR sans limite au-delà de la période d'essai.
+### US-E1-07 — Plan gratuit et abonnement
+**En tant que** RH (ADMIN), **je veux** utiliser FitRadarHR gratuitement sans limite de durée tant que mon organisation reste petite, puis souscrire un abonnement simple, **afin de** continuer sans limite au-delà du seuil du plan gratuit.
+
+> Révision 2026-07-06 : le modèle initial (essai gratuit de 14 jours puis quotas)
+> est remplacé par un plan gratuit permanent — plus simple à comprendre, sans
+> pression artificielle à la conversion.
 
 **Critères d'acceptation :**
-- [ ] Un essai gratuit de 14 jours démarre automatiquement à la création de l'organisation (B2B et B2C), sans action de l'utilisateur
-- [ ] Pendant l'essai, l'organisation a un accès complet, sans quota
-- [ ] Un seul plan payant, sans palier — un abonnement actif lève la limite
-- [ ] Passé l'essai sans abonnement actif, un seuil unique et cumulé s'applique : 25 personnes au total dans l'organisation. La création de postes et l'envoi de questionnaires restent libres (le nombre de personnes capture implicitement le volume de questionnaires) — jamais un blocage total, seul l'ajout de nouvelles personnes est limité, les données existantes restent consultables
-- [ ] Un écran `/settings/billing/` (RH only) affiche le statut (essai en cours avec jours restants, abonnement actif avec date de renouvellement, ou plan gratuit après essai), avec un bouton "S'abonner" (redirection Stripe Checkout) et "Gérer mon abonnement" (Stripe Customer Portal) une fois client Stripe créé
-- [ ] Le prix est configuré côté Stripe (pas en dur dans le code) — si Stripe n'est pas configuré, l'écran affiche "configuration requise" au lieu de planter
+- [ ] Toute organisation (B2B et B2C) démarre sur le plan gratuit, sans limite de durée ni compte à rebours
+- [ ] Un seuil unique et cumulé s'applique au plan gratuit : 25 personnes au total dans l'organisation. La création de postes et l'envoi de questionnaires restent libres (le nombre de personnes capture implicitement le volume de questionnaires) — jamais un blocage total, seul l'ajout de nouvelles personnes est limité, les données existantes restent consultables
+- [ ] Un seul plan payant, sans palier — 39 €/mois — un abonnement actif lève la limite
+- [ ] Un écran `/settings/billing/` (RH only) affiche le statut (plan gratuit avec compteur de personnes sur le seuil, ou abonnement actif avec date de renouvellement), avec un bouton "S'abonner" (redirection Stripe Checkout) et "Gérer mon abonnement" (Stripe Customer Portal) une fois client Stripe créé
+- [ ] Le prix facturé est configuré côté Stripe (`STRIPE_PRICE_ID`) — le prix affiché sur l'écran abonnement doit rester cohérent avec lui ; si Stripe n'est pas configuré, l'écran affiche "configuration requise" au lieu de planter
 - [ ] Le statut d'abonnement est synchronisé via un webhook Stripe (paiement réussi, renouvellement, échec de paiement, résiliation), jamais interrogé en direct à chaque page vue
-- [ ] L'organisation de démonstration publique n'est jamais soumise aux quotas ni à l'essai
+- [ ] L'organisation de démonstration publique n'est jamais soumise aux quotas
 - [ ] Le contenu est disponible en FR/EN/ES/DE
 
 ---

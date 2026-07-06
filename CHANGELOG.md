@@ -4,6 +4,26 @@ Toutes les évolutions notables de FitRadarHR sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) —
 le projet n'étant pas encore versionné, les entrées sont datées.
 
+## 2026-07-06 (14)
+
+### Modifié
+- **Passage au freemium — suppression de l'essai 14 jours** : le plan gratuit
+  (25 personnes max) s'applique désormais **sans limite de durée** dès la
+  création de l'organisation — plus de compte à rebours "Essai gratuit —
+  X jour(s) restant(s)". Sous le seuil, FitRadarHR est utilisable gratuitement
+  aussi longtemps qu'on le souhaite ; au-delà, un abonnement unique à
+  **39 €/mois** lève la limite.
+  - Modèle `Subscription` : statuts `free`/`active`/`past_due`/`canceled`
+    (le statut `trialing` et le champ `trial_ends_at` sont supprimés —
+    migration `billing.0002`, les essais en cours basculent sur le plan
+    gratuit). Un statut Stripe `trialing` reçu par webhook est traité comme
+    un abonnement actif.
+  - Écran `/settings/billing/` : nouveau copy (compteur "X personne(s) sur
+    25", prix affiché — le prix facturé reste configuré côté Stripe via
+    `STRIPE_PRICE_ID`, à garder cohérent).
+  - Mise à jour : tests, doc utilisateur (`billing.md`), `schema.md`,
+    US-E1-07, roadmap, traductions EN/ES/DE.
+
 ## 2026-07-06 (13)
 
 ### Modifié

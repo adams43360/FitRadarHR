@@ -2370,15 +2370,6 @@ msgstr "Suscripción"
 
 #: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
 #: apps/teams/views.py:0 templates/accounts/billing.html:0
-msgid ""
-"Un essai gratuit de 14 jours à la création de votre organisation, puis un "
-"abonnement unique donnant accès à tout FitRadarHR sans limite."
-msgstr ""
-"Una prueba gratuita de 14 días al crear su organización, luego una "
-"suscripción única que da acceso ilimitado a todo FitRadarHR."
-
-#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
-#: apps/teams/views.py:0 templates/accounts/billing.html:0
 msgid "Abonnement actif"
 msgstr "Suscripción activa"
 
@@ -2386,34 +2377,6 @@ msgstr "Suscripción activa"
 #: apps/teams/views.py:0 templates/accounts/billing.html:0
 msgid "Prochain renouvellement le %(date)s."
 msgstr "Próxima renovación el %(date)s."
-
-#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
-#: apps/teams/views.py:0 templates/accounts/billing.html:0
-msgid "Essai gratuit — %(n)s jour(s) restant(s)"
-msgstr "Prueba gratuita — %(n)s día(s) restante(s)"
-
-#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
-#: apps/teams/views.py:0 templates/accounts/billing.html:0
-msgid ""
-"Accès complet pendant l'essai. Passez à l'abonnement à tout moment pour "
-"continuer sans interruption ensuite."
-msgstr ""
-"Acceso completo durante la prueba. Suscríbase en cualquier momento para "
-"continuar sin interrupción después."
-
-#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
-#: apps/teams/views.py:0 templates/accounts/billing.html:0
-msgid "Plan gratuit (essai terminé)"
-msgstr "Plan gratuito (prueba finalizada)"
-
-#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
-#: apps/teams/views.py:0 templates/accounts/billing.html:0
-msgid ""
-"Le plan gratuit est limité à 25 personnes dans l'organisation. Passez à "
-"l'abonnement pour lever cette limite."
-msgstr ""
-"El plan gratuito está limitado a 25 personas en la organización. Suscríbase "
-"para eliminar este límite."
 
 #: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
 #: apps/teams/views.py:0 templates/accounts/billing.html:0
@@ -2473,11 +2436,6 @@ msgstr ""
 
 #: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
 #: apps/teams/views.py:0 templates/accounts/billing.html:0
-msgid "Essai"
-msgstr "Prueba"
-
-#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
-#: apps/teams/views.py:0 templates/accounts/billing.html:0
 msgid "Paiement en retard"
 msgstr "Pago atrasado"
 
@@ -2485,11 +2443,6 @@ msgstr "Pago atrasado"
 #: apps/teams/views.py:0 templates/accounts/billing.html:0
 msgid "Résilié"
 msgstr "Cancelado"
-
-#: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
-#: apps/teams/views.py:0 templates/accounts/billing.html:0
-msgid "fin d'essai"
-msgstr "fin de la prueba"
 
 #: apps/billing/models.py:0 apps/billing/quotas.py:0 apps/accounts/views.py:0
 #: apps/teams/views.py:0 templates/accounts/billing.html:0
@@ -2531,3 +2484,23 @@ msgstr "Configuración"
 #: templates/partials/navbar.html:33
 msgid "Menu"
 msgstr "Menú"
+
+#: templates/accounts/billing.html:0
+msgid ""
+"FitRadarHR est gratuit sans limite de durée jusqu'à %(n)s personnes. Au-"
+"delà, un abonnement unique donne accès à tout FitRadarHR sans limite."
+msgstr ""
+"FitRadarHR es gratuito sin límite de tiempo hasta %(n)s personas. Más allá, "
+"una única suscripción da acceso a todo FitRadarHR sin límite."
+
+#: templates/accounts/billing.html:0
+msgid "Plan gratuit"
+msgstr "Plan gratuito"
+
+#: templates/accounts/billing.html:0
+msgid "%(count)s personne(s) sur %(max)s incluses dans le plan gratuit."
+msgstr "%(count)s persona(s) de %(max)s incluidas en el plan gratuito."
+
+#: templates/accounts/billing.html:0
+msgid "Passez à l'abonnement — 39 €/mois — pour lever cette limite."
+msgstr "Pase a la suscripción — 39 €/mes — para eliminar este límite."

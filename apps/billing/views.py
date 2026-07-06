@@ -16,7 +16,9 @@ logger = logging.getLogger(__name__)
 
 _STRIPE_STATUS_MAP = {
     "active": Subscription.Status.ACTIVE,
-    "trialing": Subscription.Status.TRIALING,
+    # Plus d'essai côté FitRadarHR — si Stripe signale un essai (config côté
+    # Stripe), on le traite comme un abonnement actif.
+    "trialing": Subscription.Status.ACTIVE,
     "past_due": Subscription.Status.PAST_DUE,
     "unpaid": Subscription.Status.PAST_DUE,
     "canceled": Subscription.Status.CANCELED,
