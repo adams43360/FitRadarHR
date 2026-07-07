@@ -50,24 +50,25 @@
 
 | Brique | Choix | Notes |
 |---|---|---|
-| Conteneurisation | **Docker Compose** | 3 services : `app`, `db`, `nginx` |
-| Reverse proxy | **Nginx** | SSL via Let's Encrypt (Certbot) |
-| Hébergement | **VPS** (Hetzner / OVH) | Ubuntu 22.04 LTS recommandé |
+| Conteneurisation | **Docker Compose** | `docker/docker-compose.prod.yml` : `app`, `db`, `web` (nginx interne), `demo-reset` |
+| Reverse proxy | **Caddy central** (`/srv/proxy`) + nginx interne par projet | HTTPS Let's Encrypt automatique (zéro certbot), architecture multi-sites : chaque projet rejoint le réseau docker `web`, Caddy route par domaine |
+| Hébergement | **Scaleway VPS Dedibox** VPS-START-2-M (3 vCPU / 4 Go), Paris | Ubuntu 24.04 LTS — décision du 2026-07-06 (souveraineté FR + console unique domaine/DNS/VPS) |
+| Domaine | **fitradarhr.fr** (registrar Scaleway) | Zone DNS Scaleway, enregistrement A → IP du VPS |
 
-#### Structure Docker Compose (V1)
+#### Architecture serveur (multi-sites)
 
 ```
-services:
-  app:    Django + Gunicorn
-  db:     PostgreSQL 16
-  nginx:  Reverse proxy + SSL
+/srv/proxy       → Caddy : 80/443, TLS auto, routage par domaine (réseau docker « web »)
+/srv/fitradarhr  → ce dépôt : app + db + nginx interne (aucun port publié)
+/srv/backups     → pg_dump quotidiens (rotation 14 j)
+/srv/<projet2>   → un futur site = même modèle
 ```
 
-Commandes courantes :
+Commandes courantes (voir `docs/technical/deploy.md` pour le runbook complet) :
 ```bash
-docker compose up -d          # démarrer
-docker compose pull && docker compose up -d  # mettre à jour
-docker compose exec app python manage.py migrate  # migrations
+make deploy            # git pull + rebuild + relance (migrations/collectstatic auto)
+make prod-logs         # logs applicatifs
+make backup            # backup manuel immédiat
 ```
 
 ---
@@ -88,9 +89,10 @@ docker compose exec app python manage.py migrate  # migrations
   /static            → Tailwind CSS (build), Chart.js, Alpine.js
   /locale            → fichiers de traduction FR / EN (.po / .mo)
   /docker
-    docker-compose.yml
-    nginx.conf
+    docker-compose.prod.yml
+    nginx.prod.conf
     Dockerfile
+  /deploy            → kit de déploiement VPS (setup serveur, proxy Caddy, backups, crons)
   docs/
     product/         → cadrage, user stories
     technical/       → ce fichier, schéma de données (à venir)
@@ -115,7 +117,7 @@ docker compose exec app python manage.py migrate  # migrations
 | Question | Décision |
 |---|---|
 | **Items IPIP** | 50 ou 100 items au choix — paramètre configurable par organisation (50 items ≈ 10 min, candidats externes ; 100 items = plus précis, mobilité interne). Les deux algorithmes de scoring sont implémentés. |
-| **SMTP V1** | Gmail SMTP avec App Password Google. Limite : 500 emails/jour (gratuit) ou 2 000 (Workspace). Migration vers Resend/Sendgrid possible en changeant uniquement la config. |
+| **SMTP prod** | **Brevo** (plan gratuit 300 emails/jour, français) — révisé le 2026-07-06, remplace l'option Gmail envisagée en V1. Config par variables d'environnement uniquement (`EMAIL_HOST=smtp-relay.brevo.com`) : migration vers Scaleway TEM/Resend/Sendgrid = changer 4 variables dans `.env`. |
 | **Multi-tenant** | **Option A — `tenant_id` (row-level).** Toutes les orgs partagent les mêmes tables, chaque ligne porte un `org_id`. Filtrage automatique via Django model managers. Simple, solide, standard pour une V1 SaaS. |
 | **SSO Keycloak / OIDC (V2)** | **Un IdP par organisation**, via `allauth.socialaccount` + provider générique `openid_connect`. Chaque `OrgSSOConfig` synchronise un `SocialApp` dédié (`provider_id=login_slug`) — pas de configuration statique dans `settings.py`, tout est piloté par la base pour rester cohérent avec le multi-tenant existant. Le SSO s'ajoute à l'email/mot de passe, il ne le remplace jamais (pas de verrouillage si l'IdP tombe). |
 | **API publique en lecture seule (V2)** | App dédiée `apps.api`, montée hors `i18n_patterns` sous `/api/v1/` (un client machine n'a pas de préférence de langue navigateur). Authentification par **clé API par organisation** (`Authorization: Api-Key <clé>`, schéma volontairement distinct de `Bearer`/OAuth2 — pas de flux OAuth2, juste une clé opaque scopée à un tenant), hashée en SHA-256 (`ApiKey.key_hash`), jamais stockée en clair. Pas de dépendance à Django REST Framework : vues fonction + `JsonResponse` + pagination maison via `django.core.paginator.Paginator`, cohérent avec le reste du projet qui reste volontairement peu dépendant. Endpoints strictement GET : postes/équipes (métadonnées), personnes + statut questionnaire, résultats de fit — **jamais** les scores Big Five bruts (choix produit RGPD de minimisation des données transmises à des tiers). |

@@ -65,5 +65,5 @@ make seed-demo
 En production, le service `demo-reset` du `docker-compose.yml` rejoue le seed toutes les 24 h :
 
 ```bash
-docker compose -f docker/docker-compose.yml --profile demo up -d
+docker compose -f docker/docker-compose.prod.yml --profile demo up -d
 ```

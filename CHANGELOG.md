@@ -4,6 +4,28 @@ Toutes les évolutions notables de FitRadarHR sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) —
 le projet n'étant pas encore versionné, les entrées sont datées.
 
+## 2026-07-06 (15)
+
+### Ajouté
+- **Kit de déploiement production** (VPS Scaleway Dedibox, Ubuntu 24.04,
+  domaine `fitradarhr.fr`) — architecture **multi-sites** : un reverse proxy
+  Caddy central (`/srv/proxy`, HTTPS Let's Encrypt automatique) route par
+  domaine vers chaque projet via un réseau docker `web` partagé.
+  - `docker/docker-compose.prod.yml` (remplace `docker/docker-compose.yml`) :
+    aucun port publié, nginx interne (`fitradarhr-web`) pour statiques/média,
+    volume `static_data` partagé, migrations + collectstatic au démarrage.
+  - `deploy/setup-server.sh` : installation complète du serveur en une commande
+    (utilisateur sudo, durcissement SSH, UFW, fail2ban, unattended-upgrades,
+    Docker, réseau `web`, proxy Caddy). Idempotent.
+  - `deploy/backup.sh` + `deploy/install-crons.sh` : backup PostgreSQL
+    quotidien (rotation 14 j) et cron `send_reminders` à 8h (relances J+3 —
+    jusqu'ici jamais planifiées nulle part).
+  - `core/settings.py` : `SECURE_PROXY_SSL_HEADER` + `CSRF_TRUSTED_ORIGINS`
+    dérivées d'`ALLOWED_HOSTS` (fonctionnement derrière proxy TLS).
+  - `.env.prod.example`, cibles make (`deploy`, `prod-logs`, `backup`…),
+    runbook complet `docs/technical/deploy.md`, `stack.md` mis à jour
+    (Scaleway, Caddy, SMTP Brevo).
+
 ## 2026-07-06 (14)
 
 ### Modifié

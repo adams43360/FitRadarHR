@@ -1,0 +1,22 @@
+# Caddyfile central — un bloc par site hébergé sur le serveur.
+# HTTPS automatique (Let's Encrypt) : rien d'autre à configurer que le domaine.
+
+{
+	# Email utilisé par Let's Encrypt pour les alertes d'expiration (précaution)
+	email damien.ruiz@gmail.com
+}
+
+fitradarhr.fr {
+	encode gzip
+	reverse_proxy fitradarhr-web:80
+}
+
+www.fitradarhr.fr {
+	redir https://fitradarhr.fr{uri} permanent
+}
+
+# ── Ajouter un futur site ─────────────────────────────────────────────────────
+# monautreprojet.fr {
+# 	encode gzip
+# 	reverse_proxy monautreprojet-web:80   # container_name du nginx interne du projet,
+# }                                        # connecté au réseau docker « web »

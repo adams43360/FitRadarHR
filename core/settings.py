@@ -222,3 +222,11 @@ if not DEBUG:
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+    # Derrière le reverse proxy (Caddy → nginx interne) : le HTTPS est terminé
+    # en amont, Django doit se fier au header transmis par le proxy — sinon
+    # SECURE_SSL_REDIRECT boucle en redirections infinies.
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    # Django ≥ 4 exige l'origine complète (schéma inclus) pour la validation CSRF
+    CSRF_TRUSTED_ORIGINS = [
+        f"https://{host}" for host in ALLOWED_HOSTS if host not in ("localhost", "127.0.0.1")
+    ]

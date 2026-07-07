@@ -1,0 +1,28 @@
+# Reverse proxy central du serveur — UN SEUL pour tous les sites hébergés.
+# Installé dans /srv/proxy par deploy/setup-server.sh.
+#
+# Caddy obtient et renouvelle automatiquement les certificats Let's Encrypt
+# (aucun certbot, aucun cron TLS à gérer). Pour ajouter un site : un bloc dans
+# le Caddyfile + `docker compose exec caddy caddy reload --config /etc/caddy/Caddyfile`.
+
+services:
+  caddy:
+    image: caddy:2-alpine
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - web
+
+networks:
+  web:
+    external: true
+
+volumes:
+  caddy_data:
+  caddy_config:

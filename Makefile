@@ -46,13 +46,35 @@ test:
 test-fast:
 	python manage.py test --settings=core.settings_test
 
-# ── Production ───────────────────────────────────────────────────────────────
+# ── Production (VPS — voir docs/technical/deploy.md) ─────────────────────────
+# Le profil demo active le service demo-reset (nécessite DEMO_MODE=True dans .env)
+
+COMPOSE_PROD = docker compose -f docker/docker-compose.prod.yml --profile demo
 
 prod:
-	docker compose -f docker/docker-compose.yml up -d
+	$(COMPOSE_PROD) up -d
 
 prod-build:
-	docker compose -f docker/docker-compose.yml up -d --build
+	$(COMPOSE_PROD) up -d --build
 
 prod-stop:
-	docker compose -f docker/docker-compose.yml down
+	$(COMPOSE_PROD) down
+
+prod-logs:
+	$(COMPOSE_PROD) logs -f app
+
+# Mise à jour complète : récupère main, rebuild, relance (migrations + collectstatic
+# sont exécutées automatiquement au démarrage du conteneur app)
+deploy:
+	git pull origin main
+	$(COMPOSE_PROD) up -d --build
+	docker image prune -f
+
+prod-createsuperuser:
+	$(COMPOSE_PROD) exec app python manage.py createsuperuser
+
+prod-remind-dry-run:
+	$(COMPOSE_PROD) exec app python manage.py send_reminders --dry-run
+
+backup:
+	bash deploy/backup.sh

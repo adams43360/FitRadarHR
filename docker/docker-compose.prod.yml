@@ -1,0 +1,90 @@
+# Production — FitRadarHR derrière le reverse proxy central (Caddy, /srv/proxy).
+#
+# Architecture multi-sites du serveur :
+#   /srv/proxy       → Caddy : terminaison HTTPS (Let's Encrypt auto) pour TOUS les
+#                      sites du serveur, routage par nom de domaine via le réseau
+#                      docker externe « web »
+#   /srv/fitradarhr  → ce dépôt : la stack ci-dessous (db + app + nginx interne)
+#   /srv/<autre>     → un futur projet = même modèle (compose + réseau « web »)
+#
+# Aucun port publié ici : seul Caddy expose 80/443. Le service `web` (nginx interne,
+# statiques + proxy gunicorn) est joignable par Caddy sous le nom `fitradarhr-web`
+# sur le réseau « web » (créé par deploy/setup-server.sh : `docker network create web`).
+#
+# Lancement : make prod / make deploy (depuis la racine du dépôt, .env à la racine).
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${DB_NAME:-teamfit}
+      POSTGRES_USER: ${DB_USER:-teamfit}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD requis en production}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-teamfit}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    restart: always
+    env_file: ../.env
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - media_data:/app/media
+      - static_data:/app/staticfiles
+    expose:
+      - "8000"
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py collectstatic --noinput &&
+             gunicorn core.wsgi:application --bind 0.0.0.0:8000 --workers 3 --timeout 60"
+
+  # Reset quotidien de l'org de démonstration — actif uniquement avec :
+  #   docker compose -f docker/docker-compose.prod.yml --profile demo up -d
+  # Requiert DEMO_MODE=True dans .env (sinon seed_demo refuse de s'exécuter).
+  demo-reset:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    restart: always
+    env_file: ../.env
+    profiles: ["demo"]
+    depends_on:
+      db:
+        condition: service_healthy
+      app:
+        condition: service_started
+    command: >
+      sh -c "while true; do python manage.py seed_demo; sleep 86400; done"
+
+  web:
+    image: nginx:alpine
+    restart: always
+    container_name: fitradarhr-web
+    volumes:
+      - ./nginx.prod.conf:/etc/nginx/conf.d/default.conf:ro
+      - media_data:/app/media:ro
+      - static_data:/app/staticfiles:ro
+    depends_on:
+      - app
+    networks:
+      - default
+      - web
+
+networks:
+  web:
+    external: true
+
+volumes:
+  postgres_data:
+  media_data:
+  static_data:
