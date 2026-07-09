@@ -49,7 +49,7 @@ test-fast:
 # ── Production (VPS — voir docs/technical/deploy.md) ─────────────────────────
 # Le profil demo active le service demo-reset (nécessite DEMO_MODE=True dans .env)
 
-COMPOSE_PROD = docker compose -f docker/docker-compose.prod.yml --profile demo
+COMPOSE_PROD = docker compose --env-file .env -f docker/docker-compose.prod.yml --profile demo
 
 prod:
 	$(COMPOSE_PROD) up -d
