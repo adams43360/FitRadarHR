@@ -63,6 +63,23 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("role", "RH")
+
+        if "org" not in extra_fields or extra_fields["org"] is None:
+            # `org` est obligatoire (multi-tenant) mais `createsuperuser` (CLI/make
+            # prod-createsuperuser) ne le demande pas — on crée une organisation
+            # dédiée, sur le même modèle que l'inscription B2B (apps/accounts/views.py).
+            from apps.billing.models import Subscription
+
+            org = Organization.objects.create(
+                name=f"Admin — {email}",
+                account_type=Organization.AccountType.B2B,
+            )
+            extra_fields["org"] = org
+            user = self.create_user(email, password, **extra_fields)
+            Subscription.start_free_plan(org)
+            return user
+
         return self.create_user(email, password, **extra_fields)
 
 
