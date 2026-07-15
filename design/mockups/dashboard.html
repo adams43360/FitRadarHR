@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maquette — Tableau de bord | FitRadarHR Design Tokens POC</title>
+  <!-- Source de vérité unique : design/tokens/tokens.json → tokens.css -->
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <style>
+    /* ============================================================
+       POC design tokens — AUCUNE couleur/taille en dur ci-dessous :
+       tout passe par var(--token) généré depuis tokens.json.
+       Seules les propriétés de layout (flex, grid) sont libres.
+       ============================================================ */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-family-sans);
+      font-size: var(--font-size-base);
+      line-height: var(--font-lineHeight-normal);
+      background: var(--bg-page);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: var(--sizing-container);
+      margin: 0 auto;
+      padding: 0 var(--spacing-8);
+    }
+
+    /* --- Navbar --- */
+    nav {
+      background: var(--navbar-bg);
+      border-bottom: 1px solid var(--navbar-border);
+      box-shadow: var(--navbar-shadow);
+    }
+    .nav-inner {
+      height: var(--navbar-height);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo {
+      font-size: var(--font-size-xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--brand-identity-logo);
+      text-decoration: none;
+    }
+    .logo .radar { color: var(--text-primary); }
+    .logo .hr { color: var(--brand-identity-logo-accent); }
+    .nav-links { display: flex; gap: var(--spacing-6); align-items: center; }
+    .nav-links a {
+      font-size: var(--font-size-sm);
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+    .nav-links a:hover { color: var(--text-brand); }
+    .nav-links a.active {
+      color: var(--text-brand);
+      font-weight: var(--font-weight-medium);
+    }
+
+    main { padding: var(--spacing-8) 0; }
+
+    /* --- En-tête de page --- */
+    .page-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: var(--spacing-8);
+    }
+    h1 { font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); }
+    .org-name {
+      color: var(--text-muted);
+      font-size: var(--font-size-sm);
+      margin-top: var(--spacing-1);
+    }
+    .actions { display: flex; gap: var(--spacing-2); }
+
+    /* --- Boutons --- */
+    .btn {
+      display: inline-block;
+      padding: var(--button-padding-y) var(--button-padding-x);
+      border-radius: var(--button-radius);
+      font-size: var(--button-font-size);
+      font-weight: var(--button-font-weight);
+      text-decoration: none;
+      transition: background-color .15s ease;
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
+    .btn-primary { background: var(--button-primary-bg); color: var(--button-primary-text); }
+    .btn-primary:hover { background: var(--button-primary-bg-hover); }
+    .btn-secondary {
+      background: var(--button-secondary-bg);
+      color: var(--button-secondary-text);
+      border-color: var(--button-secondary-border);
+    }
+    .btn-secondary:hover { background: var(--button-secondary-bg-hover); }
+
+    /* --- Cartes de stats --- */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: var(--spacing-4);
+      margin-bottom: var(--spacing-8);
+    }
+    .stat-card {
+      display: block;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--card-radius);
+      padding: var(--card-padding-compact);
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow .15s ease;
+    }
+    .stat-card:hover { box-shadow: var(--card-shadow-hover); }
+    .stat-label {
+      font-size: var(--font-size-xs);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: var(--font-letterSpacing-wide);
+      margin-bottom: var(--spacing-1);
+    }
+    .stat-value {
+      font-size: var(--font-size-3xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--text-brand);
+    }
+    .stat-value.warning { color: var(--status-warning-accent); }
+    .stat-hint { font-size: var(--font-size-xs); color: var(--text-faint); margin-top: var(--spacing-1); }
+    .stat-card.highlight {
+      background: var(--bg-brand-subtle);
+      border-color: var(--border-brand-subtle);
+    }
+    .stat-card.highlight .stat-label { color: var(--color-indigo-400); }
+    .stat-card.highlight .stat-hint { color: var(--color-indigo-300); }
+
+    /* --- Grille principale --- */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-6);
+    }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--card-radius);
+      padding: var(--card-padding);
+    }
+    .card.full { grid-column: 1 / -1; }
+    .card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: var(--spacing-4);
+    }
+    h2 {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: var(--font-letterSpacing-wide);
+    }
+    .link {
+      font-size: var(--font-size-xs);
+      color: var(--text-brand);
+      text-decoration: none;
+    }
+    .link:hover { text-decoration: underline; }
+
+    /* --- Listes --- */
+    ul { list-style: none; }
+    li {
+      padding: var(--spacing-3) 0;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    li:last-child { border-bottom: none; }
+    .person-name { font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); color: var(--color-gray-800); }
+    .person-meta { font-size: var(--font-size-xs); color: var(--text-faint); }
+    .row-end { display: flex; align-items: center; gap: var(--spacing-2); }
+
+    /* --- Badges --- */
+    .badge {
+      font-size: var(--badge-font-size);
+      padding: var(--badge-padding-y) var(--badge-padding-x);
+      border-radius: var(--badge-radius);
+    }
+    .badge-warning { background: var(--status-warning-bg); color: var(--status-warning-text); }
+    .badge-danger { background: var(--status-danger-bg); color: var(--status-danger-text); }
+    .badge-success { background: var(--status-success-bg); color: var(--status-success-text); }
+
+    /* --- Activité --- */
+    .activity li { justify-content: flex-start; gap: var(--spacing-3); font-size: var(--font-size-sm); }
+    .dot {
+      width: var(--spacing-2); height: var(--spacing-2);
+      border-radius: var(--radius-full);
+      background: var(--color-indigo-300);
+      flex-shrink: 0;
+    }
+    .timestamp { color: var(--text-faint); font-size: var(--font-size-xs); width: 130px; flex-shrink: 0; }
+    .actor { margin-left: auto; color: var(--text-faint); font-size: var(--font-size-xs); }
+
+    /* --- Bandeau démo --- */
+    .demo-banner {
+      background: var(--status-warning-surface);
+      border-bottom: 1px solid var(--status-warning-border);
+      text-align: center;
+      padding: var(--spacing-2) 0;
+      font-size: var(--font-size-sm);
+      color: var(--status-warning-text-strong);
+    }
+
+    footer {
+      border-top: 1px solid var(--border-subtle);
+      margin-top: var(--spacing-16);
+      padding: var(--spacing-6) 0;
+      font-size: var(--font-size-xs);
+      color: var(--text-faint);
+      display: flex; justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="container nav-inner">
+      <a href="#" class="logo">Fit<span class="radar">Radar</span><span class="hr">HR</span></a>
+      <div class="nav-links">
+        <a href="#" class="active">Tableau de bord</a>
+        <a href="#">Postes</a>
+        <a href="#">Équipes</a>
+        <a href="#">Questionnaires</a>
+        <a href="#">Rapports</a>
+        <a href="#">🇫🇷 FR</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="demo-banner">🧪 Maquette POC design tokens — données fictives (org de démo Nexatech)</div>
+
+  <main class="container">
+
+    <div class="page-header">
+      <div>
+        <h1>Bonjour, Camille 👋</h1>
+        <p class="org-name">Nexatech</p>
+      </div>
+      <div class="actions">
+        <a href="#" class="btn btn-primary">+ Nouveau poste</a>
+        <a href="#" class="btn btn-secondary">✉️ Envoyer un questionnaire</a>
+      </div>
+    </div>
+
+    <div class="stats">
+      <a href="#" class="stat-card">
+        <p class="stat-label">Postes actifs</p>
+        <p class="stat-value">12</p>
+      </a>
+      <a href="#" class="stat-card">
+        <p class="stat-label">Équipes</p>
+        <p class="stat-value">10</p>
+      </a>
+      <a href="#" class="stat-card">
+        <p class="stat-label">Personnes</p>
+        <p class="stat-value">104</p>
+        <p class="stat-hint">87 avec profil</p>
+      </a>
+      <a href="#" class="stat-card">
+        <p class="stat-label">En attente</p>
+        <p class="stat-value warning">6</p>
+        <p class="stat-hint">questionnaires</p>
+      </a>
+      <div class="stat-card highlight">
+        <p class="stat-label">Fit moyen (postes)</p>
+        <p class="stat-value">72%</p>
+        <p class="stat-hint">tous postes</p>
+      </div>
+    </div>
+
+    <div class="grid">
+
+      <div class="card">
+        <div class="card-header">
+          <h2>Questionnaires en attente</h2>
+          <a href="#" class="link">Voir tout →</a>
+        </div>
+        <ul>
+          <li>
+            <div>
+              <p class="person-name">Léa Fontaine</p>
+              <p class="person-meta">lea.fontaine@nexatech.example</p>
+            </div>
+            <div class="row-end">
+              <span class="badge badge-warning">Envoyé</span>
+              <a href="#" class="link">Renvoyer</a>
+            </div>
+          </li>
+          <li>
+            <div>
+              <p class="person-name">Marc Dubreuil</p>
+              <p class="person-meta">marc.dubreuil@nexatech.example</p>
+            </div>
+            <div class="row-end">
+              <span class="badge badge-warning">Commencé</span>
+              <a href="#" class="link">Renvoyer</a>
+            </div>
+          </li>
+          <li>
+            <div>
+              <p class="person-name">Sofia Andrade</p>
+              <p class="person-meta">sofia.andrade@nexatech.example</p>
+            </div>
+            <div class="row-end">
+              <span class="badge badge-danger">Expiré</span>
+              <a href="#" class="link">Renvoyer</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2>Profils récents</h2>
+          <a href="#" class="link">Voir tout →</a>
+        </div>
+        <ul>
+          <li>
+            <div>
+              <p class="person-name">Yanis Meziane</p>
+              <p class="person-meta">14 juil. 2026</p>
+            </div>
+            <a href="#" class="link">Rapport</a>
+          </li>
+          <li>
+            <div>
+              <p class="person-name">Claire Besson</p>
+              <p class="person-meta">12 juil. 2026</p>
+            </div>
+            <a href="#" class="link">Rapport</a>
+          </li>
+          <li>
+            <div>
+              <p class="person-name">Tom Lefèvre</p>
+              <p class="person-meta">10 juil. 2026</p>
+            </div>
+            <a href="#" class="link">Rapport</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card full activity">
+        <div class="card-header"><h2>Activité récente</h2></div>
+        <ul>
+          <li>
+            <span class="dot"></span>
+            <span class="timestamp">15 juil. 2026 09:12</span>
+            <span>📊 Profil consulté</span>
+            <span class="actor">Camille Roussel</span>
+          </li>
+          <li>
+            <span class="dot"></span>
+            <span class="timestamp">15 juil. 2026 08:47</span>
+            <span>🎯 Fit poste consulté</span>
+            <span class="actor">Camille Roussel</span>
+          </li>
+          <li>
+            <span class="dot"></span>
+            <span class="timestamp">14 juil. 2026 17:30</span>
+            <span>📄 Fit équipe exporté PDF</span>
+            <span class="actor">Hugo Marchand</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="container">
+    <span>FitRadarHR — Maquette générée depuis design/tokens/tokens.json</span>
+    <span>POC design tokens · juillet 2026</span>
+  </footer>
+
+</body>
+</html>
