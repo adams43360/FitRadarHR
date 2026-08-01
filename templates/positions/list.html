@@ -7,6 +7,7 @@
 <div class="flex items-center justify-between mb-6">
   <h1 class="text-2xl font-bold text-gray-900">{% trans "Postes" %}</h1>
   <a href="{% url 'positions:create' %}"
+     data-testid="new-position-button"
      class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors">
     + {% trans "Nouveau poste" %}
   </a>
@@ -29,7 +30,8 @@
 {% if positions %}
 <div class="bg-white rounded-2xl border border-gray-200 divide-y divide-gray-100">
   {% for position in positions %}
-  <div class="flex items-center justify-between px-6 py-4 hover:bg-gray-50 transition-colors">
+  <div class="flex items-center justify-between px-6 py-4 hover:bg-gray-50 transition-colors"
+       data-testid="position-row" data-position-title="{{ position.title_fr }}">
     <div class="flex-1 min-w-0">
       <div class="flex items-center gap-3">
         <a href="{% url 'positions:detail' position.pk %}"
@@ -53,6 +55,7 @@
     <div class="flex items-center gap-3 ml-4 shrink-0">
       <span class="text-xs text-gray-400">{{ position.created_at|date:"d/m/Y" }}</span>
       <a href="{% url 'positions:detail' position.pk %}"
+         data-testid="position-view-link"
          class="text-sm text-indigo-600 hover:text-indigo-800 font-medium">
         {% trans "Voir" %} →
       </a>

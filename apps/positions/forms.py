@@ -15,23 +15,27 @@ class PositionForm(forms.ModelForm):
             "title_fr": forms.TextInput(attrs={
                 "class": SELECT_CSS,
                 "placeholder": _("Ex. : Chargé(e) de recrutement"),
+                "data-testid": "position-title-fr",
             }),
             "title_en": forms.TextInput(attrs={
                 "class": SELECT_CSS,
                 "placeholder": "e.g. Recruitment Officer",
+                "data-testid": "position-title-en",
             }),
             "description_fr": forms.Textarea(attrs={
                 "class": SELECT_CSS,
                 "rows": 3,
                 "placeholder": _("Contexte, missions principales..."),
+                "data-testid": "position-description-fr",
             }),
             "description_en": forms.Textarea(attrs={
                 "class": SELECT_CSS,
                 "rows": 3,
                 "placeholder": "Context, main responsibilities...",
+                "data-testid": "position-description-en",
             }),
-            "department": forms.Select(attrs={"class": SELECT_CSS}),
-            "team": forms.Select(attrs={"class": SELECT_CSS}),
+            "department": forms.Select(attrs={"class": SELECT_CSS, "data-testid": "position-department"}),
+            "team": forms.Select(attrs={"class": SELECT_CSS, "data-testid": "position-team"}),
         }
 
     def __init__(self, *args, org=None, **kwargs):

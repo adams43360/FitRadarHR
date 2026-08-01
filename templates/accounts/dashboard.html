@@ -6,7 +6,7 @@
 {% block content %}
 
 <!-- En-tête -->
-<div class="mb-8 flex items-start justify-between">
+<div class="mb-8 flex items-start justify-between" data-testid="dashboard-page">
   <div>
     <h1 class="text-2xl font-bold text-gray-900">
       {% blocktrans with name=user.first_name %}Bonjour, {{ name }} 👋{% endblocktrans %}
@@ -16,6 +16,7 @@
   <div class="flex gap-2">
     {% if user.is_rh %}
     <a href="{% url 'positions:create' %}"
+       data-testid="new-position-button"
        class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors">
       + {% trans "Nouveau poste" %}
     </a>

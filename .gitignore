@@ -33,3 +33,12 @@ env/
 # OS
 .DS_Store
 Thumbs.db
+
+# Documents perso (communication, jamais publiés)
+comm/
+
+# Cypress
+cypress.env.json
+cypress/videos/
+cypress/screenshots/
+node_modules/

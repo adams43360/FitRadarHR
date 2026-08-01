@@ -1,7 +1,7 @@
 # TeamFit — Makefile
 # Usage : make <commande>
 
-.PHONY: dev stop logs shell migrate makemigrations createsuperuser test remind remind-dry-run
+.PHONY: dev stop logs shell migrate makemigrations createsuperuser test remind remind-dry-run cleanup-e2e cleanup-e2e-dry-run
 
 # ── Développement ────────────────────────────────────────────────────────────
 
@@ -39,6 +39,12 @@ remind:
 
 remind-dry-run:
 	docker compose -f docker-compose.dev.yml exec app python manage.py send_reminders --dry-run
+
+cleanup-e2e:
+	docker compose -f docker-compose.dev.yml exec app python manage.py cleanup_e2e_data
+
+cleanup-e2e-dry-run:
+	docker compose -f docker-compose.dev.yml exec app python manage.py cleanup_e2e_data --dry-run
 
 test:
 	docker compose -f docker-compose.dev.yml exec app python manage.py test

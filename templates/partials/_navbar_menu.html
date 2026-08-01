@@ -16,6 +16,7 @@
   {% for cat in categories %}
   <div class="relative" x-data="{ open: false }" @keydown.escape.window="open = false" @click.outside="open = false">
     <button type="button" @click="open = !open" :aria-expanded="open.toString()"
+      data-testid="navbar-category-{{ cat.label|slugify }}"
       class="flex items-center gap-1 text-sm text-gray-600 hover:text-indigo-600 focus:outline-none">
       {{ cat.label }}
       <svg class="h-3 w-3 transition-transform" :class="open && 'rotate-180'" viewBox="0 0 20 20"
@@ -29,6 +30,7 @@
       class="absolute left-0 mt-2 w-48 rounded-lg bg-white shadow-lg ring-1 ring-black/5 py-1 z-20">
       {% for it in cat.items %}
       <a href="{{ it.url }}" @click="open = false"
+        data-testid="navbar-link-{{ it.label|slugify }}"
         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-indigo-600">{{ it.label }}</a>
       {% endfor %}
     </div>

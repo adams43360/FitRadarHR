@@ -46,6 +46,7 @@
         <span class="text-xs text-gray-400 w-8 shrink-0 text-right">{% trans "Min" %}</span>
         <input type="range" min="0" max="100" step="5"
                name="{{ dim.key }}_min"
+               data-testid="profile-{{ dim.key }}-min"
                x-model="min"
                @input="if(parseInt(min) > parseInt(max)) max = min"
                class="w-full accent-indigo-600 cursor-pointer h-2">
@@ -56,6 +57,7 @@
         <span class="text-xs text-gray-400 w-8 shrink-0 text-right">{% trans "Max" %}</span>
         <input type="range" min="0" max="100" step="5"
                name="{{ dim.key }}_max"
+               data-testid="profile-{{ dim.key }}-max"
                x-model="max"
                @input="if(parseInt(max) < parseInt(min)) min = max"
                class="w-full accent-indigo-600 cursor-pointer h-2">
@@ -81,6 +83,7 @@
         {% trans "Annuler" %}
       </a>
       <button type="submit"
+              data-testid="save-profile-submit"
               class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors">
         {% trans "Enregistrer le profil" %}
       </button>
