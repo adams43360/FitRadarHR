@@ -11,7 +11,12 @@ const VIDEO_CROP_LEFT_PX = 320;
 
 module.exports = defineConfig({
   screenshotsFolder: "cypress/screenshots",
-  trashAssetsBeforeRuns: true,
+  // false : les captures sont rangées par langue (fr/, en/) dans le même
+  // dossier de spec (voir cy.maybeScreenshot()). Avec `true`, chaque nouveau
+  // `cypress run` de ce spec videait tout cypress/screenshots/creation-poste.cy.js/
+  // — donc le run EN supprimait les captures FR juste produites avant de
+  // générer les siennes. Makefile fait le nettoyage explicite à la place.
+  trashAssetsBeforeRuns: false,
   video: true,
   // > 1024px (breakpoint Tailwind `lg`) pour que le menu desktop (navbar.html)
   // soit affiché plutôt que le menu mobile — les tests ciblent le menu desktop.

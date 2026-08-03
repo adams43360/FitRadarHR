@@ -34,6 +34,12 @@ describe("Création d'un poste", () => {
 
     // Étape 1 — connexion, arrivée sur le dashboard
     cy.loginAsTestAccount();
+    const lang = Cypress.env("lang") || "fr";
+    if (lang !== "fr") {
+      // Bascule la langue avant la toute première capture, pour que les 8
+      // captures de ce run soient cohérentes dans la même langue.
+      cy.switchLanguage(lang);
+    }
     cy.wait(800);
     cy.maybeScreenshot("01-etape1-connexion-dashboard");
     cy.wait(500);
@@ -86,9 +92,9 @@ describe("Création d'un poste", () => {
     cy.wait(500);
 
     // Étape 5 — menu "Recrutement" > "Postes", confirmer que le poste y est
-    cy.get('[data-testid="navbar-category-recrutement"]').click();
+    cy.get('[data-testid="navbar-category-recruitment"]').click();
     cy.wait(400);
-    cy.get('[data-testid="navbar-link-postes"]').click();
+    cy.get('[data-testid="navbar-link-positions"]').click();
     cy.url().should("include", "/positions/");
     cy.get(`[data-testid="position-row"][data-position-title="${data.titleFr}"]`).should(
       "be.visible"

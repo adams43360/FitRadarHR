@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+<meta charset="UTF-8">
+<style>
+  @page { size: A4; margin: 2cm; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, Helvetica, sans-serif; font-size: 11pt; color: #1f2937; line-height: 1.5; }
+  .header { border-bottom: 2px solid #6366f1; padding-bottom: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
+  .header-brand { font-size: 18pt; font-weight: bold; color: #6366f1; }
+  .header-meta { font-size: 9pt; color: #6b7280; text-align: right; }
+  h1 { font-size: 16pt; font-weight: bold; margin-bottom: 4px; color: #111827; }
+  .subtitle { font-size: 10pt; color: #6b7280; margin-bottom: 20px; }
+  .step { margin-bottom: 28px; page-break-inside: avoid; }
+  .step-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .step-number {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; border-radius: 99px;
+    background: #6366f1; color: #fff; font-size: 10pt; font-weight: bold;
+    flex-shrink: 0;
+  }
+  .step-title { font-size: 12pt; font-weight: bold; color: #1f2937; }
+  .step-body { font-size: 10pt; color: #4b5563; margin: 0 0 8px 32px; }
+  .step-image { width: 100%; border: 1px solid #e5e7eb; border-radius: 8px; margin-left: 32px; max-width: calc(100% - 32px); }
+  .footer { margin-top: 24px; padding-top: 10px; border-top: 1px solid #e5e7eb; font-size: 8pt; color: #9ca3af; display: flex; justify-content: space-between; }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-brand">FitRadarHR</div>
+  <div class="header-meta">
+    {% block header_meta %}{% endblock %}
+  </div>
+</div>
+{% block content %}{% endblock %}
+<div class="footer">
+  <span>{% block footer_tagline %}FitRadarHR{% endblock %}</span>
+  <span>{% now "d/m/Y" %}</span>
+</div>
+</body>
+</html>

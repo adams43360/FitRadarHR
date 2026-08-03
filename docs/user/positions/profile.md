@@ -6,8 +6,11 @@ Le profil cible est le cœur du Fit Poste : il traduit les attentes du poste en 
 
 Depuis la fiche d'un poste, cliquez sur **Définir le profil cible**.
 
-<!-- screenshot: docs/user/assets/position-profile.png -->
-!!! note "Capture d'écran à venir"
+!!! tip "Guide illustré pas à pas"
+    Ce parcours (création du poste + définition du profil Big Five) est illustré
+    captures à l'appui dans le guide PDF téléchargeable :
+    [🇫🇷 Français](../assets/guide-creation-poste-fr.pdf) ·
+    [🇬🇧 English](../assets/guide-creation-poste-en.pdf)
 
 ## Comprendre les dimensions
 

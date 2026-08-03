@@ -1,7 +1,7 @@
 # TeamFit — Makefile
 # Usage : make <commande>
 
-.PHONY: dev stop logs shell migrate makemigrations createsuperuser test remind remind-dry-run cleanup-e2e cleanup-e2e-dry-run
+.PHONY: dev stop logs shell migrate makemigrations createsuperuser test remind remind-dry-run cleanup-e2e cleanup-e2e-dry-run generate-doc
 
 # ── Développement ────────────────────────────────────────────────────────────
 
@@ -45,6 +45,21 @@ cleanup-e2e:
 
 cleanup-e2e-dry-run:
 	docker compose -f docker-compose.dev.yml exec app python manage.py cleanup_e2e_data --dry-run
+
+# Relance le parcours Cypress en français PUIS en anglais (regénère des
+# captures à jour dans les deux langues, via le sélecteur de langue réel de
+# l'app) puis assemble le guide PDF utilisateur FR/EN dans docs/user/assets/.
+# Nettoyage explicite des captures avant de démarrer (trashAssetsBeforeRuns est
+# désactivé dans cypress.config.js, sinon le run EN effacerait les captures FR
+# du run précédent — les deux runs partagent le même dossier de spec, juste
+# des sous-dossiers fr/ et en/ différents).
+# Le nettoyage des données de test [E2E] se fait automatiquement après chaque
+# run (hook after:run de cypress.config.js).
+generate-doc:
+	rm -rf cypress/screenshots/creation-poste.cy.js
+	npm run test:e2e
+	npm run test:e2e:en
+	docker compose -f docker-compose.dev.yml exec app python manage.py generate_user_guide
 
 test:
 	docker compose -f docker-compose.dev.yml exec app python manage.py test

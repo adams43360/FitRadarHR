@@ -4,8 +4,11 @@
 
 Depuis le tableau de bord ou le menu **Postes**, cliquez sur **Nouveau poste**.
 
-<!-- screenshot: docs/user/assets/position-create.png -->
-!!! note "Capture d'écran à venir"
+!!! tip "Guide illustré pas à pas"
+    Ce parcours (création du poste + définition du profil Big Five) est illustré
+    captures à l'appui dans le guide PDF téléchargeable :
+    [🇫🇷 Français](../assets/guide-creation-poste-fr.pdf) ·
+    [🇬🇧 English](../assets/guide-creation-poste-en.pdf)
 
 ## Champs du formulaire
 

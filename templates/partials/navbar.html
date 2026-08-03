@@ -20,6 +20,7 @@
             {% get_current_language as CURRENT_LANG %}
             <input name="next" type="hidden" value="{{ request.get_full_path|strip_lang_prefix }}">
             <select name="language" onchange="this.form.submit()"
+              data-testid="language-select-desktop"
               class="text-sm border-0 bg-transparent text-gray-500 cursor-pointer">
               <option value="fr" {% if LANGUAGE_CODE == 'fr' %}selected{% endif %}>🇫🇷 FR</option>
               <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>🇬🇧 EN</option>
@@ -61,6 +62,7 @@
           {% csrf_token %}
           <input name="next" type="hidden" value="{{ request.get_full_path|strip_lang_prefix }}">
           <select name="language" onchange="this.form.submit()"
+            data-testid="language-select-mobile"
             class="text-sm border-0 bg-transparent text-gray-500 cursor-pointer">
             <option value="fr" {% if LANGUAGE_CODE == 'fr' %}selected{% endif %}>🇫🇷 FR</option>
             <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>🇬🇧 EN</option>

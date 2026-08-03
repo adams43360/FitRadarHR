@@ -1,0 +1,27 @@
+{% extends "docs/pdf/base.html" %}
+{% load i18n %}
+
+{% block header_meta %}
+  {% trans "Guide utilisateur" %}<br>
+  {% trans "généré automatiquement" %}
+{% endblock %}
+
+{% block footer_tagline %}
+  FitRadarHR — {% trans "outil open source basé sur le modèle Big Five / OCEAN (IPIP, domaine public)" %}
+{% endblock %}
+
+{% block content %}
+<h1>{{ guide_title }}</h1>
+<p class="subtitle">{{ guide_intro }}</p>
+
+{% for step in steps %}
+<div class="step">
+  <div class="step-header">
+    <span class="step-number">{{ forloop.counter }}</span>
+    <span class="step-title">{{ step.title }}</span>
+  </div>
+  <p class="step-body">{{ step.body }}</p>
+  <img class="step-image" src="{{ step.image_data_uri }}" alt="{{ step.title }}">
+</div>
+{% endfor %}
+{% endblock %}

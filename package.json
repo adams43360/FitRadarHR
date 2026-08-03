@@ -7,6 +7,7 @@
   "scripts": {
     "cypress:open": "dotenv -e .env -- cypress open",
     "test:e2e": "dotenv -e .env -- cypress run --browser chrome --spec cypress/e2e/creation-poste.cy.js",
+    "test:e2e:en": "dotenv -e .env -- cypress run --browser chrome --spec cypress/e2e/creation-poste.cy.js --env lang=en",
     "test:e2e:video-only": "dotenv -e .env -- cypress run --browser chrome --spec cypress/e2e/creation-poste.cy.js --env takeScreenshots=false"
   }
 }
