@@ -1,0 +1,60 @@
+# Matomo self-hosted — mesure d'audience RGPD (exemption de consentement CNIL,
+# sous réserve de la configuration décrite dans docs/technical/analytics.md).
+#
+# Stack indépendante du dépôt applicatif (comme /srv/backups), sur le même
+# modèle que /srv/fitradarhr : aucun port publié, rejoint le réseau docker
+# externe « web » pour être exposée par le Caddy central (voir
+# deploy/proxy/Caddyfile — bloc analytics.fitradarhr.fr).
+#
+# Installation sur le serveur : /srv/matomo (copier ce dossier + un .env local,
+# voir .env.matomo.example). Lancement : docker compose up -d
+#
+# Premier démarrage : ouvrir https://analytics.fitradarhr.fr et suivre
+# l'assistant d'installation Matomo (création du compte admin *local à
+# l'instance* — pas de compte Matomo.org, tout reste auto-hébergé).
+
+services:
+  db:
+    image: mariadb:11
+    restart: always
+    command: --max-allowed-packet=64MB
+    volumes:
+      - matomo_db_data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${MATOMO_DB_NAME:-matomo}
+      MYSQL_USER: ${MATOMO_DB_USER:-matomo}
+      MYSQL_PASSWORD: ${MATOMO_DB_PASSWORD:?MATOMO_DB_PASSWORD requis}
+      MYSQL_ROOT_PASSWORD: ${MATOMO_DB_ROOT_PASSWORD:?MATOMO_DB_ROOT_PASSWORD requis}
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  app:
+    image: matomo:5-apache
+    restart: always
+    container_name: matomo-web
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - matomo_data:/var/www/html
+    environment:
+      MATOMO_DATABASE_HOST: db
+      MATOMO_DATABASE_DBNAME: ${MATOMO_DB_NAME:-matomo}
+      MATOMO_DATABASE_USERNAME: ${MATOMO_DB_USER:-matomo}
+      MATOMO_DATABASE_PASSWORD: ${MATOMO_DB_PASSWORD:?MATOMO_DB_PASSWORD requis}
+    expose:
+      - "80"
+    networks:
+      - default
+      - web
+
+networks:
+  web:
+    external: true
+
+volumes:
+  matomo_db_data:
+  matomo_data:

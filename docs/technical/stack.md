@@ -45,6 +45,7 @@
 | Export PDF | **WeasyPrint** | HTML → PDF côté serveur, léger sur VPS |
 | Liens tokenisés | **Django signing** (`TimestampSigner`) | Liens questionnaire sécurisés, expiration configurable |
 | Tâches async | **pas de Celery en V1** | Si besoin : intégrer plus tard (notifications différées) |
+| Mesure d'audience | **Matomo self-hosted** (`/srv/matomo`) | Volume + fonctionnalités les plus utilisées + funnels, exemption de consentement CNIL (pas de cookie, IP anonymisée, aucun tiers) — voir `docs/technical/analytics.md`. Décision du 2026-08-05 : GA4 écarté (non éligible à l'exemption CNIL) |
 
 ### Déploiement
 
@@ -60,6 +61,7 @@
 ```
 /srv/proxy       → Caddy : 80/443, TLS auto, routage par domaine (réseau docker « web »)
 /srv/fitradarhr  → ce dépôt : app + db + nginx interne (aucun port publié)
+/srv/matomo      → Matomo + MariaDB, mesure d'audience — voir docs/technical/analytics.md
 /srv/backups     → pg_dump quotidiens (rotation 14 j)
 /srv/<projet2>   → un futur site = même modèle
 ```

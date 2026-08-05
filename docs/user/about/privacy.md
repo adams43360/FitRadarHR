@@ -27,6 +27,10 @@ Avant de répondre au questionnaire, chaque personne lit et accepte explicitemen
 
 Toutes les actions sensibles (consultation d'un rapport, export PDF, envoi de lien, effacement) sont enregistrées dans un journal immuable — conformément aux exigences de l'EU AI Act pour les systèmes à haut risque.
 
+## Mesure d'audience
+
+FitRadarHR utilise [Matomo](https://matomo.org), auto-hébergé sur la même infrastructure, pour connaître le volume d'usage et les fonctionnalités les plus utilisées. Cette mesure est configurée en **exemption de consentement CNIL** : pas de cookie, IP anonymisée, aucune donnée personnelle collectée, aucune donnée transmise à un tiers. Aucun bandeau de consentement n'est donc affiché pour cet usage — à distinguer du consentement explicite requis pour le questionnaire Big Five (voir ci-dessus), qui reste inchangé.
+
 ## Hébergement
 
 FitRadarHR est auto-hébergé. Vous contrôlez l'emplacement de vos données. Aucune donnée n'est transmise à des tiers.

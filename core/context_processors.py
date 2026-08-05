@@ -17,3 +17,17 @@ def demo_mode(request):
         "DEMO_MODE": settings.DEMO_MODE,
         "is_demo_org": is_demo_org,
     }
+
+
+def matomo(request):
+    """Expose la config Matomo aux templates.
+
+    Le tracker n'est rendu dans base.html que si MATOMO_URL est configuré ET
+    que la navigation ne se fait pas dans l'org de démonstration (is_demo_org,
+    cf. demo_mode() ci-dessus) — on ne veut pas polluer les stats avec le
+    trafic de la démo publique.
+    """
+    return {
+        "MATOMO_URL": settings.MATOMO_URL,
+        "MATOMO_SITE_ID": settings.MATOMO_SITE_ID,
+    }

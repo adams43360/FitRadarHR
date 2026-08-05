@@ -15,6 +15,12 @@ www.fitradarhr.fr {
 	redir https://fitradarhr.fr{uri} permanent
 }
 
+# Matomo — mesure d'audience self-hosted (voir /srv/matomo, docs/technical/analytics.md)
+analytics.fitradarhr.fr {
+	encode gzip
+	reverse_proxy matomo-web:80
+}
+
 # ── Ajouter un futur site ─────────────────────────────────────────────────────
 # monautreprojet.fr {
 # 	encode gzip

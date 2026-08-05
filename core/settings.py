@@ -34,6 +34,13 @@ STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY", "")
 STRIPE_PRICE_ID = os.environ.get("STRIPE_PRICE_ID", "")
 STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET", "")
 
+# ─── Matomo (mesure d'audience self-hosted) ────────────────────────────────────
+# Vide par défaut : le tracker n'est chargé dans base.html que si MATOMO_URL est
+# renseigné (voir core/context_processors.py + docs/technical/analytics.md).
+# Ni cookies, ni donnée personnelle, ni tiers — configuration exemption CNIL.
+MATOMO_URL = os.environ.get("MATOMO_URL", "").rstrip("/")
+MATOMO_SITE_ID = os.environ.get("MATOMO_SITE_ID", "")
+
 if not DEBUG and SECRET_KEY == "changeme-in-production":
     from django.core.exceptions import ImproperlyConfigured
     raise ImproperlyConfigured(
@@ -108,6 +115,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.i18n",
                 "core.context_processors.demo_mode",
+                "core.context_processors.matomo",
             ],
         },
     },
