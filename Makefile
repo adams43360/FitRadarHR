@@ -1,7 +1,7 @@
 # TeamFit — Makefile
 # Usage : make <commande>
 
-.PHONY: dev stop logs shell migrate makemigrations createsuperuser test remind remind-dry-run cleanup-e2e cleanup-e2e-dry-run generate-doc
+.PHONY: dev stop logs shell migrate makemigrations createsuperuser test remind remind-dry-run cleanup-e2e cleanup-e2e-dry-run generate-doc prod prod-build prod-stop prod-logs deploy prod-createsuperuser prod-remind-dry-run backup
 
 # ── Développement ────────────────────────────────────────────────────────────
 
