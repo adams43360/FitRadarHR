@@ -7,6 +7,28 @@ le projet n'étant pas encore versionné, les entrées sont datées.
 ## 2026-08-07
 
 ### Ajouté
+- **SEO technique multilingue** — canonical/hreflang/meta description/Open
+  Graph sur les pages publiques (`core/context_processors.py::seo`,
+  `templates/base.html`), `robots.txt` et `sitemap.xml` générés dynamiquement
+  pour les 4 langues (`core/seo.py`), politique de confidentialité rendue
+  publique (elle était par erreur derrière l'authentification).
+- **Migration de la doc utilisateur** de GitHub Pages vers
+  `fitradarhr.fr/docs/` — construite par `mkdocs build` au démarrage du
+  conteneur `app` et servie par nginx (`docker/nginx.prod.conf`), mise à jour
+  automatique à chaque `make deploy`, plus de duplication de contenu entre
+  deux domaines.
+- **Deux pages de contenu sourcées** : `docs/user/about/big-five-vs-mbti.md`
+  (fiabilité test-retest, validité prédictive, Pittenger 1993 / Barrick &
+  Mount 1991) et `docs/user/about/eu-ai-act.md` (calendrier EU AI Act à jour —
+  report des obligations haut risque à décembre 2027 —, RGPD art. 22, Code du
+  travail L.1221-8/9, disclaimer "pas un conseil juridique").
+- **Doc utilisateur traduite en EN/ES/DE** (`mkdocs-static-i18n`, déjà dans
+  `requirements-docs.txt`, inutilisé jusqu'ici) — les 30 pages de
+  `docs/user/**` existent désormais dans les 4 langues (structure suffix :
+  `index.fr.md`, `index.en.md`...), sélecteur de langue Material intégré,
+  navigation et admonitions traduites. Le FR reste construit à la racine
+  `/docs/` (aucun changement d'URL pour les pages déjà indexées) ; EN/ES/DE
+  sous `/docs/en/`, `/docs/es/`, `/docs/de/`.
 - **Cartographie des manques d'équipe** (roadmap V3 #3, US-E6-08) — nouveau
   rapport `/reports/team/<uuid>/gaps/`, accessible depuis la fiche équipe
   sans avoir à sélectionner de personne. Réutilise entièrement le moteur de

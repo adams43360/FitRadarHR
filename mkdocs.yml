@@ -42,15 +42,177 @@ plugins:
       lang:
         - fr
         - en
+        - es
+        - de
+  # Parité avec le produit (FR/EN/ES/DE) — ajoutée le 2026-08-07. Structure
+  # "suffix" : chaque page est un fichier par langue (index.fr.md, index.en.md...),
+  # voir docs/user/**. Le FR reste la langue par défaut, construite à la racine
+  # /docs/ (aucun changement d'URL pour les pages déjà indexées) ; EN/ES/DE sont
+  # construits sous /docs/en/, /docs/es/, /docs/de/.
+  - i18n:
+      docs_structure: suffix
+      fallback_to_default: true
+      reconfigure_material: true
+      reconfigure_search: true
+      languages:
+        - locale: fr
+          name: Français
+          default: true
+          build: true
+          nav_translations:
+            Accueil: Accueil
+            Prise en main: Prise en main
+            Essayer la démo: Essayer la démo
+            Créer un compte: Créer un compte
+            Tableau de bord: Tableau de bord
+            Connexion SSO (Keycloak/OIDC): Connexion SSO (Keycloak/OIDC)
+            API publique: API publique
+            Plan gratuit et abonnement: Plan gratuit et abonnement
+            Départements: Départements
+            Postes: Postes
+            Créer un poste: Créer un poste
+            Définir le profil cible: Définir le profil cible
+            Équipes: Équipes
+            Créer une équipe: Créer une équipe
+            Gérer les membres: Gérer les membres
+            Questionnaire Big Five: Questionnaire Big Five
+            Envoyer un lien: Envoyer un lien
+            Suivre la progression: Suivre la progression
+            Rapports de Fit: Rapports de Fit
+            Fit Poste: Fit Poste
+            Fit Équipe: Fit Équipe
+            Cartographie des manques d'équipe: Cartographie des manques d'équipe
+            Exporter en PDF: Exporter en PDF
+            Analytics: Analytics
+            À propos: À propos
+            Big Five vs MBTI: Big Five vs MBTI
+            EU AI Act et recrutement: EU AI Act et recrutement
+            Roadmap: Roadmap
+          admonition_translations:
+            note: Note
+            tip: Astuce
+            info: Info
+            warning: Avertissement
+            danger: Attention
+        - locale: en
+          name: English
+          build: true
+          nav_translations:
+            Accueil: Home
+            Prise en main: Getting started
+            Essayer la démo: Try the demo
+            Créer un compte: Create an account
+            Tableau de bord: Dashboard
+            Connexion SSO (Keycloak/OIDC): SSO login (Keycloak/OIDC)
+            API publique: Public API
+            Plan gratuit et abonnement: Free plan and subscription
+            Départements: Departments
+            Postes: Positions
+            Créer un poste: Create a position
+            Définir le profil cible: Define the target profile
+            Équipes: Teams
+            Créer une équipe: Create a team
+            Gérer les membres: Manage members
+            Questionnaire Big Five: Big Five questionnaire
+            Envoyer un lien: Send a link
+            Suivre la progression: Track progress
+            Rapports de Fit: Fit reports
+            Fit Poste: Position fit
+            Fit Équipe: Team fit
+            Cartographie des manques d'équipe: Team gap mapping
+            Exporter en PDF: Export to PDF
+            Analytics: Analytics
+            À propos: About
+            Big Five vs MBTI: Big Five vs MBTI
+            EU AI Act et recrutement: EU AI Act and recruitment
+            Roadmap: Roadmap
+          admonition_translations:
+            note: Note
+            tip: Tip
+            info: Info
+            warning: Warning
+            danger: Danger
+        - locale: es
+          name: Español
+          build: true
+          nav_translations:
+            Accueil: Inicio
+            Prise en main: Primeros pasos
+            Essayer la démo: Probar la demo
+            Créer un compte: Crear una cuenta
+            Tableau de bord: Panel de control
+            Connexion SSO (Keycloak/OIDC): Inicio de sesión SSO (Keycloak/OIDC)
+            API publique: API pública
+            Plan gratuit et abonnement: Plan gratuito y suscripción
+            Départements: Departamentos
+            Postes: Puestos
+            Créer un poste: Crear un puesto
+            Définir le profil cible: Definir el perfil objetivo
+            Équipes: Equipos
+            Créer une équipe: Crear un equipo
+            Gérer les membres: Gestionar miembros
+            Questionnaire Big Five: Cuestionario Big Five
+            Envoyer un lien: Enviar un enlace
+            Suivre la progression: Seguir el progreso
+            Rapports de Fit: Informes de Fit
+            Fit Poste: Fit de puesto
+            Fit Équipe: Fit de equipo
+            Cartographie des manques d'équipe: Mapa de carencias del equipo
+            Exporter en PDF: Exportar a PDF
+            Analytics: Analíticas
+            À propos: Acerca de
+            Big Five vs MBTI: Big Five vs MBTI
+            EU AI Act et recrutement: EU AI Act y contratación
+            Roadmap: Hoja de ruta
+          admonition_translations:
+            note: Nota
+            tip: Consejo
+            info: Info
+            warning: Advertencia
+            danger: Atención
+        - locale: de
+          name: Deutsch
+          build: true
+          nav_translations:
+            Accueil: Start
+            Prise en main: Erste Schritte
+            Essayer la démo: Demo ausprobieren
+            Créer un compte: Konto erstellen
+            Tableau de bord: Dashboard
+            Connexion SSO (Keycloak/OIDC): SSO-Anmeldung (Keycloak/OIDC)
+            API publique: Öffentliche API
+            Plan gratuit et abonnement: Kostenloser Plan und Abo
+            Départements: Abteilungen
+            Postes: Stellen
+            Créer un poste: Stelle erstellen
+            Définir le profil cible: Zielprofil festlegen
+            Équipes: Teams
+            Créer une équipe: Team erstellen
+            Gérer les membres: Mitglieder verwalten
+            Questionnaire Big Five: Big-Five-Fragebogen
+            Envoyer un lien: Link senden
+            Suivre la progression: Fortschritt verfolgen
+            Rapports de Fit: Fit-Berichte
+            Fit Poste: Stellen-Fit
+            Fit Équipe: Team-Fit
+            Cartographie des manques d'équipe: Team-Lückenanalyse
+            Exporter en PDF: Als PDF exportieren
+            Analytics: Analytics
+            À propos: Über FitRadarHR
+            Big Five vs MBTI: Big Five vs. MBTI
+            EU AI Act et recrutement: EU AI Act und Recruiting
+            Roadmap: Roadmap
+          admonition_translations:
+            note: Hinweis
+            tip: Tipp
+            info: Info
+            warning: Warnung
+            danger: Achtung
 
 extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/adams43360/FitRadarHR
-  # Pas de bloc `alternate` (sélecteur de langue) : seul le FR est construit
-  # aujourd'hui. Le produit lui-même est en FR/EN/ES/DE (requirements-docs.txt
-  # inclut déjà mkdocs-static-i18n si on traduit la doc plus tard), mais publier
-  # un lien /en/ qui ne correspond à aucun contenu construit est pire que rien.
 
 markdown_extensions:
   - admonition
