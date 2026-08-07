@@ -101,6 +101,8 @@ nav:
     - Analytics: reports/analytics.md
   - À propos:
     - about/big-five.md
+    - Big Five vs MBTI: about/big-five-vs-mbti.md
+    - EU AI Act et recrutement: about/eu-ai-act.md
     - Roadmap: about/roadmap.md
     - about/privacy.md
     - about/license.md

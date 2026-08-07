@@ -26,6 +26,8 @@ Le Big Five présente des propriétés que le MBTI n'a pas :
 !!! warning "FitRadarHR n'utilise jamais le MBTI"
     Conformément à ses principes fondateurs, FitRadarHR n'utilise que des instruments scientifiquement validés. Le MBTI n'en fait pas partie.
 
+[Voir le détail sourcé : fiabilité, validité prédictive, ce que dit la recherche →](big-five-vs-mbti.md)
+
 ## Le questionnaire IPIP
 
 FitRadarHR utilise le questionnaire **IPIP** (International Personality Item Pool), développé par Lewis Goldberg et mis dans le domaine public. Il est librement utilisable, y compris commercialement.

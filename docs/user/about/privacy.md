@@ -25,7 +25,7 @@ Avant de répondre au questionnaire, chaque personne lit et accepte explicitemen
 
 ## Journal d'audit
 
-Toutes les actions sensibles (consultation d'un rapport, export PDF, envoi de lien, effacement) sont enregistrées dans un journal immuable — conformément aux exigences de l'EU AI Act pour les systèmes à haut risque.
+Toutes les actions sensibles (consultation d'un rapport, export PDF, envoi de lien, effacement) sont enregistrées dans un journal immuable — conformément aux exigences de l'EU AI Act pour les systèmes à haut risque (voir [EU AI Act et recrutement](eu-ai-act.md) pour le calendrier et le détail des obligations).
 
 ## Mesure d'audience
 
