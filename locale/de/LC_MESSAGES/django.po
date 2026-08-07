@@ -1401,13 +1401,13 @@ msgid ""
 "(aucune donnée transmise à un tiers). Cette mesure est configurée en "
 "exemption de consentement au sens de la réglementation CNIL : aucun cookie "
 "n'est déposé, l'adresse IP est anonymisée, et aucune donnée personnelle "
-"(nom, email) n'est collectée. Seules des statistiques de navigation "
-"agrégées sont utilisées, dans le seul but d'améliorer le produit."
+"(nom, email) n'est collectée. Seules des statistiques de navigation agrégées"
+" sont utilisées, dans le seul but d'améliorer le produit."
 msgstr ""
 "FitRadarHR verwendet Matomo, ein selbst gehostetes Tool zur "
 "Reichweitenmessung (es werden keine Daten an Dritte übermittelt). Diese "
-"Messung ist gemäß der CNIL-Einwilligungsausnahme konfiguriert: Es wird "
-"kein Cookie gesetzt, die IP-Adresse wird anonymisiert, und es werden keine "
+"Messung ist gemäß der CNIL-Einwilligungsausnahme konfiguriert: Es wird kein "
+"Cookie gesetzt, die IP-Adresse wird anonymisiert, und es werden keine "
 "personenbezogenen Daten (Name, E-Mail) erfasst. Es werden ausschließlich "
 "aggregierte Navigationsstatistiken verwendet, einzig zum Zweck der "
 "Produktverbesserung."
@@ -2528,3 +2528,81 @@ msgstr "%(count)s von %(max)s Personen im kostenlosen Plan enthalten."
 msgid "Passez à l'abonnement — 39 €/mois — pour lever cette limite."
 msgstr ""
 "Wechseln Sie zum Abonnement — 39 €/Monat — um dieses Limit aufzuheben."
+
+#: added-2026-08-07
+msgid "Cartographie des manques"
+msgstr "Lückenanalyse"
+
+#: added-2026-08-07
+msgid "Cartographie des manques d'équipe"
+msgstr "Lückenanalyse des Teams"
+
+#: added-2026-08-07
+msgid ""
+"Ces observations sont des pistes d'exploration pour un plan de recrutement, "
+"pas des verdicts. Une dimension homogène n'est pas un problème en soi."
+msgstr ""
+"Diese Beobachtungen sind Ansatzpunkte für einen Rekrutierungsplan, keine "
+"Urteile. Eine homogene Dimension ist an sich kein Problem."
+
+#: added-2026-08-07
+msgid "Profil moyen de l'équipe"
+msgstr "Durchschnittsprofil des Teams"
+
+#: added-2026-08-07
+msgid "Diversité"
+msgstr "Vielfalt"
+
+#: added-2026-08-07
+msgid "Homogène"
+msgstr "Homogen"
+
+#: added-2026-08-07
+msgid "Hétérogène"
+msgstr "Heterogen"
+
+#: added-2026-08-07
+msgid "les profils actifs sont proches sur cette dimension"
+msgstr "die aktiven Profile liegen bei dieser Dimension nah beieinander"
+
+#: added-2026-08-07
+msgid "les profils actifs sont déjà diversifiés sur cette dimension"
+msgstr "die aktiven Profile sind bei dieser Dimension bereits diversifiziert"
+
+#: added-2026-08-07
+msgid "Pistes à explorer pour un prochain recrutement"
+msgstr "Ansatzpunkte für eine künftige Einstellung"
+
+#: added-2026-08-07
+msgid ""
+"Ces observations portent sur les dimensions où l'équipe manque de diversité."
+" Elles suggèrent des critères à considérer — pas des recommandations "
+"tranchées."
+msgstr ""
+"Diese Beobachtungen betreffen Dimensionen, in denen es dem Team an Vielfalt "
+"mangelt. Sie schlagen Kriterien vor, die es zu berücksichtigen gilt — keine "
+"endgültigen Empfehlungen."
+
+#: added-2026-08-07
+msgid "Diversité par dimension"
+msgstr "Vielfalt nach Dimension"
+
+#: added-2026-08-07
+msgid ""
+"Un seul membre actif a un profil Big Five complété. Au moins 2 profils sont "
+"nécessaires pour mesurer la diversité de l'équipe."
+msgid_plural ""
+"%(n)s membres actifs ont un profil Big Five complété — insuffisant pour "
+"mesurer la diversité de l'équipe (2 minimum)."
+msgstr[0] ""
+"Nur ein aktives Mitglied hat den Big-Five-Fragebogen ausgefüllt. Für die "
+"Messung der Teamvielfalt sind mindestens 2 Profile erforderlich."
+msgstr[1] ""
+"%(n)s aktive Mitglieder haben den Big-Five-Fragebogen ausgefüllt — nicht "
+"ausreichend, um die Teamvielfalt zu messen (mindestens 2)."
+
+#: added-2026-08-07
+msgid "Basé sur %(n)s membre actif avec profil complété."
+msgid_plural "Basé sur %(n)s membres actifs avec profil complété."
+msgstr[0] "Basierend auf %(n)s aktivem Mitglied mit vollständigem Profil."
+msgstr[1] "Basierend auf %(n)s aktiven Mitgliedern mit vollständigem Profil."

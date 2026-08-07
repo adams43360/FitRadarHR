@@ -1400,8 +1400,8 @@ msgid ""
 "(aucune donnée transmise à un tiers). Cette mesure est configurée en "
 "exemption de consentement au sens de la réglementation CNIL : aucun cookie "
 "n'est déposé, l'adresse IP est anonymisée, et aucune donnée personnelle "
-"(nom, email) n'est collectée. Seules des statistiques de navigation "
-"agrégées sont utilisées, dans le seul but d'améliorer le produit."
+"(nom, email) n'est collectée. Seules des statistiques de navigation agrégées"
+" sont utilisées, dans le seul but d'améliorer le produit."
 msgstr ""
 "FitRadarHR utiliza Matomo, una herramienta de medición de audiencia "
 "autoalojada (no se transmite ningún dato a terceros). Esta medición está "
@@ -2522,3 +2522,81 @@ msgstr "%(count)s persona(s) de %(max)s incluidas en el plan gratuito."
 #: templates/accounts/billing.html:0
 msgid "Passez à l'abonnement — 39 €/mois — pour lever cette limite."
 msgstr "Pase a la suscripción — 39 €/mes — para eliminar este límite."
+
+#: added-2026-08-07
+msgid "Cartographie des manques"
+msgstr "Mapa de carencias"
+
+#: added-2026-08-07
+msgid "Cartographie des manques d'équipe"
+msgstr "Mapa de carencias del equipo"
+
+#: added-2026-08-07
+msgid ""
+"Ces observations sont des pistes d'exploration pour un plan de recrutement, "
+"pas des verdicts. Une dimension homogène n'est pas un problème en soi."
+msgstr ""
+"Estas observaciones son pistas a explorar para un plan de contratación, no "
+"veredictos. Una dimensión homogénea no es un problema en sí misma."
+
+#: added-2026-08-07
+msgid "Profil moyen de l'équipe"
+msgstr "Perfil promedio del equipo"
+
+#: added-2026-08-07
+msgid "Diversité"
+msgstr "Diversidad"
+
+#: added-2026-08-07
+msgid "Homogène"
+msgstr "Homogéneo"
+
+#: added-2026-08-07
+msgid "Hétérogène"
+msgstr "Heterogéneo"
+
+#: added-2026-08-07
+msgid "les profils actifs sont proches sur cette dimension"
+msgstr "los perfiles activos están próximos en esta dimensión"
+
+#: added-2026-08-07
+msgid "les profils actifs sont déjà diversifiés sur cette dimension"
+msgstr "los perfiles activos ya están diversificados en esta dimensión"
+
+#: added-2026-08-07
+msgid "Pistes à explorer pour un prochain recrutement"
+msgstr "Pistas a explorar para una futura contratación"
+
+#: added-2026-08-07
+msgid ""
+"Ces observations portent sur les dimensions où l'équipe manque de diversité."
+" Elles suggèrent des critères à considérer — pas des recommandations "
+"tranchées."
+msgstr ""
+"Estas observaciones se refieren a las dimensiones en las que al equipo le "
+"falta diversidad. Sugieren criterios a considerar, no recomendaciones "
+"definitivas."
+
+#: added-2026-08-07
+msgid "Diversité par dimension"
+msgstr "Diversidad por dimensión"
+
+#: added-2026-08-07
+msgid ""
+"Un seul membre actif a un profil Big Five complété. Au moins 2 profils sont "
+"nécessaires pour mesurer la diversité de l'équipe."
+msgid_plural ""
+"%(n)s membres actifs ont un profil Big Five complété — insuffisant pour "
+"mesurer la diversité de l'équipe (2 minimum)."
+msgstr[0] ""
+"Solo un miembro activo ha completado el cuestionario Big Five. Se necesitan "
+"al menos 2 perfiles para medir la diversidad del equipo."
+msgstr[1] ""
+"%(n)s miembros activos han completado el cuestionario Big Five — "
+"insuficiente para medir la diversidad del equipo (mínimo 2)."
+
+#: added-2026-08-07
+msgid "Basé sur %(n)s membre actif avec profil complété."
+msgid_plural "Basé sur %(n)s membres actifs avec profil complété."
+msgstr[0] "Basado en %(n)s miembro activo con perfil completado."
+msgstr[1] "Basado en %(n)s miembros activos con perfil completado."

@@ -453,6 +453,23 @@ class TeamGapMapTests(TestCase):
         resp = self.client.get(reverse("reports:team_gap_map", kwargs={"team_pk": self.team.pk}))
         self.assertEqual(resp.status_code, 404)
 
+    def test_ui_strings_translated_en_es_de(self):
+        """Le catalogue EN/ES/DE doit couvrir les nouvelles chaînes UI de la
+        cartographie (voir locale/{en,es,de}/LC_MESSAGES/django.po) — pas de
+        régression bilingue sur cette fonctionnalité."""
+        from django.utils import translation
+
+        expected = {
+            "en": "Gap mapping",
+            "es": "Mapa de carencias",
+            "de": "Lückenanalyse",
+        }
+        for lang, expected_value in expected.items():
+            with translation.override(lang):
+                self.assertEqual(
+                    translation.gettext("Cartographie des manques"), expected_value
+                )
+
     def test_gap_points_in_german_and_spanish(self):
         dim_details_de = [{"dim_key": "openness", "label": "Offenheit", "homogeneous": True}]
         points_de = get_team_gap_points(dim_details_de, "de")

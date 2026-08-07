@@ -4,6 +4,19 @@ Toutes les évolutions notables de FitRadarHR sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) —
 le projet n'étant pas encore versionné, les entrées sont datées.
 
+## 2026-08-07
+
+### Ajouté
+- **Cartographie des manques d'équipe** (roadmap V3 #3, US-E6-08) — nouveau
+  rapport `/reports/team/<uuid>/gaps/`, accessible depuis la fiche équipe
+  sans avoir à sélectionner de personne. Réutilise entièrement le moteur de
+  fit existant (`compute_team_profile`, seuil d'homogénéité) — aucun nouveau
+  calcul, aucune migration. Les 5 dimensions OCEAN sont toujours affichées ;
+  une section conditionnelle propose des pistes à explorer pour un prochain
+  recrutement sur les dimensions où l'équipe manque de diversité — jamais
+  formulé comme une recommandation. Export PDF, audit log, traduit FR/EN/ES/DE.
+  Doc utilisateur : `docs/user/reports/team-gaps.md`.
+
 ## 2026-07-06 (15)
 
 ### Ajouté

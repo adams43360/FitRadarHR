@@ -1399,14 +1399,14 @@ msgid ""
 "(aucune donnée transmise à un tiers). Cette mesure est configurée en "
 "exemption de consentement au sens de la réglementation CNIL : aucun cookie "
 "n'est déposé, l'adresse IP est anonymisée, et aucune donnée personnelle "
-"(nom, email) n'est collectée. Seules des statistiques de navigation "
-"agrégées sont utilisées, dans le seul but d'améliorer le produit."
+"(nom, email) n'est collectée. Seules des statistiques de navigation agrégées"
+" sont utilisées, dans le seul but d'améliorer le produit."
 msgstr ""
-"FitRadarHR uses Matomo, a self-hosted audience measurement tool (no data "
-"is transmitted to a third party). This measurement is configured under "
-"the CNIL consent exemption: no cookie is set, the IP address is "
-"anonymized, and no personal data (name, email) is collected. Only "
-"aggregated navigation statistics are used, solely to improve the product."
+"FitRadarHR uses Matomo, a self-hosted audience measurement tool (no data is "
+"transmitted to a third party). This measurement is configured under the CNIL"
+" consent exemption: no cookie is set, the IP address is anonymized, and no "
+"personal data (name, email) is collected. Only aggregated navigation "
+"statistics are used, solely to improve the product."
 
 msgid "Outil open source (MIT)"
 msgstr "Open source tool (MIT)"
@@ -2501,3 +2501,80 @@ msgstr "%(count)s person(s) out of %(max)s included in the free plan."
 #: templates/accounts/billing.html:0
 msgid "Passez à l'abonnement — 39 €/mois — pour lever cette limite."
 msgstr "Subscribe — €39/month — to remove this limit."
+
+#: added-2026-08-07
+msgid "Cartographie des manques"
+msgstr "Gap mapping"
+
+#: added-2026-08-07
+msgid "Cartographie des manques d'équipe"
+msgstr "Team gap mapping"
+
+#: added-2026-08-07
+msgid ""
+"Ces observations sont des pistes d'exploration pour un plan de recrutement, "
+"pas des verdicts. Une dimension homogène n'est pas un problème en soi."
+msgstr ""
+"These observations are avenues to explore for a recruitment plan, not "
+"verdicts. A homogeneous dimension is not a problem in itself."
+
+#: added-2026-08-07
+msgid "Profil moyen de l'équipe"
+msgstr "Team average profile"
+
+#: added-2026-08-07
+msgid "Diversité"
+msgstr "Diversity"
+
+#: added-2026-08-07
+msgid "Homogène"
+msgstr "Homogeneous"
+
+#: added-2026-08-07
+msgid "Hétérogène"
+msgstr "Heterogeneous"
+
+#: added-2026-08-07
+msgid "les profils actifs sont proches sur cette dimension"
+msgstr "active profiles are close on this dimension"
+
+#: added-2026-08-07
+msgid "les profils actifs sont déjà diversifiés sur cette dimension"
+msgstr "active profiles are already diverse on this dimension"
+
+#: added-2026-08-07
+msgid "Pistes à explorer pour un prochain recrutement"
+msgstr "Avenues to explore for a future hire"
+
+#: added-2026-08-07
+msgid ""
+"Ces observations portent sur les dimensions où l'équipe manque de diversité."
+" Elles suggèrent des critères à considérer — pas des recommandations "
+"tranchées."
+msgstr ""
+"These observations concern dimensions where the team lacks diversity. They "
+"suggest criteria to consider — not definitive recommendations."
+
+#: added-2026-08-07
+msgid "Diversité par dimension"
+msgstr "Diversity by dimension"
+
+#: added-2026-08-07
+msgid ""
+"Un seul membre actif a un profil Big Five complété. Au moins 2 profils sont "
+"nécessaires pour mesurer la diversité de l'équipe."
+msgid_plural ""
+"%(n)s membres actifs ont un profil Big Five complété — insuffisant pour "
+"mesurer la diversité de l'équipe (2 minimum)."
+msgstr[0] ""
+"Only one active member has completed the Big Five questionnaire. At least 2 "
+"profiles are needed to measure the team's diversity."
+msgstr[1] ""
+"%(n)s active members have completed the Big Five questionnaire — not enough "
+"to measure the team's diversity (2 minimum)."
+
+#: added-2026-08-07
+msgid "Basé sur %(n)s membre actif avec profil complété."
+msgid_plural "Basé sur %(n)s membres actifs avec profil complété."
+msgstr[0] "Based on %(n)s active member with a completed profile."
+msgstr[1] "Based on %(n)s active members with a completed profile."
