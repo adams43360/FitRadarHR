@@ -4,6 +4,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls.i18n import i18n_patterns
 
+from core import seo
+
 urlpatterns = [
     # Changement de langue
     path("i18n/", include("django.conf.urls.i18n")),
@@ -12,6 +14,10 @@ urlpatterns = [
     path("api/v1/", include("apps.api.urls")),
     # Webhook Stripe (roadmap V3 #2) — idem, hors i18n_patterns.
     path("billing/", include("apps.billing.urls")),
+    # SEO — point d'entrée unique pour les robots, liste les variantes de
+    # langue des pages publiques plutôt que d'être eux-mêmes traduits.
+    path("robots.txt", seo.robots_txt, name="robots_txt"),
+    path("sitemap.xml", seo.sitemap_xml, name="sitemap_xml"),
 ]
 
 urlpatterns += i18n_patterns(

@@ -2606,3 +2606,41 @@ msgid "Basé sur %(n)s membre actif avec profil complété."
 msgid_plural "Basé sur %(n)s membres actifs avec profil complété."
 msgstr[0] "Basierend auf %(n)s aktivem Mitglied mit vollständigem Profil."
 msgstr[1] "Basierend auf %(n)s aktiven Mitgliedern mit vollständigem Profil."
+
+#: added-2026-08-07-seo
+msgid ""
+"FitRadarHR évalue la compatibilité entre une personne, un poste et une "
+"équipe grâce au modèle de personnalité Big Five (OCEAN) — gratuit, code "
+"source ouvert, conforme RGPD."
+msgstr ""
+"FitRadarHR bewertet die Kompatibilität zwischen einer Person, einer Stelle "
+"und einem Team mithilfe des Big-Five-Persönlichkeitsmodells (OCEAN) — "
+"kostenlos, mit offenem Quellcode, DSGVO-konform."
+
+#: added-2026-08-07-seo
+msgid ""
+"Évaluez la compatibilité entre une personne, un poste et une équipe grâce au"
+" Big Five (OCEAN) — gratuit jusqu'à 25 personnes, code source ouvert, "
+"conforme RGPD. Démo sans inscription."
+msgstr ""
+"Bewerten Sie die Kompatibilität zwischen einer Person, einer Stelle und "
+"einem Team mit dem Big Five (OCEAN) — kostenlos bis 25 Personen, mit offenem"
+" Quellcode, DSGVO-konform. Demo ohne Anmeldung."
+
+#: added-2026-08-07-seo
+msgid ""
+"Créez votre compte FitRadarHR gratuitement — pour votre entreprise (B2B) ou "
+"à titre personnel (B2C). Sans carte bancaire, sans limite de durée."
+msgstr ""
+"Erstellen Sie kostenlos Ihr FitRadarHR-Konto — für Ihr Unternehmen (B2B) "
+"oder privat (B2C). Ohne Kreditkarte, ohne zeitliches Limit."
+
+#: added-2026-08-07-seo
+msgid ""
+"Comment FitRadarHR collecte, protège et permet de supprimer les données de "
+"personnalité Big Five — consentement explicite, droit à l'effacement, "
+"conformité RGPD et EU AI Act."
+msgstr ""
+"Wie FitRadarHR Big-Five-Persönlichkeitsdaten erhebt, schützt und löschen "
+"lässt — ausdrückliche Einwilligung, Recht auf Löschung, DSGVO- und EU-KI-"
+"Gesetz-Konformität."

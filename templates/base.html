@@ -1,10 +1,30 @@
-{% load static %}
+{% load static i18n seo_tags %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}" x-data>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}FitRadarHR{% endblock %}</title>
+  {% capture as page_title %}{% block title %}FitRadarHR{% endblock %}{% endcapture %}
+  {% capture as page_description %}{% block meta_description %}{% blocktrans %}FitRadarHR évalue la compatibilité entre une personne, un poste et une équipe grâce au modèle de personnalité Big Five (OCEAN) — gratuit, code source ouvert, conforme RGPD.{% endblocktrans %}{% endblock %}{% endcapture %}
+  <title>{{ page_title }}</title>
+  <meta name="description" content="{{ page_description }}">
+
+  <!-- SEO — canonical + hreflang (une URL par langue, voir core/context_processors.py::seo) -->
+  <link rel="canonical" href="{{ seo_canonical_url }}">
+  {% for code, url in seo_alternate_urls.items %}<link rel="alternate" hreflang="{{ code }}" href="{{ url }}">
+  {% endfor %}{% if seo_x_default_url %}<link rel="alternate" hreflang="x-default" href="{{ seo_x_default_url }}">{% endif %}
+
+  <!-- Open Graph / Twitter card -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="FitRadarHR">
+  <meta property="og:locale" content="{{ LANGUAGE_CODE }}">
+  <meta property="og:url" content="{{ seo_canonical_url }}">
+  <meta property="og:title" content="{{ page_title }}">
+  <meta property="og:description" content="{{ page_description }}">
+  <meta property="og:image" content="{{ seo_og_image }}">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="{{ page_title }}">
+  <meta name="twitter:description" content="{{ page_description }}">
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="{% static 'img/branding/icon-color.svg' %}">

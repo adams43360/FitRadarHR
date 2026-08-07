@@ -185,8 +185,10 @@ def dashboard(request):
     return render(request, "accounts/dashboard.html", context)
 
 
-@login_required
 def privacy_policy(request):
+    """Politique de confidentialité — volontairement publique (pas de
+    @login_required) : une page RGPD doit être lisible sans compte, avant
+    même de s'inscrire. Aussi référencée dans le sitemap (core/seo.py)."""
     return render(request, "accounts/privacy_policy.html")
 
 

@@ -1,5 +1,31 @@
 """Context processors globaux."""
 from django.conf import settings
+from django.templatetags.static import static
+from django.urls import translate_url
+
+
+def seo(request):
+    """Métadonnées SEO communes à toutes les pages — canonical, hreflang,
+    image OG par défaut.
+
+    Le produit a déjà une URL dédiée par langue grâce à `i18n_patterns()`
+    (core/urls.py) : `/`, `/en/`, `/es/`, `/de/`. `translate_url()` calcule
+    l'équivalent de la page courante dans chaque langue configurée
+    (`settings.LANGUAGES`) — c'est ce qui alimente les balises hreflang dans
+    `templates/base.html`. Robuste par construction : `translate_url` renvoie
+    l'URL inchangée si la page ne peut pas être résolue (ex. routes hors
+    i18n_patterns comme /api/ ou /billing/).
+    """
+    alternate_urls = {
+        code: request.build_absolute_uri(translate_url(request.path, code))
+        for code, _label in settings.LANGUAGES
+    }
+    return {
+        "seo_canonical_url": request.build_absolute_uri(request.path),
+        "seo_alternate_urls": alternate_urls,
+        "seo_x_default_url": alternate_urls.get(settings.LANGUAGE_CODE),
+        "seo_og_image": request.build_absolute_uri(static("img/branding/favicon-512.png")),
+    }
 
 
 def demo_mode(request):
