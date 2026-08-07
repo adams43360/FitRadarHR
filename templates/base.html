@@ -26,6 +26,9 @@
   <meta name="twitter:title" content="{{ page_title }}">
   <meta name="twitter:description" content="{{ page_description }}">
 
+  <!-- JSON-LD — Organization, sitewide (sérialisé côté Python, voir core/context_processors.py::seo) -->
+  <script type="application/ld+json">{{ seo_organization_jsonld }}</script>
+
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="{% static 'img/branding/icon-color.svg' %}">
   <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/branding/favicon-32.png' %}">

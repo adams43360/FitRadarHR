@@ -1,9 +1,12 @@
-"""Tests des fondations SEO — robots.txt, sitemap.xml, hreflang/canonical/OG.
+"""Tests des fondations SEO — robots.txt, sitemap.xml, hreflang/canonical/OG,
+JSON-LD.
 
 Pensé pour les 4 langues du produit (FR/EN/ES/DE) dès le départ : chaque page
 publique a une URL par langue grâce à `i18n_patterns()` (core/urls.py), donc
 robots.txt et sitemap.xml doivent tous deux refléter ce découpage.
 """
+import json
+
 from django.conf import settings
 from django.test import TestCase
 from django.urls import reverse
@@ -128,3 +131,56 @@ class SeoMetaTagsTests(TestCase):
         resp = self.client.get("/")
         content = resp.content.decode()
         self.assertNotIn("open source", content)
+
+
+class JsonLdTests(TestCase):
+    """JSON-LD — Organization sitewide, SoftwareApplication sur la landing page."""
+
+    @staticmethod
+    def _extract_jsonld_blocks(html):
+        blocks = []
+        marker = '<script type="application/ld+json">'
+        start = 0
+        while True:
+            start = html.find(marker, start)
+            if start == -1:
+                break
+            start += len(marker)
+            end = html.find("</script>", start)
+            blocks.append(json.loads(html[start:end]))
+            start = end
+        return blocks
+
+    def test_organization_present_and_valid_on_every_page(self):
+        """Organization doit être présent sur n'importe quelle page publique,
+        pas seulement l'accueil — c'est un JSON-LD sitewide (templates/base.html)."""
+        for path in ["/", reverse("accounts:privacy_policy")]:
+            content = self.client.get(path).content.decode()
+            blocks = self._extract_jsonld_blocks(content)
+            orgs = [b for b in blocks if b.get("@type") == "Organization"]
+            self.assertEqual(len(orgs), 1, f"Organization absent ou dupliqué sur {path}")
+            org = orgs[0]
+            self.assertEqual(org["@context"], "https://schema.org")
+            self.assertEqual(org["name"], "FitRadarHR")
+            self.assertTrue(org["url"].startswith("http"))
+            self.assertTrue(org["logo"].startswith("http"))
+
+    def test_software_application_only_on_landing_page(self):
+        landing_blocks = self._extract_jsonld_blocks(self.client.get("/").content.decode())
+        apps = [b for b in landing_blocks if b.get("@type") == "SoftwareApplication"]
+        self.assertEqual(len(apps), 1)
+        app = apps[0]
+        self.assertEqual(app["name"], "FitRadarHR")
+        # Jamais de note fabriquée — FitRadarHR ne collecte aucun avis.
+        self.assertNotIn("aggregateRating", app)
+        self.assertNotIn("review", app)
+        prices = {offer["price"] for offer in app["offers"]}
+        self.assertEqual(prices, {"0", "39"})
+
+        privacy_blocks = self._extract_jsonld_blocks(
+            self.client.get(reverse("accounts:privacy_policy")).content.decode()
+        )
+        self.assertFalse(
+            [b for b in privacy_blocks if b.get("@type") == "SoftwareApplication"],
+            "SoftwareApplication ne doit apparaître que sur la landing page",
+        )

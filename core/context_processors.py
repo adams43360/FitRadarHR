@@ -1,12 +1,15 @@
 """Context processors globaux."""
+import json
+
 from django.conf import settings
 from django.templatetags.static import static
 from django.urls import translate_url
+from django.utils.safestring import mark_safe
 
 
 def seo(request):
     """Métadonnées SEO communes à toutes les pages — canonical, hreflang,
-    image OG par défaut.
+    image OG par défaut, JSON-LD Organization.
 
     Le produit a déjà une URL dédiée par langue grâce à `i18n_patterns()`
     (core/urls.py) : `/`, `/en/`, `/es/`, `/de/`. `translate_url()` calcule
@@ -20,11 +23,31 @@ def seo(request):
         code: request.build_absolute_uri(translate_url(request.path, code))
         for code, _label in settings.LANGUAGES
     }
+    og_image_url = request.build_absolute_uri(static("img/branding/favicon-512.png"))
+    site_root_url = request.build_absolute_uri("/")
+
+    # JSON-LD Organization — sitewide, sur toutes les pages (templates/base.html).
+    # Construit et sérialisé côté Python (jamais par interpolation de variables
+    # dans le template) pour éviter que l'auto-échappement HTML de Django ne
+    # corrompe le JSON (ex. guillemets transformés en &quot;).
+    organization_ld = {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "FitRadarHR",
+        "url": site_root_url,
+        "logo": og_image_url,
+    }
+
     return {
         "seo_canonical_url": request.build_absolute_uri(request.path),
         "seo_alternate_urls": alternate_urls,
         "seo_x_default_url": alternate_urls.get(settings.LANGUAGE_CODE),
-        "seo_og_image": request.build_absolute_uri(static("img/branding/favicon-512.png")),
+        "seo_og_image": og_image_url,
+        # Racine du site (hors préfixe de langue) — utilisée pour le JSON-LD
+        # Organization, qui doit toujours pointer vers le domaine, pas la page
+        # courante.
+        "seo_site_root_url": site_root_url,
+        "seo_organization_jsonld": mark_safe(json.dumps(organization_ld)),
     }
 
 

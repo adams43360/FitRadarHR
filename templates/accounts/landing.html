@@ -4,6 +4,11 @@
 {% block title %}FitRadarHR — {% trans "Le fit candidat-poste-équipe, éclairé par la science" %}{% endblock %}
 {% block meta_description %}{% blocktrans %}Évaluez la compatibilité entre une personne, un poste et une équipe grâce au Big Five (OCEAN) — gratuit jusqu'à 25 personnes, code source ouvert, conforme RGPD. Démo sans inscription.{% endblocktrans %}{% endblock %}
 
+{% block extra_head %}
+<!-- JSON-LD — SoftwareApplication, landing page uniquement (voir apps/accounts/views.py::landing) -->
+<script type="application/ld+json">{{ software_application_jsonld }}</script>
+{% endblock %}
+
 {% block content %}
 
 <!-- ── Hero ─────────────────────────────────────────────────────────────── -->

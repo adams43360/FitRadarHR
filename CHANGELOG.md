@@ -7,6 +7,14 @@ le projet n'étant pas encore versionné, les entrées sont datées.
 ## 2026-08-07
 
 ### Ajouté
+- **Données structurées JSON-LD** — `Organization` sitewide sur l'app Django
+  (`core/context_processors.py::seo`, `templates/base.html`) et sur la doc
+  mkdocs (`overrides/main.html`, `theme.custom_dir`), `SoftwareApplication`
+  sur la landing page uniquement (`apps/accounts/views.py::landing`) avec les
+  deux offres (gratuit / 39 €/mois) — volontairement sans `aggregateRating`
+  fabriqué, FitRadarHR ne collecte aucun avis. JSON sérialisé côté Python
+  (`json.dumps` + `mark_safe`) pour éviter toute corruption par
+  l'auto-échappement HTML de Django. 2 tests (`core/tests.py::JsonLdTests`).
 - **SEO technique multilingue** — canonical/hreflang/meta description/Open
   Graph sur les pages publiques (`core/context_processors.py::seo`,
   `templates/base.html`), `robots.txt` et `sitemap.xml` générés dynamiquement

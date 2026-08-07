@@ -1,3 +1,5 @@
+import json
+
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login
@@ -5,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponseForbidden
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from django.utils.http import url_has_allowed_host_and_scheme
@@ -22,7 +25,41 @@ def landing(request):
     """Page d'accueil publique — présentation du produit."""
     if request.user.is_authenticated:
         return redirect("accounts:dashboard")
-    return render(request, "accounts/landing.html")
+
+    # JSON-LD SoftwareApplication — uniquement sur la landing page (pas
+    # sitewide, contrairement à Organization dans base.html). Volontairement
+    # sans `aggregateRating` : FitRadarHR ne collecte aucun avis, en fabriquer
+    # un violerait les consignes Google sur les rich results.
+    software_application_ld = {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "FitRadarHR",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "url": request.build_absolute_uri("/"),
+        "description": (
+            "Évaluation de la compatibilité de personnalité entre un candidat "
+            "ou collaborateur et un poste ou une équipe, avec le modèle Big Five (OCEAN)."
+        ),
+        "offers": [
+            {
+                "@type": "Offer",
+                "name": "Plan gratuit",
+                "price": "0",
+                "priceCurrency": "EUR",
+                "description": "Jusqu'à 25 personnes dans l'organisation, sans limite de durée.",
+            },
+            {
+                "@type": "Offer",
+                "name": "Abonnement",
+                "price": "39",
+                "priceCurrency": "EUR",
+                "description": "Au-delà de 25 personnes, facturation mensuelle.",
+            },
+        ],
+    }
+    context = {"software_application_jsonld": mark_safe(json.dumps(software_application_ld))}
+    return render(request, "accounts/landing.html", context)
 
 
 def signup_choice(request):

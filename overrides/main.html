@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{#
+  Ajoute le JSON-LD Organization à la doc utilisateur (mkdocs), en cohérence
+  avec le même schéma injecté sitewide sur l'app Django (voir
+  core/context_processors.py::seo + templates/base.html). L'URL et le logo
+  pointent vers le domaine principal (fitradarhr.fr), pas vers le sous-chemin
+  /docs/ : Organization décrit l'entité FitRadarHR dans son ensemble, pas la
+  documentation en particulier.
+#}
+{% block extrahead %}
+  {{ super() }}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "FitRadarHR",
+    "url": "https://fitradarhr.fr/",
+    "logo": "https://fitradarhr.fr/static/img/branding/favicon-512.png"
+  }
+  </script>
+{% endblock %}

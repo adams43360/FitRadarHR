@@ -122,6 +122,7 @@ User stories à rattacher systématiquement à l'un de ces epics (voir `00-cadra
 - [x] Migration de la doc utilisateur vers `fitradarhr.fr/docs/` — remplace la publication GitHub Pages (`adams43360.github.io/FitRadarHR`, désactivée) ; `mkdocs build` s'exécute au démarrage du conteneur `app` (`docker/docker-compose.prod.yml`), servi par nginx (`docker/nginx.prod.conf`), mise à jour automatique à chaque `make deploy`. `robots.txt`/`sitemap.xml` référencent le sitemap mkdocs. Workflow GitHub Actions `docs.yml` conservé en simple build-check CI (`mkdocs build --strict`)
 - [x] Contenus SEO sourcés — `docs/user/about/big-five-vs-mbti.md` (fiabilité test-retest, validité prédictive, méta-analyses) et `docs/user/about/eu-ai-act.md` (calendrier à jour, obligations RGPD/Code du travail déjà en vigueur, disclaimer non-conseil-juridique)
 - [x] Doc utilisateur traduite en EN/ES/DE (`mkdocs-static-i18n`) — les 30 pages de `docs/user/**` existent dans les 4 langues (structure suffix, ex. `index.fr.md`/`index.en.md`), sélecteur de langue Material, navigation et admonitions traduites par langue dans `mkdocs.yml`. FR reste construit à la racine `/docs/` (URLs déjà indexées inchangées), EN/ES/DE sous `/docs/en|es|de/`
+- [x] Données structurées JSON-LD — `Organization` sitewide (app Django via `core/context_processors.py::seo` + doc mkdocs via `overrides/main.html`), `SoftwareApplication` sur la landing page uniquement avec les offres gratuit/abonnement, jamais de note ou avis fabriqués (`aggregateRating`)
 
 ## Conventions de travail
 
