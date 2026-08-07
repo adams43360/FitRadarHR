@@ -7,7 +7,12 @@ import json
 
 from django.utils.translation import gettext_lazy as _
 
-from apps.fit.engine import DIMENSION_LABELS, DIMENSIONS, compute_team_profile
+from apps.fit.engine import (
+    DIMENSION_LABELS,
+    DIMENSIONS,
+    HOMOGENEITY_STD_THRESHOLD,
+    compute_team_profile,
+)
 from apps.teams.models import TeamMembership
 
 from apps.fit.models import BigFiveProfileHistory
@@ -16,6 +21,7 @@ from .insights import (
     DIMENSION_TOOLTIPS,
     get_position_exploration_points,
     get_team_exploration_points,
+    get_team_gap_points,
 )
 from .models import AuditLog
 
@@ -55,14 +61,14 @@ def person_scores(profile):
     return [float(getattr(profile, d)) for d in DIMENSIONS]
 
 
-def active_member_profiles(team, exclude_person):
-    """Profils Big Five des membres actifs d'une équipe, hors `exclude_person`."""
+def active_member_profiles(team, exclude_person=None):
+    """Profils Big Five des membres actifs d'une équipe, hors `exclude_person` si fourni."""
+    qs = TeamMembership.objects.filter(team=team, left_at__isnull=True)
+    if exclude_person is not None:
+        qs = qs.exclude(person=exclude_person)
     return [
         m.person.big_five_profile
-        for m in TeamMembership.objects
-            .filter(team=team, left_at__isnull=True)
-            .exclude(person=exclude_person)
-            .select_related("person__big_five_profile")
+        for m in qs.select_related("person__big_five_profile")
         if hasattr(m.person, "big_five_profile")
     ]
 
@@ -218,4 +224,47 @@ def build_team_fit_context(person, team, fit, lang):
         "person_scores_json": json.dumps(scores),
         "team_avgs_json": json.dumps(team_avgs),
         "team_size": fit.team_size_at_computation,
+    }
+
+
+def build_team_gap_map_context(team, lang):
+    """Cartographie des manques d'une équipe (US-E6-08 / item #3 roadmap V3).
+
+    Contrairement au Fit Équipe, ne compare à aucune personne : expose pour
+    chaque dimension OCEAN le niveau de diversité des profils actifs de
+    l'équipe elle-même. Aucun nouveau calcul introduit — réutilise
+    `compute_team_profile()` (moyennes + écarts-types) et le seuil
+    d'homogénéité déjà en production pour le Fit Équipe.
+    """
+    profiles = active_member_profiles(team)
+    if len(profiles) < 2:
+        # Un écart-type suppose au moins 2 points de mesure.
+        return {
+            "team": team,
+            "lang": lang,
+            "insufficient_data": True,
+            "profiled_count": len(profiles),
+        }
+
+    team_data = compute_team_profile(profiles)
+    dim_details = [
+        {
+            "dim_key": d,
+            "label": DIMENSION_LABELS[d][lang],
+            "tooltip": DIMENSION_TOOLTIPS[d][lang],
+            "avg": team_data["averages"][d],
+            "std_dev": team_data["std_devs"][d],
+            "homogeneous": team_data["std_devs"][d] < HOMOGENEITY_STD_THRESHOLD,
+        }
+        for d in DIMENSIONS
+    ]
+    return {
+        "team": team,
+        "lang": lang,
+        "insufficient_data": False,
+        "profiled_count": team_data["n"],
+        "dim_details": dim_details,
+        "gap_points": get_team_gap_points(dim_details, lang),
+        "chart_labels_json": json.dumps(dim_labels(lang)),
+        "team_avgs_json": json.dumps([team_data["averages"][d] for d in DIMENSIONS]),
     }

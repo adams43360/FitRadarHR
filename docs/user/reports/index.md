@@ -9,6 +9,8 @@ Un **rapport de fit** compare le profil Big Five d'une personne à une référen
 | **[Fit Poste](job-fit.md)** | Profil personne vs profil cible du poste | Évaluation d'un candidat pour un recrutement |
 | **[Fit Équipe](team-fit.md)** | Profil personne vs profil moyen de l'équipe | Évaluation d'une intégration ou mobilité interne |
 
+Un troisième type de rapport, la **[Cartographie des manques d'équipe](team-gaps.md)**, ne compare aucune personne — elle regarde l'équipe seule pour repérer les dimensions où les profils sont peu diversifiés, en amont d'un recrutement.
+
 ## Ce que contient un rapport
 
 - **Radar chart** — visualisation des 5 dimensions en superposition (profil personne + référence)

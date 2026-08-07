@@ -17,6 +17,7 @@ from .insights import (
     DIMENSION_TOOLTIPS,
     get_position_exploration_points,
     get_team_exploration_points,
+    get_team_gap_points,
 )
 from apps.fit.engine import DIMENSION_LABELS, DIMENSIONS
 
@@ -358,6 +359,110 @@ class RetentionCohortTests(TestCase):
                 translation.ngettext("%(n)s personne", "%(n)s personnes", 3) % {"n": 3},
                 "3 people",
             )
+
+
+class TeamGapMapTests(TestCase):
+    """Cartographie des manques d'équipe — US-E6-08 / item #3 roadmap V3.
+
+    Ne compare à aucune personne : réutilise compute_team_profile() et le
+    seuil d'homogénéité déjà en production pour le Fit Équipe."""
+
+    def setUp(self):
+        from apps.teams.models import Team, TeamMembership
+
+        self.TeamMembership = TeamMembership
+        self.org, self.rh = create_org_and_user(email="rh@gapmap.test")
+        self.team = Team.objects.create(org=self.org, name="Équipe Test")
+
+    def _add_member(self, email, **scores):
+        person = Person.objects.create(
+            org=self.org, email=email, first_name="P", last_name=email.split("@")[0],
+        )
+        create_profile(person, **scores)
+        self.TeamMembership.objects.create(team=self.team, person=person, added_by=self.rh)
+        return person
+
+    def test_insufficient_data_with_fewer_than_two_profiles(self):
+        self._add_member("solo@gapmap.test")
+        self.client.force_login(self.rh)
+        resp = self.client.get(reverse("reports:team_gap_map", kwargs={"team_pk": self.team.pk}))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue(resp.context["insufficient_data"])
+
+    def test_homogeneous_and_heterogeneous_signals(self):
+        # Ouverture homogène (scores proches), Extraversion hétérogène (écart fort)
+        self._add_member("a@gapmap.test", o=50, e=10)
+        self._add_member("b@gapmap.test", o=52, e=90)
+        self.client.force_login(self.rh)
+        resp = self.client.get(reverse("reports:team_gap_map", kwargs={"team_pk": self.team.pk}))
+        self.assertEqual(resp.status_code, 200)
+        self.assertFalse(resp.context["insufficient_data"])
+        dim_details = {d["dim_key"]: d for d in resp.context["dim_details"]}
+        self.assertTrue(dim_details["openness"]["homogeneous"])
+        self.assertFalse(dim_details["extraversion"]["homogeneous"])
+
+    def test_gap_points_only_list_homogeneous_dimensions(self):
+        self._add_member("a@gapmap.test", o=50, e=10)
+        self._add_member("b@gapmap.test", o=52, e=90)
+        self.client.force_login(self.rh)
+        resp = self.client.get(reverse("reports:team_gap_map", kwargs={"team_pk": self.team.pk}))
+        gap_dims = {p["dimension"] for p in resp.context["gap_points"]}
+        self.assertIn(DIMENSION_LABELS["openness"]["fr"], gap_dims)
+        self.assertNotIn(DIMENSION_LABELS["extraversion"]["fr"], gap_dims)
+
+    def test_left_member_excluded_from_calculation(self):
+        """Un membre ayant quitté l'équipe ne doit pas compter dans le calcul de diversité."""
+        self._add_member("a@gapmap.test", o=50)
+        p2 = self._add_member("b@gapmap.test", o=90)
+        membership = self.TeamMembership.objects.get(person=p2)
+        membership.left_at = timezone.now()
+        membership.save()
+        self.client.force_login(self.rh)
+        resp = self.client.get(reverse("reports:team_gap_map", kwargs={"team_pk": self.team.pk}))
+        self.assertTrue(resp.context["insufficient_data"])
+
+    def test_audit_log_on_view(self):
+        self._add_member("a@gapmap.test")
+        self._add_member("b@gapmap.test")
+        self.client.force_login(self.rh)
+        self.client.get(reverse("reports:team_gap_map", kwargs={"team_pk": self.team.pk}))
+        self.assertTrue(
+            AuditLog.objects.filter(org=self.org, action="team_gap_map.viewed").exists()
+        )
+
+    def test_pdf_export(self):
+        self._add_member("a@gapmap.test")
+        self._add_member("b@gapmap.test")
+        self.client.force_login(self.rh)
+        resp = self.client.get(reverse("reports:team_gap_map_pdf", kwargs={"team_pk": self.team.pk}))
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp["Content-Type"], "application/pdf")
+        self.assertTrue(
+            AuditLog.objects.filter(org=self.org, action="team_gap_map.exported_pdf").exists()
+        )
+
+    def test_pdf_export_with_insufficient_data_does_not_crash(self):
+        self._add_member("solo@gapmap.test")
+        self.client.force_login(self.rh)
+        resp = self.client.get(reverse("reports:team_gap_map_pdf", kwargs={"team_pk": self.team.pk}))
+        self.assertEqual(resp.status_code, 200)
+
+    def test_cross_org_isolation(self):
+        org2, user2 = create_org_and_user(name="Org 2", email="rh@gapmap-org2.test")
+        self.client.force_login(user2)
+        resp = self.client.get(reverse("reports:team_gap_map", kwargs={"team_pk": self.team.pk}))
+        self.assertEqual(resp.status_code, 404)
+
+    def test_gap_points_in_german_and_spanish(self):
+        dim_details_de = [{"dim_key": "openness", "label": "Offenheit", "homogeneous": True}]
+        points_de = get_team_gap_points(dim_details_de, "de")
+        self.assertEqual(len(points_de), 1)
+        self.assertIn("Offenheit", points_de[0]["message"])
+
+        dim_details_es = [{"dim_key": "openness", "label": "Apertura", "homogeneous": True}]
+        points_es = get_team_gap_points(dim_details_es, "es")
+        self.assertEqual(len(points_es), 1)
+        self.assertIn("Apertura", points_es[0]["message"])
 
 
 class AuditLogTests(TestCase):

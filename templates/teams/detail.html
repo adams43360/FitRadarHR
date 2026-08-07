@@ -22,10 +22,16 @@
         <p class="text-sm text-gray-600 mt-2">{{ team.description }}</p>
       {% endif %}
     </div>
-    <a href="{% url 'teams:edit' team.pk %}"
-       class="px-3 py-1.5 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors shrink-0 ml-4">
-      {% trans "Modifier" %}
-    </a>
+    <div class="flex items-center gap-2 shrink-0 ml-4">
+      <a href="{% url 'reports:team_gap_map' team.pk %}"
+         class="px-3 py-1.5 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors">
+        {% trans "Cartographie des manques" %}
+      </a>
+      <a href="{% url 'teams:edit' team.pk %}"
+         class="px-3 py-1.5 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors">
+        {% trans "Modifier" %}
+      </a>
+    </div>
   </div>
 
   <!-- Membres -->

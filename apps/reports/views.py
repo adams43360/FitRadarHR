@@ -17,6 +17,7 @@ from .services import (
     build_person_profile_context,
     build_position_fit_context,
     build_team_fit_context,
+    build_team_gap_map_context,
     get_lang,
 )
 
@@ -150,6 +151,20 @@ def team_fit_report(request, person_pk, team_pk):
 
 
 # ──────────────────────────────────────────────────────────────────────────────
+# Cartographie des manques d'équipe (US-E6-08 / item #3 roadmap V3)
+# ──────────────────────────────────────────────────────────────────────────────
+
+@login_required
+def team_gap_map(request, team_pk):
+    """Contrairement au Fit Équipe, ne nécessite aucune personne à comparer —
+    consultable directement depuis la fiche équipe."""
+    team = get_org_object_or_404(Team, request.user.org, pk=team_pk)
+    audit(request, "team_gap_map.viewed", "Team", team.id)
+    context = build_team_gap_map_context(team, get_lang(request))
+    return render(request, "reports/team_gap_map.html", context)
+
+
+# ──────────────────────────────────────────────────────────────────────────────
 # Export PDF (WeasyPrint)
 # ──────────────────────────────────────────────────────────────────────────────
 
@@ -199,6 +214,15 @@ def team_fit_pdf(request, person_pk, team_pk):
     context = build_team_fit_context(person, team, fit, get_lang(request))
     filename = f"fit-equipe_{_slug(person.last_name)}_{_slug(team.name)}.pdf"
     return _render_pdf("reports/pdf/team_fit.html", context, filename)
+
+
+@login_required
+def team_gap_map_pdf(request, team_pk):
+    team = get_org_object_or_404(Team, request.user.org, pk=team_pk)
+    audit(request, "team_gap_map.exported_pdf", "Team", team.id)
+    context = build_team_gap_map_context(team, get_lang(request))
+    filename = f"cartographie-manques_{_slug(team.name)}.pdf"
+    return _render_pdf("reports/pdf/team_gap_map.html", context, filename)
 
 
 # ── Audit log viewer (E8) ──────────────────────────────────────────────────────

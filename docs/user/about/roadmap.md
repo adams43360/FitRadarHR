@@ -77,12 +77,13 @@ Les items #1 et #2 sont livrés ; les items 3 à 8 restent des candidats non tra
 |---|---|---|---|---|---|---|---|
 | 1 | Fit inversé — meilleurs postes pour une personne | 5 | 2 | 90 % | 1.5 | **6.0** | ✅ Livré |
 | 2 | Monétisation (plan gratuit → abonnement) | 8 | 3 | 80 % | 5 | **3.84** | ✅ Livré |
-| 3 | Cartographie des manques d'une équipe | 5 | 2 | 60 % | 2 | **3.0** | Candidat |
+| 3 | Cartographie des manques d'une équipe | 5 | 2 | 60 % | 2 | **3.0** | ✅ Livré |
 | 4 | Portail candidat / collaborateur (accès à son profil) | 6 | 2 | 70 % | 3 | **2.8** | Candidat |
 | 5 | Dossier de conformité AI Act exportable | 3 | 2 | 70 % | 2 | **2.1** | Candidat |
 | 6 | Webhooks (complément de l'API publique) | 3 | 1 | 70 % | 2 | **1.05** | Candidat |
-| 7 | Benchmarks anonymisés inter-organisations | 4 | 1 | 40 % | 4 | **0.4** | Candidat |
-| 8 | Connecteurs natifs (Workday, BambooHR, Personio…) | 3 | 2 | 30 % | 5 | **0.36** | Candidat |
+| 7 | MCP Claude — consulter son activité hors du site | 2 | 1 | 60 % | 2 | **0.6** | Candidat |
+| 8 | Benchmarks anonymisés inter-organisations | 4 | 1 | 40 % | 4 | **0.4** | Candidat |
+| 9 | Connecteurs natifs (Workday, BambooHR, Personio…) | 3 | 2 | 30 % | 5 | **0.36** | Candidat |
 
 ### Les arguments, item par item
 
@@ -109,7 +110,8 @@ calculée : à partir du profil agrégé d'une équipe, faire ressortir les
 dimensions OCEAN sous-représentées. Reste dans le cadre du produit — présenté
 comme des pistes à explorer pour un plan de recrutement, jamais comme une
 recommandation tranchée (cohérent avec la règle "jamais de score de décision
-automatique").
+automatique"). Livré : accessible directement depuis la fiche équipe, sans
+sélectionner de personne — voir `docs/user/reports/team-gaps.md`.
 
 **4. Portail candidat/collaborateur** — aujourd'hui seuls RH/managers consultent
 les rapports. Donner à la personne elle-même l'accès à son profil et son
@@ -128,13 +130,28 @@ un système tiers quand un questionnaire est complété ou qu'un fit est recalcu
 plutôt que de faire du polling. Utile seulement pour les orgs qui utilisent déjà
 l'API, donc reach restreint.
 
-**7. Benchmarks anonymisés** — comparer la distribution OCEAN d'une organisation
+**7. MCP Claude** — exposer un serveur MCP en complément de l'API publique
+(item #9 V2), pour consulter son activité FitRadarHR directement depuis Claude
+(statut des questionnaires, résultats de fit, rappels à envoyer) sans ouvrir le
+site. Techniquement un fin wrapper autour de l'API v1 existante : même
+authentification par clé API scopée à une organisation, mêmes règles de
+minimisation (jamais les scores Big Five bruts, uniquement les résultats
+dérivés). Le point de vigilance n'est pas l'accès aux données mais l'usage qui
+en est fait par le modèle : des tools volontairement étroits et structurés
+(lister les questionnaires en attente, obtenir le résumé de fit d'un poste ou
+d'une équipe) plutôt qu'un unique tool ouvert type "pose n'importe quelle
+question sur cette organisation", pour ne pas laisser l'agent glisser vers une
+recommandation tranchée — contraire à la règle "jamais de score de décision
+automatique". Reach modeste (public early-adopters/orgs déjà à l'aise avec des
+outils IA), effort limité par la réutilisation de l'API existante.
+
+**8. Benchmarks anonymisés** — comparer la distribution OCEAN d'une organisation
 à une moyenne agrégée inter-organisations, en opt-in et anonymisée. Valeur
 analytique réelle mais confiance faible : soulève des questions de gouvernance
 des données (agrégation cross-tenant, consentement) qui restent à cadrer avant
 tout développement.
 
-**8. Connecteurs natifs** — au-delà de l'API générique, des intégrations
+**9. Connecteurs natifs** — au-delà de l'API générique, des intégrations
 préconstruites avec des SIRH/ATS spécifiques réduiraient la friction d'adoption.
 Confiance la plus faible du lot : demande non encore validée par un cas d'usage
 client réel, effort élevé (un connecteur = un projet à part entière). À réserver

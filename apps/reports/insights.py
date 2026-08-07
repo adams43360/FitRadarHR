@@ -495,3 +495,104 @@ def get_team_exploration_points(dim_details, lang):
                 "message": msg,
             })
     return points
+
+
+# ─── Pistes à explorer — Cartographie des manques d'équipe ──────────────────
+#
+# Contrairement à _TEAM_MSGS (écart personne/équipe), ces messages portent sur
+# l'équipe seule : une dimension où l'écart-type des membres actifs est bas
+# indique un manque de diversité de profils sur ce trait. Toujours formulé
+# comme une piste à explorer pour un recrutement ou un plan de développement,
+# jamais comme un manque à corriger (règle non négociable #2).
+
+_TEAM_GAP_MSGS = {
+    "openness": {
+        "fr": (
+            "L'équipe est homogène sur l'Ouverture : les profils actifs se situent dans une fourchette proche. "
+            "Si un projet à venir demande davantage de créativité ou d'exploration de nouvelles approches, "
+            "ce peut être un critère à considérer pour un prochain recrutement."
+        ),
+        "en": (
+            "The team is homogeneous on Openness: active profiles fall within a narrow range. "
+            "If an upcoming project calls for more creativity or exploration of new approaches, "
+            "this may be worth considering for a future hire."
+        ),
+        "de": "Das Team ist in Bezug auf Offenheit homogen: die aktiven Profile liegen nah beieinander. Wenn ein anstehendes Projekt mehr Kreativität oder das Erkunden neuer Ansätze erfordert, kann dies ein Kriterium für eine künftige Einstellung sein.",
+        "es": "El equipo es homogéneo en Apertura: los perfiles activos se sitúan en un rango cercano. Si un proyecto próximo requiere más creatividad o exploración de nuevos enfoques, esto puede ser un criterio a considerar para una futura contratación.",
+    },
+    "conscientiousness": {
+        "fr": (
+            "L'équipe est homogène sur la Conscienciosité : les profils actifs se situent dans une fourchette proche. "
+            "Selon le niveau observé, cela peut interroger l'équilibre entre rigueur et flexibilité — "
+            "une piste à considérer pour un prochain recrutement."
+        ),
+        "en": (
+            "The team is homogeneous on Conscientiousness: active profiles fall within a narrow range. "
+            "Depending on the level observed, this may raise questions about the balance between rigor and flexibility — "
+            "worth considering for a future hire."
+        ),
+        "de": "Das Team ist in Bezug auf Gewissenhaftigkeit homogen: die aktiven Profile liegen nah beieinander. Je nach beobachtetem Niveau kann dies das Gleichgewicht zwischen Genauigkeit und Flexibilität in Frage stellen — ein Punkt für eine künftige Einstellung.",
+        "es": "El equipo es homogéneo en Responsabilidad: los perfiles activos se sitúan en un rango cercano. Según el nivel observado, esto puede cuestionar el equilibrio entre rigor y flexibilidad — un aspecto a considerar para una futura contratación.",
+    },
+    "extraversion": {
+        "fr": (
+            "L'équipe est homogène sur l'Extraversion : les profils actifs se situent dans une fourchette proche. "
+            "Cela peut homogénéiser la dynamique des échanges internes — "
+            "un point à considérer pour un prochain recrutement."
+        ),
+        "en": (
+            "The team is homogeneous on Extraversion: active profiles fall within a narrow range. "
+            "This may make internal communication dynamics uniform — "
+            "worth considering for a future hire."
+        ),
+        "de": "Das Team ist in Bezug auf Extraversion homogen: die aktiven Profile liegen nah beieinander. Dies kann die Dynamik des internen Austauschs vereinheitlichen — ein Punkt für eine künftige Einstellung.",
+        "es": "El equipo es homogéneo en Extraversión: los perfiles activos se sitúan en un rango cercano. Esto puede homogeneizar la dinámica de los intercambios internos — un aspecto a considerar para una futura contratación.",
+    },
+    "agreeableness": {
+        "fr": (
+            "L'équipe est homogène sur l'Agréabilité : les profils actifs se situent dans une fourchette proche. "
+            "Selon le niveau observé, cela peut interroger la capacité du groupe à challenger ses propres idées — "
+            "un point à considérer pour un prochain recrutement."
+        ),
+        "en": (
+            "The team is homogeneous on Agreeableness: active profiles fall within a narrow range. "
+            "Depending on the level observed, this may raise questions about the group's ability to challenge its own ideas — "
+            "worth considering for a future hire."
+        ),
+        "de": "Das Team ist in Bezug auf Verträglichkeit homogen: die aktiven Profile liegen nah beieinander. Je nach beobachtetem Niveau kann dies die Fähigkeit der Gruppe in Frage stellen, eigene Ideen zu hinterfragen — ein Punkt für eine künftige Einstellung.",
+        "es": "El equipo es homogéneo en Amabilidad: los perfiles activos se sitúan en un rango cercano. Según el nivel observado, esto puede cuestionar la capacidad del grupo para cuestionar sus propias ideas — un aspecto a considerar para una futura contratación.",
+    },
+    "neuroticism": {
+        "fr": (
+            "L'équipe est homogène sur le Neuroticisme : les profils actifs se situent dans une fourchette proche. "
+            "Selon le niveau observé, cela peut interroger la réaction collective face à la pression — "
+            "un point à considérer pour un prochain recrutement."
+        ),
+        "en": (
+            "The team is homogeneous on Neuroticism: active profiles fall within a narrow range. "
+            "Depending on the level observed, this may raise questions about the group's collective response to pressure — "
+            "worth considering for a future hire."
+        ),
+        "de": "Das Team ist in Bezug auf Neurotizismus homogen: die aktiven Profile liegen nah beieinander. Je nach beobachtetem Niveau kann dies die kollektive Reaktion der Gruppe auf Druck in Frage stellen — ein Punkt für eine künftige Einstellung.",
+        "es": "El equipo es homogéneo en Neuroticismo: los perfiles activos se sitúan en un rango cercano. Según el nivel observado, esto puede cuestionar la reacción colectiva del grupo ante la presión — un aspecto a considerar para una futura contratación.",
+    },
+}
+
+
+def get_team_gap_points(dim_details, lang):
+    """
+    Retourne une liste de {"dimension": label, "message": text} pour les
+    dimensions où l'équipe est homogène (peu de diversité de profils).
+
+    dim_details doit contenir : dim_key, label, homogeneous (bool).
+    """
+    lang = lang if lang in ("fr", "en", "de", "es") else "fr"
+    points = []
+    for d in dim_details:
+        if not d.get("homogeneous"):
+            continue
+        dim_key = d.get("dim_key")
+        msg = _TEAM_GAP_MSGS.get(dim_key, {}).get(lang)
+        if msg:
+            points.append({"dimension": d["label"], "message": msg})
+    return points

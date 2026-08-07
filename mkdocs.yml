@@ -95,6 +95,7 @@ nav:
     - reports/index.md
     - Fit Poste: reports/job-fit.md
     - Fit Équipe: reports/team-fit.md
+    - Cartographie des manques d'équipe: reports/team-gaps.md
     - Exporter en PDF: reports/export.md
     - Analytics: reports/analytics.md
   - À propos:

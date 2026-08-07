@@ -10,11 +10,14 @@ urlpatterns = [
     path("person/<uuid:person_pk>/team/<uuid:team_pk>/", views.team_fit_report, name="team_fit"),
     # Fit inversé — postes recommandés pour une personne (item #1 roadmap V3)
     path("person/<uuid:person_pk>/positions/", views.person_position_ranking, name="person_positions"),
+    # Cartographie des manques d'équipe (item #3 roadmap V3) — pas de personne requise
+    path("team/<uuid:team_pk>/gaps/", views.team_gap_map, name="team_gap_map"),
     # Export PDF
     path("person/<uuid:person_pk>/pdf/", views.person_profile_pdf, name="person_profile_pdf"),
     path("person/<uuid:person_pk>/position/<uuid:position_pk>/pdf/", views.position_fit_pdf, name="position_fit_pdf"),
     path("person/<uuid:person_pk>/team/<uuid:team_pk>/pdf/", views.team_fit_pdf, name="team_fit_pdf"),
     path("person/<uuid:person_pk>/positions/pdf/", views.person_position_ranking_pdf, name="person_positions_pdf"),
+    path("team/<uuid:team_pk>/gaps/pdf/", views.team_gap_map_pdf, name="team_gap_map_pdf"),
     # Audit log (E8)
     path("audit/", views.audit_log, name="audit_log"),
     # Analytics produit (RH only)

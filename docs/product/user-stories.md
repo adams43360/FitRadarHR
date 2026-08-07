@@ -446,6 +446,35 @@ partiel `templates/partials/_navbar_menu.html` (rendu desktop dropdown / mobile 
 
 ---
 
+### US-E6-08 — Cartographie des manques d'une équipe
+**En tant que** RH ou Manager, **je veux** voir sur la fiche équipe une cartographie des dimensions OCEAN où l'équipe est homogène, sans avoir à la comparer au préalable à une personne précise, **afin de** repérer les angles morts collectifs en amont d'un recrutement ou d'un plan de développement d'équipe.
+
+**Contexte** : étend la logique de complémentarité déjà calculée par le moteur de fit (US-E5-03)
+— aujourd'hui visible uniquement en comparaison avec une personne sur le rapport Fit Équipe
+(US-E6-03). Aucun nouveau calcul : réutilise `compute_team_profile()` (moyennes et écarts-types
+par dimension) et le seuil d'homogénéité déjà en production.
+
+**Critères d'acceptation :**
+- [x] Une section "Cartographie des manques" est accessible depuis la fiche équipe, indépendamment de tout rapport de fit avec une personne
+- [x] La section n'apparaît que si l'équipe compte au moins 2 membres actifs avec profil Big Five complété (un écart-type nécessite au moins 2 points de mesure)
+- [x] Pour chaque dimension OCEAN, un signal indique si l'équipe est homogène ou hétérogène, selon le même seuil (`HOMOGENEITY_STD_THRESHOLD`) que le rapport Fit Équipe
+- [x] Les dimensions homogènes sont présentées comme des pistes à explorer pour un plan de recrutement — jamais comme un manque à corriger ni une recommandation tranchée (règle non négociable #2 : pas de score de décision automatique)
+- [x] Les infobulles OCEAN existantes (US-E6-05) s'appliquent aux libellés de dimension
+- [x] Un disclaimer rappelle que ces observations sont des pistes d'exploration, pas des verdicts (cohérent avec US-E6-06)
+- [x] La consultation est tracée dans le journal d'audit, comme les autres rapports (US-E8-03)
+- [x] Export PDF disponible, cohérent avec les autres rapports (US-E6-04)
+- [x] Contenu disponible en FR/EN/ES/DE
+
+**Livré (2026-08-07)** : `build_team_gap_map_context` dans `apps/reports/services.py` (aucun
+nouveau calcul — réutilise `compute_team_profile` et `HOMOGENEITY_STD_THRESHOLD` de
+`apps/fit/engine.py`), route dédiée `/reports/team/<uuid>/gaps/` (sans `person_pk` — accessible
+sans sélectionner personne), bouton depuis `/teams/<uuid>/`, export PDF, audit log
+(`team_gap_map.viewed` / `.exported_pdf`), doc utilisateur `docs/user/reports/team-gaps.md`.
+8 nouveaux tests dans `apps/reports/tests.py::TeamGapMapTests` (isolation cross-tenant, signal
+homogène/hétérogène, cas insuffisant, membre parti exclu, audit, PDF, DE/ES).
+
+---
+
 ## E7 — Internationalisation
 
 ### US-E7-01 — Choix de la langue de l'interface
