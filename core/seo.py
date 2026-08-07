@@ -53,7 +53,14 @@ def robots_txt(request):
             lines.append(f"Disallow: {prefix}{path}")
     # Hors i18n_patterns — un seul préfixe possible pour ces routes.
     lines += ["Disallow: /api/", "Disallow: /billing/", "Disallow: /i18n/"]
-    lines += ["", f"Sitemap: {request.build_absolute_uri('/sitemap.xml')}"]
+    lines += [
+        "",
+        f"Sitemap: {request.build_absolute_uri('/sitemap.xml')}",
+        # Sitemap généré par mkdocs lui-même (docs/user/**, servi sous /docs/,
+        # voir docker/nginx.prod.conf) — deux fichiers Sitemap: dans un même
+        # robots.txt est un usage standard, pas besoin de les fusionner.
+        f"Sitemap: {request.build_absolute_uri('/docs/sitemap.xml')}",
+    ]
     return HttpResponse("\n".join(lines), content_type="text/plain")
 
 

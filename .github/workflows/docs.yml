@@ -1,4 +1,14 @@
-name: Deploy documentation
+name: Documentation build check
+
+# Jusqu'au 2026-08-07, ce workflow publiait la doc sur GitHub Pages. La doc est
+# désormais construite et servie directement par fitradarhr.fr/docs/ à chaque
+# déploiement (docker/docker-compose.prod.yml — mkdocs build au démarrage du
+# conteneur, servi par nginx). Publier au même endroit ET sur GitHub Pages
+# créerait du contenu dupliqué (mauvais pour le SEO) ; ce workflow ne fait donc
+# plus que vérifier que la doc se construit sans erreur, en CI.
+#
+# GitHub Pages doit être désactivé manuellement dans Settings → Pages du dépôt
+# (pas faisable depuis un workflow) pour que l'ancienne URL cesse de répondre.
 
 on:
   push:
@@ -8,17 +18,12 @@ on:
       - "docs/user/**"
       - "mkdocs.yml"
       - "requirements-docs.txt"
-  workflow_dispatch:  # permet de déclencher manuellement depuis GitHub
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# Un seul déploiement Pages à la fois ; on ne cancel jamais un déploiement en cours.
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  pull_request:
+    paths:
+      - "docs/user/**"
+      - "mkdocs.yml"
+      - "requirements-docs.txt"
+  workflow_dispatch:
 
 jobs:
   build:
@@ -43,24 +48,5 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements-docs.txt
 
-      - name: Build site
+      - name: Build site (fails the check if a page is broken)
         run: mkdocs build --strict
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: site
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4

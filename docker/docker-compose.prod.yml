@@ -40,12 +40,15 @@ services:
         condition: service_healthy
     volumes:
       - media_data:/app/media
+      # Partagé avec nginx (web, ci-dessous) : collectstatic ET la doc utilisateur
+      # (mkdocs, servie sous /docs/ — voir nginx.prod.conf) écrivent tous deux ici.
       - static_data:/app/staticfiles
     expose:
       - "8000"
     command: >
       sh -c "python manage.py migrate &&
              python manage.py collectstatic --noinput &&
+             mkdocs build -f mkdocs.yml -d /app/staticfiles/docs &&
              gunicorn core.wsgi:application --bind 0.0.0.0:8000 --workers 3 --timeout 60"
 
   # Reset quotidien de l'org de démonstration — actif uniquement avec :

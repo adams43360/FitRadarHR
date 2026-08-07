@@ -1,6 +1,10 @@
 site_name: FitRadarHR
 site_description: Évaluez la compatibilité Big Five entre une personne et un poste ou une équipe.
-site_url: https://adams43360.github.io/FitRadarHR
+# Migrée depuis GitHub Pages (adams43360.github.io/FitRadarHR) vers fitradarhr.fr/docs/
+# le 2026-08-07 — consolide l'autorité SEO sur le domaine principal plutôt que de la
+# répartir sur deux propriétés distinctes. Construite au démarrage du conteneur `app`
+# et servie par nginx (voir docker/nginx.prod.conf, docker-compose.prod.yml).
+site_url: https://fitradarhr.fr/docs/
 repo_url: https://github.com/adams43360/FitRadarHR
 repo_name: FitRadarHR
 edit_uri: edit/main/docs/user/
@@ -43,13 +47,10 @@ extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/adams43360/FitRadarHR
-  alternate:
-    - name: Français
-      link: /
-      lang: fr
-    - name: English
-      link: /en/
-      lang: en
+  # Pas de bloc `alternate` (sélecteur de langue) : seul le FR est construit
+  # aujourd'hui. Le produit lui-même est en FR/EN/ES/DE (requirements-docs.txt
+  # inclut déjà mkdocs-static-i18n si on traduit la doc plus tard), mais publier
+  # un lien /en/ qui ne correspond à aucun contenu construit est pire que rien.
 
 markdown_extensions:
   - admonition

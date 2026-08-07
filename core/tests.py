@@ -33,6 +33,18 @@ class RobotsTxtTests(TestCase):
         content = self.client.get("/robots.txt").content.decode()
         self.assertIn("Sitemap: http://testserver/sitemap.xml", content)
 
+    def test_references_docs_sitemap(self):
+        """La doc utilisateur (mkdocs, servie sous /docs/) génère son propre
+        sitemap — référencé en plus de celui de l'app (deux lignes Sitemap:
+        dans un même robots.txt est un usage standard)."""
+        content = self.client.get("/robots.txt").content.decode()
+        self.assertIn("Sitemap: http://testserver/docs/sitemap.xml", content)
+
+    def test_does_not_disallow_docs(self):
+        """/docs/ (mkdocs) doit rester crawlable — ce n'est pas une zone privée."""
+        content = self.client.get("/robots.txt").content.decode()
+        self.assertNotIn("Disallow: /docs/", content)
+
 
 class SitemapXmlTests(TestCase):
     def test_reachable_and_xml(self):
