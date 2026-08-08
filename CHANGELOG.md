@@ -6,6 +6,12 @@ le projet n'étant pas encore versionné, les entrées sont datées.
 
 ## 2026-08-07
 
+### Corrigé
+- **Doc utilisateur → lien retour vers l'app** — le logo dans l'en-tête de la
+  doc mkdocs ne renvoyait vers rien d'autre que la racine de la doc elle-même
+  (`site_url`), aucun moyen de revenir sur `fitradarhr.fr`. `extra.homepage`
+  dans `mkdocs.yml` fait maintenant pointer le logo vers l'application.
+
 ### Ajouté
 - **Données structurées JSON-LD** — `Organization` sitewide sur l'app Django
   (`core/context_processors.py::seo`, `templates/base.html`) et sur la doc

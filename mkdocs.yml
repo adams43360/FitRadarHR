@@ -213,6 +213,10 @@ plugins:
             danger: Achtung
 
 extra:
+  # Sans ce réglage, le logo/titre dans l'en-tête renvoie vers la racine de la
+  # doc (site_url ci-dessus, /docs/) — aucun lien retour vers l'app elle-même.
+  # Documenté dans Material for MkDocs : "Setting the homepage URL".
+  homepage: https://fitradarhr.fr/
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/adams43360/FitRadarHR
