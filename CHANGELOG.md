@@ -6,6 +6,14 @@ le projet n'étant pas encore versionné, les entrées sont datées.
 
 ## 2026-08-07
 
+### Ajouté (suite)
+- **Image de partage social dédiée** (`static/img/branding/og-image.png`,
+  1200×630) — remplace le favicon réutilisé comme image OG par défaut.
+  Générée par script (`Pillow`, aux couleurs de la marque —
+  `design/tokens/tokens.json`) : wordmark, tagline, motif radar/pentagone
+  faisant écho aux graphiques Fit du produit. `core/context_processors.py::seo`
+  mis à jour pour la pointer.
+
 ### Corrigé
 - **Doc utilisateur → lien retour vers l'app** — le logo dans l'en-tête de la
   doc mkdocs ne renvoyait vers rien d'autre que la racine de la doc elle-même

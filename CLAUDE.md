@@ -123,6 +123,8 @@ User stories à rattacher systématiquement à l'un de ces epics (voir `00-cadra
 - [x] Contenus SEO sourcés — `docs/user/about/big-five-vs-mbti.md` (fiabilité test-retest, validité prédictive, méta-analyses) et `docs/user/about/eu-ai-act.md` (calendrier à jour, obligations RGPD/Code du travail déjà en vigueur, disclaimer non-conseil-juridique)
 - [x] Doc utilisateur traduite en EN/ES/DE (`mkdocs-static-i18n`) — les 30 pages de `docs/user/**` existent dans les 4 langues (structure suffix, ex. `index.fr.md`/`index.en.md`), sélecteur de langue Material, navigation et admonitions traduites par langue dans `mkdocs.yml`. FR reste construit à la racine `/docs/` (URLs déjà indexées inchangées), EN/ES/DE sous `/docs/en|es|de/`
 - [x] Données structurées JSON-LD — `Organization` sitewide (app Django via `core/context_processors.py::seo` + doc mkdocs via `overrides/main.html`), `SoftwareApplication` sur la landing page uniquement avec les offres gratuit/abonnement, jamais de note ou avis fabriqués (`aggregateRating`)
+- [x] Image de partage social dédiée (`static/img/branding/og-image.png`, 1200×630, couleurs de marque) — remplace le favicon comme image OG par défaut
+- [x] Lien retour vers `fitradarhr.fr` depuis le logo de la doc mkdocs (`extra.homepage`)
 
 ## Conventions de travail
 

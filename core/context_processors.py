@@ -23,7 +23,7 @@ def seo(request):
         code: request.build_absolute_uri(translate_url(request.path, code))
         for code, _label in settings.LANGUAGES
     }
-    og_image_url = request.build_absolute_uri(static("img/branding/favicon-512.png"))
+    og_image_url = request.build_absolute_uri(static("img/branding/og-image.png"))
     site_root_url = request.build_absolute_uri("/")
 
     # JSON-LD Organization — sitewide, sur toutes les pages (templates/base.html).
